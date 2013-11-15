@@ -32,6 +32,9 @@ namespace _8th_Circle_Server
 
     class CommandHandler
     {
+        // Debug
+        internal const bool DEBUG = true;
+
         public ArrayList mCommandList;
         
         public ArrayList mNounList;
@@ -41,15 +44,17 @@ namespace _8th_Circle_Server
         static string sCommandString = string.Empty;
         static Queue sCommandQueue;
         static object QueueLock = new object();
+        public static World sWorld;
 
-        public CommandHandler()
+        public CommandHandler(World world)
         {
             mCommandList = new ArrayList();
             sCommandQueue = new Queue();
             mVerbList = new ArrayList();
             mNounList = new ArrayList();
             mPrepList = new ArrayList();
-            
+            sWorld = world;
+
             Command pt;
 
             pt = new Command("move", 1, commandType.VERB);

@@ -22,13 +22,17 @@ namespace _8th_Circle_Server
         static ArrayList sListenerThreadList;
         static ArrayList clientHandlerList;
         static CommandHandler sCommandHandler;
+        static World sWorld;
+        static ArrayList sPlayerList;
 
         static void Main(string[] args)
         {
+            sWorld = new World();
             sListenerThreadList  = new ArrayList();
             clientHandlerList = new ArrayList();     
-            sCommandHandler = new CommandHandler();
+            sCommandHandler = new CommandHandler(sWorld);
             sCommandHandler.start();
+            sPlayerList = new ArrayList();
 
             try
             {
@@ -43,12 +47,10 @@ namespace _8th_Circle_Server
 
                 for (int i = 0; i < maxPlayers; i++)
                 {
-                    Thread listenerThread = new Thread(() => ClientListener(sCommandHandler));
+                    Thread listenerThread = new Thread(() => ClientListener(sCommandHandler, sWorld));
                     sListenerThreadList.Add(listenerThread);
                     listenerThread.Start();      
                 }// for
-
-                
 
                 Console.WriteLine("The 8th Circle has been started on " + ipAddr + 
                     "::" + MUD_SERVER_PORT);
@@ -61,9 +63,9 @@ namespace _8th_Circle_Server
             }// catch
         }// Main
 
-        static void ClientListener(CommandHandler commandHandler)
+        static void ClientListener(CommandHandler commandHandler, World world)
         {
-            ClientHandler ch = new ClientHandler(sTcpListener, commandHandler);
+            ClientHandler ch = new ClientHandler(sTcpListener, commandHandler, world);
             clientHandlerList.Add(ch);
             ch.start();
         }// ClientListener       
