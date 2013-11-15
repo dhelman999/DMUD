@@ -20,13 +20,15 @@ namespace _8th_Circle_Server
         public System.IO.StreamReader mStreamReader;
         public System.IO.StreamWriter mStreamWriter;
         public Thread mResponderThread;
-        
-        // Static Variables
-        static string cmdString;
 
-        public ClientHandler(TcpListener tcpListener)
+        // Static Variables
+        static string sCmdString;
+        static CommandHandler sCommandHandler;
+
+        public ClientHandler(TcpListener tcpListener, CommandHandler commandHandler)
         {
-            this.mTcpListener = tcpListener;
+            mTcpListener = tcpListener;
+            sCommandHandler = commandHandler;
         }
 
         public void start()
@@ -36,7 +38,6 @@ namespace _8th_Circle_Server
                 try
                 {
                     mSocketForClient = mTcpListener.AcceptSocket();
-                    Thread.Sleep(10);
                     if(mSocketForClient.Connected)
                     {
                         Console.WriteLine("Client:" + mSocketForClient.RemoteEndPoint +
@@ -51,9 +52,9 @@ namespace _8th_Circle_Server
 
                         do
                         {
-                            cmdString = mStreamReader.ReadLine();
+                            sCmdString = mStreamReader.ReadLine();
                             mResponderThread.Interrupt();
-                        } while (!cmdString.Equals("exit"));
+                        } while (!sCmdString.Equals("exit"));
 
                         if (DEBUG)
                             Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
@@ -67,7 +68,7 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    Console.WriteLine("Exception caught while listening");
+                    Console.WriteLine("Exception caught while listening to " + mSocketForClient.RemoteEndPoint);
                     if (mStreamReader != null &&
                         mStreamWriter != null &&
                         mNetworkStream != null &&
@@ -86,8 +87,6 @@ namespace _8th_Circle_Server
                                     System.IO.StreamWriter mStreamWriter,
                                     System.IO.StreamReader mStreamReader)
         {
-            string clientString = string.Empty;
-
             while (true)
             {
                 try
@@ -96,24 +95,14 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    clientString = string.Empty;
-                    clientString = cmdString;
+                    if (sCmdString.Equals("exit"))
+                        break;
 
-                    if (clientString == "exit")
-                        break;
-                    else if (clientString == "broadcast")
-                    {
-                        //foreach (System.IO.StreamWriter sw in mStreamWriterList)
-                        //{
-                            //sw.WriteLine(clientString);
-                            //sw.Flush();
-                        //}
-                        break;
-                    }
+                    sCommandHandler.enQueueCommand(sCmdString);
 
                     if (mStreamWriter.BaseStream != null)
                     {
-                        mStreamWriter.WriteLine(clientString);
+                        mStreamWriter.WriteLine(sCmdString);
                         mStreamWriter.Flush();
                     }
                     else

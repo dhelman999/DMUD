@@ -21,11 +21,14 @@ namespace _8th_Circle_Server
         static TcpListener sTcpListener;
         static ArrayList sListenerThreadList;
         static ArrayList clientHandlerList;
+        static CommandHandler sCommandHandler;
 
         static void Main(string[] args)
         {
             sListenerThreadList  = new ArrayList();
-            clientHandlerList = new ArrayList();
+            clientHandlerList = new ArrayList();     
+            sCommandHandler = new CommandHandler();
+            sCommandHandler.start();
 
             try
             {
@@ -40,10 +43,12 @@ namespace _8th_Circle_Server
 
                 for (int i = 0; i < maxPlayers; i++)
                 {
-                    Thread listenerThread = new Thread(new ThreadStart(ClientListener));
+                    Thread listenerThread = new Thread(() => ClientListener(sCommandHandler));
                     sListenerThreadList.Add(listenerThread);
                     listenerThread.Start();      
                 }// for
+
+                
 
                 Console.WriteLine("The 8th Circle has been started on " + ipAddr + 
                     "::" + MUD_SERVER_PORT);
@@ -56,11 +61,11 @@ namespace _8th_Circle_Server
             }// catch
         }// Main
 
-        static void ClientListener()
+        static void ClientListener(CommandHandler commandHandler)
         {
-            ClientHandler ch = new ClientHandler(sTcpListener);
+            ClientHandler ch = new ClientHandler(sTcpListener, commandHandler);
             clientHandlerList.Add(ch);
             ch.start();
-        }// ClientListener         
+        }// ClientListener       
     }// Class MUDServer
 }// Namespace _8th_Circle_Server
