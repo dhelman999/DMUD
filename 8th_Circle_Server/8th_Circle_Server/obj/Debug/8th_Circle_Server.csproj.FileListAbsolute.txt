@@ -1,5 +1,0 @@
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Server\8th_Circle_Server\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Server\8th_Circle_Server\bin\Debug\8th_Circle_Server.exe
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Server\8th_Circle_Server\bin\Debug\8th_Circle_Server.pdb
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Server\8th_Circle_Server\obj\Debug\8th_Circle_Server.exe
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Server\8th_Circle_Server\obj\Debug\8th_Circle_Server.pdb

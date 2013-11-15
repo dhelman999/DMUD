@@ -1,7 +1,0 @@
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Client\8th_Circle_Client\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Client\8th_Circle_Client\bin\Debug\8th_Circle_Client.exe
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Client\8th_Circle_Client\bin\Debug\8th_Circle_Client.pdb
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Client\8th_Circle_Client\obj\Debug\8th_Circle_Client.exe
-C:\Users\David\Documents\Visual Studio 2008\Projects\8th_Circle_Client\8th_Circle_Client\obj\Debug\8th_Circle_Client.pdb
-C:\Users\David\Documents\Visual Studio 2008\Projects\DMUD\Client\dmud\trunk\8th_Circle_Client\8th_Circle_Client\obj\Debug\8th_Circle_Client.exe
-C:\Users\David\Documents\Visual Studio 2008\Projects\DMUD\Client\dmud\trunk\8th_Circle_Client\8th_Circle_Client\obj\Debug\8th_Circle_Client.pdb
