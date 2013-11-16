@@ -9,75 +9,54 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    enum commandType
-    {
-        VERB=1,
-        NOUN,
-        PREP
-    };
-
-    struct Command
+    struct commandData
     {
         public string command;
-        public int matchNumber;
-        public commandType type;
+        public ClientHandler ch;
 
-        public Command(string command, int matchNumber, commandType type)
+        public commandData(string command, ClientHandler ch)
         {
             this.command = command;
-            this.matchNumber = matchNumber;
-            this.type = type;
+            this.ch = ch;
         }
-    }
+    }// commandData
 
     class CommandHandler
     {
         // Debug
         internal const bool DEBUG = true;
 
-        public ArrayList mCommandList;
-        
-        public ArrayList mNounList;
-        public ArrayList mVerbList;
-        public ArrayList mPrepList;
-        private Thread mSpinWorkThread;
-        static string sCommandString = string.Empty;
-        static Queue sCommandQueue;
+        // Static Variables
         static object QueueLock = new object();
         public static World sWorld;
 
+        // Member Variables
+        public Queue mCommandQueue;
+
+        private Thread mSpinWorkThread; 
+  
+        // Static Variables
+        public static CommandExecuter sComExe;
+
         public CommandHandler(World world)
-        {
-            mCommandList = new ArrayList();
-            sCommandQueue = new Queue();
-            mVerbList = new ArrayList();
-            mNounList = new ArrayList();
-            mPrepList = new ArrayList();
+        {  
+            mCommandQueue = new Queue();
+            QueueLock = new object();
+            sComExe = new CommandExecuter();
             sWorld = world;
-
-            Command pt;
-
-            pt = new Command("move", 1, commandType.VERB);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("look", 1, commandType.VERB);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("exit", 1, commandType.VERB);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
         }// Constructor
 
         public void start()
         {
-            mSpinWorkThread = new Thread(new ThreadStart(spinWork));
+            //mSpinWorkThread = new Thread(new ThreadStart(spinWork));
+            mSpinWorkThread = new Thread(() => spinWork(this));
             mSpinWorkThread.Start();
         }// start
 
-        public static void spinWork()
-        {  
+        public static void spinWork(CommandHandler ch)
+        {
+            commandData comData;
+
             while (true)
             {
                 try
@@ -86,21 +65,36 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    while (sCommandQueue.Count > 0)
+                    while (ch.mCommandQueue.Count > 0)
                     {
-                        Console.WriteLine(sCommandQueue.Dequeue());
+                        comData = ((commandData)ch.mCommandQueue.Dequeue());
+                        if (sComExe.execute(comData.command, comData.ch) == errorCode.E_OK)
+                        {
+                        }
+                        else
+                        {
+                            comData.ch.safeWrite(comData.command + "is invalid");
+                        }
                     }// while
                 }// catch
             }// while
         }// spinWork
 
-        public void enQueueCommand(string commandString)
+        public void enQueueCommand(commandData cd)
         {
             lock (QueueLock)
             {
-                sCommandQueue.Enqueue(commandString);
+                mCommandQueue.Enqueue(cd);
             }// lock
             mSpinWorkThread.Interrupt();
         }// enQueueCommand
+
+        private errorCode processRequest(string command, ClientHandler ch)
+        {
+            errorCode ret = errorCode.E_OK;
+       
+            return ret;
+        }
     }// Class CommandHandler
+
 }// Namespace _8th_Circle_Server

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
@@ -13,20 +14,20 @@ namespace _8th_Circle_Server
         // Debug
         internal const bool DEBUG = true;
 
-        // Member Variables
-        public TcpListener mTcpListener;
-        public Socket mSocketForClient;
-        public NetworkStream mNetworkStream;
-        public System.IO.StreamReader mStreamReader;
-        public System.IO.StreamWriter mStreamWriter;
-        public Thread mResponderThread;
-        public Mob mPlayer;
-        object PlayerLock = new object();
-
         // Static Variables
         static string sCmdString;
         static CommandHandler sCommandHandler;
         static World sWorld;
+
+        // Member Variables
+        public TcpListener mTcpListener;
+        public Socket mSocketForClient;
+        public NetworkStream mNetworkStream;
+        public StreamReader mStreamReader;
+        public StreamWriter mStreamWriter;
+        public Thread mResponderThread;
+        public Mob mPlayer;
+        object PlayerLock = new object();  
 
         public ClientHandler(TcpListener tcpListener, CommandHandler commandHandler, World world)
         {
@@ -49,8 +50,8 @@ namespace _8th_Circle_Server
                         Console.WriteLine("Client:" + mSocketForClient.RemoteEndPoint +
                             " now connected to server.");
                         mNetworkStream = new NetworkStream(mSocketForClient);
-                        mStreamReader = new System.IO.StreamReader(mNetworkStream);
-                        mStreamWriter = new System.IO.StreamWriter(mNetworkStream);
+                        mStreamReader = new StreamReader(mNetworkStream);
+                        mStreamWriter = new StreamWriter(mNetworkStream);
                         mResponderThread = new Thread(() => ClientResponder(this));
                         mResponderThread.Start();
 
@@ -65,7 +66,7 @@ namespace _8th_Circle_Server
                             mPlayer.mCurrentRoom = curRoom;
                             sWorld.mPlayerList.Add(mPlayer);
                             curRoom.mPlayerList.Add(mPlayer); 
-                        }
+                        }// lock
                         mResponderThread.Interrupt();
 
                         do
@@ -96,19 +97,21 @@ namespace _8th_Circle_Server
                         mStreamWriter.Close();
                         mNetworkStream.Close();
                         mResponderThread.Abort();
-                    }
+                    }// if
                 }// catch
             }// while
         }// ClientListener
 
         static void ClientResponder(ClientHandler ch)
         {
+            commandData cd = new commandData();
+
             sCmdString = "Please enter your player's name.";
             safeWrite(ch.mStreamWriter, sCmdString);
             try
             {
                 Thread.Sleep(Timeout.Infinite);
-            }
+            }// try
             catch
             {
                 if (sCmdString.Equals("exit"))
@@ -117,7 +120,7 @@ namespace _8th_Circle_Server
                 safeWrite(ch.mStreamWriter, "Welcome to the 8th Circle!");
                 safeWrite(ch.mStreamWriter, ch.mPlayer.mCurrentRoom.mDescription +
                     "\n" + ch.mPlayer.mCurrentRoom.exitString());
-            }
+            }// catch
             while (true)
             {
                 try
@@ -129,13 +132,15 @@ namespace _8th_Circle_Server
                     if (sCmdString.Equals("exit"))
                         break;
 
-                    sCommandHandler.enQueueCommand(sCmdString);
+                    cd.command = sCmdString;
+                    cd.ch = ch;
+                    sCommandHandler.enQueueCommand(cd);
                     safeWrite(ch.mStreamWriter, sCmdString);
                 }// catch
             }// while
         }// ClientResponder
 
-        private static void safeWrite(System.IO.StreamWriter sw, string response)
+        public static void safeWrite(StreamWriter sw, string response)
         {
             if (sw.BaseStream != null)
             {
@@ -147,5 +152,20 @@ namespace _8th_Circle_Server
                 sw.Dispose();
             }// else
         }// safeWrite
+
+        public void safeWrite(string response)
+        {
+            if (mStreamWriter.BaseStream != null)
+            {
+                mStreamWriter.WriteLine(response);
+                mStreamWriter.Flush();
+            }// if
+            else
+            {
+                mStreamWriter.Dispose();
+            }// else
+        }// safeWrite
+
     }// Class ClientHandler
+
 }// Namespace _8th_Circle_Server

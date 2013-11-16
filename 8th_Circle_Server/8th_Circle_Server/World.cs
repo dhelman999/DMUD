@@ -8,10 +8,15 @@ namespace _8th_Circle_Server
 {
     class World
     {
+        // Debug
+        internal const bool DEBUG = true;
+        
+        // Constants
         const int MAXXSIZE = 3;
         const int MAXYSIZE = 3;
         const int MAXZSIZE = 3;
-
+        
+        // Member Variables
         public ArrayList mPlayerList;
         private Room[, ,] mWorldGrid;
 
@@ -94,5 +99,7 @@ namespace _8th_Circle_Server
                 }// if
             }// if
         }// createLinks
+
     }// Class World
+
 }// Namespace _8th_Circle_Server

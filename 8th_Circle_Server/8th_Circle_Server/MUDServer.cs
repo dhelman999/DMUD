@@ -68,6 +68,8 @@ namespace _8th_Circle_Server
             ClientHandler ch = new ClientHandler(sTcpListener, commandHandler, world);
             clientHandlerList.Add(ch);
             ch.start();
-        }// ClientListener       
+        }// ClientListener  
+     
     }// Class MUDServer
+
 }// Namespace _8th_Circle_Server

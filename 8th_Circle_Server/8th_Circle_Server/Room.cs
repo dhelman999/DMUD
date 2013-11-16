@@ -8,6 +8,10 @@ namespace _8th_Circle_Server
 {
     class Room
     {
+        // Debug
+        internal const bool DEBUG = true;
+
+        // Member Variables
         public string mDescription;
         public Room mNorthLink;
         public Room mSouthLink;
@@ -78,5 +82,7 @@ namespace _8th_Circle_Server
             exitStr += "\n";
             return exitStr;
         }// exitString
+
     }// Class Room
+
 }// Namespace _8th_Circle_Server

@@ -15,6 +15,7 @@ namespace _8th_Circle_Server
         public World mWorld;
         public Room mCurrentRoom;
         public int[] mWorldLoc;
+
         public Mob()
         {
             mName = string.Empty;
@@ -26,5 +27,7 @@ namespace _8th_Circle_Server
             mName = name;
             mWorldLoc = new int[3];
         }// Constructor
+
     }// Class Mob
+
 }// Namespace _8th_Circle_Server
