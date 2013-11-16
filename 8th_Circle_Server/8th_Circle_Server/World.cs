@@ -75,16 +75,16 @@ namespace _8th_Circle_Server
         {
             // North Links
             if (currentRoom.mYPos < 2)
-                currentRoom.mNorthLink = mWorldGrid[currentRoom.mZPos, currentRoom.mYPos + 1, currentRoom.mXPos];
+                currentRoom.mNorthLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos + 1, currentRoom.mZPos];
             // West Links
             if (currentRoom.mXPos > 0)
-                currentRoom.mWestLink = mWorldGrid[currentRoom.mZPos, currentRoom.mYPos, currentRoom.mXPos - 1];
+                currentRoom.mWestLink = mWorldGrid[currentRoom.mXPos -1, currentRoom.mYPos, currentRoom.mZPos];
             // East Links
             if (currentRoom.mXPos < 2)
-                currentRoom.mEastLink = mWorldGrid[currentRoom.mZPos, currentRoom.mYPos, currentRoom.mXPos + 1];
+                currentRoom.mEastLink = mWorldGrid[currentRoom.mXPos + 1, currentRoom.mYPos, currentRoom.mZPos];
             // South Links
             if (currentRoom.mYPos > 0)
-                currentRoom.mSouthLink = mWorldGrid[currentRoom.mZPos, currentRoom.mYPos - 1, currentRoom.mXPos];
+                currentRoom.mSouthLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos - 1, currentRoom.mZPos];
             // Up/Down Links
             if (currentRoom.mYPos < 2)
             {
@@ -92,8 +92,8 @@ namespace _8th_Circle_Server
                     currentRoom.mYPos == 1 &&
                     currentRoom.mZPos == 1)
                 {
-                    currentRoom.mUpLink = mWorldGrid[currentRoom.mZPos + 1, currentRoom.mYPos, currentRoom.mXPos];
-                    currentRoom.mDownLink = mWorldGrid[currentRoom.mZPos - 1, currentRoom.mYPos, currentRoom.mXPos];
+                    currentRoom.mUpLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos, currentRoom.mZPos + 1];
+                    currentRoom.mDownLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos, currentRoom.mZPos - 1];
                     currentRoom.mUpLink.mDownLink = currentRoom;
                     currentRoom.mDownLink.mUpLink = currentRoom;
                 }// if
