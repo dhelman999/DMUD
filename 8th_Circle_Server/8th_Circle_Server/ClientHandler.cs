@@ -14,11 +14,6 @@ namespace _8th_Circle_Server
         // Debug
         internal const bool DEBUG = true;
 
-        // Static Variables
-        
-        static CommandHandler sCommandHandler;
-        static World sWorld;
-
         // Member Variables
         public TcpListener mTcpListener;
         public Socket mSocketForClient;
@@ -28,18 +23,23 @@ namespace _8th_Circle_Server
         public Thread mResponderThread;
         public Mob mPlayer;
         public string mCmdString;
-        object PlayerLock = new object();  
+        public World mWorld;
+        public CommandHandler mCommandHandler;
+        
+        private object PlayerLock = new object();  
 
-        public ClientHandler(TcpListener tcpListener, CommandHandler commandHandler, World world)
+        public ClientHandler(TcpListener tcpListener, World world)
         {
             mPlayer = new Mob();
             mTcpListener = tcpListener;
-            sCommandHandler = commandHandler;
-            sWorld = world;
+            mCommandHandler = new CommandHandler(world);
+            mWorld = world;
+            
         }// Constructor
 
         public void start()
         {
+            mCommandHandler.start();
             while (true)
             {
                 try
@@ -56,15 +56,15 @@ namespace _8th_Circle_Server
                         mResponderThread.Start();
 
                         mPlayer.mName = mStreamReader.ReadLine();
-                        mPlayer.mWorld = sWorld;
-                        Room curRoom = sWorld.getRoom(1, 1, 1);
+                        mPlayer.mWorld = mWorld;
+                        Room curRoom = mWorld.getRoom(1, 1, 1);
                         lock (PlayerLock)
                         {
                             mPlayer.mWorldLoc[0] = 1;
                             mPlayer.mWorldLoc[1] = 1;
                             mPlayer.mWorldLoc[2] = 1;
                             mPlayer.mCurrentRoom = curRoom;
-                            sWorld.mPlayerList.Add(mPlayer);
+                            mWorld.mPlayerList.Add(mPlayer);
                             curRoom.mPlayerList.Add(mPlayer); 
                         }// lock
                         mResponderThread.Interrupt();
@@ -134,7 +134,7 @@ namespace _8th_Circle_Server
                         break;
 
                     cmdData.command = clientHandler.mCmdString;
-                    sCommandHandler.enQueueCommand(cmdData);
+                    clientHandler.mCommandHandler.enQueueCommand(cmdData);
                     clientHandler.safeWrite(clientHandler.mCmdString);
                 }// catch
             }// while

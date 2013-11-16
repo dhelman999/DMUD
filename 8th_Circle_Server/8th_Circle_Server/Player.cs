@@ -8,11 +8,11 @@ namespace _8th_Circle_Server
     class Player : Mob
     {
         // Member Variables
-        ClientHandler mCh;
+        ClientHandler mClientHandler;
 
         public Player(ClientHandler ch) : base()
         {
-            this.mCh = ch;
+            this.mClientHandler = ch;
         }
     }
 }

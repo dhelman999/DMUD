@@ -21,7 +21,6 @@ namespace _8th_Circle_Server
         static TcpListener sTcpListener;
         static ArrayList sListenerThreadList;
         static ArrayList clientHandlerList;
-        static CommandHandler sCommandHandler;
         static World sWorld;
         static ArrayList sPlayerList;
 
@@ -30,8 +29,6 @@ namespace _8th_Circle_Server
             sWorld = new World();
             sListenerThreadList  = new ArrayList();
             clientHandlerList = new ArrayList();     
-            sCommandHandler = new CommandHandler(sWorld);
-            sCommandHandler.start();
             sPlayerList = new ArrayList();
 
             try
@@ -47,7 +44,7 @@ namespace _8th_Circle_Server
 
                 for (int i = 0; i < maxPlayers; ++i)
                 {
-                    Thread listenerThread = new Thread(() => ClientListener(sCommandHandler, sWorld));
+                    Thread listenerThread = new Thread(() => ClientListener(sWorld));
                     sListenerThreadList.Add(listenerThread);
                     listenerThread.Start();      
                 }// for
@@ -63,9 +60,9 @@ namespace _8th_Circle_Server
             }// catch
         }// Main
 
-        static void ClientListener(CommandHandler commandHandler, World world)
+        static void ClientListener(World world)
         {
-            ClientHandler clientHandler = new ClientHandler(sTcpListener, commandHandler, world);
+            ClientHandler clientHandler = new ClientHandler(sTcpListener, world);
             clientHandlerList.Add(clientHandler);
             clientHandler.start();
         }// ClientListener  

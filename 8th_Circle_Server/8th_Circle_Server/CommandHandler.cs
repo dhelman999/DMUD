@@ -24,24 +24,22 @@ namespace _8th_Circle_Server
     class CommandHandler
     {
         // Debug
-        internal const bool DEBUG = true;
-
-        // Static Variables
-        public static object QueueLock = new object();
-        public static World sWorld;
+        internal const bool DEBUG = true;     
 
         // Member Variables
         public Queue mCommandQueue;
         public CommandExecuter mCommandExecuter;
+        public World mWorld;
 
+        private object mQueueLock;
         private Thread mSpinWorkThread; 
   
         public CommandHandler(World world)
         {  
             mCommandQueue = new Queue();
-            QueueLock = new object();
             mCommandExecuter = new CommandExecuter();
-            sWorld = world;
+            mWorld = world;
+            mQueueLock = new object();
         }// Constructor
 
         public void start()
@@ -79,7 +77,7 @@ namespace _8th_Circle_Server
 
         public void enQueueCommand(commandData cd)
         {
-            lock (QueueLock)
+            lock (mQueueLock)
             {
                 mCommandQueue.Enqueue(cd);
             }// lock
