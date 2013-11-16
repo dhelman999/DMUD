@@ -75,7 +75,7 @@ namespace _8th_Circle_Server
             pt = new Command("exit", 1, commandType.VERB, commandName.COMMAND_EXIT);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
-        }
+        }// Constructor
 
         public errorCode execute(string command, ClientHandler clientHand)
         {
@@ -93,8 +93,8 @@ namespace _8th_Circle_Server
                 if (command.Equals(com.command))
                 {
                     currentCommand = com;
-                }
-            }
+                }// if
+            }// foreach
 
             if (currentCommand.type != commandType.VERB)
                 return errorCode.E_INVALID_SYNTAX;
@@ -116,7 +116,7 @@ namespace _8th_Circle_Server
                 default:
                     ret = errorCode.E_INVALID_SYNTAX;
                     break;
-            }
+            }// switch
 
             return ret;
         }// execute
