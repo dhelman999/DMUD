@@ -12,12 +12,12 @@ namespace _8th_Circle_Server
     struct commandData
     {
         public string command;
-        public ClientHandler ch;
+        public ClientHandler clientHandler;
 
         public commandData(string command, ClientHandler ch)
         {
             this.command = command;
-            this.ch = ch;
+            this.clientHandler = ch;
         }
     }// commandData
 
@@ -27,33 +27,30 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = true;
 
         // Static Variables
-        static object QueueLock = new object();
+        public static object QueueLock = new object();
         public static World sWorld;
 
         // Member Variables
         public Queue mCommandQueue;
+        public CommandExecuter mCommandExecuter;
 
         private Thread mSpinWorkThread; 
   
-        // Static Variables
-        public static CommandExecuter sComExe;
-
         public CommandHandler(World world)
         {  
             mCommandQueue = new Queue();
             QueueLock = new object();
-            sComExe = new CommandExecuter();
+            mCommandExecuter = new CommandExecuter();
             sWorld = world;
         }// Constructor
 
         public void start()
         {
-            //mSpinWorkThread = new Thread(new ThreadStart(spinWork));
-            mSpinWorkThread = new Thread(() => spinWork(this));
+            mSpinWorkThread = new Thread(() => spinWork(this, mCommandExecuter));
             mSpinWorkThread.Start();
         }// start
 
-        public static void spinWork(CommandHandler ch)
+        public static void spinWork(CommandHandler commandHandler, CommandExecuter commandExecuter)
         {
             commandData comData;
 
@@ -65,15 +62,15 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    while (ch.mCommandQueue.Count > 0)
+                    while (commandHandler.mCommandQueue.Count > 0)
                     {
-                        comData = ((commandData)ch.mCommandQueue.Dequeue());
-                        if (sComExe.execute(comData.command, comData.ch) == errorCode.E_OK)
+                        comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
+                        if (commandExecuter.execute(comData.command, comData.clientHandler) == errorCode.E_OK)
                         {
                         }
                         else
                         {
-                            comData.ch.safeWrite(comData.command + "is invalid");
+                            comData.clientHandler.safeWrite(comData.command + "is invalid");
                         }
                     }// while
                 }// catch
@@ -89,12 +86,6 @@ namespace _8th_Circle_Server
             mSpinWorkThread.Interrupt();
         }// enQueueCommand
 
-        private errorCode processRequest(string command, ClientHandler ch)
-        {
-            errorCode ret = errorCode.E_OK;
-       
-            return ret;
-        }
     }// Class CommandHandler
 
 }// Namespace _8th_Circle_Server

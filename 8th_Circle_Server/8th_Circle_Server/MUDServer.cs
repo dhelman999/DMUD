@@ -45,7 +45,7 @@ namespace _8th_Circle_Server
                 Console.WriteLine("Enter the maximum number of players to support: ");
                 int maxPlayers = int.Parse(Console.ReadLine());
 
-                for (int i = 0; i < maxPlayers; i++)
+                for (int i = 0; i < maxPlayers; ++i)
                 {
                     Thread listenerThread = new Thread(() => ClientListener(sCommandHandler, sWorld));
                     sListenerThreadList.Add(listenerThread);
@@ -65,9 +65,9 @@ namespace _8th_Circle_Server
 
         static void ClientListener(CommandHandler commandHandler, World world)
         {
-            ClientHandler ch = new ClientHandler(sTcpListener, commandHandler, world);
-            clientHandlerList.Add(ch);
-            ch.start();
+            ClientHandler clientHandler = new ClientHandler(sTcpListener, commandHandler, world);
+            clientHandlerList.Add(clientHandler);
+            clientHandler.start();
         }// ClientListener  
      
     }// Class MUDServer

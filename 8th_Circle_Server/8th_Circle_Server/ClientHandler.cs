@@ -35,11 +35,10 @@ namespace _8th_Circle_Server
             mTcpListener = tcpListener;
             sCommandHandler = commandHandler;
             sWorld = world;
-        }
+        }// Constructor
 
         public void start()
         {
-
             while (true)
             {
                 try
@@ -102,12 +101,13 @@ namespace _8th_Circle_Server
             }// while
         }// ClientListener
 
-        static void ClientResponder(ClientHandler ch)
+        static void ClientResponder(ClientHandler clientHandler)
         {
-            commandData cd = new commandData();
+            commandData cmdData = new commandData();
+            cmdData.clientHandler = clientHandler;
 
             sCmdString = "Please enter your player's name.";
-            safeWrite(ch.mStreamWriter, sCmdString);
+            clientHandler.safeWrite(sCmdString);
             try
             {
                 Thread.Sleep(Timeout.Infinite);
@@ -117,9 +117,9 @@ namespace _8th_Circle_Server
                 if (sCmdString.Equals("exit"))
                     return;
 
-                safeWrite(ch.mStreamWriter, "Welcome to the 8th Circle!");
-                safeWrite(ch.mStreamWriter, ch.mPlayer.mCurrentRoom.mDescription +
-                    "\n" + ch.mPlayer.mCurrentRoom.exitString());
+                clientHandler.safeWrite("Welcome to the 8th Circle!");
+                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
+                             "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
             }// catch
             while (true)
             {
@@ -132,26 +132,12 @@ namespace _8th_Circle_Server
                     if (sCmdString.Equals("exit"))
                         break;
 
-                    cd.command = sCmdString;
-                    cd.ch = ch;
-                    sCommandHandler.enQueueCommand(cd);
-                    safeWrite(ch.mStreamWriter, sCmdString);
+                    cmdData.command = sCmdString;
+                    sCommandHandler.enQueueCommand(cmdData);
+                    clientHandler.safeWrite(sCmdString);
                 }// catch
             }// while
         }// ClientResponder
-
-        public static void safeWrite(StreamWriter sw, string response)
-        {
-            if (sw.BaseStream != null)
-            {
-                sw.WriteLine(response);
-                sw.Flush();
-            }// if
-            else
-            {
-                sw.Dispose();
-            }// else
-        }// safeWrite
 
         public void safeWrite(string response)
         {
