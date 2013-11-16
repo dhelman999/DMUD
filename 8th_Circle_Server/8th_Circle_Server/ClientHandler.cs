@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = true;
 
         // Static Variables
-        static string sCmdString;
+        
         static CommandHandler sCommandHandler;
         static World sWorld;
 
@@ -27,6 +27,7 @@ namespace _8th_Circle_Server
         public StreamWriter mStreamWriter;
         public Thread mResponderThread;
         public Mob mPlayer;
+        public string mCmdString;
         object PlayerLock = new object();  
 
         public ClientHandler(TcpListener tcpListener, CommandHandler commandHandler, World world)
@@ -70,9 +71,9 @@ namespace _8th_Circle_Server
 
                         do
                         {
-                            sCmdString = mStreamReader.ReadLine();
+                            mCmdString = mStreamReader.ReadLine();
                             mResponderThread.Interrupt();
-                        } while (!sCmdString.Equals("exit"));
+                        } while (!mCmdString.Equals("exit"));
 
                         if (DEBUG)
                             Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
@@ -106,15 +107,15 @@ namespace _8th_Circle_Server
             commandData cmdData = new commandData();
             cmdData.clientHandler = clientHandler;
 
-            sCmdString = "Please enter your player's name.";
-            clientHandler.safeWrite(sCmdString);
+            clientHandler.mCmdString = "Please enter your player's name.";
+            clientHandler.safeWrite(clientHandler.mCmdString);
             try
             {
                 Thread.Sleep(Timeout.Infinite);
             }// try
             catch
             {
-                if (sCmdString.Equals("exit"))
+                if (clientHandler.mCmdString.Equals("exit"))
                     return;
 
                 clientHandler.safeWrite("Welcome to the 8th Circle!");
@@ -129,12 +130,12 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    if (sCmdString.Equals("exit"))
+                    if (clientHandler.mCmdString.Equals("exit"))
                         break;
 
-                    cmdData.command = sCmdString;
+                    cmdData.command = clientHandler.mCmdString;
                     sCommandHandler.enQueueCommand(cmdData);
-                    clientHandler.safeWrite(sCmdString);
+                    clientHandler.safeWrite(clientHandler.mCmdString);
                 }// catch
             }// while
         }// ClientResponder
