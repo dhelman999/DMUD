@@ -47,11 +47,13 @@ namespace _8th_Circle_Server
     struct Noun
     {
         public string name;
+        public string shortName;
         public int matchNumber;
 
-        public Noun(string name, int matchNumber)
+        public Noun(string name, string shortName, int matchNumber)
         {
             this.name = name;
+            this.shortName = shortName;
             this.matchNumber = matchNumber;
         }// Constructor
     }// Noun
@@ -89,8 +91,7 @@ namespace _8th_Circle_Server
             Command currentCommand = new Command();
             currentCommand.type = commandType.INVALID;
             currentCommand.commandName = commandName.COMMAND_INVALID;
-            Noun noun1 = new Noun();
-            Noun noun2;
+            Queue commandQueue = new Queue();
 
             int matchCounter = 0;
             bool matchFound = false;
@@ -98,47 +99,22 @@ namespace _8th_Circle_Server
             if (tokens.Length > 4)
                 ret = errorCode.E_INVALID_SYNTAX;
 
-            commandType[] grammarType = new commandType[1];
-            grammarType[0] = commandType.INVALID;
-
-            switch(tokens.Length)
+            int grammarIndex = -1;
+            for (int i = 0; i < mGrammarList.Count; ++i)
             {
-                case 0:
-                    ret = errorCode.E_INVALID_SYNTAX;
+                if (((commandType[])mGrammarList[i]).Length == tokens.Length)
+                {
+                    grammarIndex = i;
                     break;
+                }// if
+            }// for
 
-                case 1:
-                    grammarType = new commandType[1];
-                    grammarType[0] = commandType.VERB;
-                    break;
-
-                case 2:
-                    grammarType = new commandType[2];
-                    grammarType[0] = commandType.VERB;
-                    grammarType[1] = commandType.NOUN;
-                    break;
-
-                case 3:
-                    grammarType = new commandType[3];
-                    grammarType[0] = commandType.VERB;
-                    grammarType[1] = commandType.NOUN;
-                    grammarType[2] = commandType.NOUN;
-                    break;
-
-                case 4:
-                    grammarType = new commandType[4];
-                    grammarType[0] = commandType.VERB;
-                    grammarType[1] = commandType.NOUN;
-                    grammarType[2] = commandType.PREP;
-                    grammarType[1] = commandType.NOUN;
-                    break;
-
-                default:
-                    ret = errorCode.E_INVALID_SYNTAX;
-                    break;
-            }// switch
+            if (grammarIndex == -1)
+                return errorCode.E_INVALID_SYNTAX;
 
             string currentToken = string.Empty;
+            commandType[] grammarType = (commandType [])mGrammarList[grammarIndex];
+            commandQueue.Enqueue(grammarType);
 
             for (int i = 0; i < grammarType.Length; ++i)
             {
@@ -166,6 +142,7 @@ namespace _8th_Circle_Server
                             matchFound = true;
                             currentCommand = com;
                             ret = errorCode.E_OK;
+                            commandQueue.Enqueue(currentCommand);
                             break;
                         }// if
                     }// foreach
@@ -179,7 +156,7 @@ namespace _8th_Circle_Server
                     {
                         if (noun.name.Equals(currentToken))
                         {
-                            noun1 = noun;
+                            commandQueue.Enqueue(noun);
                             ret = errorCode.E_OK;
                             matchFound = true;
                             break;
@@ -201,17 +178,36 @@ namespace _8th_Circle_Server
             }// for
 
             if(matchFound)
-                execute(currentCommand, clientHandler, grammarType, noun1);
+                ret = execute(clientHandler, commandQueue);
 
             return ret;
         }// execute
 
-        private errorCode execute(Command currentCommand, 
-                                  ClientHandler clientHandler,
-                                  commandType[] grammarType,
-                                  Noun noun1)
+        private errorCode execute(ClientHandler clientHandler,
+                                  Queue commandQueue)
         {
             errorCode ret = errorCode.E_OK;
+            commandType[] grammarType = (commandType [])commandQueue.Dequeue();
+            Command currentCommand = new Command();
+            Noun noun1 = new Noun();
+            Noun noun2 = new Noun();
+
+            while (commandQueue.Count != 0)
+            {
+                if (commandQueue.Peek().GetType() == currentCommand.GetType())
+                {
+                    currentCommand = (Command)commandQueue.Dequeue();
+                }
+                else if (commandQueue.Peek().GetType() == noun1.GetType())
+                {
+                    noun1 = (Noun)commandQueue.Dequeue();
+                }
+            }
+            if (commandQueue.Count != 0)
+            {
+                if (commandQueue.Peek().GetType() == noun2.GetType())
+                    noun2 = (Noun)commandQueue.Dequeue();
+            }
 
             switch (currentCommand.commandName)
             {
@@ -351,6 +347,11 @@ namespace _8th_Circle_Server
                                 break;
                         }// switch
                     }// else if grammar == 2
+                    else if (grammarType.Length == 3)
+                    {
+                        clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.name + " "
+                            + noun2.name);
+                    }
                     else
                     {
                         ret = errorCode.E_INVALID_SYNTAX;
@@ -366,7 +367,6 @@ namespace _8th_Circle_Server
                     break;
             }// switch
 
-            
             return ret;
 
         }// execute
@@ -385,17 +385,25 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            Noun noun = new Noun("north", 2);
+            Noun noun = new Noun("north", null, 2);
             mNounList.Add(noun);
-            noun = new Noun("south", 2);
+            noun = new Noun("northwest", "nw", 6);
             mNounList.Add(noun);
-            noun = new Noun("east", 2);
+            noun = new Noun("northeast", "ne", 6);
             mNounList.Add(noun);
-            noun = new Noun("west", 2);
+            noun = new Noun("south", null, 2);
             mNounList.Add(noun);
-            noun = new Noun("up", 2);
+            noun = new Noun("southwest", "sw", 6);
             mNounList.Add(noun);
-            noun = new Noun("down", 2);
+            noun = new Noun("southeast", "se", 6);
+            mNounList.Add(noun);
+            noun = new Noun("east", null, 2);
+            mNounList.Add(noun);
+            noun = new Noun("west", null, 2);
+            mNounList.Add(noun);
+            noun = new Noun("up", null, 2);
+            mNounList.Add(noun);
+            noun = new Noun("down", null, 2);
             mNounList.Add(noun);
         }// addCommands;
 
@@ -426,8 +434,7 @@ namespace _8th_Circle_Server
 
         private bool doesNounExist(string name)
         {
-            Console.WriteLine("does noun exist?");
-            return true;
+            return false;
         }
     }// Class CommandExecuter
 
