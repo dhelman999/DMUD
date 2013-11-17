@@ -68,7 +68,7 @@ namespace _8th_Circle_Server
                         }
                         else
                         {
-                            comData.clientHandler.safeWrite(comData.command + "is invalid");
+                            comData.clientHandler.safeWrite(comData.command + " is invalid");
                         }
                     }// while
                 }// catch

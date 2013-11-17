@@ -17,8 +17,18 @@ namespace _8th_Circle_Server
     enum commandName
     {
         COMMAND_MOVE=0,
-        COMMAND_LOOK=1,
-        COMMAND_EXIT=2,
+        COMMAND_LOOK,
+        COMMAND_EXIT,
+        COMMAND_NORTH,
+        COMMAND_SOUTH,
+        COMMAND_EAST,
+        COMMAND_WEST,
+        COMMAND_UP,
+        COMMAND_DOWN,
+        COMMAND_NORTHEAST,
+        COMMAND_NORTHWEST,
+        COMMAND_SOUTHEAST,
+        COMMAND_SOUTHWEST,
         COMMAND_INVALID
     };// commandName
 
@@ -31,13 +41,17 @@ namespace _8th_Circle_Server
     struct Command
     {
         public string command;
+        public string shortName;
         public int matchNumber;
         public commandType type;
         public commandName commandName;
         
-        public Command(string command, int matchNumber, commandType type, commandName commandName)
+        public Command(string command, string shortName,
+                       int matchNumber, commandType type, 
+                       commandName commandName)
         {
             this.command = command;
+            this.shortName = shortName;
             this.matchNumber = matchNumber;
             this.type = type;
             this.commandName = commandName;
@@ -88,9 +102,6 @@ namespace _8th_Circle_Server
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             string[] tokens = command.Split(' ');
             string nounFinder = string.Empty;
-            Command currentCommand = new Command();
-            currentCommand.type = commandType.INVALID;
-            currentCommand.commandName = commandName.COMMAND_INVALID;
             Queue commandQueue = new Queue();
 
             int matchCounter = 0;
@@ -127,6 +138,14 @@ namespace _8th_Circle_Server
                         matchFound = false;
                         matchCounter = 0;
 
+                        if (com.shortName != null && currentToken.Equals(com.shortName))
+                        {
+                            matchFound = true;
+                            ret = errorCode.E_OK;
+                            commandQueue.Enqueue(com);
+                            break;
+                        }
+
                         if (currentToken.Length > com.command.Length || currentToken.Length < com.matchNumber)
                             continue;
 
@@ -140,9 +159,8 @@ namespace _8th_Circle_Server
                         if (matchCounter == currentToken.Length)
                         {
                             matchFound = true;
-                            currentCommand = com;
                             ret = errorCode.E_OK;
-                            commandQueue.Enqueue(currentCommand);
+                            commandQueue.Enqueue(com);
                             break;
                         }// if
                     }// foreach
@@ -167,6 +185,38 @@ namespace _8th_Circle_Server
                     {
                         matchFound = doesNounExist(currentToken);
                     }
+
+                    foreach (Noun noun in mNounList)
+                    {
+                        matchFound = false;
+                        matchCounter = 0;
+
+                        if (noun.shortName != null && currentToken.Equals(noun.shortName))
+                        {
+                            matchFound = true;
+                            ret = errorCode.E_OK;
+                            commandQueue.Enqueue(noun);
+                            break;
+                        }
+
+                        if (currentToken.Length > noun.name.Length || currentToken.Length < noun.matchNumber)
+                            continue;
+
+                        for (int j = 0; j < currentToken.Length; ++j)
+                        {
+                            if (!currentToken[j].Equals(noun.name[j]))
+                                break;
+                            ++matchCounter;
+                        }// for
+
+                        if (matchCounter == currentToken.Length)
+                        {
+                            matchFound = true;
+                            ret = errorCode.E_OK;
+                            commandQueue.Enqueue(noun);
+                            break;
+                        }// if
+                    }// foreach
                 }// else if
                 else
                 {
@@ -209,55 +259,12 @@ namespace _8th_Circle_Server
                     noun2 = (Noun)commandQueue.Dequeue();
             }
 
+            bool wasMoveCommand = false;
+
             switch (currentCommand.commandName)
             {
                 case commandName.COMMAND_MOVE:
-                    if (grammarType.Length == 2)
-                    {
-                        switch (noun1.name)
-                        {
-                            case "north":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move north");
-                                break;
-
-                            case "south":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move south");
-                                break;
-
-                            case "east":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move east");
-                                break;
-
-                            case "west":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move west");
-                                break;
-
-                            case "up":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move up");
-                                break;
-
-                            case "down":
-                                if (!clientHandler.mPlayer.move(noun1.name))
-                                    clientHandler.safeWrite("You can't move down");
-                                break;
-
-                            default:
-                                clientHandler.safeWrite("You can't move that way");
-                                break;
-                        }// switch
-
-                        clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
-                            "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
-                    }
-                    else
-                    {
-                        ret = errorCode.E_INVALID_SYNTAX;
-                    }
+                    
                     break;
 
                 case commandName.COMMAND_LOOK:
@@ -275,11 +282,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mNorthLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mNorthLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything to the north");
-                                }
+                                    clientHandler.safeWrite("There is nothing to the north");
+                                }// else
                                 break;
 
                             case "south":
@@ -287,11 +294,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mSouthLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mSouthLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything to the south");
-                                }
+                                    clientHandler.safeWrite("There is nothing to the south");
+                                }// else
                                 break;
 
                             case "east":
@@ -299,11 +306,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mEastLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mEastLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything to the east");
-                                }
+                                    clientHandler.safeWrite("There is nothing to the east");
+                                }// else
                                 break;
 
                             case "west":
@@ -311,11 +318,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mWestLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mWestLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything to the west");
-                                }
+                                    clientHandler.safeWrite("There is nothing to the west");
+                                }// else
                                 break;
 
                             case "up":
@@ -323,11 +330,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mUpLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mUpLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything above");
-                                }
+                                    clientHandler.safeWrite("There is nothing above");
+                                }// else
                                 break;
 
                             case "down":
@@ -335,11 +342,11 @@ namespace _8th_Circle_Server
                                 {
                                     clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDownLink.mDescription +
                                         "\n" + clientHandler.mPlayer.mCurrentRoom.mDownLink.exitString());
-                                }
+                                }// if
                                 else
                                 {
-                                    clientHandler.safeWrite("There isn't anything below");
-                                }
+                                    clientHandler.safeWrite("There is nothing below");
+                                }// else
                                 break;
 
                             default:
@@ -351,15 +358,51 @@ namespace _8th_Circle_Server
                     {
                         clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.name + " "
                             + noun2.name);
-                    }
+                    }// else if
                     else
                     {
                         ret = errorCode.E_INVALID_SYNTAX;
-                    }
+                    }// else
                     break;
 
                 case commandName.COMMAND_EXIT:
                     clientHandler.safeWrite("exit was the command");
+                    break;
+
+                case commandName.COMMAND_NORTH:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move north");
+                    break;
+
+                case commandName.COMMAND_SOUTH:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move south");
+                    break;
+
+                case commandName.COMMAND_EAST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move east");
+                    break;
+
+                case commandName.COMMAND_WEST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move west");
+                    break;
+
+                case commandName.COMMAND_UP:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move up");
+                    break;
+
+                case commandName.COMMAND_DOWN:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move down");
                     break;
 
                 default:
@@ -367,43 +410,89 @@ namespace _8th_Circle_Server
                     break;
             }// switch
 
+            if (wasMoveCommand)
+            {
+                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
+                            "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
+            }// if
+
             return ret;
 
         }// execute
 
         private void addCommands()
         {
-            Command pt = new Command("move", 1, commandType.VERB, commandName.COMMAND_MOVE);
+            Command pt = new Command("north", "n", 5, commandType.VERB, commandName.COMMAND_NORTH);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", 1, commandType.VERB, commandName.COMMAND_LOOK);
+            pt = new Command("south", "s", 5, commandType.VERB, commandName.COMMAND_SOUTH);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("exit", 1, commandType.VERB, commandName.COMMAND_EXIT);
+            pt = new Command("east", "e", 2, commandType.VERB, commandName.COMMAND_EAST);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            Noun noun = new Noun("north", null, 2);
+            pt = new Command("west", "w", 1, commandType.VERB, commandName.COMMAND_WEST);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("up", "u", 1, commandType.VERB, commandName.COMMAND_UP);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("down", "d", 1, commandType.VERB, commandName.COMMAND_DOWN);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("northeast", "ne", 1, commandType.VERB, commandName.COMMAND_NORTHEAST);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("northwest", "nw", 6, commandType.VERB, commandName.COMMAND_NORTHWEST);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("southeast", "se", 6, commandType.VERB, commandName.COMMAND_SOUTHEAST);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("southwest", "sw", 6, commandType.VERB, commandName.COMMAND_SOUTHWEST);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("move", null, 1, commandType.VERB, commandName.COMMAND_MOVE);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("look", null, 1, commandType.VERB, commandName.COMMAND_LOOK);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("exit", null, 2, commandType.VERB, commandName.COMMAND_EXIT);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            Noun noun = new Noun("north", "n", 2);
             mNounList.Add(noun);
             noun = new Noun("northwest", "nw", 6);
             mNounList.Add(noun);
             noun = new Noun("northeast", "ne", 6);
             mNounList.Add(noun);
-            noun = new Noun("south", null, 2);
+            noun = new Noun("south", "s", 2);
             mNounList.Add(noun);
             noun = new Noun("southwest", "sw", 6);
             mNounList.Add(noun);
             noun = new Noun("southeast", "se", 6);
             mNounList.Add(noun);
-            noun = new Noun("east", null, 2);
+            noun = new Noun("east", "e", 2);
             mNounList.Add(noun);
-            noun = new Noun("west", null, 2);
+            noun = new Noun("west", "w", 2);
             mNounList.Add(noun);
-            noun = new Noun("up", null, 2);
+            noun = new Noun("up", "u", 2);
             mNounList.Add(noun);
-            noun = new Noun("down", null, 2);
+            noun = new Noun("down", "d", 2);
             mNounList.Add(noun);
         }// addCommands;
 
