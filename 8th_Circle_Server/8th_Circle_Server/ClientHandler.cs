@@ -79,10 +79,7 @@ namespace _8th_Circle_Server
                             Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
                                 " is now exitting.");
 
-                        mStreamReader.Close();
-                        mStreamWriter.Close();
-                        mNetworkStream.Close();
-                        mResponderThread.Abort();
+                        playerLeft();
                     }// if mSocketForClient
                 }// try
                 catch
@@ -93,10 +90,7 @@ namespace _8th_Circle_Server
                         mNetworkStream != null &&
                         mResponderThread != null)
                     {
-                        mStreamReader.Close();
-                        mStreamWriter.Close();
-                        mNetworkStream.Close();
-                        mResponderThread.Abort();
+                        playerLeft();
                     }// if
                 }// catch
             }// while
@@ -153,6 +147,15 @@ namespace _8th_Circle_Server
             }// else
         }// safeWrite
 
+        private void playerLeft()
+        {      
+            mPlayer.mCurrentRoom.mPlayerList.Remove(mPlayer);
+            mWorld.mPlayerList.Remove(mPlayer);
+            mStreamReader.Close();
+            mStreamWriter.Close();
+            mNetworkStream.Close();
+            mResponderThread.Abort();
+        }// playerLeft
     }// Class ClientHandler
 
 }// Namespace _8th_Circle_Server

@@ -72,12 +72,12 @@ namespace _8th_Circle_Server
             exitStr += "\n";
             for (int i = 0; i < mNpcList.Count; i++)
             {
-                exitStr += ((Mob)mNpcList[i]).mName + " ";
+                exitStr += ((Mob)mNpcList[i]).mName + "\n";
             }// for
             exitStr += "Players: ";
             for (int i = 0; i < mPlayerList.Count; i++)
             {
-                exitStr += ((Mob)mPlayerList[i]).mName + " ";
+                exitStr += ((Mob)mPlayerList[i]).mName + "\n";
             }// for
             exitStr += "\n";
             return exitStr;

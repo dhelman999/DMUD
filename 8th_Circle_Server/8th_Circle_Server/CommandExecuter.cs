@@ -241,7 +241,8 @@ namespace _8th_Circle_Server
             Command currentCommand = new Command();
             Noun noun1 = new Noun();
             Noun noun2 = new Noun();
-
+            Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
+            
             while (commandQueue.Count != 0)
             {
                 if (commandQueue.Peek().GetType() == currentCommand.GetType())
@@ -270,18 +271,18 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_LOOK:
                     if (grammarType.Length == 1)
                     {
-                        clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
-                            "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
+                        clientHandler.safeWrite(currentRoom.mDescription +
+                            "\n" + currentRoom.exitString());
                     }// if
                     else if (grammarType.Length == 2)
                     {
                         switch (noun1.name)
                         {
                             case "north":
-                                if (clientHandler.mPlayer.mCurrentRoom.mNorthLink != null)
+                                if (currentRoom.mNorthLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mNorthLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mNorthLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mNorthLink.mDescription +
+                                        "\n" + currentRoom.mNorthLink.exitString());
                                 }// if
                                 else
                                 {
@@ -290,10 +291,10 @@ namespace _8th_Circle_Server
                                 break;
 
                             case "south":
-                                if (clientHandler.mPlayer.mCurrentRoom.mSouthLink != null)
+                                if (currentRoom.mSouthLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mSouthLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mSouthLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mSouthLink.mDescription +
+                                        "\n" + currentRoom.mSouthLink.exitString());
                                 }// if
                                 else
                                 {
@@ -302,10 +303,10 @@ namespace _8th_Circle_Server
                                 break;
 
                             case "east":
-                                if (clientHandler.mPlayer.mCurrentRoom.mEastLink != null)
+                                if (currentRoom.mEastLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mEastLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mEastLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mEastLink.mDescription +
+                                        "\n" + currentRoom.mEastLink.exitString());
                                 }// if
                                 else
                                 {
@@ -314,10 +315,10 @@ namespace _8th_Circle_Server
                                 break;
 
                             case "west":
-                                if (clientHandler.mPlayer.mCurrentRoom.mWestLink != null)
+                                if (currentRoom.mWestLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mWestLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mWestLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mWestLink.mDescription +
+                                        "\n" + currentRoom.mWestLink.exitString());
                                 }// if
                                 else
                                 {
@@ -326,10 +327,10 @@ namespace _8th_Circle_Server
                                 break;
 
                             case "up":
-                                if (clientHandler.mPlayer.mCurrentRoom.mUpLink != null)
+                                if (currentRoom.mUpLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mUpLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mUpLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mUpLink.mDescription +
+                                        "\n" + currentRoom.mUpLink.exitString());
                                 }// if
                                 else
                                 {
@@ -338,10 +339,10 @@ namespace _8th_Circle_Server
                                 break;
 
                             case "down":
-                                if (clientHandler.mPlayer.mCurrentRoom.mDownLink != null)
+                                if (currentRoom.mDownLink != null)
                                 {
-                                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDownLink.mDescription +
-                                        "\n" + clientHandler.mPlayer.mCurrentRoom.mDownLink.exitString());
+                                    clientHandler.safeWrite(currentRoom.mDownLink.mDescription +
+                                        "\n" + currentRoom.mDownLink.exitString());
                                 }// if
                                 else
                                 {
@@ -413,7 +414,7 @@ namespace _8th_Circle_Server
             if (wasMoveCommand)
             {
                 clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
-                            "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
+                    "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
             }// if
 
             return ret;
