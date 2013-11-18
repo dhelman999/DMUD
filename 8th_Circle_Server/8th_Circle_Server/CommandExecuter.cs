@@ -58,20 +58,6 @@ namespace _8th_Circle_Server
         }// Constructor
     }// Command
 
-    struct Noun
-    {
-        public string name;
-        public string shortName;
-        public int matchNumber;
-
-        public Noun(string name, string shortName, int matchNumber)
-        {
-            this.name = name;
-            this.shortName = shortName;
-            this.matchNumber = matchNumber;
-        }// Constructor
-    }// Noun
-
     class CommandExecuter
     {
         // Debug
@@ -98,6 +84,7 @@ namespace _8th_Circle_Server
 
         private void addCommands()
         {
+            // Add Verbs
             Command pt = new Command("north", "n", 5, commandType.VERB, commandName.COMMAND_NORTH);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
@@ -150,26 +137,46 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            Noun noun = new Noun("north", "n", 2);
-            mNounList.Add(noun);
-            noun = new Noun("northwest", "nw", 6);
-            mNounList.Add(noun);
-            noun = new Noun("northeast", "ne", 6);
-            mNounList.Add(noun);
-            noun = new Noun("south", "s", 2);
-            mNounList.Add(noun);
-            noun = new Noun("southwest", "sw", 6);
-            mNounList.Add(noun);
-            noun = new Noun("southeast", "se", 6);
-            mNounList.Add(noun);
-            noun = new Noun("east", "e", 2);
-            mNounList.Add(noun);
-            noun = new Noun("west", "w", 2);
-            mNounList.Add(noun);
-            noun = new Noun("up", "u", 2);
-            mNounList.Add(noun);
-            noun = new Noun("down", "d", 2);
-            mNounList.Add(noun);
+            // Add Nouns
+            pt = new Command("north", "n", 5, commandType.NOUN, commandName.COMMAND_NORTH);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("south", "s", 5, commandType.NOUN, commandName.COMMAND_SOUTH);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("east", "e", 2, commandType.NOUN, commandName.COMMAND_EAST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("west", "w", 1, commandType.NOUN, commandName.COMMAND_WEST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("up", "u", 1, commandType.NOUN, commandName.COMMAND_UP);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("down", "d", 1, commandType.NOUN, commandName.COMMAND_DOWN);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("northeast", "ne", 1, commandType.NOUN, commandName.COMMAND_NORTHEAST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("northwest", "nw", 6, commandType.NOUN, commandName.COMMAND_NORTHWEST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("southeast", "se", 6, commandType.NOUN, commandName.COMMAND_SOUTHEAST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
+
+            pt = new Command("southwest", "sw", 6, commandType.NOUN, commandName.COMMAND_SOUTHWEST);
+            mCommandList.Add(pt);
+            mNounList.Add(pt);
         }// addCommands;
 
         private void addGrammar()
@@ -202,7 +209,7 @@ namespace _8th_Circle_Server
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             string[] tokens = command.Split(' ');
             string nounFinder = string.Empty;
-            Queue commandQueue = new Queue();
+            ArrayList commandQueue = new ArrayList();
 
             bool matchFound = false;
 
@@ -226,7 +233,7 @@ namespace _8th_Circle_Server
 
             // Save the grammar type we are dealing with
             commandType[] grammarType = (commandType [])mGrammarList[grammarIndex];
-            commandQueue.Enqueue(grammarType);
+            commandQueue.Add(grammarType);
             string currentToken = string.Empty;
 
             // Now, loop through all the tokens, and try to validate the tokens syntax and
@@ -234,38 +241,29 @@ namespace _8th_Circle_Server
             for (int i = 0; i < grammarType.Length; ++i)
             {
                 currentToken = tokens[i];
+                ArrayList targetList = new ArrayList();
 
                 if (grammarType[i] == commandType.VERB)
-                {
-                    foreach (Command com in mVerbList)
-                    {
-                        if (validateCommand(commandQueue, currentToken, com))
-                        {
-                            ret = errorCode.E_OK;
-                            matchFound = true;
-                            break;
-                        }// if
-                    }// foreach
-                }// if
-
+                    targetList = mVerbList;
                 else if (grammarType[i] == commandType.NOUN)
-                {
-                    foreach (Noun noun in mNounList)
-                    {          
-                        if (validateNoun(commandQueue, currentToken, noun))
-                        {
-                            ret = errorCode.E_OK;
-                            matchFound = true;
-                            break;
-                        }// if
-                    }// foreach
-                }// else if (grammarType[i] == commandType.NOUN)
+                    targetList = mNounList;
+                else if (grammarType[i] == commandType.PREP)
+                    targetList = mPrepList;
                 else
-                {
-                    Console.WriteLine("bad grammar");
                     ret = errorCode.E_INVALID_SYNTAX;
+
+                foreach (Command com in targetList)
+                {
+                    if (validateCommand(commandQueue, currentToken, com))
+                    {
+                        ret = errorCode.E_OK;
+                        matchFound = true;
+                        break;
+                    }// if
+                }// foreach
+
+                if (ret != errorCode.E_OK)
                     break;
-                }// else
             }// validate syntax for loop
 
             // We have found a valid syntax and a valid list of tokens, now we need to execute
@@ -277,31 +275,38 @@ namespace _8th_Circle_Server
         }// execute
 
         private errorCode execute(ClientHandler clientHandler,
-                                  Queue commandQueue)
+                                  ArrayList commandQueue)
         {
             errorCode ret = errorCode.E_OK;
-            commandType[] grammarType = (commandType [])commandQueue.Dequeue();
+            commandType[] grammarType = (commandType [])commandQueue[0];
+            commandQueue.RemoveAt(0);
             Command currentCommand = new Command();
-            Noun noun1 = new Noun();
-            Noun noun2 = new Noun();
+            Command noun1 = new Command();
+            Command noun2 = new Command();
             Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
             
             while (commandQueue.Count != 0)
             {
-                if (commandQueue.Peek().GetType() == currentCommand.GetType())
+                if (commandQueue[0].GetType() == currentCommand.GetType())
                 {
-                    currentCommand = (Command)commandQueue.Dequeue();
+
+                    currentCommand = (Command)commandQueue[0];
+                    commandQueue.RemoveAt(0);
+                    
                 }// if
-                else if (commandQueue.Peek().GetType() == noun1.GetType())
+                if (commandQueue.Count != 0 && 
+                    commandQueue[0].GetType() == noun1.GetType())
                 {
-                    noun1 = (Noun)commandQueue.Dequeue();
+                    noun1 = (Command)commandQueue[0];
+                    commandQueue.RemoveAt(0);
+                }// if
+                if (commandQueue.Count != 0 &&
+                    commandQueue[0].GetType() == noun1.GetType())
+                {
+                    noun2 = (Command)commandQueue[0];
+                    commandQueue.RemoveAt(0);
                 }// if
             }// while
-            if (commandQueue.Count != 0)
-            {
-                if (commandQueue.Peek().GetType() == noun2.GetType())
-                    noun2 = (Noun)commandQueue.Dequeue();
-            }// if
 
             bool wasMoveCommand = false;
 
@@ -319,7 +324,7 @@ namespace _8th_Circle_Server
                     }// if
                     else if (grammarType.Length == 2)
                     {
-                        switch (noun1.name)
+                        switch (noun1.command)
                         {
                             case "north":
                                 if (currentRoom.mNorthLink != null)
@@ -400,8 +405,8 @@ namespace _8th_Circle_Server
                     }// else if (grammarType.Length == 2)
                     else if (grammarType.Length == 3)
                     {
-                        clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.name + " "
-                            + noun2.name);
+                        clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.command + " "
+                            + noun2.command);
                     }// else if
                     else
                     {
@@ -469,22 +474,25 @@ namespace _8th_Circle_Server
             return false;
         }// doesNounExist
 
-        private bool validateCommand(Queue commandQueue, 
+        private bool validateCommand(ArrayList commandQueue, 
                                      string currentToken, 
                                      Command com)
         {
             bool matchFound = false;
             int matchCounter = 0;
 
+            // Check the shortname first
             if (com.shortName != null && currentToken.Equals(com.shortName))
             {
-                commandQueue.Enqueue(com);
+                commandQueue.Add(com);
                 return true;
             }// if
 
+            // Check bounds
             if (currentToken.Length > com.command.Length || currentToken.Length < com.matchNumber)
                 return matchFound;
 
+            // Do a character by character comparison trying to find a match
             for (int j = 0; j < currentToken.Length; ++j)
             {
                 if (!currentToken[j].Equals(com.command[j]))
@@ -492,52 +500,21 @@ namespace _8th_Circle_Server
                 ++matchCounter;
             }// for
 
+            // Found a match, queue the token
             if (matchCounter == currentToken.Length)
             {
                 matchFound = true;
-                commandQueue.Enqueue(com);
+                commandQueue.Add(com);
+            }// if
+
+            if (com.type == commandType.NOUN && doesNounExist(currentToken))
+            {
+                matchFound = true;
+                commandQueue.Add(com);
             }// if
 
             return matchFound;
         }// validateCommand
-
-        private bool validateNoun(Queue commandQueue,
-                                  string currentToken,
-                                  Noun noun)
-        {
-            bool matchFound = false;
-            int matchCounter = 0;
-
-            // Check the shortname first
-            if (noun.shortName != null && currentToken.Equals(noun.shortName))
-            {
-                commandQueue.Enqueue(noun);
-                return true;
-            }// if
-
-            // Check bounds
-            if (currentToken.Length > noun.name.Length || currentToken.Length < noun.matchNumber)
-                return matchFound;
-
-            // Do a character by character comparison trying to find a match
-            for (int j = 0; j < currentToken.Length; ++j)
-            {
-                if (!currentToken[j].Equals(noun.name[j]))
-                    return matchFound;
-                ++matchCounter;
-            }// for
-
-            // Found a match, queue the noun in the command queue
-            if (matchCounter == currentToken.Length)
-            {
-                commandQueue.Enqueue(noun);
-                return true;
-            }// if
-
-        // If we haven't found the noun in the master noun list, search the room
-        // and the player's inventory for a valid noun
-        return matchFound = doesNounExist(currentToken);
-        }// validateNoun
 
     }// Class CommandExecuter
 
