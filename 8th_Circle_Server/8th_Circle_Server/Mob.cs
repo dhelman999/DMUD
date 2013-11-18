@@ -30,92 +30,56 @@ namespace _8th_Circle_Server
 
         public bool move(string direction)
         {
-            bool ret = true;
+            bool ret = false;
 
             switch (direction)
             {
                 case "north":
                     if (mCurrentRoom.mNorthLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mNorthLink.mPlayerList.Add(this);
-                        ++mWorldLoc[1];
-                        mCurrentRoom = mCurrentRoom.mNorthLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mNorthLink);
+                        ret = true;
+                    }// if
                     break;
 
                 case "south":
                     if (mCurrentRoom.mSouthLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mSouthLink.mPlayerList.Add(this);
-                        --mWorldLoc[1];
-                        mCurrentRoom = mCurrentRoom.mSouthLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mSouthLink);
+                        ret = true;
+                    }// if
                     break;
 
                 case "east":
                     if (mCurrentRoom.mEastLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mEastLink.mPlayerList.Add(this);
-                        ++mWorldLoc[0];
-                        mCurrentRoom = mCurrentRoom.mEastLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mEastLink);
+                        ret = true;
+                    }// if
                     break;
 
                 case "west":
                     if (mCurrentRoom.mWestLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mWestLink.mPlayerList.Add(this);
-                        --mWorldLoc[0];
-                        mCurrentRoom = mCurrentRoom.mWestLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mWestLink);
+                        ret = true;
+                    }// if
                     break;
 
                 case "up":
                     if (mCurrentRoom.mUpLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mUpLink.mPlayerList.Add(this);
-                        ++mWorldLoc[2];
-                        mCurrentRoom = mCurrentRoom.mUpLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mUpLink);
+                        ret = true;
+                    }// if
                     break;
 
                 case "down":
                     if (mCurrentRoom.mDownLink != null)
                     {
-                        mCurrentRoom.mPlayerList.Remove(this);
-                        mCurrentRoom.mDownLink.mPlayerList.Add(this);
-                        --mWorldLoc[2];
-                        mCurrentRoom = mCurrentRoom.mDownLink;
-                    }
-                    else
-                    {
-                        ret = false;
-                    }
+                        changeRoom(mCurrentRoom.mDownLink);
+                        ret = true;
+                    }// if
                     break;
 
                 default:
@@ -126,6 +90,16 @@ namespace _8th_Circle_Server
             return ret;
 
         }// move
+
+        private void changeRoom(Room newRoom)
+        {
+            mCurrentRoom.mPlayerList.Remove(this);
+            newRoom.mPlayerList.Add(this);
+            mWorldLoc[0] = newRoom.mWorldLoc[0];
+            mWorldLoc[1] = newRoom.mWorldLoc[1];
+            mWorldLoc[2] = newRoom.mWorldLoc[2];
+            mCurrentRoom = newRoom;
+        }// changeRoom
 
     }// Class Mob
 

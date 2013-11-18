@@ -18,7 +18,7 @@ namespace _8th_Circle_Server
         {
             this.command = command;
             this.clientHandler = ch;
-        }
+        }// Constructor
     }// commandData
 
     class CommandHandler
@@ -65,11 +65,11 @@ namespace _8th_Circle_Server
                         comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
                         if (commandExecuter.process(comData.command, comData.clientHandler) == errorCode.E_OK)
                         {
-                        }
+                        }// if
                         else
                         {
                             comData.clientHandler.safeWrite(comData.command + " is invalid");
-                        }
+                        }// else
                     }// while
                 }// catch
             }// while

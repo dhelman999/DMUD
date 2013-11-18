@@ -74,26 +74,32 @@ namespace _8th_Circle_Server
         public void createLinks(Room currentRoom)
         {
             // North Links
-            if (currentRoom.mYPos < 2)
-                currentRoom.mNorthLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos + 1, currentRoom.mZPos];
+            if (currentRoom.mWorldLoc[1] < 2)
+                currentRoom.mNorthLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1] + 1,
+                    currentRoom.mWorldLoc[2]];
             // West Links
-            if (currentRoom.mXPos > 0)
-                currentRoom.mWestLink = mWorldGrid[currentRoom.mXPos -1, currentRoom.mYPos, currentRoom.mZPos];
+            if (currentRoom.mWorldLoc[0] > 0)
+                currentRoom.mWestLink = mWorldGrid[currentRoom.mWorldLoc[0] - 1, currentRoom.mWorldLoc[1],
+                    currentRoom.mWorldLoc[2]];
             // East Links
-            if (currentRoom.mXPos < 2)
-                currentRoom.mEastLink = mWorldGrid[currentRoom.mXPos + 1, currentRoom.mYPos, currentRoom.mZPos];
+            if (currentRoom.mWorldLoc[0] < 2)
+                currentRoom.mEastLink = mWorldGrid[currentRoom.mWorldLoc[0] + 1, currentRoom.mWorldLoc[1],
+                    currentRoom.mWorldLoc[2]];
             // South Links
-            if (currentRoom.mYPos > 0)
-                currentRoom.mSouthLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos - 1, currentRoom.mZPos];
+            if (currentRoom.mWorldLoc[1] > 0)
+                currentRoom.mSouthLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1] - 1,
+                    currentRoom.mWorldLoc[2]];
             // Up/Down Links
-            if (currentRoom.mYPos < 2)
+            if (currentRoom.mWorldLoc[1] < 2)
             {
-                if (currentRoom.mXPos == 1 &&
-                    currentRoom.mYPos == 1 &&
-                    currentRoom.mZPos == 1)
+                if (currentRoom.mWorldLoc[0] == 1 &&
+                    currentRoom.mWorldLoc[1] == 1 &&
+                    currentRoom.mWorldLoc[2] == 1)
                 {
-                    currentRoom.mUpLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos, currentRoom.mZPos + 1];
-                    currentRoom.mDownLink = mWorldGrid[currentRoom.mXPos, currentRoom.mYPos, currentRoom.mZPos - 1];
+                    currentRoom.mUpLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1],
+                        currentRoom.mWorldLoc[2] + 1];
+                    currentRoom.mDownLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1],
+                        currentRoom.mWorldLoc[2] - 1];
                     currentRoom.mUpLink.mDownLink = currentRoom;
                     currentRoom.mDownLink.mUpLink = currentRoom;
                 }// if

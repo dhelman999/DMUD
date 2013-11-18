@@ -94,7 +94,6 @@ namespace _8th_Circle_Server
 
             addCommands();
             addGrammar();
-
         }// Constructor
 
         public errorCode process(string command, ClientHandler clientHandler)
@@ -144,7 +143,7 @@ namespace _8th_Circle_Server
                             ret = errorCode.E_OK;
                             commandQueue.Enqueue(com);
                             break;
-                        }
+                        }// if
 
                         if (currentToken.Length > com.command.Length || currentToken.Length < com.matchNumber)
                             continue;
@@ -163,8 +162,8 @@ namespace _8th_Circle_Server
                             commandQueue.Enqueue(com);
                             break;
                         }// if
-                    }// foreach
-                }// if verb
+                    }// foreach (Command com in mVerbList)
+                }// if (grammarType[i] == commandType.VERB)
 
                 else if (grammarType[i] == commandType.NOUN)
                 {
@@ -184,7 +183,7 @@ namespace _8th_Circle_Server
                     if (!matchFound)
                     {
                         matchFound = doesNounExist(currentToken);
-                    }
+                    }// if
 
                     foreach (Noun noun in mNounList)
                     {
@@ -197,7 +196,7 @@ namespace _8th_Circle_Server
                             ret = errorCode.E_OK;
                             commandQueue.Enqueue(noun);
                             break;
-                        }
+                        }// if
 
                         if (currentToken.Length > noun.name.Length || currentToken.Length < noun.matchNumber)
                             continue;
@@ -216,15 +215,14 @@ namespace _8th_Circle_Server
                             commandQueue.Enqueue(noun);
                             break;
                         }// if
-                    }// foreach
-                }// else if
+                    }// foreach (Noun noun in mNounList)
+                }// else if (grammarType[i] == commandType.NOUN)
                 else
                 {
                     Console.WriteLine("bad grammar");
                     ret = errorCode.E_INVALID_SYNTAX;
                     break;
                 }// else
-
             }// for
 
             if(matchFound)
@@ -248,17 +246,17 @@ namespace _8th_Circle_Server
                 if (commandQueue.Peek().GetType() == currentCommand.GetType())
                 {
                     currentCommand = (Command)commandQueue.Dequeue();
-                }
+                }// if
                 else if (commandQueue.Peek().GetType() == noun1.GetType())
                 {
                     noun1 = (Noun)commandQueue.Dequeue();
-                }
-            }
+                }// if
+            }// while
             if (commandQueue.Count != 0)
             {
                 if (commandQueue.Peek().GetType() == noun2.GetType())
                     noun2 = (Noun)commandQueue.Dequeue();
-            }
+            }// if
 
             bool wasMoveCommand = false;
 
@@ -354,7 +352,7 @@ namespace _8th_Circle_Server
                                 clientHandler.safeWrite("You can't look that way");
                                 break;
                         }// switch
-                    }// else if grammar == 2
+                    }// else if (grammarType.Length == 2)
                     else if (grammarType.Length == 3)
                     {
                         clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.name + " "
@@ -525,7 +523,7 @@ namespace _8th_Circle_Server
         private bool doesNounExist(string name)
         {
             return false;
-        }
+        }// doesNounExist
     }// Class CommandExecuter
 
 }// Namespace _8th_Circle_Server

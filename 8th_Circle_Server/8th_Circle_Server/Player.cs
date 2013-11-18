@@ -13,6 +13,6 @@ namespace _8th_Circle_Server
         public Player(ClientHandler ch) : base()
         {
             this.mClientHandler = ch;
-        }
-    }
-}
+        }// Constructor
+    }// Class Player
+}// Namespace _8th_Circle_Server

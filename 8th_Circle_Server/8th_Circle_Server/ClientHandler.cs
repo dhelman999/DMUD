@@ -33,8 +33,7 @@ namespace _8th_Circle_Server
             mPlayer = new Mob();
             mTcpListener = tcpListener;
             mCommandHandler = new CommandHandler(world);
-            mWorld = world;
-            
+            mWorld = world;      
         }// Constructor
 
         public void start()
@@ -156,6 +155,7 @@ namespace _8th_Circle_Server
             mNetworkStream.Close();
             mResponderThread.Abort();
         }// playerLeft
+
     }// Class ClientHandler
 
 }// Namespace _8th_Circle_Server

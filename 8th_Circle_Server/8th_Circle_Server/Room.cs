@@ -19,9 +19,7 @@ namespace _8th_Circle_Server
         public Room mWestLink;
         public Room mUpLink;
         public Room mDownLink;
-        public int mXPos;
-        public int mYPos;
-        public int mZPos;
+        public int[] mWorldLoc;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
 
@@ -30,6 +28,7 @@ namespace _8th_Circle_Server
             mDescription = string.Empty;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
+            mWorldLoc = new int[3];
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink = null;
         }// Constructor
 
@@ -37,7 +36,8 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink = null;
-            mXPos = mYPos = mZPos = -1;
+            mWorldLoc = new int[3];
+            mWorldLoc[0] = mWorldLoc[1] = mWorldLoc[2] = -1;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
         }// Constructor
@@ -46,9 +46,10 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink = null;
-            mZPos = zCoord;
-            mYPos = yCoord;
-            mXPos = xCoord;
+            mWorldLoc = new int[3];
+            mWorldLoc[0] = xCoord;
+            mWorldLoc[1] = yCoord;
+            mWorldLoc[2] = zCoord;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
         }// Constructor
