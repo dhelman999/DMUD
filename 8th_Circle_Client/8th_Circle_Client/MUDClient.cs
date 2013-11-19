@@ -59,7 +59,12 @@ namespace _8th_Circle_Client
                 {
                     Thread.Sleep(10);
                     outputString = streamReader.ReadLine();
+                    if (outputString.Contains("say") || outputString.Contains("says"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
                     Console.WriteLine(outputString);
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }// while
             }// try
             catch
