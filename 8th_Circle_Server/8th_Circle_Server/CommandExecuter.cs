@@ -11,6 +11,7 @@ namespace _8th_Circle_Server
         VERB = 0,
         NOUN,
         PREP,
+        DATA,
         INVALID
     };// commandType
 
@@ -29,6 +30,9 @@ namespace _8th_Circle_Server
         COMMAND_NORTHWEST,
         COMMAND_SOUTHEAST,
         COMMAND_SOUTHWEST,
+        COMMAND_SAY,
+        COMMAND_YELL,
+        COMMAND_TELL,
         COMMAND_INVALID
     };// commandName
 
@@ -137,6 +141,18 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("say", null, 3, commandType.VERB, commandName.COMMAND_SAY);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("yell", null, 2, commandType.VERB, commandName.COMMAND_YELL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("tell", null, 1, commandType.VERB, commandName.COMMAND_TELL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             // Add Nouns
             pt = new Command("north", "n", 5, commandType.NOUN, commandName.COMMAND_NORTH);
             mCommandList.Add(pt);
@@ -210,8 +226,45 @@ namespace _8th_Circle_Server
             string[] tokens = command.Split(' ');
             string nounFinder = string.Empty;
             ArrayList commandQueue = new ArrayList();
-
+            Command currentCommand = new Command();
             bool matchFound = false;
+
+            // First check for say, yell and tell as these are treated differently
+            if(tokens[0].Equals("say") ||
+               tokens[0].Equals("yell"))
+            {
+                string firstToken;
+                if (tokens.Length < 2)
+                    return ret;
+
+                firstToken = tokens[1];
+                string lastToken = tokens[tokens.Length-1];
+                if (!firstToken[0].Equals('"') || 
+                    !lastToken[lastToken.Length-1].Equals('"'))
+                {
+                    if (!firstToken[0].Equals('"'))
+                    {
+                        Console.WriteLine("first failed: " + firstToken[0]);
+                    }
+                    if (!lastToken[lastToken.Length - 1].Equals('"'))
+                    {
+                        Console.WriteLine("second failed: " + lastToken[lastToken.Length-1]);
+                    }
+                    return ret;
+                }
+                
+                currentCommand.commandName = commandName.COMMAND_SAY;
+                string sayString = command.Substring(3, command.Length - 3);
+                currentCommand.command = sayString;
+                commandQueue.Add((commandType[])mGrammarList[0]);
+                commandQueue.Add(currentCommand);
+                execute(clientHandler, commandQueue);
+                return errorCode.E_OK;       
+            }// if
+            else if (tokens[0].Equals("tell"))
+            {
+                commandQueue.Add((Command)mGrammarList[1]);
+            }// else if
 
             // Anything more than 4 tokens is an error
             if (tokens.Length > 4)
@@ -280,122 +333,119 @@ namespace _8th_Circle_Server
             errorCode ret = errorCode.E_OK;
             commandType[] grammarType = (commandType [])commandQueue[0];
             commandQueue.RemoveAt(0);
-            Command currentCommand = new Command();
-            Command noun1 = new Command();
-            Command noun2 = new Command();
             Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
-            
-            while (commandQueue.Count != 0)
-            {
-                if (commandQueue[0].GetType() == currentCommand.GetType())
-                {
-
-                    currentCommand = (Command)commandQueue[0];
-                    commandQueue.RemoveAt(0);
-                    
-                }// if
-                if (commandQueue.Count != 0 && 
-                    commandQueue[0].GetType() == noun1.GetType())
-                {
-                    noun1 = (Command)commandQueue[0];
-                    commandQueue.RemoveAt(0);
-                }// if
-                if (commandQueue.Count != 0 &&
-                    commandQueue[0].GetType() == noun1.GetType())
-                {
-                    noun2 = (Command)commandQueue[0];
-                    commandQueue.RemoveAt(0);
-                }// if
-            }// while
-
+            int commandIndex = 0;     
             bool wasMoveCommand = false;
+            Command currentCommand = (Command)commandQueue[commandIndex];
 
-            switch (currentCommand.commandName)
+            switch (((Command)commandQueue[commandIndex++]).commandName)
             {
-                case commandName.COMMAND_MOVE:
-                    
+                case commandName.COMMAND_SAY:
+                    foreach (Player player in currentRoom.mPlayerList)
+                    {
+                        if (player.Equals(clientHandler.mPlayer))
+                        {
+                            clientHandler.safeWrite("You say" + currentCommand.command);
+                        }// if
+                        else
+                        {
+                            player.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " says" +
+                                currentCommand.command);
+                        }// else
+                    }// foreach
+                    break;
+
+                case commandName.COMMAND_MOVE:                
                     break;
 
                 case commandName.COMMAND_LOOK:
                     if (grammarType.Length == 1)
-                    {
                         clientHandler.safeWrite(currentRoom.mDescription +
                             "\n" + currentRoom.exitString());
-                    }// if
                     else if (grammarType.Length == 2)
                     {
-                        switch (noun1.command)
+                        currentCommand = (Command)commandQueue[commandIndex];
+
+                        switch (((Command)commandQueue[commandIndex++]).commandName)
                         {
-                            case "north":
+                            case commandName.COMMAND_NORTH:
                                 if (currentRoom.mNorthLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mNorthLink.mDescription +
                                         "\n" + currentRoom.mNorthLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing to the north");
-                                }// else
                                 break;
 
-                            case "south":
+                            case commandName.COMMAND_SOUTH:
                                 if (currentRoom.mSouthLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mSouthLink.mDescription +
                                         "\n" + currentRoom.mSouthLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing to the south");
-                                }// else
                                 break;
 
-                            case "east":
+                            case commandName.COMMAND_EAST:
                                 if (currentRoom.mEastLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mEastLink.mDescription +
                                         "\n" + currentRoom.mEastLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing to the east");
-                                }// else
                                 break;
 
-                            case "west":
+                            case commandName.COMMAND_WEST:
                                 if (currentRoom.mWestLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mWestLink.mDescription +
                                         "\n" + currentRoom.mWestLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing to the west");
-                                }// else
                                 break;
 
-                            case "up":
+                            case commandName.COMMAND_UP:
                                 if (currentRoom.mUpLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mUpLink.mDescription +
                                         "\n" + currentRoom.mUpLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing above");
-                                }// else
                                 break;
 
-                            case "down":
+                            case commandName.COMMAND_DOWN:
                                 if (currentRoom.mDownLink != null)
-                                {
                                     clientHandler.safeWrite(currentRoom.mDownLink.mDescription +
                                         "\n" + currentRoom.mDownLink.exitString());
-                                }// if
                                 else
-                                {
                                     clientHandler.safeWrite("There is nothing below");
-                                }// else
+                                break;
+
+                            case commandName.COMMAND_NORTHWEST:
+                                if (currentRoom.mNorthwestLink != null)
+                                    clientHandler.safeWrite(currentRoom.mNorthwestLink.mDescription +
+                                        "\n" + currentRoom.mNorthwestLink.exitString());
+                                else
+                                    clientHandler.safeWrite("There is nothing to the northwest");
+                                break;
+
+                            case commandName.COMMAND_NORTHEAST:
+                                if (currentRoom.mNortheastLink != null)
+                                    clientHandler.safeWrite(currentRoom.mNortheastLink.mDescription +
+                                        "\n" + currentRoom.mNortheastLink.exitString());
+                                else
+                                    clientHandler.safeWrite("There is nothing to the northeast");
+                                break;
+
+                            case commandName.COMMAND_SOUTHWEST:
+                                if (currentRoom.mSouthwestLink != null)
+                                    clientHandler.safeWrite(currentRoom.mSouthwestLink.mDescription +
+                                        "\n" + currentRoom.mSouthwestLink.exitString());
+                                else
+                                    clientHandler.safeWrite("There is nothing to the southwest");
+                                break;
+
+                            case commandName.COMMAND_SOUTHEAST:
+                                if (currentRoom.mSoutheastLink != null)
+                                    clientHandler.safeWrite(currentRoom.mSoutheastLink.mDescription +
+                                        "\n" + currentRoom.mSoutheastLink.exitString());
+                                else
+                                    clientHandler.safeWrite("There is nothing to the southeast");
                                 break;
 
                             default:
@@ -405,13 +455,13 @@ namespace _8th_Circle_Server
                     }// else if (grammarType.Length == 2)
                     else if (grammarType.Length == 3)
                     {
-                        clientHandler.safeWrite("You " + currentCommand.command + " " + noun1.command + " "
-                            + noun2.command);
-                    }// else if
-                    else
-                    {
-                        ret = errorCode.E_INVALID_SYNTAX;
+                        currentCommand = (Command)commandQueue[commandIndex];
+                        clientHandler.safeWrite("You " + ((Command)commandQueue[0]).commandName
+                            + " " + ((Command)commandQueue[1]).commandName + " " +
+                            ((Command)commandQueue[2]).commandName);
                     }// else
+                    else
+                        ret = errorCode.E_INVALID_SYNTAX;
                     break;
 
                 case commandName.COMMAND_EXIT:
@@ -420,38 +470,72 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_NORTH:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move north");
                     break;
 
                 case commandName.COMMAND_SOUTH:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move south");
                     break;
 
                 case commandName.COMMAND_EAST:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move east");
                     break;
 
                 case commandName.COMMAND_WEST:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move west");
                     break;
 
                 case commandName.COMMAND_UP:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move up");
                     break;
 
                 case commandName.COMMAND_DOWN:
                     wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move down");
+                    break;
+
+                case commandName.COMMAND_NORTHWEST:
+                    wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move northwest");
+                    break;
+
+                case commandName.COMMAND_NORTHEAST:
+                    wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move northeast");
+                    break;
+
+                case commandName.COMMAND_SOUTHWEST:
+                    wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move southwest");
+                    break;
+
+                case commandName.COMMAND_SOUTHEAST:
+                    wasMoveCommand = true;
+                    currentCommand = (Command)commandQueue[commandIndex - 1];
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move southeast");
                     break;
 
                 default:

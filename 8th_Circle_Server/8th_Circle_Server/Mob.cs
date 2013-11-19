@@ -82,6 +82,38 @@ namespace _8th_Circle_Server
                     }// if
                     break;
 
+                case "northwest":
+                    if (mCurrentRoom.mNorthwestLink != null)
+                    {
+                        changeRoom(mCurrentRoom.mNorthwestLink);
+                        ret = true;
+                    }// if
+                    break;
+
+                case "northeast":
+                    if (mCurrentRoom.mNortheastLink != null)
+                    {
+                        changeRoom(mCurrentRoom.mNortheastLink);
+                        ret = true;
+                    }// if
+                    break;
+
+                case "southwest":
+                    if (mCurrentRoom.mSouthwestLink != null)
+                    {
+                        changeRoom(mCurrentRoom.mSouthwestLink);
+                        ret = true;
+                    }// if
+                    break;
+
+                case "southeast":
+                    if (mCurrentRoom.mSoutheastLink != null)
+                    {
+                        changeRoom(mCurrentRoom.mSoutheastLink);
+                        ret = true;
+                    }// if
+                    break;
+
                 default:
                     ret = false;
                     break;

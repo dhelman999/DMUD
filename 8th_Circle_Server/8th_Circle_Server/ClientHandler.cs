@@ -30,7 +30,7 @@ namespace _8th_Circle_Server
 
         public ClientHandler(TcpListener tcpListener, World world)
         {
-            mPlayer = new Mob();
+            mPlayer = new Player(this);
             mTcpListener = tcpListener;
             mCommandHandler = new CommandHandler(world);
             mWorld = world;      

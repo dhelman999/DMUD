@@ -63,6 +63,17 @@ namespace _8th_Circle_Server
                     }// for
                 }// for
             }// for
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        createSideLinks(getRoom(i, j, k));
+                    }// for
+                }// for
+            }// for
         }// Constructor
 
 
@@ -106,6 +117,22 @@ namespace _8th_Circle_Server
             }// if
         }// createLinks
 
+        private void createSideLinks(Room currentRoom)
+        {
+            // Northwest/Southeast Links
+            if (currentRoom.mNorthLink != null && currentRoom.mNorthLink.mWestLink != null)
+            {
+                currentRoom.mNorthwestLink = currentRoom.mNorthLink.mWestLink;
+                currentRoom.mNorthwestLink.mSoutheastLink = currentRoom;
+            }// if
+
+            // Northeast/Southwest Links
+            if (currentRoom.mNorthLink != null && currentRoom.mNorthLink.mEastLink != null)
+            {
+                currentRoom.mNortheastLink = currentRoom.mNorthLink.mEastLink;
+                currentRoom.mNortheastLink.mSouthwestLink = currentRoom;
+            }// if
+        }// if
     }// Class World
 
 }// Namespace _8th_Circle_Server
