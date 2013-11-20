@@ -728,7 +728,7 @@ namespace _8th_Circle_Server
             commandList.Add(currentCommand);
 
             if (tokens.Length == 1)
-                execute2(commandList, clientHandler);
+                return execute2(commandList, clientHandler);
             
             string subCommand = string.Empty;
  
@@ -783,12 +783,93 @@ namespace _8th_Circle_Server
             return ret;
         }
 
-        public errorCode execute2(ArrayList commandList, ClientHandler clientHandler)
+        public errorCode execute2(ArrayList commandQueue, ClientHandler clientHandler)
         {
-            Console.WriteLine("Command is: " + ((Command)commandList[0]).command);
-            Console.WriteLine("target player is: " + ((Player)commandList[1]).mName);
-            Console.WriteLine("tell is: " + ((string)commandList[2]));
-            return errorCode.E_OK;
+            errorCode ret = errorCode.E_OK;
+
+            Command currentCommand = new Command();
+            currentCommand = (Command)commandQueue[0];
+            bool wasMoveCommand = false;
+
+            switch(currentCommand.commandName)
+            {
+                case commandName.COMMAND_EXIT:
+                    clientHandler.safeWrite("exit was the command");
+                    break;
+
+                case commandName.COMMAND_NORTH:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move north");
+                    break;
+
+                case commandName.COMMAND_SOUTH:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move south");
+                    break;
+
+                case commandName.COMMAND_EAST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move east");
+                    break;
+
+                case commandName.COMMAND_WEST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move west");
+                    break;
+
+                case commandName.COMMAND_UP:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move up");
+                    break;
+
+                case commandName.COMMAND_DOWN:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move down");
+                    break;
+
+                case commandName.COMMAND_NORTHWEST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move northwest");
+                    break;
+
+                case commandName.COMMAND_NORTHEAST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move northeast");
+                    break;
+
+                case commandName.COMMAND_SOUTHWEST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move southwest");
+                    break;
+
+                case commandName.COMMAND_SOUTHEAST:
+                    wasMoveCommand = true;
+                    if (!clientHandler.mPlayer.move(currentCommand.command))
+                        clientHandler.safeWrite("You can't move southeast");
+                    break;
+
+                default:
+                    ret = errorCode.E_INVALID_SYNTAX;
+                    break;
+            }
+
+            if (wasMoveCommand)
+            {
+                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
+                    "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
+            }// if
+
+            return ret;
+
         }// execute2
 
     }// Class CommandExecuter
