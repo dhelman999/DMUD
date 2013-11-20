@@ -18,11 +18,21 @@ namespace _8th_Circle_Server
         
         // Member Variables
         public ArrayList mPlayerList;
+        public ArrayList mAreaList;
+        public ArrayList mRoomList;
         private Room[, ,] mWorldGrid;
 
         public World()
         {
             mPlayerList = new ArrayList();
+            mAreaList = new ArrayList();
+            mRoomList = new ArrayList();
+
+            Area protoArea = new Area();
+            protoArea.mName = "Proto Area";
+            protoArea.mDescription = "The testing area for the 8th Circle";
+
+            Room currentRoom = new Room();
 
             mWorldGrid = new Room[MAXZSIZE, MAXYSIZE, MAXXSIZE];
             mWorldGrid[0, 0, 0] = new Room("Room 0,0,0", 0, 0, 0);
@@ -59,7 +69,11 @@ namespace _8th_Circle_Server
                 {
                     for (int k = 0; k < 3; k++)
                     {
-                        createLinks(getRoom(i, j, k));
+                        currentRoom = getRoom(i, j, k);
+                        currentRoom.mCurrentArea = protoArea;
+                        mRoomList.Add(currentRoom);
+                        protoArea.mRoomList.Add(currentRoom);
+                        createLinks(currentRoom);
                     }// for
                 }// for
             }// for
@@ -74,6 +88,8 @@ namespace _8th_Circle_Server
                     }// for
                 }// for
             }// for
+
+            mAreaList.Add(protoArea);
         }// Constructor
 
 
@@ -116,6 +132,17 @@ namespace _8th_Circle_Server
                 }// if
             }// if
         }// createLinks
+
+        public Area getArea(string areaName)
+        {
+            foreach (Area area in mAreaList)
+            {
+                if(area.mName.Equals(areaName))
+                    return area;
+            }// foreach
+
+            return null;
+        }// getArea
 
         private void createSideLinks(Room currentRoom)
         {

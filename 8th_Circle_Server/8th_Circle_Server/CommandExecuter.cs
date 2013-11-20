@@ -92,7 +92,7 @@ namespace _8th_Circle_Server
             this.predicate2 = predicate2;
             this.validity = validity;
         }// Constructor
-    }// Command
+    }// struct Command
 
     class CommandExecuter
     {
@@ -342,6 +342,7 @@ namespace _8th_Circle_Server
             bool wasMoveCommand = false;
             int commandIndex = 0;
             Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
+            Player player;
 
             // Process the commandList by moving a index through the commandQueue
             // Each command will handle the various predicates given to it
@@ -351,28 +352,47 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_SAY:
                     ++commandIndex;
 
-                    foreach (Player player in currentRoom.mPlayerList)
+                    foreach (Player currentPlayer in currentRoom.mPlayerList)
                     {
-                        if (player.Equals(clientHandler.mPlayer))
+                        if (currentPlayer.Equals(clientHandler.mPlayer))
                         {
                             clientHandler.safeWrite("You say \"" + commandQueue[commandIndex] +
                                 "\"");
                         }// if
                         else
                         {
-                            player.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " says " +
-                                "\"" + commandQueue[commandIndex] + "\"");
+                            currentPlayer.mClientHandler.safeWrite(clientHandler.mPlayer.mName + 
+                                " says " + "\"" + commandQueue[commandIndex] + "\"");
                         }// else
                     }// foreach
                     break;
 
                 case commandName.COMMAND_TELL:
                     ++commandIndex;
-                    Player pl = (Player)commandQueue[commandIndex++];
-                    clientHandler.safeWrite("You tell " + pl.mName + " \"" + commandQueue[commandIndex] +
+                    player = (Player)commandQueue[commandIndex++];
+                    clientHandler.safeWrite("You tell " + player.mName + " \"" + commandQueue[commandIndex] +
                         "\"");
-                    pl.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " tells you \"" + 
+                    player.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " tells you \"" + 
                         commandQueue[commandIndex] + "\"");
+                    break;
+
+                case commandName.COMMAND_YELL:
+                    ++commandIndex;
+                    
+                    foreach (Player currentPlayer in clientHandler.mPlayer.mCurrentArea.mPlayerList)
+                    {
+                        if (currentPlayer.Equals(clientHandler.mPlayer))
+                        {
+                            clientHandler.safeWrite("You yell " + "\"" + commandQueue[commandIndex] +
+                                "\"");
+                        }// if
+                        else
+                        {
+                            currentPlayer.mClientHandler.safeWrite(clientHandler.mPlayer.mName +
+                                " yells \"" + commandQueue[commandIndex] + "\"");
+                        }// else
+                    }// foreach
+                    
                     break;
 
                 case commandName.COMMAND_EXIT:
@@ -619,9 +639,7 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_LOCAL)
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                 if (validity == validityType.VALID_AREA)
-                {
-                    // Areas not implemented yet
-                }// if
+                    targetList.Add(clientHandler.mWorld.mAreaList);
             }// if
 
             // Search through all appropriate lists

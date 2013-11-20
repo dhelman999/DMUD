@@ -26,6 +26,7 @@ namespace _8th_Circle_Server
         public int[] mWorldLoc;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
+        public Area mCurrentArea;
 
         public Room()
         {

@@ -57,6 +57,9 @@ namespace _8th_Circle_Server
                         mPlayer.mName = mStreamReader.ReadLine();
                         mPlayer.mWorld = mWorld;
                         Room curRoom = mWorld.getRoom(1, 1, 1);
+                        curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
+                        mPlayer.mCurrentArea = curRoom.mCurrentArea;
+
                         lock (PlayerLock)
                         {
                             mPlayer.mWorldLoc[0] = 1;

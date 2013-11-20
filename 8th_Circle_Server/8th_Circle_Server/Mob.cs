@@ -14,6 +14,7 @@ namespace _8th_Circle_Server
         public string mName;
         public World mWorld;
         public Room mCurrentRoom;
+        public Area mCurrentArea;
         public int[] mWorldLoc;
 
         public Mob()

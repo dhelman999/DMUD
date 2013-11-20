@@ -7,9 +7,6 @@ namespace _8th_Circle_Server
 {
     class Player : Mob
     {
-        // Debug
-        internal const bool DEBUG = false;
-
         // Member Variables
         public ClientHandler mClientHandler;
 
@@ -17,5 +14,10 @@ namespace _8th_Circle_Server
         {
             this.mClientHandler = ch;
         }// Constructor
+
+        public Player()
+        {
+            this.mClientHandler = null;
+        }
     }// Class Player
 }// Namespace _8th_Circle_Server
