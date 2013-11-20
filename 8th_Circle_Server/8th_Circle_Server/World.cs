@@ -9,7 +9,7 @@ namespace _8th_Circle_Server
     class World
     {
         // Debug
-        internal const bool DEBUG = true;
+        internal const bool DEBUG = false;
         
         // Constants
         const int MAXXSIZE = 3;

@@ -12,7 +12,7 @@ namespace _8th_Circle_Server
     class MUDServer
     {
         // Debug
-        internal const bool DEBUG = true;
+        internal const bool DEBUG = false;
 
         // Constants
         internal const int MUD_SERVER_PORT = 8888;

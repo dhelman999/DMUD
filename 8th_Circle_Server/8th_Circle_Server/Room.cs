@@ -9,7 +9,7 @@ namespace _8th_Circle_Server
     class Room
     {
         // Debug
-        internal const bool DEBUG = true;
+        internal const bool DEBUG = false;
 
         // Member Variables
         public string mDescription;

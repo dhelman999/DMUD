@@ -8,7 +8,7 @@ namespace _8th_Circle_Server
     class Mob
     {
         // Debug
-        internal const bool DEBUG = true;
+        internal const bool DEBUG = false;
 
         // Member Variables
         public string mName;

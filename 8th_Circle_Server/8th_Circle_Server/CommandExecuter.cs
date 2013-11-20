@@ -144,16 +144,6 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_LOOK,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("look", null, 1, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
             pt = new Command("south", "s", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SOUTH,
                 predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
@@ -201,6 +191,16 @@ namespace _8th_Circle_Server
 
             pt = new Command("exit", null, 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_EXIT,
                 predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("look", null, 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_LOOK,
+                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("look", null, 1, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
+                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -364,6 +364,15 @@ namespace _8th_Circle_Server
                                 "\"" + commandQueue[commandIndex] + "\"");
                         }// else
                     }// foreach
+                    break;
+
+                case commandName.COMMAND_TELL:
+                    ++commandIndex;
+                    Player pl = (Player)commandQueue[commandIndex++];
+                    clientHandler.safeWrite("You tell " + pl.mName + " \"" + commandQueue[commandIndex] +
+                        "\"");
+                    pl.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " tells you \"" + 
+                        commandQueue[commandIndex] + "\"");
                     break;
 
                 case commandName.COMMAND_EXIT:
@@ -603,20 +612,32 @@ namespace _8th_Circle_Server
             ArrayList targetList = new ArrayList();
 
             // Need to know which lists we need to search through to find the target predicate
-            if (predType == predicateType.PREDICATE_PLAYER && validity == validityType.VALID_GLOBAL)
-                targetList = clientHandler.mWorld.mPlayerList;
-
-            // Search for a player
-            foreach (Player player in targetList)
+            if (predType == predicateType.PREDICATE_PLAYER)
             {
-                if (player.mName.ToLower().Contains(name.ToLower()))
+                if(validity == validityType.VALID_GLOBAL)
+                    targetList.Add(clientHandler.mWorld.mPlayerList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
+                if (validity == validityType.VALID_AREA)
                 {
-                    ret = errorCode.E_OK;
-                    commandQueue.Add(player);
-                    break;
+                    // Areas not implemented yet
                 }// if
-            }// foreach
+            }// if
 
+            // Search through all appropriate lists
+            foreach (ArrayList ar in targetList)
+            {
+                // Search for a player
+                foreach (Player player in ar)
+                {
+                    if (player.mName.ToLower().Contains(name.ToLower()))
+                    {
+                        ret = errorCode.E_OK;
+                        commandQueue.Add(player);
+                        break;
+                    }// if
+                }// foreach
+            }// foreach
             return ret;
         }// doesPredicateExist
 

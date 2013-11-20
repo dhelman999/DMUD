@@ -7,6 +7,9 @@ namespace _8th_Circle_Server
 {
     class Player : Mob
     {
+        // Debug
+        internal const bool DEBUG = false;
+
         // Member Variables
         public ClientHandler mClientHandler;
 
