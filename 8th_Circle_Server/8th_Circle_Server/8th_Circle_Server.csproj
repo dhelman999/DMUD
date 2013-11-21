@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
+    <Compile Include="BaseObject.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandExecuter.cs" />
     <Compile Include="CommandHandler.cs" />
