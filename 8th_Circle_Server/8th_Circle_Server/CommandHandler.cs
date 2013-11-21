@@ -63,13 +63,7 @@ namespace _8th_Circle_Server
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
                         comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
-                        if (commandExecuter.process(comData.command, comData.clientHandler) == errorCode.E_OK)
-                        {
-                        }// if
-                        else
-                        {
-                            comData.clientHandler.safeWrite(comData.command + " is invalid");
-                        }// else
+                        commandExecuter.process(comData.command, comData.clientHandler);
                     }// while
                 }// catch
             }// while

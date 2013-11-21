@@ -49,8 +49,7 @@ namespace _8th_Circle_Server
 
     enum commandName
     {
-        COMMAND_MOVE=0,
-        COMMAND_LOOK,
+        COMMAND_LOOK=0,
         COMMAND_EXIT,
         COMMAND_NORTH,
         COMMAND_SOUTH,
@@ -262,16 +261,15 @@ namespace _8th_Circle_Server
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
         }// addCommands;
 
-        public errorCode process(string command, ClientHandler clientHandler)
+        public void process(string command, ClientHandler clientHandler)
         {
-            errorCode ret = errorCode.E_INVALID_SYNTAX;
             string[] tokens = command.Split(' ');
-            if (tokens.Length == 0)
-                return ret;
-
             Command currentCommand = new Command();
             ArrayList commandList = new ArrayList();
             bool foundMatch = false;
+
+            if (command.Equals(string.Empty))
+                return;
 
             // First, add all commands that either directly equal, or contain the 
             // first token in the command as this should always be a verb.
@@ -297,7 +295,10 @@ namespace _8th_Circle_Server
 
             // If the player's first token was not a verb, then it was not a valid command
             if (!foundMatch)
-                return ret;
+            {
+                clientHandler.safeWrite(tokens[0] + " is not a valid command");
+                return;
+            }// if
 
             // If we have more than 1 verb with the same name, we have to identify the 
             // correct one we should use based on how many maximum tokens it allows
@@ -347,38 +348,35 @@ namespace _8th_Circle_Server
             // If we didn't find a command, or if we somehow mistakenly added two
             // verbs, then something went wrong, bail out.
             if (!foundMatch || commandList.Count != 1)
-                return ret;
+            {
+                clientHandler.safeWrite(tokens[0] + " is not a valid command");
+                return;
+            }// if
 
             // If the player only sent us a single verb and we found a match, we are done
             // call execute on the verb with no arguements
             if (tokens.Length == 1)
-                return execute(commandList, clientHandler);
+            {
+                execute(commandList, clientHandler);
+                return;
+            }// if
             
-            string subCommand = string.Empty;
- 
+            errorCode error = errorCode.E_OK;
             // In this case, the player must have sent us a verb that has multiple arguements.
             // This means we have to parse the grammar of the verb and add back the appropriate
             // predicates to the command list if they even exist.
-            ret = populateCommandList(currentCommand, command.Substring(tokens[0].Length+1), 
-                                      commandList, clientHandler);
+            error = populateCommandList(currentCommand, command.Substring(tokens[0].Length+1), 
+                                        commandList, clientHandler);
 
-            // If all predicates either didn't exist, or could not be validated, then we
-            // error out as we cannot continue.
-            if (ret != errorCode.E_OK)
-                return errorCode.E_INVALID_SYNTAX;
-            else
+            if(error == errorCode.E_OK)
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
-                ret = execute(commandList, clientHandler);
-
-            return ret;
+                execute(commandList, clientHandler);
         }// process
 
-        public errorCode execute(ArrayList commandQueue, ClientHandler clientHandler)
+        public void execute(ArrayList commandQueue, ClientHandler clientHandler)
         {
-            errorCode ret = errorCode.E_OK;
-
             Command currentCommand = new Command();
             currentCommand = (Command)commandQueue[0];
             bool wasMoveCommand = false;
@@ -512,8 +510,6 @@ namespace _8th_Circle_Server
                     // location
                     else if (commandQueue.Count == 2)
                     {
-                        ret = errorCode.E_OK;
-
                         switch (((string)commandQueue[++commandIndex]).ToLower())
                         {
                             case "north":
@@ -612,7 +608,7 @@ namespace _8th_Circle_Server
                     break;
 
                 default:
-                    ret = errorCode.E_INVALID_SYNTAX;
+                    clientHandler.safeWrite("huh?");
                     break;
             }// switch (currentCommand.commandName)
 
@@ -622,8 +618,6 @@ namespace _8th_Circle_Server
                 clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
                     "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
             }// if
-
-            return ret;
 
         }// execute
 
@@ -635,6 +629,7 @@ namespace _8th_Circle_Server
             int grammarIndex = 1;
             string[] tokens;
             int predicateCount = 0;
+            string errorString = currentCommand.command;
 
             // Loop until we have gone through all grammar specified by the commands
             // acceptable grammar set
@@ -654,11 +649,18 @@ namespace _8th_Circle_Server
                         targetPredicate == predicateType.PREDICATE_ALL)
                     {
                         tokens = command.Split(' ');
+                        errorString += " " + tokens[0];
                         ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList,
                                                  clientHandler);
-                        if((grammarIndex < currentCommand.grammar.Length))
-                            command = command.Substring(tokens[0].Length + 1);
 
+                        if (ret != errorCode.E_OK)
+                        {
+                            clientHandler.safeWrite("Can't find " + tokens[0]);
+                            return errorCode.E_INVALID_SYNTAX;
+                        }
+
+                        if ((grammarIndex < currentCommand.grammar.Length))
+                            command = command.Substring(tokens[0].Length + 1);                        
                     }// if
                     // If the predicate is custom, we simply dump the rest of the command
                     // back and let processing continue
@@ -669,11 +671,15 @@ namespace _8th_Circle_Server
                     }// else if
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
+                    {
+                        clientHandler.safeWrite("You can't" + errorString);
                         return errorCode.E_INVALID_SYNTAX;
+                    }
                 }// if (currentCommand.grammar[grammarIndex++] == grammarType.PREDICATE)
                 else if (currentCommand.grammar[grammarIndex-1] == grammarType.PREP)
                 {
                     tokens = command.Split(' ');
+                    errorString += tokens[0];
                     foreach (Preposition prep in mPrepList)
                     {
                         if (prep.name.Equals(tokens[0]))
@@ -687,7 +693,7 @@ namespace _8th_Circle_Server
                     }// foreach
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
-                        return errorCode.E_INVALID_SYNTAX;
+                        clientHandler.safeWrite("You are not able " + errorString);
                 }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
 
@@ -695,8 +701,8 @@ namespace _8th_Circle_Server
         }// populateCommandList
 
         private errorCode doesPredicateExist(string name, predicateType predType,
-                                        validityType validity, ArrayList commandQueue,
-                                        ClientHandler clientHandler)
+                                             validityType validity, ArrayList commandQueue,
+                                             ClientHandler clientHandler)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             ArrayList targetList = new ArrayList();
