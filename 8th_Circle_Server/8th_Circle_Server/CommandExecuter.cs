@@ -36,6 +36,17 @@ namespace _8th_Circle_Server
         INVALID
     };// validityType
 
+    enum PrepositionType
+    {
+        PREP_IN=0,
+        PREP_ON,
+        PREP_WITH,
+        PREP_AT,
+        PREP_FROM,
+        PREP_OFF,
+        PREP_INVALID
+    };// PrepositionType
+
     enum commandName
     {
         COMMAND_MOVE=0,
@@ -62,6 +73,18 @@ namespace _8th_Circle_Server
         E_OK = 0,
         E_INVALID_SYNTAX
     };// errorCode
+
+    struct Preposition
+    {
+        public string name;
+        public PrepositionType prepType;
+
+        public Preposition(string name, PrepositionType prepType)
+        {
+            this.name = name;
+            this.prepType = prepType;
+        }// Constructor
+    }// Prepositions
 
     struct Command
     {
@@ -132,6 +155,11 @@ namespace _8th_Circle_Server
             gramVerbPredPred[1] = grammarType.PREDICATE;
             gramVerbPredPred[2] = grammarType.PREDICATE;
 
+            grammarType[] gramVerbPrepPred = new grammarType[3];
+            gramVerbPrepPred[0] = grammarType.VERB;
+            gramVerbPrepPred[1] = grammarType.PREP;
+            gramVerbPrepPred[2] = grammarType.PREDICATE;
+
             grammarType[] gramVerbPredPrepPred = new grammarType[4];
             gramVerbPredPrepPred[0] = grammarType.VERB;
             gramVerbPredPrepPred[1] = grammarType.PREDICATE;
@@ -199,8 +227,13 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
+            pt = new Command("look", null, 1, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
                 predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("look", null, 1, 256, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
+                predicateType.PREDICATE_ALL, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -218,6 +251,15 @@ namespace _8th_Circle_Server
                 predicateType.PREDICATE_PLAYER, predicateType.PREDICATE_CUSTOM, validityType.VALID_GLOBAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
+
+            // Add prepositions
+            mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
+            mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
+            mPrepList.Add(new Preposition("with", PrepositionType.PREP_WITH));
+            mPrepList.Add(new Preposition("at", PrepositionType.PREP_AT));
+            mPrepList.Add(new Preposition("from", PrepositionType.PREP_FROM));
+            mPrepList.Add(new Preposition("off", PrepositionType.PREP_OFF));
+            mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
         }// addCommands;
 
         public errorCode process(string command, ClientHandler clientHandler)
@@ -468,7 +510,7 @@ namespace _8th_Circle_Server
                             "\n" + currentRoom.exitString());
                     // The player looked in a direction, print out that connected rooms
                     // location
-                    else if (commandQueue.Count > 1)
+                    else if (commandQueue.Count == 2)
                     {
                         ret = errorCode.E_OK;
 
@@ -559,6 +601,14 @@ namespace _8th_Circle_Server
                                 break;
                         }// switch (((string)commandQueue[++commandIndex]).ToLower())
                     }// else if (commandQueue.Count > 1)
+                    else if(commandQueue.Count == 3)
+                    {
+                        string clientString = string.Empty;
+                        if (commandQueue[2].GetType() == typeof(Player))
+                            clientString = ((Player)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
+
+                        clientHandler.safeWrite(clientString);
+                    }// else if
                     break;
 
                 default:
@@ -600,12 +650,14 @@ namespace _8th_Circle_Server
 
                     // If the predicate is a player, we only accept the very next token to
                     // search for a valid playername
-                    if (targetPredicate == predicateType.PREDICATE_PLAYER)
+                    if (targetPredicate == predicateType.PREDICATE_PLAYER || 
+                        targetPredicate == predicateType.PREDICATE_ALL)
                     {
                         tokens = command.Split(' ');
                         ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList,
                                                  clientHandler);
-                        command = command.Substring(tokens[0].Length + 1);
+                        if((grammarIndex < currentCommand.grammar.Length))
+                            command = command.Substring(tokens[0].Length + 1);
 
                     }// if
                     // If the predicate is custom, we simply dump the rest of the command
@@ -619,6 +671,24 @@ namespace _8th_Circle_Server
                     if (ret == errorCode.E_INVALID_SYNTAX)
                         return errorCode.E_INVALID_SYNTAX;
                 }// if (currentCommand.grammar[grammarIndex++] == grammarType.PREDICATE)
+                else if (currentCommand.grammar[grammarIndex-1] == grammarType.PREP)
+                {
+                    tokens = command.Split(' ');
+                    foreach (Preposition prep in mPrepList)
+                    {
+                        if (prep.name.Equals(tokens[0]))
+                        {
+                            commandList.Add(prep);
+                            ret = errorCode.E_OK;
+                            if((grammarIndex < currentCommand.grammar.Length))
+                                command = command.Substring(tokens[0].Length + 1);
+                            break;
+                        }// if
+                    }// foreach
+
+                    if (ret == errorCode.E_INVALID_SYNTAX)
+                        return errorCode.E_INVALID_SYNTAX;
+                }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
 
             return ret;
@@ -632,7 +702,7 @@ namespace _8th_Circle_Server
             ArrayList targetList = new ArrayList();
 
             // Need to know which lists we need to search through to find the target predicate
-            if (predType == predicateType.PREDICATE_PLAYER)
+            if (predType == predicateType.PREDICATE_PLAYER || predType == predicateType.PREDICATE_ALL)
             {
                 if(validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mPlayerList);

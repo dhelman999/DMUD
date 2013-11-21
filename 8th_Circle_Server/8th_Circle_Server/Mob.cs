@@ -12,6 +12,7 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public string mName;
+        public string mDescription;
         public World mWorld;
         public Room mCurrentRoom;
         public Area mCurrentArea;
@@ -133,6 +134,14 @@ namespace _8th_Circle_Server
             mWorldLoc[2] = newRoom.mWorldLoc[2];
             mCurrentRoom = newRoom;
         }// changeRoom
+
+        public string viewed(Preposition prep, ClientHandler clientHandler)
+        {
+            if (prep.prepType == PrepositionType.PREP_AT)
+                return this.mDescription;
+            else
+                return "You can't look like that";
+        }// viewed
 
     }// Class Mob
 

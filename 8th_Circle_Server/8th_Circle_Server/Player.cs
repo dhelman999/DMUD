@@ -18,6 +18,8 @@ namespace _8th_Circle_Server
         public Player()
         {
             this.mClientHandler = null;
-        }
+        }// Constructor
+
     }// Class Player
+
 }// Namespace _8th_Circle_Server

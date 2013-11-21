@@ -56,6 +56,7 @@ namespace _8th_Circle_Server
 
                         mPlayer.mName = mStreamReader.ReadLine();
                         mPlayer.mWorld = mWorld;
+                        mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
                         Room curRoom = mWorld.getRoom(1, 1, 1);
                         curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
                         mPlayer.mCurrentArea = curRoom.mCurrentArea;
@@ -65,6 +66,7 @@ namespace _8th_Circle_Server
                             mPlayer.mWorldLoc[0] = 1;
                             mPlayer.mWorldLoc[1] = 1;
                             mPlayer.mWorldLoc[2] = 1;
+                            
                             mPlayer.mCurrentRoom = curRoom;
                             mWorld.mPlayerList.Add(mPlayer);
                             curRoom.mPlayerList.Add(mPlayer); 
