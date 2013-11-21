@@ -135,7 +135,6 @@ namespace _8th_Circle_Server
             mPrepList = new ArrayList();
             mCommandList = new ArrayList();
             mGrammarList = new ArrayList();
-
             addCommands();
         }// Constructor
 

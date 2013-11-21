@@ -39,6 +39,7 @@ namespace _8th_Circle_Server
         public void start()
         {
             mCommandHandler.start();
+
             while (true)
             {
                 try
@@ -54,23 +55,27 @@ namespace _8th_Circle_Server
                         mResponderThread = new Thread(() => ClientResponder(this));
                         mResponderThread.Start();
 
-                        mPlayer.mName = mStreamReader.ReadLine();
-                        mPlayer.mWorld = mWorld;
-                        mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
-                        Room curRoom = mWorld.getRoom(1, 1, 1);
-                        curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
-                        mPlayer.mCurrentArea = curRoom.mCurrentArea;
-
                         lock (PlayerLock)
                         {
+                            mPlayer.mName = mStreamReader.ReadLine();
+                            mPlayer.mWorld = mWorld;
+                            mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
+                            Room curRoom = mWorld.getRoom(1, 1, 1);
+                            curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
+                            mPlayer.mCurrentArea = curRoom.mCurrentArea;
                             mPlayer.mWorldLoc[0] = 1;
                             mPlayer.mWorldLoc[1] = 1;
                             mPlayer.mWorldLoc[2] = 1;
-                            
                             mPlayer.mCurrentRoom = curRoom;
                             mWorld.mPlayerList.Add(mPlayer);
-                            curRoom.mPlayerList.Add(mPlayer); 
+                            curRoom.mPlayerList.Add(mPlayer);   
                         }// lock
+
+                        foreach (Player player in mPlayer.mWorld.mPlayerList)
+                        {
+                            player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
+                        }// foreach
+
                         mResponderThread.Interrupt();
 
                         do
@@ -104,9 +109,9 @@ namespace _8th_Circle_Server
         {
             commandData cmdData = new commandData();
             cmdData.clientHandler = clientHandler;
-
             clientHandler.mCmdString = "Please enter your player's name.";
             clientHandler.safeWrite(clientHandler.mCmdString);
+
             try
             {
                 Thread.Sleep(Timeout.Infinite);
@@ -152,7 +157,12 @@ namespace _8th_Circle_Server
         }// safeWrite
 
         private void playerLeft()
-        {      
+        {
+            foreach (Player player in mPlayer.mWorld.mPlayerList)
+            {
+                player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
+            }// foreach
+
             mPlayer.mCurrentRoom.mPlayerList.Remove(mPlayer);
             mWorld.mPlayerList.Remove(mPlayer);
             mStreamReader.Close();

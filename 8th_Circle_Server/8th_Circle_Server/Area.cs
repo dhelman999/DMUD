@@ -20,7 +20,7 @@ namespace _8th_Circle_Server
             DIRECTION_NORTHEAST,
             DIRECTION_SOUTHWEST,
             DIRECTION_SOUTHEAST
-        };
+        };// connectionDirection
 
         struct ConnectionPoint
         {

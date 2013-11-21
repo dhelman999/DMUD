@@ -14,8 +14,8 @@ namespace _8th_Circle_Server
         public string mName;
         public string mDescription;
         public World mWorld;
-        public Room mCurrentRoom;
         public Area mCurrentArea;
+        public Room mCurrentRoom;
         public int[] mWorldLoc;
 
         public Mob()
@@ -125,6 +125,14 @@ namespace _8th_Circle_Server
 
         }// move
 
+        public string viewed(Preposition prep, ClientHandler clientHandler)
+        {
+            if (prep.prepType == PrepositionType.PREP_AT)
+                return this.mDescription;
+            else
+                return "You can't look like that";
+        }// viewed
+
         private void changeRoom(Room newRoom)
         {
             mCurrentRoom.mPlayerList.Remove(this);
@@ -134,14 +142,6 @@ namespace _8th_Circle_Server
             mWorldLoc[2] = newRoom.mWorldLoc[2];
             mCurrentRoom = newRoom;
         }// changeRoom
-
-        public string viewed(Preposition prep, ClientHandler clientHandler)
-        {
-            if (prep.prepType == PrepositionType.PREP_AT)
-                return this.mDescription;
-            else
-                return "You can't look like that";
-        }// viewed
 
     }// Class Mob
 

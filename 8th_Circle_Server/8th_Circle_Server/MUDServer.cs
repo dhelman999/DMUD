@@ -22,14 +22,12 @@ namespace _8th_Circle_Server
         static ArrayList sListenerThreadList;
         static ArrayList clientHandlerList;
         static World sWorld;
-        static ArrayList sPlayerList;
 
         static void Main(string[] args)
         {
             sWorld = new World();
             sListenerThreadList  = new ArrayList();
             clientHandlerList = new ArrayList();     
-            sPlayerList = new ArrayList();
 
             try
             {

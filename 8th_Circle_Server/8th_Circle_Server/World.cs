@@ -98,7 +98,18 @@ namespace _8th_Circle_Server
             return mWorldGrid[z, y, x];
         }// getRoom
 
-        public void createLinks(Room currentRoom)
+        public Area getArea(string areaName)
+        {
+            foreach (Area area in mAreaList)
+            {
+                if(area.mName.Equals(areaName))
+                    return area;
+            }// foreach
+
+            return null;
+        }// getArea
+
+        private void createLinks(Room currentRoom)
         {
             // North Links
             if (currentRoom.mWorldLoc[1] < 2)
@@ -133,17 +144,6 @@ namespace _8th_Circle_Server
             }// if
         }// createLinks
 
-        public Area getArea(string areaName)
-        {
-            foreach (Area area in mAreaList)
-            {
-                if(area.mName.Equals(areaName))
-                    return area;
-            }// foreach
-
-            return null;
-        }// getArea
-
         private void createSideLinks(Room currentRoom)
         {
             // Northwest/Southeast Links
@@ -159,7 +159,8 @@ namespace _8th_Circle_Server
                 currentRoom.mNortheastLink = currentRoom.mNorthLink.mEastLink;
                 currentRoom.mNortheastLink.mSouthwestLink = currentRoom;
             }// if
-        }// if
+        }// createSideLinks
+
     }// Class World
 
 }// Namespace _8th_Circle_Server
