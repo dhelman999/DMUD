@@ -10,6 +10,8 @@ namespace _8th_Circle_Server
     {
         FLAG_PLAYER_OWNED=0,
         FLAG_NPC_OWNED,
+        FLAG_OPENABLE,
+        FLAG_CLOSEABLE,
         FLAG_OPEN,
         FLAG_CLOSED,
         FLAG_LOCKED,
@@ -66,7 +68,10 @@ namespace _8th_Circle_Server
             foreach (PrepositionType pType in mPrepList)
             {
                 if (pType == PrepositionType.PREP_AT)
+                {
                     foundAt = true;
+                    break;
+                }// if
             }// foreach
 
             if (foundAt && prep.prepType == PrepositionType.PREP_AT)

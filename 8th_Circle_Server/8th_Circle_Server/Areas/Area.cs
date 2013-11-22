@@ -44,6 +44,8 @@ namespace _8th_Circle_Server
         public int mAreaOffset;
         public ArrayList mRoomList;
         public ArrayList mPlayerList;
+        public ArrayList mNpcList;
+        public ArrayList mObjectList;
         public World mWorld;
         public ArrayList mConnectionList;
         public string mName;
@@ -54,6 +56,8 @@ namespace _8th_Circle_Server
             mAreaOffset = 0;
             mRoomList = new ArrayList();
             mPlayerList = new ArrayList();
+            mNpcList = new ArrayList();
+            mObjectList = new ArrayList();
             mWorld = null;
             mConnectionList = new ArrayList();
             mName = string.Empty;

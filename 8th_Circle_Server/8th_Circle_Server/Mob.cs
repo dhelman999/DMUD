@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 
@@ -17,17 +18,22 @@ namespace _8th_Circle_Server
         public Area mCurrentArea;
         public Room mCurrentRoom;
         public int[] mWorldLoc;
+        public ArrayList mInventory;
 
         public Mob()
         {
             mName = string.Empty;
             mWorldLoc = new int[3];
+            mInventory = new ArrayList();
+            mInventory.Capacity = 20;
         }// Constructor
 
         public Mob(string name)
         {
             mName = name;
             mWorldLoc = new int[3];
+            mInventory = new ArrayList();
+            mInventory.Capacity = 20;
         }// Constructor
 
         public bool move(string direction)

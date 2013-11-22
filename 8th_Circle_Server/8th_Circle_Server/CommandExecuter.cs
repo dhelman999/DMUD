@@ -599,8 +599,10 @@ namespace _8th_Circle_Server
                     else if(commandQueue.Count == 3)
                     {
                         string clientString = string.Empty;
-                        if (commandQueue[2].GetType() == typeof(Player))
+                        if (commandQueue[2] is Player)
                             clientString = ((Player)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
+                        else  if (commandQueue[2] is BaseObject)
+                            clientString = ((BaseObject)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
 
                         clientHandler.safeWrite(clientString);
                     }// else if
@@ -717,19 +719,54 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mWorld.mAreaList);
             }// if
 
+            if (predType == predicateType.PREDICATE_OBJECT || predType == predicateType.PREDICATE_ALL)
+            {
+                if (validity == validityType.VALID_GLOBAL)
+                    targetList.Add(clientHandler.mWorld.mObjectList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                if (validity == validityType.VALID_AREA)
+                    targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
+            }// if
+
+            if (predType == predicateType.PREDICATE_NPC || predType == predicateType.PREDICATE_ALL)
+            {
+                if (validity == validityType.VALID_GLOBAL)
+                    targetList.Add(clientHandler.mWorld.mNpcList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
+                if (validity == validityType.VALID_AREA)
+                    targetList.Add(clientHandler.mPlayer.mCurrentArea.mNpcList);
+            }// if
+
             // Search through all appropriate lists
             foreach (ArrayList ar in targetList)
             {
-                // Search for a player
-                foreach (Player player in ar)
+                if(ar.Count > 0 && ar[0].GetType() == typeof(Player))
                 {
-                    if (player.mName.ToLower().Contains(name.ToLower()))
+                    foreach (Player player in ar)
                     {
-                        ret = errorCode.E_OK;
-                        commandQueue.Add(player);
-                        break;
-                    }// if
-                }// foreach
+                        if (player.mName.ToLower().Contains(name.ToLower()))
+                        {
+                            ret = errorCode.E_OK;
+                            commandQueue.Add(player);
+                            break;
+                        }// if
+                    }// foreach
+                }// if
+                // Search for an object
+                if (ar.Count > 0 && ar[0] is BaseObject)
+                {
+                    foreach (BaseObject baseObject in ar)
+                    {
+                        if (baseObject.mName.ToLower().Contains(name.ToLower()))
+                        {
+                            ret = errorCode.E_OK;
+                            commandQueue.Add(baseObject);
+                            break;
+                        }// if
+                    }// foreach
+                }// if
             }// foreach
             return ret;
         }// doesPredicateExist

@@ -26,6 +26,7 @@ namespace _8th_Circle_Server
         public int[] mWorldLoc;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
+        public ArrayList mObjectList;
         public Area mCurrentArea;
 
         public Room()
@@ -33,6 +34,7 @@ namespace _8th_Circle_Server
             mDescription = string.Empty;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
+            mObjectList = new ArrayList();
             mWorldLoc = new int[3];
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
                 mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
@@ -47,6 +49,7 @@ namespace _8th_Circle_Server
             mWorldLoc[0] = mWorldLoc[1] = mWorldLoc[2] = -1;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
+            mObjectList = new ArrayList();
         }// Constructor
 
         public Room(string desc, int xCoord, int yCoord, int zCoord)
@@ -60,6 +63,7 @@ namespace _8th_Circle_Server
             mWorldLoc[2] = zCoord;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
+            mObjectList = new ArrayList();
         }// Constructor
 
         public string exitString()
@@ -86,6 +90,15 @@ namespace _8th_Circle_Server
             if (mSoutheastLink != null)
                 exitStr += "Southeast ";
 
+            exitStr += "\n";
+            exitStr += "Objects: ";
+            for (int i = 0; i < mObjectList.Count; i++)
+            {
+                if(i == mObjectList.Count-1)
+                    exitStr += ((BaseObject)mObjectList[i]).mName;
+                else
+                    exitStr += ((BaseObject)mObjectList[i]).mName + ",";
+            }// for
             exitStr += "\n";
             for (int i = 0; i < mNpcList.Count; i++)
             {

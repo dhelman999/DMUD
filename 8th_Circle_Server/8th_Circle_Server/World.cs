@@ -18,15 +18,19 @@ namespace _8th_Circle_Server
         
         // Member Variables
         public ArrayList mPlayerList;
+        public ArrayList mNpcList;
         public ArrayList mAreaList;
         public ArrayList mRoomList;
+        public ArrayList mObjectList;
         private Room[, ,] mWorldGrid;
 
         public World()
         {
             mPlayerList = new ArrayList();
+            mNpcList = new ArrayList();
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
+            mObjectList = new ArrayList();
 
             Area protoArea = new Area();
             protoArea.mName = "Proto Area";
@@ -89,7 +93,21 @@ namespace _8th_Circle_Server
                 }// for
             }// for
 
-            mAreaList.Add(protoArea);
+            Containers chest = new Containers();
+            chest.mCurrentArea = chest.mStartingArea = protoArea;
+            chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
+            chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
+            chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
+            chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
+            chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
+            chest.mFlagList.Add(objectFlags.FLAG_CLOSED);
+            chest.mName = "chest";
+            chest.mStorage.Capacity = 20;
+            chest.mWorld = this;
+            mObjectList.Add(chest);
+            protoArea.mObjectList.Add(chest);
+            getRoom(0, 0, 2).mObjectList.Add(chest);
+            mAreaList.Add(protoArea);      
         }// Constructor
 
 
