@@ -62,7 +62,7 @@ namespace _8th_Circle_Server
             return string.Empty;
         }// used
 
-        public string viewed(Preposition prep, ClientHandler clientHandler)
+        public virtual string viewed(Preposition prep, ClientHandler clientHandler)
         {
             bool foundAt = false;
             foreach (PrepositionType pType in mPrepList)

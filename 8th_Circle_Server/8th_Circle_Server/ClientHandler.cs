@@ -145,15 +145,22 @@ namespace _8th_Circle_Server
 
         public void safeWrite(string response)
         {
-            if (mStreamWriter.BaseStream != null)
+            try
             {
-                mStreamWriter.WriteLine(response);
-                mStreamWriter.Flush();
-            }// if
-            else
+                if (mStreamWriter.BaseStream != null)
+                {
+                    mStreamWriter.WriteLine(response);
+                    mStreamWriter.Flush();
+                }// if
+                else
+                {
+                    mStreamWriter.Dispose();
+                }// else
+            }// try
+            catch
             {
-                mStreamWriter.Dispose();
-            }// else
+                mStreamReader.Close();
+            }
         }// safeWrite
 
         private void playerLeft()
