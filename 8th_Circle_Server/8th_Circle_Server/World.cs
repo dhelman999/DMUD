@@ -103,7 +103,7 @@ namespace _8th_Circle_Server
             chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
             chest.mName = "chest";
-            chest.mStorage.Capacity = 20;
+            chest.mInventory.Capacity = 20;
             chest.mWorld = this;
             chest.mStartingArea =  chest.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
             chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);

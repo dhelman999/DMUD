@@ -6,6 +6,25 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+
+    enum objectFlags
+    {
+        FLAG_PLAYER_OWNED = 0,
+        FLAG_NPC_OWNED,
+        FLAG_OPENABLE,
+        FLAG_CLOSEABLE,
+        FLAG_LOCKED,
+        FLAG_HIDDEN,
+        FLAG_INVISIBLE,
+        FLAG_GETTABLE,
+        FLAG_PUSHABLE,
+        FLAG_STORABLE,
+        FLAG_USEABLE,
+        FLAG_INSPECTABLE,
+        FLAG_IDENTIFYABLE,
+        FLAG_STEALABLE,
+    };// flags
+
     class Mob
     {
         // Debug
@@ -13,19 +32,32 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public string mName;
+        public string mShortDescription;
         public string mDescription;
         public World mWorld;
-        public Area mCurrentArea;
-        public Room mCurrentRoom;
         public int[] mWorldLoc;
+        public Room mStartingRoom;
+        public Room mCurrentRoom;
+        public Area mStartingArea;
+        public Area mCurrentArea;
+        public Mob mStartingOwner;
+        public Mob mCurrentOwner;
+        public ArrayList mPrepList;
+        public ArrayList mFlagList;
         public ArrayList mInventory;
 
         public Mob()
         {
-            mName = string.Empty;
+            mName = mDescription = mShortDescription = string.Empty;
             mWorldLoc = new int[3];
             mInventory = new ArrayList();
+            mPrepList = new ArrayList();
+            mPrepList.Add(PrepositionType.PREP_AT);
+            mFlagList = new ArrayList();
             mInventory.Capacity = 20;
+            mStartingRoom = mCurrentRoom = null;
+            mStartingArea = mCurrentArea = null;
+            mStartingOwner = mCurrentOwner = null;
         }// Constructor
 
         public Mob(string name)
@@ -131,14 +163,6 @@ namespace _8th_Circle_Server
 
         }// move
 
-        public string viewed(Preposition prep, ClientHandler clientHandler)
-        {
-            if (prep.prepType == PrepositionType.PREP_AT)
-                return this.mDescription;
-            else
-                return "You can't look like that";
-        }// viewed
-
         private void changeRoom(Room newRoom)
         {
             mCurrentRoom.mPlayerList.Remove(this);
@@ -149,6 +173,38 @@ namespace _8th_Circle_Server
             mCurrentRoom = newRoom;
         }// changeRoom
 
+        public virtual string used()
+        {
+            return string.Empty;
+        }// used
+
+        public virtual string viewed(Preposition prep, ClientHandler clientHandler)
+        {
+            bool foundAt = false;
+            foreach (PrepositionType pType in mPrepList)
+            {
+                if (pType == PrepositionType.PREP_AT)
+                {
+                    foundAt = true;
+                    break;
+                }// if
+            }// foreach
+
+            if (foundAt && prep.prepType == PrepositionType.PREP_AT)
+                return mDescription;
+            else
+                return "You can't look like that";
+        }// viewed
+
+        public virtual string open(ClientHandler clientHandler)
+        {
+            return "You can't open that";
+        }// open
+
+        public virtual string close(ClientHandler clientHandler)
+        {
+            return "You can't close that";
+        }// close
     }// Class Mob
 
 }// Namespace _8th_Circle_Server

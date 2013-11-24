@@ -6,16 +6,13 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    class Container : BaseObject
+    class Container : Mob
     {
         // Member Variables
-        public ArrayList mStorage;
         public bool mIsOpen;
 
         public Container() : base()
         {
-            mStorage = new ArrayList();
-            mStorage.Capacity = 10;
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
             mIsOpen = false;
@@ -49,12 +46,12 @@ namespace _8th_Circle_Server
                 {
                     ret += mName + " contains: \n\n";
 
-                    if (mStorage.Count == 0)
+                    if (mInventory.Count == 0)
                         ret += "Empty\n";
                     else
                     {
-                        foreach (BaseObject baseObject in mStorage)
-                            ret += baseObject.mName + "\n";
+                        foreach (Mob mob in mInventory)
+                            ret += mob.mName + "\n";
                     }// else
                 }// if
                 else

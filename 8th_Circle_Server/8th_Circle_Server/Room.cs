@@ -95,9 +95,9 @@ namespace _8th_Circle_Server
             for (int i = 0; i < mObjectList.Count; i++)
             {
                 if(i == mObjectList.Count-1)
-                    exitStr += ((BaseObject)mObjectList[i]).mName;
+                    exitStr += ((Mob)mObjectList[i]).mName;
                 else
-                    exitStr += ((BaseObject)mObjectList[i]).mName + ",";
+                    exitStr += ((Mob)mObjectList[i]).mName + ",";
             }// for
             exitStr += "\n";
             for (int i = 0; i < mNpcList.Count; i++)
@@ -113,17 +113,17 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
-        public void addObject(BaseObject baseObject)
+        public void addObject(Mob mob)
         {
             // Remove old references
-            baseObject.mCurrentArea.mObjectList.Remove(baseObject);
-            baseObject.mCurrentRoom.mObjectList.Remove(baseObject);
+            mob.mCurrentArea.mObjectList.Remove(mob);
+            mob.mCurrentRoom.mObjectList.Remove(mob);
             
             // Add new references
-            baseObject.mCurrentArea = mCurrentArea;
-            baseObject.mCurrentRoom = this;
-            baseObject.mCurrentArea.mObjectList.Add(baseObject);
-            mObjectList.Add(baseObject);
+            mob.mCurrentArea = mCurrentArea;
+            mob.mCurrentRoom = this;
+            mob.mCurrentArea.mObjectList.Add(mob);
+            mObjectList.Add(mob);
         }// addObject
 
     }// Class Room

@@ -512,12 +512,12 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_OPEN:
-                    clientString = ((BaseObject)commandQueue[1]).open(clientHandler);
+                    clientString = ((Mob)commandQueue[1]).open(clientHandler);
                     clientHandler.safeWrite(clientString);
                     break;
 
                 case commandName.COMMAND_CLOSE:
-                    clientString = ((Container)commandQueue[1]).close(clientHandler);
+                    clientString = ((Mob)commandQueue[1]).close(clientHandler);
                     clientHandler.safeWrite(clientString);
                     break;
 
@@ -622,11 +622,7 @@ namespace _8th_Circle_Server
                     else if(commandQueue.Count == 3)
                     {
                         clientString = string.Empty;
-                        if (commandQueue[2] is Player)
-                            clientString = ((Player)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
-                        else  if (commandQueue[2] is BaseObject)
-                            clientString = ((BaseObject)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
-
+                        clientString = ((Mob)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
                         clientHandler.safeWrite(clientString);
                     }// else if
                     break;
@@ -784,32 +780,20 @@ namespace _8th_Circle_Server
             // Search through all appropriate lists
             foreach (ArrayList ar in targetList)
             {
-                if(ar.Count > 0 && ar[0].GetType() == typeof(Player))
+                if(ar.Count > 0)
                 {
-                    foreach (Player player in ar)
+                    foreach (Mob mob in ar)
                     {
-                        if (player.mName.ToLower().Contains(name.ToLower()))
+                        if (mob.mName.ToLower().Contains(name.ToLower()))
                         {
                             ret = errorCode.E_OK;
-                            commandQueue.Add(player);
-                            break;
-                        }// if
-                    }// foreach
-                }// if
-                // Search for an object
-                if (ar.Count > 0 && ar[0] is BaseObject)
-                {
-                    foreach (BaseObject baseObject in ar)
-                    {
-                        if (baseObject.mName.ToLower().Contains(name.ToLower()))
-                        {
-                            ret = errorCode.E_OK;
-                            commandQueue.Add(baseObject);
+                            commandQueue.Add(mob);
                             break;
                         }// if
                     }// foreach
                 }// if
             }// foreach
+
             return ret;
         }// doesPredicateExist
 
