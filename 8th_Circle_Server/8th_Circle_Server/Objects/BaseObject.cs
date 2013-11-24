@@ -12,8 +12,6 @@ namespace _8th_Circle_Server
         FLAG_NPC_OWNED,
         FLAG_OPENABLE,
         FLAG_CLOSEABLE,
-        FLAG_OPEN,
-        FLAG_CLOSED,
         FLAG_LOCKED,
         FLAG_HIDDEN,
         FLAG_INVISIBLE,
@@ -79,6 +77,16 @@ namespace _8th_Circle_Server
             else
                 return "You can't look like that";
         }// viewed
+
+        public virtual string open(ClientHandler clientHandler)
+        {
+            return "You can't open that";
+        }// open
+
+        public virtual string close(ClientHandler clientHandler)
+        {
+            return "You can't close that";
+        }// close
 
     }// Class BaseObject
 

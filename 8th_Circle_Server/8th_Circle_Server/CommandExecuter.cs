@@ -64,6 +64,8 @@ namespace _8th_Circle_Server
         COMMAND_SAY,
         COMMAND_YELL,
         COMMAND_TELL,
+        COMMAND_OPEN,
+        COMMAND_CLOSE,
         INVALID
     };// commandName
 
@@ -250,6 +252,16 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("open", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_OPEN,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("close", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -382,6 +394,7 @@ namespace _8th_Circle_Server
             int commandIndex = 0;
             Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
             Player player;
+            string clientString = string.Empty;
 
             // Process the commandList by moving a index through the commandQueue
             // Each command will handle the various predicates given to it
@@ -498,6 +511,16 @@ namespace _8th_Circle_Server
                         clientHandler.safeWrite("You can't move southeast");
                     break;
 
+                case commandName.COMMAND_OPEN:
+                    clientString = ((BaseObject)commandQueue[1]).open(clientHandler);
+                    clientHandler.safeWrite(clientString);
+                    break;
+
+                case commandName.COMMAND_CLOSE:
+                    clientString = ((Container)commandQueue[1]).close(clientHandler);
+                    clientHandler.safeWrite(clientString);
+                    break;
+
                 case commandName.COMMAND_LOOK:
 
                     // This is a single look command with no arguements, simply print
@@ -598,7 +621,7 @@ namespace _8th_Circle_Server
                     }// else if (commandQueue.Count > 1)
                     else if(commandQueue.Count == 3)
                     {
-                        string clientString = string.Empty;
+                        clientString = string.Empty;
                         if (commandQueue[2] is Player)
                             clientString = ((Player)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
                         else  if (commandQueue[2] is BaseObject)
@@ -663,6 +686,25 @@ namespace _8th_Circle_Server
                         if ((grammarIndex < currentCommand.grammar.Length))
                             command = command.Substring(tokens[0].Length + 1);                        
                     }// if
+                    // If the predicate is a object, we only accept the very next token to
+                    // search for a valid objectname
+                    else if (targetPredicate == predicateType.PREDICATE_OBJECT ||
+                        targetPredicate == predicateType.PREDICATE_ALL)
+                    {
+                        tokens = command.Split(' ');
+                        errorString += " " + tokens[0];
+                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList,
+                                                 clientHandler);
+
+                        if (ret != errorCode.E_OK)
+                        {
+                            clientHandler.safeWrite("Can't find " + tokens[0]);
+                            return errorCode.E_INVALID_SYNTAX;
+                        }
+
+                        if ((grammarIndex < currentCommand.grammar.Length))
+                            command = command.Substring(tokens[0].Length + 1);
+                    }// if
                     // If the predicate is custom, we simply dump the rest of the command
                     // back and let processing continue
                     else if (targetPredicate == predicateType.PREDICATE_CUSTOM)
@@ -673,7 +715,7 @@ namespace _8th_Circle_Server
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
                     {
-                        clientHandler.safeWrite("You can't" + errorString);
+                        clientHandler.safeWrite("You can't " + errorString);
                         return errorCode.E_INVALID_SYNTAX;
                     }
                 }// if (currentCommand.grammar[grammarIndex++] == grammarType.PREDICATE)

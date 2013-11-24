@@ -113,6 +113,19 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
+        public void addObject(BaseObject baseObject)
+        {
+            // Remove old references
+            baseObject.mCurrentArea.mObjectList.Remove(baseObject);
+            baseObject.mCurrentRoom.mObjectList.Remove(baseObject);
+            
+            // Add new references
+            baseObject.mCurrentArea = mCurrentArea;
+            baseObject.mCurrentRoom = this;
+            baseObject.mCurrentArea.mObjectList.Add(baseObject);
+            mObjectList.Add(baseObject);
+        }// addObject
+
     }// Class Room
 
 }// Namespace _8th_Circle_Server

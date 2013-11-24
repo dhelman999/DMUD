@@ -6,17 +6,19 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    class Containers : BaseObject
+    class Container : BaseObject
     {
         // Member Variables
         public ArrayList mStorage;
+        public bool mIsOpen;
 
-        public Containers() : base()
+        public Container() : base()
         {
             mStorage = new ArrayList();
             mStorage.Capacity = 10;
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
+            mIsOpen = false;
         }// Constructor
 
         public override string viewed(Preposition prep, ClientHandler clientHandler)
@@ -36,14 +38,14 @@ namespace _8th_Circle_Server
 
             if (foundAtOrIn && prep.prepType == PrepositionType.PREP_AT)
             {
-                if(mFlagList.Contains(objectFlags.FLAG_OPEN))
+                if(mIsOpen)
                    ret += mName + " is open\n";
-                else if(mFlagList.Contains(objectFlags.FLAG_CLOSED))
+                else
                    ret += mName + " is closed\n";
             }// if
             else if (foundAtOrIn && prep.prepType == PrepositionType.PREP_IN)
             {
-                if (mFlagList.Contains(objectFlags.FLAG_OPEN))
+                if (mIsOpen)
                 {
                     ret += mName + " contains: \n\n";
 
@@ -65,6 +67,43 @@ namespace _8th_Circle_Server
 
             return ret;
         }// viewed
-    }// Class Containers
+
+        public override string open(ClientHandler clientHandler)
+        {
+            string ret = string.Empty;
+
+            if(mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+            {
+                if(mIsOpen)
+                    ret = mName + " is already open";
+                else
+                {
+                    ret = "You open the " + mName;
+                    mIsOpen = true;
+                }// else
+            }// if
+
+            return ret;
+        }// open
+
+        public override string close(ClientHandler clientHandler)
+        {
+            string ret = string.Empty;
+
+            if (mFlagList.Contains(objectFlags.FLAG_CLOSEABLE))
+            {
+                if (!mIsOpen)
+                    ret = mName + " is already closed";
+                else
+                {
+                    ret = "You close the " + mName;
+                    mIsOpen = false;
+                }// else
+            }// if
+
+            return ret;
+        }// close
+
+    }// Class Container
 
 }// Namespace _8th_Circle_Server

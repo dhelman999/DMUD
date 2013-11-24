@@ -93,21 +93,22 @@ namespace _8th_Circle_Server
                 }// for
             }// for
 
-            Containers chest = new Containers();
-            chest.mCurrentArea = chest.mStartingArea = protoArea;
-            chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
+            // Add Areas
+            mAreaList.Add(protoArea);
+
+            // Add Objects
+            Container chest = new Container();  
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
             chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
             chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            chest.mFlagList.Add(objectFlags.FLAG_CLOSED);
             chest.mName = "chest";
             chest.mStorage.Capacity = 20;
             chest.mWorld = this;
-            mObjectList.Add(chest);
-            protoArea.mObjectList.Add(chest);
-            getRoom(0, 0, 2).mObjectList.Add(chest);
-            mAreaList.Add(protoArea);      
+            chest.mStartingArea =  chest.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
+            chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
+            getRoom(0, 0, 2).addObject(chest);
+            mObjectList.Add(chest);   
         }// Constructor
 
 
