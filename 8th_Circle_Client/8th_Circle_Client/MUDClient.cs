@@ -26,6 +26,7 @@ namespace _8th_Circle_Client
             string ipAddr = string.Empty;
             try
             {
+                Console.Title = "8th Circle Client";
                 Console.WriteLine("8th Circle MUD Client");
                 Console.WriteLine("Enter IP address of the MUD Server");
                 ipAddr = Console.ReadLine();
