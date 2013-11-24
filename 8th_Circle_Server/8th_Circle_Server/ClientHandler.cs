@@ -171,6 +171,7 @@ namespace _8th_Circle_Server
             }// foreach
 
             mPlayer.mCurrentRoom.mPlayerList.Remove(mPlayer);
+            mPlayer.mCurrentArea.mPlayerList.Remove(mPlayer);
             mWorld.mPlayerList.Remove(mPlayer);
             mStreamReader.Close();
             mStreamWriter.Close();
