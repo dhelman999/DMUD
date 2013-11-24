@@ -6,7 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-
     enum objectFlags
     {
         FLAG_PLAYER_OWNED = 0,
@@ -165,7 +164,16 @@ namespace _8th_Circle_Server
 
         private void changeRoom(Room newRoom)
         {
+            // Remove old references
             mCurrentRoom.mPlayerList.Remove(this);
+            if (mCurrentArea != newRoom.mCurrentArea)
+            {
+                mCurrentArea.mPlayerList.Remove(this);
+                mCurrentArea = newRoom.mCurrentArea;
+                newRoom.mCurrentArea.mPlayerList.Add(this);
+            }// if
+
+            // Add new references
             newRoom.mPlayerList.Add(this);
             mWorldLoc[0] = newRoom.mWorldLoc[0];
             mWorldLoc[1] = newRoom.mWorldLoc[1];
