@@ -102,13 +102,27 @@ namespace _8th_Circle_Server
             chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
             chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            chest.mName = "chest";
+            chest.mName = "chest1";
             chest.mInventory.Capacity = 20;
             chest.mWorld = this;
             chest.mStartingArea =  chest.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
             chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
+            chest.mEventList.Add(EventFlag.EVENT_CHEST_TEXT_START);
             getRoom(0, 0, 2).addObject(chest);
-            mObjectList.Add(chest);   
+            mObjectList.Add(chest);
+
+            Container chest2 = new Container();
+            chest2.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
+            chest2.mFlagList.Add(objectFlags.FLAG_OPENABLE);
+            chest2.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
+            chest2.mFlagList.Add(objectFlags.FLAG_LOCKED);
+            chest2.mName = "chest2";
+            chest2.mInventory.Capacity = 20;
+            chest2.mWorld = this;
+            chest2.mStartingArea = chest2.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
+            chest2.mStartingRoom = chest2.mCurrentRoom = getRoom(0, 0, 2);
+            getRoom(1, 1, 1).addObject(chest2);
+            mObjectList.Add(chest2); 
         }// Constructor
 
 

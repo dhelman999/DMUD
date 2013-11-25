@@ -49,6 +49,7 @@
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandExecuter.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="EventHandler.cs" />
     <Compile Include="Mob.cs" />
     <Compile Include="MUDServer.cs" />
     <Compile Include="Objects\Containers.cs" />

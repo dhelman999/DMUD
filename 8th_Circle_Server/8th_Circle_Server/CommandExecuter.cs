@@ -622,7 +622,8 @@ namespace _8th_Circle_Server
                     else if(commandQueue.Count == 3)
                     {
                         clientString = string.Empty;
-                        clientString = ((Mob)commandQueue[2]).viewed((Preposition)commandQueue[1], clientHandler);
+                        clientString = ((Mob)commandQueue[2]).viewed(clientHandler.mPlayer,
+                            (Preposition)commandQueue[1], clientHandler);
                         clientHandler.safeWrite(clientString);
                     }// else if
                     break;

@@ -44,6 +44,7 @@ namespace _8th_Circle_Server
         public ArrayList mPrepList;
         public ArrayList mFlagList;
         public ArrayList mInventory;
+        public ArrayList mEventList;
 
         public Mob()
         {
@@ -53,6 +54,7 @@ namespace _8th_Circle_Server
             mPrepList = new ArrayList();
             mPrepList.Add(PrepositionType.PREP_AT);
             mFlagList = new ArrayList();
+            mEventList = new ArrayList();
             mInventory.Capacity = 20;
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
@@ -62,9 +64,17 @@ namespace _8th_Circle_Server
         public Mob(string name)
         {
             mName = name;
+            mDescription = mShortDescription = string.Empty;
             mWorldLoc = new int[3];
             mInventory = new ArrayList();
+            mPrepList = new ArrayList();
+            mPrepList.Add(PrepositionType.PREP_AT);
+            mFlagList = new ArrayList();
+            mEventList = new ArrayList();
             mInventory.Capacity = 20;
+            mStartingRoom = mCurrentRoom = null;
+            mStartingArea = mCurrentArea = null;
+            mStartingOwner = mCurrentOwner = null;
         }// Constructor
 
         public bool move(string direction)
@@ -186,7 +196,7 @@ namespace _8th_Circle_Server
             return string.Empty;
         }// used
 
-        public virtual string viewed(Preposition prep, ClientHandler clientHandler)
+        public virtual string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
         {
             bool foundAt = false;
             foreach (PrepositionType pType in mPrepList)

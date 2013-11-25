@@ -18,7 +18,7 @@ namespace _8th_Circle_Server
             mIsOpen = false;
         }// Constructor
 
-        public override string viewed(Preposition prep, ClientHandler clientHandler)
+        public override string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
         {
             bool foundAtOrIn = false;
             string ret = string.Empty;
@@ -61,6 +61,13 @@ namespace _8th_Circle_Server
             }// if
             else
                 ret += "You can't look like that";
+
+            if (mEventList.Contains(EventFlag.EVENT_CHEST_TEXT_START))
+            {
+                EventData eventData = new EventData(EventFlag.EVENT_CHEST_TEXT_START,
+                    viewer, this, mCurrentRoom, validityType.VALID_AREA);
+                clientHandler.mEventHandler.enQueueEvent(eventData);
+            }// if
 
             return ret;
         }// viewed
