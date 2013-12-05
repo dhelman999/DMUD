@@ -619,13 +619,20 @@ namespace _8th_Circle_Server
                                 break;
                         }// switch (((string)commandQueue[++commandIndex]).ToLower())
                     }// else if (commandQueue.Count > 1)
-                    else if(commandQueue.Count == 3)
+                    else if (commandQueue.Count == 3)
                     {
                         clientString = string.Empty;
                         clientString = ((Mob)commandQueue[2]).viewed(clientHandler.mPlayer,
                             (Preposition)commandQueue[1], clientHandler);
                         clientHandler.safeWrite(clientString);
                     }// else if
+                    else
+                    {
+                        clientString = string.Empty;
+                        clientString = ((Mob)commandQueue[2]).viewed(clientHandler.mPlayer,
+                            (Preposition)commandQueue[1], clientHandler);
+                        clientHandler.safeWrite(clientString);
+                    }// else
                     break;
 
                 default:
@@ -677,11 +684,11 @@ namespace _8th_Circle_Server
                         if (ret != errorCode.E_OK)
                         {
                             clientHandler.safeWrite("Can't find " + tokens[0]);
-                            return errorCode.E_INVALID_SYNTAX;
+                            break;
                         }
 
                         if ((grammarIndex < currentCommand.grammar.Length))
-                            command = command.Substring(tokens[0].Length + 1);                        
+                            command = command.Substring(tokens[0].Length + 1);
                     }// if
                     // If the predicate is a object, we only accept the very next token to
                     // search for a valid objectname
@@ -696,7 +703,7 @@ namespace _8th_Circle_Server
                         if (ret != errorCode.E_OK)
                         {
                             clientHandler.safeWrite("Can't find " + tokens[0]);
-                            return errorCode.E_INVALID_SYNTAX;
+                            break;
                         }
 
                         if ((grammarIndex < currentCommand.grammar.Length))
@@ -710,16 +717,17 @@ namespace _8th_Circle_Server
                         ret = errorCode.E_OK;
                     }// else if
 
-                    if (ret == errorCode.E_INVALID_SYNTAX)
+                    if (ret != errorCode.E_OK)
                     {
                         clientHandler.safeWrite("You can't " + errorString);
-                        return errorCode.E_INVALID_SYNTAX;
+                        break;
                     }
                 }// if (currentCommand.grammar[grammarIndex++] == grammarType.PREDICATE)
                 else if (currentCommand.grammar[grammarIndex-1] == grammarType.PREP)
                 {
+                    ret = errorCode.E_INVALID_SYNTAX;
                     tokens = command.Split(' ');
-                    errorString += tokens[0];
+                    errorString += " " + tokens[0];
                     foreach (Preposition prep in mPrepList)
                     {
                         if (prep.name.Equals(tokens[0]))
@@ -733,7 +741,10 @@ namespace _8th_Circle_Server
                     }// foreach
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
-                        clientHandler.safeWrite("You are not able " + errorString);
+                    {
+                        clientHandler.safeWrite("You are not able to " + errorString);
+                        break;
+                    }
                 }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
 
@@ -747,6 +758,16 @@ namespace _8th_Circle_Server
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             ArrayList targetList = new ArrayList();
 
+            if (predType == predicateType.PREDICATE_OBJECT || predType == predicateType.PREDICATE_ALL)
+            {
+                if (validity == validityType.VALID_GLOBAL)
+                    targetList.Add(clientHandler.mWorld.mObjectList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                if (validity == validityType.VALID_AREA)
+                    targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
+            }// if
+
             // Need to know which lists we need to search through to find the target predicate
             if (predType == predicateType.PREDICATE_PLAYER || predType == predicateType.PREDICATE_ALL)
             {
@@ -756,16 +777,6 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mWorld.mAreaList);
-            }// if
-
-            if (predType == predicateType.PREDICATE_OBJECT || predType == predicateType.PREDICATE_ALL)
-            {
-                if (validity == validityType.VALID_GLOBAL)
-                    targetList.Add(clientHandler.mWorld.mObjectList);
-                if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
-                if (validity == validityType.VALID_AREA)
-                    targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || predType == predicateType.PREDICATE_ALL)
@@ -785,7 +796,7 @@ namespace _8th_Circle_Server
                 {
                     foreach (Mob mob in ar)
                     {
-                        if (mob.mName.ToLower().Contains(name.ToLower()))
+                        if(validatePredicate(name.ToLower(), mob.mName.ToLower()))
                         {
                             ret = errorCode.E_OK;
                             commandQueue.Add(mob);
@@ -797,6 +808,42 @@ namespace _8th_Circle_Server
 
             return ret;
         }// doesPredicateExist
+
+        private bool validatePredicate(string targetPred, string cmdString)
+        {
+            bool found = true;
+            string subString = cmdString;
+            int index = 0;
+            char c;
+
+            for(int i = targetPred.Length; i > 0; --i)
+            {
+                c = targetPred[targetPred.Length - i];
+
+                if(i > subString.Length)
+                    return false;
+
+                while (true)
+                {
+                    found = false;
+                    index = subString.IndexOf(c);
+                    int len = subString.Length;
+                    if (index >= 0)
+                    {
+                        if (index < len)
+                        {
+                            found = true;
+                            subString = subString.Substring(index + 1, len - index - 1);
+                            break;
+                        }// if
+                    }// if
+                    else
+                        return false;
+                }// while
+            }// foreach
+
+            return found;
+        }// validatePredicate
 
     }// Class CommandExecuter
 

@@ -116,7 +116,7 @@ namespace _8th_Circle_Server
             chest2.mFlagList.Add(objectFlags.FLAG_OPENABLE);
             chest2.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest2.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            chest2.mName = "chest2";
+            chest2.mName = "large wooden chest2";
             chest2.mInventory.Capacity = 20;
             chest2.mWorld = this;
             chest2.mStartingArea = chest2.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
