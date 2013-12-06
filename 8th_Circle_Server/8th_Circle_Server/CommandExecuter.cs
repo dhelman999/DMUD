@@ -674,25 +674,7 @@ namespace _8th_Circle_Server
                     // If the predicate is a player, we only accept the very next token to
                     // search for a valid playername
                     if (targetPredicate == predicateType.PREDICATE_PLAYER || 
-                        targetPredicate == predicateType.PREDICATE_ALL)
-                    {
-                        tokens = command.Split(' ');
-                        errorString += " " + tokens[0];
-                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList,
-                                                 clientHandler);
-
-                        if (ret != errorCode.E_OK)
-                        {
-                            clientHandler.safeWrite("Can't find " + tokens[0]);
-                            break;
-                        }
-
-                        if ((grammarIndex < currentCommand.grammar.Length))
-                            command = command.Substring(tokens[0].Length + 1);
-                    }// if
-                    // If the predicate is a object, we only accept the very next token to
-                    // search for a valid objectname
-                    else if (targetPredicate == predicateType.PREDICATE_OBJECT ||
+                        targetPredicate == predicateType.PREDICATE_OBJECT ||
                         targetPredicate == predicateType.PREDICATE_ALL)
                     {
                         tokens = command.Split(' ');
@@ -757,36 +739,38 @@ namespace _8th_Circle_Server
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             ArrayList targetList = new ArrayList();
+            ArrayList targetPredicates = new ArrayList();
+            string[] tokens = name.Split('.');
 
+            // Need to know which lists we need to search through to find the target predicate
             if (predType == predicateType.PREDICATE_OBJECT || predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mObjectList);
-                if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);        
             }// if
 
-            // Need to know which lists we need to search through to find the target predicate
             if (predType == predicateType.PREDICATE_PLAYER || predType == predicateType.PREDICATE_ALL)
             {
                 if(validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mPlayerList);
-                if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mWorld.mAreaList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);            
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mNpcList);
-                if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mPlayer.mCurrentArea.mNpcList);
+                if (validity == validityType.VALID_LOCAL)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);    
             }// if
 
             // Search through all appropriate lists
@@ -796,15 +780,43 @@ namespace _8th_Circle_Server
                 {
                     foreach (Mob mob in ar)
                     {
-                        if(validatePredicate(name.ToLower(), mob.mName.ToLower()))
+                        if(validatePredicate(tokens[0].ToLower(), mob.mName.ToLower()))
                         {
                             ret = errorCode.E_OK;
-                            commandQueue.Add(mob);
+                            targetPredicates.Add(mob);
                             break;
                         }// if
                     }// foreach
                 }// if
             }// foreach
+
+            if (ret == errorCode.E_OK)
+            {
+                ret = errorCode.E_INVALID_SYNTAX;
+
+                if (tokens.Length == 1)
+                {
+                    commandQueue.Add(targetPredicates[0]);
+                    ret = errorCode.E_OK;
+                }
+                else if (tokens.Length == 2)
+                {
+                    try
+                    {
+                        int index = Int32.Parse(tokens[1]);
+
+                        if (index <= targetPredicates.Count &&
+                            index > 0)
+                        {
+                            commandQueue.Add(targetPredicates[index - 1]);
+                            ret = errorCode.E_OK;
+                        }
+                    }// try
+                    catch
+                    {  // silently fail, the return code will correctly error
+                    }
+                }// else
+            }// if
 
             return ret;
         }// doesPredicateExist

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net.Sockets;
+using System.Net;
 using System.Threading;
 
 namespace _8th_Circle_Client
@@ -24,14 +25,16 @@ namespace _8th_Circle_Client
         static void Main(string[] args)
         {
             string ipAddr = string.Empty;
+
             try
             {
                 Console.Title = "8th Circle Client";
                 Console.WriteLine("8th Circle MUD Client");
-                Console.WriteLine("Enter IP address of the MUD Server");
-                ipAddr = Console.ReadLine();
-                socketForServer = new TcpClient(ipAddr, MUD_SERVER_PORT);
-            }// try
+                //Console.WriteLine("Enter IP address of the MUD Server");
+                //ipAddr = Console.ReadLine();
+                socketForServer = new TcpClient("127.0.0.1", MUD_SERVER_PORT);
+            }// try 
+                
             catch
             {
                 Console.WriteLine("Failed to connect to " + ipAddr + "::" + 8888);
