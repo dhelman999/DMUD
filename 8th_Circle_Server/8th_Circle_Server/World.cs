@@ -107,8 +107,12 @@ namespace _8th_Circle_Server
             chest.mWorld = this;
             chest.mStartingArea =  chest.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
             chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
-            chest.mEventList.Add(EventFlag.EVENT_TELL_PLAYER);
-            chest.mEventList.Add("The chest speaks to you");
+            EventData eventData = new EventData();
+            eventData.eventFlag = EventFlag.EVENT_TELL_PLAYER;
+            eventData.commandName = commandName.COMMAND_LOOK;
+            eventData.prepType = PrepositionType.PREP_IN;
+            eventData.data = "A voice speaks to you from within " + chest.mName;
+            chest.mEventList.Add(eventData); 
             getRoom(0, 0, 2).addObject(chest);
             mObjectList.Add(chest);
 
@@ -122,6 +126,12 @@ namespace _8th_Circle_Server
             chest2.mWorld = this;
             chest2.mStartingArea = chest2.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
             chest2.mStartingRoom = chest2.mCurrentRoom = getRoom(0, 0, 2);
+            eventData = new EventData();
+            eventData.eventFlag = EventFlag.EVENT_TELL_PLAYER;
+            eventData.commandName = commandName.COMMAND_LOOK;
+            eventData.prepType = PrepositionType.PREP_AT;
+            eventData.data = "The " + chest.mName + " says \"hello!\"";
+            chest2.mEventList.Add(eventData); 
             getRoom(1, 1, 1).addObject(chest2);
             mObjectList.Add(chest2); 
         }// Constructor

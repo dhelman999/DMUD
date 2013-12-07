@@ -19,18 +19,27 @@ namespace _8th_Circle_Server
         public Mob eventObject;
         public Room eventRoom;
         public validityType validity;
+        public commandName commandName;
+        public PrepositionType prepType;
+        public Object data;
 
         public EventData(EventFlag eventFlag, 
                          Mob trigger, 
                          Mob eventObject, 
                          Room eventRoom,
-                         validityType validity)
+                         validityType validity,
+                         commandName commandName,
+                         PrepositionType prepType,
+                         Object data)
         {
             this.eventFlag = eventFlag;
             this.trigger = trigger;
             this.eventObject = eventObject;
             this.eventRoom = eventRoom;
             this.validity = validity;
+            this.commandName = commandName;
+            this.prepType = prepType;
+            this.data = data;
         }// Constructor
     }// EventData
 
@@ -94,7 +103,7 @@ namespace _8th_Circle_Server
                     case EventFlag.EVENT_TELL_PLAYER:
                         if (eventData.trigger is Player)
                         {
-                            ((Player)eventData.trigger).mClientHandler.safeWrite((string)mEventQueue.Dequeue());
+                            ((Player)eventData.trigger).mClientHandler.safeWrite((string)eventData.data);
                         }// if
                         break;
 

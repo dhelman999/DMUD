@@ -690,12 +690,17 @@ namespace _8th_Circle_Server
             {
                 if ( command.predicate1Value.mEventList.Count > 0)
                 {
-                    EventData eventData = new EventData((EventFlag)(command.predicate1Value.mEventList[0]),
-                    command.commandOwner, command.predicate1Value, command.predicate1Value.mCurrentRoom,
-                    command.validity);
-                    clientHandler.mEventHandler.enQueueEvent(eventData);
-                    int index = command.predicate1Value.mEventList.IndexOf(EventFlag.EVENT_TELL_PLAYER);
-                    clientHandler.mEventHandler.enQueueEvent((string)command.predicate1Value.mEventList[index + 1]);
+                    EventData eventData = (EventData)command.predicate1Value.mEventList[0];
+
+                    if(eventData.commandName == command.commandName &&
+                       eventData.prepType == command.prep1Value.prepType)
+                    {
+                        eventData.trigger = command.commandOwner;
+                        eventData.eventObject = command.predicate1Value;
+                        eventData.eventRoom = command.predicate1Value.mCurrentRoom;
+                        eventData.validity = command.validity;
+                        clientHandler.mEventHandler.enQueueEvent(eventData);
+                    }// if       
                 }
             }// else if
             else
