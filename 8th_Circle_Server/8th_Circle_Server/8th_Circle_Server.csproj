@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaHandler.cs" />
     <Compile Include="Areas\Area.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandExecuter.cs" />

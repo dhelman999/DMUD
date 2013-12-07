@@ -40,9 +40,6 @@ namespace _8th_Circle_Server
 
         public void start()
         {
-            mCommandHandler.start();
-            mEventHandler.start();
-
             while (true)
             {
                 try

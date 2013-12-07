@@ -19,6 +19,7 @@ namespace _8th_Circle_Server
         // Member Variables
         public CommandHandler mCommandHandler;
         public EventHandler mEventHandler;
+        public AreaHandler mAreaHandler;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
         public ArrayList mAreaList;
@@ -31,11 +32,16 @@ namespace _8th_Circle_Server
         {
             mCommandHandler = new CommandHandler(this);
             mEventHandler = new EventHandler();
+            mAreaHandler = new AreaHandler();
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
             mObjectList = new ArrayList();
+
+            mCommandHandler.start();
+            mEventHandler.start();
+            mAreaHandler.start();
 
             Area protoArea = new Area();
             protoArea.mName = "Proto Area";
@@ -138,7 +144,9 @@ namespace _8th_Circle_Server
             eventData.data = "The " + chest.mName + " says \"hello!\"";
             chest2.mEventList.Add(eventData); 
             getRoom(1, 1, 1).addObject(chest2);
-            mObjectList.Add(chest2); 
+            mObjectList.Add(chest2);
+
+            mAreaHandler.registerArea(protoArea);
         }// Constructor
 
 
