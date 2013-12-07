@@ -9,7 +9,7 @@ namespace _8th_Circle_Server
 {
     enum EventFlag
     {
-        EVENT_TELL_PLAYER=0,
+        EVENT_TELL_PLAYER
     };// EventFlag
 
     struct EventData

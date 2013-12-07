@@ -90,14 +90,19 @@ namespace _8th_Circle_Server
     struct Command
     {
         public string command;
+        public Mob commandOwner;
         public string shortName;
         public int matchNumber;
         public int maxTokens;
         public grammarType type;
         public grammarType[] grammar;
+        public Preposition prep1Value;
+        public Preposition prep2Value;
         public commandName commandName;
         public predicateType predicate1;
+        public Mob predicate1Value;
         public predicateType predicate2;
+        public Mob predicate2Value;
         public validityType validity;
 
         public Command(string command, string shortName, int matchNumber, 
@@ -106,6 +111,7 @@ namespace _8th_Circle_Server
                        predicateType predicate2, validityType validity)
         {
             this.command = command;
+            this.commandOwner = null;
             this.shortName = shortName;
             this.matchNumber = matchNumber;
             this.type = type;
@@ -115,6 +121,9 @@ namespace _8th_Circle_Server
             this.predicate1 = predicate1;
             this.predicate2 = predicate2;
             this.validity = validity;
+            this.prep1Value = new Preposition();
+            this.prep2Value = new Preposition();
+            this.predicate1Value = predicate2Value = null;
         }// Constructor
     }// struct Command
 
@@ -389,6 +398,7 @@ namespace _8th_Circle_Server
         public void execute(ArrayList commandQueue, ClientHandler clientHandler)
         {
             Command currentCommand = new Command();
+            Command tempCommand;
             currentCommand = (Command)commandQueue[0];
             bool wasMoveCommand = false;
             int commandIndex = 0;
@@ -426,6 +436,10 @@ namespace _8th_Circle_Server
                         "\"");
                     player.mClientHandler.safeWrite(clientHandler.mPlayer.mName + " tells you \"" + 
                         commandQueue[commandIndex] + "\"");
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = player;
+                    commandQueue[0] = tempCommand;
                     break;
 
                 case commandName.COMMAND_YELL:
@@ -625,6 +639,12 @@ namespace _8th_Circle_Server
                         clientString = ((Mob)commandQueue[2]).viewed(clientHandler.mPlayer,
                             (Preposition)commandQueue[1], clientHandler);
                         clientHandler.safeWrite(clientString);
+
+                        tempCommand = (Command)commandQueue[0];
+                        tempCommand.commandOwner = clientHandler.mPlayer;
+                        tempCommand.prep1Value = (Preposition)commandQueue[1];
+                        tempCommand.predicate1Value = (Mob)commandQueue[2];
+                        commandQueue[0] = tempCommand;
                     }// else if
                     else
                     {
@@ -632,6 +652,13 @@ namespace _8th_Circle_Server
                         clientString = ((Mob)commandQueue[2]).viewed(clientHandler.mPlayer,
                             (Preposition)commandQueue[1], clientHandler);
                         clientHandler.safeWrite(clientString);
+
+                        tempCommand = (Command)commandQueue[0];
+                        tempCommand.commandOwner = clientHandler.mPlayer;
+                        tempCommand.prep1Value = (Preposition)commandQueue[1];
+                        tempCommand.predicate1Value = (Mob)commandQueue[2];
+                        commandQueue[0] = tempCommand;
+
                     }// else
                     break;
 
@@ -646,8 +673,35 @@ namespace _8th_Circle_Server
                 clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
                     "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
             }// if
+            
+            checkEvent((Command)commandQueue[0], clientHandler);
 
         }// execute
+
+        private void checkEvent(Command command, ClientHandler clientHandler)
+        {
+            if (command.predicate1 != predicateType.INVALID &&
+                command.predicate2 != predicateType.INVALID)
+            {
+
+            }// if
+            else if (command.predicate1 != predicateType.INVALID &&
+                     command.predicate1 != predicateType.PREDICATE_CUSTOM)
+            {
+                if ( command.predicate1Value.mEventList.Count > 0)
+                {
+                    EventData eventData = new EventData((EventFlag)(command.predicate1Value.mEventList[0]),
+                    command.commandOwner, command.predicate1Value, command.predicate1Value.mCurrentRoom,
+                    command.validity);
+                    clientHandler.mEventHandler.enQueueEvent(eventData);
+                    int index = command.predicate1Value.mEventList.IndexOf(EventFlag.EVENT_TELL_PLAYER);
+                    clientHandler.mEventHandler.enQueueEvent((string)command.predicate1Value.mEventList[index + 1]);
+                }
+            }// else if
+            else
+            {
+            }// else
+        }// checkEvent
 
         private errorCode populateCommandList(Command currentCommand, string command,
                               ArrayList commandList, ClientHandler clientHandler)
