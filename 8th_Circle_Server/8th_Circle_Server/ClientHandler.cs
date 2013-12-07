@@ -33,8 +33,8 @@ namespace _8th_Circle_Server
         {
             mPlayer = new Player(this);
             mTcpListener = tcpListener;
-            mCommandHandler = new CommandHandler(world);
-            mEventHandler = new EventHandler();
+            mCommandHandler = world.mCommandHandler;
+            mEventHandler = world.mEventHandler;
             mWorld = world;      
         }// Constructor
 

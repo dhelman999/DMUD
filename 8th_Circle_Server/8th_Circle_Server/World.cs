@@ -17,15 +17,20 @@ namespace _8th_Circle_Server
         const int MAXZSIZE = 3;
         
         // Member Variables
+        public CommandHandler mCommandHandler;
+        public EventHandler mEventHandler;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
         public ArrayList mAreaList;
         public ArrayList mRoomList;
         public ArrayList mObjectList;
+
         private Room[, ,] mWorldGrid;
 
         public World()
         {
+            mCommandHandler = new CommandHandler(this);
+            mEventHandler = new EventHandler();
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mAreaList = new ArrayList();
