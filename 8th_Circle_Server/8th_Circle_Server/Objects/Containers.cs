@@ -62,11 +62,13 @@ namespace _8th_Circle_Server
             else
                 ret += "You can't look like that";
 
-            if (mEventList.Contains(EventFlag.EVENT_CHEST_TEXT_START))
+            if (mEventList.Contains(EventFlag.EVENT_TELL_PLAYER))
             {
-                EventData eventData = new EventData(EventFlag.EVENT_CHEST_TEXT_START,
+                EventData eventData = new EventData(EventFlag.EVENT_TELL_PLAYER,
                     viewer, this, mCurrentRoom, validityType.VALID_AREA);
                 clientHandler.mEventHandler.enQueueEvent(eventData);
+                int index = mEventList.IndexOf(EventFlag.EVENT_TELL_PLAYER);
+                clientHandler.mEventHandler.enQueueEvent((string)mEventList[index + 1]);
             }// if
 
             return ret;

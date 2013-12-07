@@ -9,9 +9,7 @@ namespace _8th_Circle_Server
 {
     enum EventFlag
     {
-        EVENT_CHEST_TEXT_START=0,
-        EVENT_CHEST_TEXT_INPROGRESS,
-        EVENT_CHEST_TEXT_FINISHED
+        EVENT_TELL_PLAYER=0,
     };// EventFlag
 
     struct EventData
@@ -76,7 +74,7 @@ namespace _8th_Circle_Server
             }// while
         }// spinWork
 
-        public void enQueueEvent(EventData eventData)
+        public void enQueueEvent(Object eventData)
         {
             lock (mQueueLock)
             {
@@ -93,11 +91,10 @@ namespace _8th_Circle_Server
 
                 switch (eventData.eventFlag)
                 {
-                    case EventFlag.EVENT_CHEST_TEXT_START:
+                    case EventFlag.EVENT_TELL_PLAYER:
                         if (eventData.trigger is Player)
                         {
-                            ((Player)eventData.trigger).mClientHandler.safeWrite("The " +
-                                eventData.eventObject.mName + " speaks to you...");
+                            ((Player)eventData.trigger).mClientHandler.safeWrite((string)mEventQueue.Dequeue());
                         }// if
                         break;
 

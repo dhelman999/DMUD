@@ -107,7 +107,8 @@ namespace _8th_Circle_Server
             chest.mWorld = this;
             chest.mStartingArea =  chest.mCurrentArea = getRoom(0, 0, 2).mCurrentArea;
             chest.mStartingRoom = chest.mCurrentRoom = getRoom(0, 0, 2);
-            chest.mEventList.Add(EventFlag.EVENT_CHEST_TEXT_START);
+            chest.mEventList.Add(EventFlag.EVENT_TELL_PLAYER);
+            chest.mEventList.Add("The chest speaks to you");
             getRoom(0, 0, 2).addObject(chest);
             mObjectList.Add(chest);
 
