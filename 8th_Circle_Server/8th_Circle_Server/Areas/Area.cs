@@ -46,6 +46,7 @@ namespace _8th_Circle_Server
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
         public ArrayList mObjectList;
+        public ArrayList mFullMobList;
         public World mWorld;
         public ArrayList mConnectionList;
         public string mName;
@@ -58,6 +59,7 @@ namespace _8th_Circle_Server
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();
+            mFullMobList = new ArrayList();
             mWorld = null;
             mConnectionList = new ArrayList();
             mName = string.Empty;

@@ -12,6 +12,8 @@ namespace _8th_Circle_Server
         // Debug
         internal const bool DEBUG = false;
 
+        internal const int TICKTIME = 5;
+
         // Member Variables
         public ArrayList mAreaList;
 
@@ -36,7 +38,7 @@ namespace _8th_Circle_Server
             {
                 try
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(TICKTIME*1000);
                 }// try
                 catch
                 {
@@ -62,6 +64,24 @@ namespace _8th_Circle_Server
             foreach (Area area in mAreaList)
             {
                 Console.WriteLine("area handler tick!");
+                foreach (Container mob in area.mFullMobList)
+                {
+                    if (area.mObjectList.Contains(mob))
+                    {
+                        Container mob2 = (Container)area.mObjectList[area.mObjectList.IndexOf(mob)];
+                        if ((mob2.mRespawnTime-= TICKTIME) < 0)
+                        {
+                            Console.WriteLine("respawning " + mob.mName);
+                            mob2.respawn();
+                            mob2.mRespawnTime = mob.mRespawnTime;
+                        }
+                    }
+                    else
+                    {
+                        //Console.WriteLine("2nd respawning " + mob.mName);
+                        //mob.respawn();
+                    }
+                }
             }// foreach
         }// processArea
 

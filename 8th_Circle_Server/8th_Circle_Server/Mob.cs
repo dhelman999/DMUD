@@ -47,6 +47,7 @@ namespace _8th_Circle_Server
         public ArrayList mEventList;
         public bool mIsActive;
         public int mMobId;
+        public int mRespawnTime;
 
         public Mob()
         {
@@ -62,6 +63,7 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mIsActive = true;
+            mRespawnTime = 15;
             mMobId = -1;
         }// Constructor
 
@@ -76,10 +78,35 @@ namespace _8th_Circle_Server
             mFlagList = new ArrayList();
             mEventList = new ArrayList();
             mInventory.Capacity = 20;
+            mRespawnTime = 15;
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
         }// Constructor
+
+        public Mob(Mob mob)
+        {
+            mName = mob.mName;
+            mDescription = mob.mDescription;
+            mShortDescription = mob.mShortDescription;
+            mWorldLoc = mob.mWorldLoc;
+            mInventory = new ArrayList();
+            mInventory = (ArrayList)mob.mInventory.Clone();
+            mPrepList = new ArrayList();
+            mPrepList = (ArrayList)mob.mPrepList.Clone();
+            mFlagList = new ArrayList();
+            mFlagList = (ArrayList)mob.mFlagList.Clone();
+            mEventList = new ArrayList();
+            mEventList = (ArrayList)mob.mEventList.Clone();
+            mInventory.Capacity = mob.mInventory.Capacity;
+            mRespawnTime = mob.mRespawnTime;
+            mStartingRoom = mob.mStartingRoom;
+            mCurrentRoom = mob.mCurrentRoom;;
+            mStartingArea = mob.mStartingArea;
+            mCurrentArea = mob.mCurrentArea;
+            mStartingOwner = mob.mStartingOwner;
+            mCurrentOwner = mob.mCurrentOwner;
+        }// Copy Constructor
 
         public bool move(string direction)
         {
@@ -244,6 +271,10 @@ namespace _8th_Circle_Server
             return "destroying " + mName;
         }// destroy
 
+        public virtual void respawn()
+        {
+            // blank
+        }// respawn
     }// Class Mob
 
 }// Namespace _8th_Circle_Server

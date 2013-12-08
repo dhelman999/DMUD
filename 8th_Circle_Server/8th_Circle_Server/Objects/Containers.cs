@@ -18,6 +18,33 @@ namespace _8th_Circle_Server
             mIsOpen = false;
         }// Constructor
 
+        public Container(Container mob)
+        {
+            Console.WriteLine("calling copy constructor");
+            mName = mob.mName;
+            mDescription = mob.mDescription;
+            mShortDescription = mob.mShortDescription;
+            mWorld = mob.mWorld;
+            mWorldLoc = mob.mWorldLoc;
+            mInventory = new ArrayList();
+            mInventory = (ArrayList)mob.mInventory.Clone();
+            mPrepList = new ArrayList();
+            mPrepList = (ArrayList)mob.mPrepList.Clone();
+            mFlagList = new ArrayList();
+            mFlagList = (ArrayList)mob.mFlagList.Clone();
+            mEventList = new ArrayList();
+            mEventList = (ArrayList)mob.mEventList.Clone();
+            mInventory.Capacity = mob.mInventory.Capacity;
+            mRespawnTime = mob.mRespawnTime;
+            mStartingRoom = mob.mStartingRoom;
+            mCurrentRoom = mob.mCurrentRoom;;
+            mStartingArea = mob.mStartingArea;
+            mCurrentArea = mob.mCurrentArea;
+            mStartingOwner = mob.mStartingOwner;
+            mCurrentOwner = mob.mCurrentOwner;
+            mIsOpen = mob.mIsOpen;
+        }// Copy Constructor
+
         public override string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
         {
             bool foundAtOrIn = false;
@@ -100,6 +127,16 @@ namespace _8th_Circle_Server
 
             return ret;
         }// close
+
+        public override void respawn()
+        {
+            Container cont = new Container(this);
+            this.destory();
+            cont.mIsActive = true;
+            cont.mCurrentArea.mObjectList.Add(cont);
+            cont.mCurrentRoom.mObjectList.Add(cont);
+            cont.mWorld.mObjectList.Add(cont);
+        }// respawn
 
     }// Class Container
 

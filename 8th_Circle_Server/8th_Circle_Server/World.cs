@@ -47,6 +47,7 @@ namespace _8th_Circle_Server
             Area protoArea = new Area();
             protoArea.mName = "Proto Area";
             protoArea.mDescription = "The testing area for the 8th Circle";
+            protoArea.mWorld = this;
 
             Room currentRoom = new Room();
 
@@ -108,6 +109,8 @@ namespace _8th_Circle_Server
             // Add Areas
             mAreaList.Add(protoArea);
 
+            // TODO
+            // Seperate out these different rooms/items etc into a more structured class
             // Add Objects
             Container chest = new Container();  
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
@@ -128,10 +131,12 @@ namespace _8th_Circle_Server
             chest.mMobId = 1;
             chest.mIsActive = false;
             mFullMobList.Add(chest);
+            
             Container chest1a = new Container();
             chest1a = (Container)mFullMobList[0];
             getRoom(0, 0, 2).addObject(chest1a);
-            chest.mCurrentArea.mObjectList.Add(chest1a);
+            chest1a.mCurrentArea.mObjectList.Add(chest1a);
+            protoArea.mFullMobList.Add(chest);
             mObjectList.Add(chest1a);
 
             Container chest2 = new Container();
@@ -153,12 +158,26 @@ namespace _8th_Circle_Server
             chest2.mMobId = 2;
             chest2.mIsActive = false;
             mFullMobList.Add(chest2);
-            Container chest2a = new Container();
-            chest2a = (Container)mFullMobList[1];
-            getRoom(1, 1, 1).addObject(chest2a);
-            chest2.mCurrentArea.mObjectList.Add(chest2a);
-            mObjectList.Add(chest2a);
 
+            //Container chest3 = (Container)mFullMobList[1];
+            Container chest2a = new Container((Container)mFullMobList[1]);
+            chest2a.mStartingRoom = getRoom(1, 1, 1);
+            protoArea.mFullMobList.Add(chest2a);
+            Container chest2b = new Container((Container)mFullMobList[1]);
+            chest2b.mStartingRoom = getRoom(1, 1, 1);
+            protoArea.mFullMobList.Add(chest2b);
+
+            Container chest2c = new Container((Container)mFullMobList[1]);
+            Container chest2d = new Container((Container)mFullMobList[1]);
+
+            getRoom(1, 1, 1).addObject(chest2c);
+            chest2a.mCurrentArea.mObjectList.Add(chest2c);
+            mObjectList.Add(chest2c);
+
+            getRoom(1, 1, 1).addObject(chest2d);
+            chest2a.mCurrentArea.mObjectList.Add(chest2d);
+            mObjectList.Add(chest2d);
+            
             mAreaHandler.registerArea(protoArea);
         }// Constructor
 
