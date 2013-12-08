@@ -66,6 +66,7 @@ namespace _8th_Circle_Server
         COMMAND_TELL,
         COMMAND_OPEN,
         COMMAND_CLOSE,
+        COMMAND_DESTROY,
         INVALID
     };// commandName
 
@@ -267,6 +268,11 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("close", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("destroy", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DESTROY,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
@@ -533,6 +539,10 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_CLOSE:
                     clientString = ((Mob)commandQueue[1]).close(clientHandler);
                     clientHandler.safeWrite(clientString);
+                    break;
+
+                case commandName.COMMAND_DESTROY:
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).destory());
                     break;
 
                 case commandName.COMMAND_LOOK:

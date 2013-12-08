@@ -20,6 +20,10 @@ namespace _8th_Circle_Server
             this.mClientHandler = null;
         }// Constructor
 
+        public override string destory()
+        {
+            return "You can't destroy a player!";
+        }
     }// Class Player
 
 }// Namespace _8th_Circle_Server

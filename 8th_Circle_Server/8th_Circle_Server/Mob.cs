@@ -223,6 +223,20 @@ namespace _8th_Circle_Server
         {
             return "You can't close that";
         }// close
+
+        public virtual string destory()
+        {
+            mCurrentArea.mObjectList.Remove(this);
+            mCurrentArea.mNpcList.Remove(this);
+            mCurrentOwner = null;
+            mCurrentRoom.mNpcList.Remove(this);
+            mCurrentRoom.mObjectList.Remove(this);
+            mWorld.mNpcList.Remove(this);
+            mWorld.mObjectList.Remove(this);
+
+            return "destroying " + mName;
+        }// destroy
+
     }// Class Mob
 
 }// Namespace _8th_Circle_Server
