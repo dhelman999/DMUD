@@ -66,6 +66,7 @@ namespace _8th_Circle_Server
         COMMAND_TELL,
         COMMAND_OPEN,
         COMMAND_CLOSE,
+        COMMAND_SPAWN,
         COMMAND_DESTROY,
         INVALID
     };// commandName
@@ -88,6 +89,8 @@ namespace _8th_Circle_Server
         }// Constructor
     }// Prepositions
 
+    // TODO
+    // This is horrible.
     struct Command
     {
         public string command;
@@ -268,12 +271,17 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("close", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("destroy", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DESTROY,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("spawn", null, 3, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
+                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -542,7 +550,58 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_DESTROY:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
                     clientHandler.safeWrite(((Mob)commandQueue[1]).destory());
+                    break;
+
+                case commandName.COMMAND_SPAWN:
+                    try
+                    {
+                        int mobID = Int32.Parse((string)commandQueue[1]);
+                        ArrayList fma = clientHandler.mWorld.mFullMobList;
+                        if (mobID < 0 ||
+                            mobID > fma.Count)
+                        {
+                            clientHandler.safeWrite("MobID is outside the valid range");
+                        }
+                        else
+                        {
+                            if (fma[mobID] is Container)
+                            {
+                                Container cont = new Container();
+                                cont = (Container)fma[mobID];
+                                cont.mIsActive = true;
+                                clientHandler.mWorld.mObjectList.Add(cont);
+                                cont.mCurrentArea = clientHandler.mPlayer.mCurrentArea;
+                                cont.mCurrentRoom = clientHandler.mPlayer.mCurrentRoom;
+                                clientHandler.mPlayer.mCurrentArea.mObjectList.Add(cont);
+                                clientHandler.mPlayer.mCurrentRoom.mObjectList.Add(cont);
+                                clientHandler.safeWrite("spawning " + cont.mName);
+                            }
+                            else if (fma[mobID] is Mob)
+                            {
+                                Mob mob = new Mob();
+                                mob = (Mob)fma[mobID];
+                                mob.mIsActive = true;
+                                mob.mCurrentArea = clientHandler.mPlayer.mCurrentArea;
+                                mob.mCurrentRoom = clientHandler.mPlayer.mCurrentRoom;
+                                clientHandler.mPlayer.mCurrentArea.mObjectList.Add(mob);
+                                clientHandler.mPlayer.mCurrentRoom.mObjectList.Add(mob);
+                                clientHandler.safeWrite("spawning " + mob.mName);
+                            }
+                            else
+                            {
+                                clientHandler.safeWrite("Something went wrong");
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        clientHandler.safeWrite("That is not a valid MobID");
+                    }
                     break;
 
                 case commandName.COMMAND_LOOK:
@@ -742,9 +801,8 @@ namespace _8th_Circle_Server
 
                     // If the predicate is a player, we only accept the very next token to
                     // search for a valid playername
-                    if (targetPredicate == predicateType.PREDICATE_PLAYER || 
-                        targetPredicate == predicateType.PREDICATE_OBJECT ||
-                        targetPredicate == predicateType.PREDICATE_ALL)
+                    if (targetPredicate != predicateType.INVALID &&
+                        targetPredicate != predicateType.PREDICATE_CUSTOM)
                     {
                         tokens = command.Split(' ');
                         errorString += " " + tokens[0];
@@ -812,7 +870,10 @@ namespace _8th_Circle_Server
             string[] tokens = name.Split('.');
 
             // Need to know which lists we need to search through to find the target predicate
-            if (predType == predicateType.PREDICATE_OBJECT || predType == predicateType.PREDICATE_ALL)
+            if (predType == predicateType.PREDICATE_OBJECT ||
+                predType == predicateType.PREDICATE_OBJECT_OR_NPC || 
+                predType == predicateType.PREDICATE_OBJECT_OR_PLAYER ||
+                predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mObjectList);
@@ -822,7 +883,10 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);        
             }// if
 
-            if (predType == predicateType.PREDICATE_PLAYER || predType == predicateType.PREDICATE_ALL)
+            if (predType == predicateType.PREDICATE_PLAYER || 
+                predType == predicateType.PREDICATE_OBJECT_OR_PLAYER ||
+                predType == predicateType.PREDICATE_PLAYER_OR_NPC ||
+                predType == predicateType.PREDICATE_ALL)
             {
                 if(validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mPlayerList);
@@ -832,7 +896,10 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);            
             }// if
 
-            if (predType == predicateType.PREDICATE_NPC || predType == predicateType.PREDICATE_ALL)
+            if (predType == predicateType.PREDICATE_NPC || 
+                predType == predicateType.PREDICATE_OBJECT_OR_NPC ||
+                predType == predicateType.PREDICATE_PLAYER_OR_NPC ||
+                predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
                     targetList.Add(clientHandler.mWorld.mNpcList);

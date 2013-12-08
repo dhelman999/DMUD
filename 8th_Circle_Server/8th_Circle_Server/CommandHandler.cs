@@ -34,6 +34,9 @@ namespace _8th_Circle_Server
         private object mQueueLock;
         private Thread mSpinWorkThread; 
   
+        // TODO
+        // Investigate whether or not you really need two different threads
+        // to do the work of the commandhandler and commandexecuter
         public CommandHandler(World world)
         {  
             mCommandQueue = new Queue();

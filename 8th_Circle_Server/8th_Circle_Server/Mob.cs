@@ -45,6 +45,8 @@ namespace _8th_Circle_Server
         public ArrayList mFlagList;
         public ArrayList mInventory;
         public ArrayList mEventList;
+        public bool mIsActive;
+        public int mMobId;
 
         public Mob()
         {
@@ -59,6 +61,8 @@ namespace _8th_Circle_Server
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
+            mIsActive = true;
+            mMobId = -1;
         }// Constructor
 
         public Mob(string name)
@@ -229,10 +233,13 @@ namespace _8th_Circle_Server
             mCurrentArea.mObjectList.Remove(this);
             mCurrentArea.mNpcList.Remove(this);
             mCurrentOwner = null;
+            mInventory.Clear();
+            mEventList.Clear();
             mCurrentRoom.mNpcList.Remove(this);
             mCurrentRoom.mObjectList.Remove(this);
             mWorld.mNpcList.Remove(this);
             mWorld.mObjectList.Remove(this);
+            mIsActive = false;
 
             return "destroying " + mName;
         }// destroy

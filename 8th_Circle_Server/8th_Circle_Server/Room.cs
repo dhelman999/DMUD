@@ -92,20 +92,16 @@ namespace _8th_Circle_Server
 
             exitStr += "\n";
             exitStr += "Objects: ";
-            for (int i = 0; i < mObjectList.Count; i++)
+            for (int i = 0; i < mObjectList.Count; ++i)
             {
-                if(i == mObjectList.Count-1)
-                    exitStr += ((Mob)mObjectList[i]).mName;
-                else
-                    exitStr += ((Mob)mObjectList[i]).mName + ",";
+                exitStr += ((Mob)mObjectList[i]).mName + "\n";
             }// for
-            exitStr += "\n";
-            for (int i = 0; i < mNpcList.Count; i++)
+            for (int i = 0; i < mNpcList.Count; ++i)
             {
                 exitStr += ((Mob)mNpcList[i]).mName + "\n";
             }// for
             exitStr += "Players: ";
-            for (int i = 0; i < mPlayerList.Count; i++)
+            for (int i = 0; i < mPlayerList.Count; ++i)
             {
                 exitStr += ((Player)mPlayerList[i]).mName + "\n";
             }// for
@@ -113,6 +109,8 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
+        // TODO
+        // See if you need this or if it is better to split it into two functions
         public void addObject(Mob mob)
         {
             // Remove old references

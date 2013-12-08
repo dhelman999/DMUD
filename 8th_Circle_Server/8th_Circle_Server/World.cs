@@ -25,7 +25,7 @@ namespace _8th_Circle_Server
         public ArrayList mAreaList;
         public ArrayList mRoomList;
         public ArrayList mObjectList;
-
+        public ArrayList mFullMobList;
         private Room[, ,] mWorldGrid;
 
         public World()
@@ -38,6 +38,7 @@ namespace _8th_Circle_Server
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
             mObjectList = new ArrayList();
+            mFullMobList = new ArrayList();
 
             mCommandHandler.start();
             mEventHandler.start();
@@ -123,9 +124,15 @@ namespace _8th_Circle_Server
             eventData.commandName = commandName.COMMAND_LOOK;
             eventData.prepType = PrepositionType.PREP_IN;
             eventData.data = "A voice speaks to you from within " + chest.mName;
-            chest.mEventList.Add(eventData); 
-            getRoom(0, 0, 2).addObject(chest);
-            mObjectList.Add(chest);
+            chest.mEventList.Add(eventData);
+            chest.mMobId = 1;
+            chest.mIsActive = false;
+            mFullMobList.Add(chest);
+            Container chest1a = new Container();
+            chest1a = (Container)mFullMobList[0];
+            getRoom(0, 0, 2).addObject(chest1a);
+            chest.mCurrentArea.mObjectList.Add(chest1a);
+            mObjectList.Add(chest1a);
 
             Container chest2 = new Container();
             chest2.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
@@ -142,9 +149,15 @@ namespace _8th_Circle_Server
             eventData.commandName = commandName.COMMAND_LOOK;
             eventData.prepType = PrepositionType.PREP_AT;
             eventData.data = "The " + chest.mName + " says \"hello!\"";
-            chest2.mEventList.Add(eventData); 
-            getRoom(1, 1, 1).addObject(chest2);
-            mObjectList.Add(chest2);
+            chest2.mEventList.Add(eventData);
+            chest2.mMobId = 2;
+            chest2.mIsActive = false;
+            mFullMobList.Add(chest2);
+            Container chest2a = new Container();
+            chest2a = (Container)mFullMobList[1];
+            getRoom(1, 1, 1).addObject(chest2a);
+            chest2.mCurrentArea.mObjectList.Add(chest2a);
+            mObjectList.Add(chest2a);
 
             mAreaHandler.registerArea(protoArea);
         }// Constructor
