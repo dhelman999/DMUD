@@ -10,7 +10,9 @@ namespace _8th_Circle_Server
     {
         // Debug
         internal const bool DEBUG = false;
-        
+
+        internal const int HOUSE_OFFSET = 10000;
+
         // Constants
         const int MAXXSIZE = 3;
         const int MAXYSIZE = 3;
@@ -173,6 +175,8 @@ namespace _8th_Circle_Server
             getRoom(1, 1, 1).addObject(chest2d);
             
             mAreaHandler.registerArea(protoArea);
+
+            createHouse();
         }// Constructor
 
 
@@ -244,6 +248,59 @@ namespace _8th_Circle_Server
             }// if
         }// createSideLinks
 
+        public void createHouse()
+        {
+            Area geraldineArea = new Area();
+            geraldineArea.mName = "Geraldine Estate";
+            geraldineArea.mDescription = "The residence of the esteemed Renee and David";
+            geraldineArea.mWorld = this;
+
+            Room house1stEnteranceway = new Room("The enterance to the Geraldine Manor",
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET);
+            house1stEnteranceway.mCurrentArea = geraldineArea;
+            Room house1stHallway = new Room("The west hallway is empty besides a few pictures",
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET);
+            house1stHallway.mCurrentArea = geraldineArea;
+            Room house1stKitchen = new Room("The kitchen has a nice view of the outside to the west; " +
+                "there are also stairs leading down and a doorway to the north",
+                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET);
+            house1stKitchen.mCurrentArea = geraldineArea;
+            Room house1stDiningRoom = new Room("The dining room is blue with various pictures; one is " +
+                "particularly interesting, featuring a type of chicken",
+                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+            house1stDiningRoom.mCurrentArea = geraldineArea;
+            Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " +
+                "the north wall",
+                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+            house1stLivingRoom.mCurrentArea = geraldineArea;
+            Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " +
+                "a sink and toilet",
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+            house1stBathroom.mCurrentArea = geraldineArea;
+
+            house1stEnteranceway.mWestLink = house1stHallway;
+            house1stEnteranceway.mSouthLink = house1stLivingRoom;
+            house1stHallway.mEastLink = house1stEnteranceway;
+            house1stHallway.mSouthLink = house1stBathroom;
+            house1stHallway.mWestLink = house1stKitchen;
+            house1stKitchen.mEastLink = house1stHallway;
+            house1stKitchen.mSouthLink = house1stDiningRoom;
+            house1stDiningRoom.mNorthLink = house1stKitchen;
+            house1stDiningRoom.mEastLink = house1stLivingRoom;
+            house1stLivingRoom.mWestLink = house1stDiningRoom;
+            house1stLivingRoom.mNorthLink = house1stEnteranceway;
+            house1stBathroom.mNorthLink = house1stHallway;
+
+            geraldineArea.mRoomList.Add(house1stEnteranceway);
+            geraldineArea.mRoomList.Add(house1stHallway);
+            geraldineArea.mRoomList.Add(house1stKitchen);
+            geraldineArea.mRoomList.Add(house1stDiningRoom);
+            geraldineArea.mRoomList.Add(house1stLivingRoom);
+            geraldineArea.mRoomList.Add(house1stBathroom);
+
+            getRoom(0, 0, 0).mWestLink = house1stEnteranceway;
+            mAreaList.Add(geraldineArea);
+        }// createHouse
     }// Class World
 
 }// Namespace _8th_Circle_Server

@@ -71,11 +71,10 @@ namespace _8th_Circle_Server
 
                         for(int i = 0; i < area.mObjectList.Count; ++i)
                         {
-                            Container tmp = (Container)area.mObjectList[i];
+                            Mob tmp = (Mob)area.mObjectList[i];
                             if (mob.mMobId == tmp.mMobId &&
                                 mob.mInstanceId == tmp.mInstanceId)
                             {
-                                Console.WriteLine("respawning " + mob.mName + " instance: " + mob.mInstanceId);
                                 tmp.destory();
                                 mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
                                 mob.respawn();
@@ -84,9 +83,12 @@ namespace _8th_Circle_Server
                             }// if
                         }// for
 
+                        // TODO
+                        // Make mobs from other areas despawn after the timer
+                        // so other dropped items/mobs won't litter areas
+                        // they don't belong in
                         if (!found)
                         {
-                            Console.WriteLine("2 respawning " + mob.mName + " instance: " + mob.mInstanceId);
                             mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
                             mob.respawn();
                         }// if

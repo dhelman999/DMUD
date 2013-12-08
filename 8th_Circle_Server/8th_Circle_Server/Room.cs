@@ -96,6 +96,8 @@ namespace _8th_Circle_Server
             {
                 exitStr += ((Mob)mObjectList[i]).mName + "\n";
             }// for
+            if (mObjectList.Count == 0)
+                exitStr += "\n";
             for (int i = 0; i < mNpcList.Count; ++i)
             {
                 exitStr += ((Mob)mNpcList[i]).mName + "\n";
