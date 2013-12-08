@@ -47,7 +47,9 @@ namespace _8th_Circle_Server
         public ArrayList mEventList;
         public bool mIsActive;
         public int mMobId;
-        public int mRespawnTime;
+        public int mInstanceId;
+        public int mStartingRespawnTime;
+        public int mCurrentRespawnTime;
 
         public Mob()
         {
@@ -63,8 +65,10 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mIsActive = true;
-            mRespawnTime = 15;
+            mStartingRespawnTime = mCurrentRespawnTime = 15;
             mMobId = -1;
+            mInstanceId = 0;
+
         }// Constructor
 
         public Mob(string name)
@@ -78,10 +82,12 @@ namespace _8th_Circle_Server
             mFlagList = new ArrayList();
             mEventList = new ArrayList();
             mInventory.Capacity = 20;
-            mRespawnTime = 15;
+            mStartingRespawnTime = mCurrentRespawnTime = 15;
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
+            mMobId = -1;
+            mInstanceId = 0;
         }// Constructor
 
         public Mob(Mob mob)
@@ -99,13 +105,16 @@ namespace _8th_Circle_Server
             mEventList = new ArrayList();
             mEventList = (ArrayList)mob.mEventList.Clone();
             mInventory.Capacity = mob.mInventory.Capacity;
-            mRespawnTime = mob.mRespawnTime;
+            mStartingRespawnTime = mob.mStartingRespawnTime;
+            mCurrentRespawnTime = mStartingRespawnTime;
             mStartingRoom = mob.mStartingRoom;
             mCurrentRoom = mob.mCurrentRoom;;
             mStartingArea = mob.mStartingArea;
             mCurrentArea = mob.mCurrentArea;
             mStartingOwner = mob.mStartingOwner;
             mCurrentOwner = mob.mCurrentOwner;
+            mMobId = mob.mMobId;
+            mInstanceId = mob.mInstanceId;
         }// Copy Constructor
 
         public bool move(string direction)

@@ -114,8 +114,11 @@ namespace _8th_Circle_Server
         public void addObject(Mob mob)
         {
             // Remove old references
-            mob.mCurrentArea.mObjectList.Remove(mob);
-            mob.mCurrentRoom.mObjectList.Remove(mob);
+            if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
+            {
+                mob.mCurrentArea.mObjectList.Remove(mob);
+                mob.mCurrentRoom.mObjectList.Remove(mob);
+            }
             
             // Add new references
             mob.mCurrentArea = mCurrentArea;

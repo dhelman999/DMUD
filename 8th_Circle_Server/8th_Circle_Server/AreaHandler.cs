@@ -56,7 +56,6 @@ namespace _8th_Circle_Server
             {
                 mAreaList.Add(area);
             }// lock
-            mSpinWorkThread.Interrupt();
         }// enQueueArea
 
         private void processAreas()
@@ -66,22 +65,33 @@ namespace _8th_Circle_Server
                 Console.WriteLine("area handler tick!");
                 foreach (Container mob in area.mFullMobList)
                 {
-                    if (area.mObjectList.Contains(mob))
+                    if ((mob.mCurrentRespawnTime -= TICKTIME) <= 0)
                     {
-                        Container mob2 = (Container)area.mObjectList[area.mObjectList.IndexOf(mob)];
-                        if ((mob2.mRespawnTime-= TICKTIME) < 0)
+                        bool found = false;
+
+                        for(int i = 0; i < area.mObjectList.Count; ++i)
                         {
-                            Console.WriteLine("respawning " + mob.mName);
-                            mob2.respawn();
-                            mob2.mRespawnTime = mob.mRespawnTime;
-                        }
-                    }
-                    else
-                    {
-                        //Console.WriteLine("2nd respawning " + mob.mName);
-                        //mob.respawn();
-                    }
-                }
+                            Container tmp = (Container)area.mObjectList[i];
+                            if (mob.mMobId == tmp.mMobId &&
+                                mob.mInstanceId == tmp.mInstanceId)
+                            {
+                                Console.WriteLine("respawning " + mob.mName + " instance: " + mob.mInstanceId);
+                                tmp.destory();
+                                mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
+                                mob.respawn();
+                                found = true;
+                                break;
+                            }// if
+                        }// for
+
+                        if (!found)
+                        {
+                            Console.WriteLine("2 respawning " + mob.mName + " instance: " + mob.mInstanceId);
+                            mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
+                            mob.respawn();
+                        }// if
+                    }// if
+                }// foreach
             }// foreach
         }// processArea
 

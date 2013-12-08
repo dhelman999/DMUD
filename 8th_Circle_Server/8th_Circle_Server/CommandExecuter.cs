@@ -914,15 +914,17 @@ namespace _8th_Circle_Server
             {
                 if(ar.Count > 0)
                 {
-                    foreach (Mob mob in ar)
+                    for(int i=0; i < ar.Count; ++i)
                     {
-                        if(validatePredicate(tokens[0].ToLower(), mob.mName.ToLower()))
+                        // TODO
+                        // This threw an exception when this was a foreach,
+                        // saying the enum was modified, probably need to do locking around this
+                        if(validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).mName.ToLower()))
                         {
                             ret = errorCode.E_OK;
-                            targetPredicates.Add(mob);
-                            break;
+                            targetPredicates.Add((Mob)ar[i]);
                         }// if
-                    }// foreach
+                    }// for
                 }// if
             }// foreach
 
@@ -939,12 +941,12 @@ namespace _8th_Circle_Server
                 {
                     try
                     {
-                        int index = Int32.Parse(tokens[1]);
+                        int index = Int32.Parse(tokens[1])-1;
 
                         if (index <= targetPredicates.Count &&
                             index > 0)
                         {
-                            commandQueue.Add(targetPredicates[index - 1]);
+                            commandQueue.Add(targetPredicates[index]);
                             ret = errorCode.E_OK;
                         }
                     }// try

@@ -20,7 +20,6 @@ namespace _8th_Circle_Server
 
         public Container(Container mob)
         {
-            Console.WriteLine("calling copy constructor");
             mName = mob.mName;
             mDescription = mob.mDescription;
             mShortDescription = mob.mShortDescription;
@@ -35,7 +34,8 @@ namespace _8th_Circle_Server
             mEventList = new ArrayList();
             mEventList = (ArrayList)mob.mEventList.Clone();
             mInventory.Capacity = mob.mInventory.Capacity;
-            mRespawnTime = mob.mRespawnTime;
+            mStartingRespawnTime = mob.mStartingRespawnTime;
+            mCurrentRespawnTime = mStartingRespawnTime;
             mStartingRoom = mob.mStartingRoom;
             mCurrentRoom = mob.mCurrentRoom;;
             mStartingArea = mob.mStartingArea;
@@ -43,6 +43,8 @@ namespace _8th_Circle_Server
             mStartingOwner = mob.mStartingOwner;
             mCurrentOwner = mob.mCurrentOwner;
             mIsOpen = mob.mIsOpen;
+            mMobId = mob.mMobId;
+            mInstanceId = mob.mInstanceId;
         }// Copy Constructor
 
         public override string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
@@ -131,7 +133,6 @@ namespace _8th_Circle_Server
         public override void respawn()
         {
             Container cont = new Container(this);
-            this.destory();
             cont.mIsActive = true;
             cont.mCurrentArea.mObjectList.Add(cont);
             cont.mCurrentRoom.mObjectList.Add(cont);
