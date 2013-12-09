@@ -378,6 +378,45 @@ namespace _8th_Circle_Server
             house2ndBedroom.mNorthLink = house2ndBathroom;
             house2ndBlueroom.mNorthLink = house2ndHallway;
 
+            // TODO
+            // This needs to be simplified, this is ridiculous
+            Doorway house2ndHalldwy1 = new Doorway("door", Direction.DIRECTION_WEST,
+                house2ndHallway);
+            Doorway house2ndHalldwy2 = new Doorway("door", Direction.DIRECTION_EAST,
+                house2ndHallway);
+            Doorway house2ndHalldwy3 = new Doorway("door", Direction.DIRECTION_SOUTH,
+                house2ndHallway);
+            Doorway house2ndHalldwy4 = new Doorway("door", Direction.DIRECTION_SOUTHWEST,
+                house2ndHallway);
+            Doorway house2ndBathroomdwy1 = new Doorway("door", Direction.DIRECTION_EAST,
+                house2ndBathroom);
+            Doorway house2ndBathroomdwy2 = new Doorway("door", Direction.DIRECTION_SOUTH,
+               house2ndBathroom);
+            Doorway house2ndBlueroomdwy1 = new Doorway("door", Direction.DIRECTION_NORTH,
+                house2ndBlueroom);
+            Doorway house2ndKittyroomdwy1 = new Doorway("door", Direction.DIRECTION_WEST,
+                house2ndKittyroom);
+            Doorway house2ndBedroomdwy1 = new Doorway("door", Direction.DIRECTION_NORTHEAST,
+                house2ndBedroom);
+            Doorway house2ndBedroomdwy2 = new Doorway("door", Direction.DIRECTION_NORTH,
+                house2ndBedroom);
+            Doorway house2ndKittyroomdwy2 = new Doorway("door", Direction.DIRECTION_NORTH,
+                house2ndKittyroom);
+            Doorway house2ndKittyClosetdwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+                house2ndKittyCloset);
+            house2ndHalldwy1.mCompanion = house2ndBathroomdwy1;
+            house2ndHalldwy2.mCompanion = house2ndKittyroomdwy1;
+            house2ndHalldwy3.mCompanion = house2ndBlueroomdwy1;
+            house2ndHalldwy4.mCompanion = house2ndBedroomdwy1;
+            house2ndBathroomdwy1.mCompanion = house2ndHalldwy1;
+            house2ndBathroomdwy2.mCompanion = house2ndBedroomdwy2;
+            house2ndBedroomdwy2.mCompanion = house2ndBathroomdwy2;
+            house2ndKittyroomdwy1.mCompanion = house2ndHalldwy2;
+            house2ndBlueroomdwy1.mCompanion = house2ndHalldwy3;
+            house2ndBedroomdwy1.mCompanion = house2ndHalldwy4;
+            house2ndKittyroomdwy2.mCompanion = house2ndKittyClosetdwy;
+            house2ndKittyClosetdwy.mCompanion = house2ndKittyroomdwy2;
+
             houseBaseentrance.mUpLink = house1stKitchen;
             house1stKitchen.mDownLink = houseBaseentrance;
             houseBaseentrance.mSouthLink = houseBasepart2;

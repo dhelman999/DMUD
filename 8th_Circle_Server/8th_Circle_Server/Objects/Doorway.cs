@@ -75,6 +75,7 @@ namespace _8th_Circle_Server
             mBidirectional = true;
             mCompanion = null;
             mIsToggled = false;
+            closed();
         }// Constructor
 
         public override string open(ClientHandler clientHandler)

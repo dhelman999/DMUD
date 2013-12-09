@@ -927,7 +927,7 @@ namespace _8th_Circle_Server
                         // TODO
                         // This threw an exception when this was a foreach,
                         // saying the enum was modified, probably need to do locking around this
-                        if(validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).mName.ToLower()))
+                        if(validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).exitString().ToLower()))
                         {
                             ret = errorCode.E_OK;
                             targetPredicates.Add((Mob)ar[i]);
