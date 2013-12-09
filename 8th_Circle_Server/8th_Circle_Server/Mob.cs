@@ -31,6 +31,7 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public string mName;
+        public string mExitStr;
         public string mShortDescription;
         public string mDescription;
         public World mWorld;
@@ -53,7 +54,7 @@ namespace _8th_Circle_Server
 
         public Mob()
         {
-            mName = mDescription = mShortDescription = string.Empty;
+            mName = mDescription = mShortDescription = mExitStr = string.Empty;
             mWorldLoc = new int[3];
             mInventory = new ArrayList();
             mPrepList = new ArrayList();
@@ -73,7 +74,7 @@ namespace _8th_Circle_Server
 
         public Mob(string name)
         {
-            mName = name;
+            mName = mExitStr = name;
             mDescription = mShortDescription = string.Empty;
             mWorldLoc = new int[3];
             mInventory = new ArrayList();
@@ -93,6 +94,7 @@ namespace _8th_Circle_Server
         public Mob(Mob mob)
         {
             mName = mob.mName;
+            mExitStr = mob.mName;
             mDescription = mob.mDescription;
             mShortDescription = mob.mShortDescription;
             mWorldLoc = mob.mWorldLoc;
@@ -284,6 +286,12 @@ namespace _8th_Circle_Server
         {
             // blank
         }// respawn
+
+        public virtual string exitString()
+        {
+            return mName;
+        }// exitString
+
     }// Class Mob
 
 }// Namespace _8th_Circle_Server

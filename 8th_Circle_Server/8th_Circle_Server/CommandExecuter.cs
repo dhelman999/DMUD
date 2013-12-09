@@ -541,11 +541,19 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_OPEN:
                     clientString = ((Mob)commandQueue[1]).open(clientHandler);
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
                     clientHandler.safeWrite(clientString);
                     break;
 
                 case commandName.COMMAND_CLOSE:
                     clientString = ((Mob)commandQueue[1]).close(clientHandler);
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
                     clientHandler.safeWrite(clientString);
                     break;
 

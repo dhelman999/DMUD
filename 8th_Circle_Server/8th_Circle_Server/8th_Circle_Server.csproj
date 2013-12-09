@@ -54,6 +54,7 @@
     <Compile Include="Mob.cs" />
     <Compile Include="MUDServer.cs" />
     <Compile Include="Objects\Containers.cs" />
+    <Compile Include="Objects\Doorway.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />

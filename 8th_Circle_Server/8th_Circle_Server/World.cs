@@ -356,6 +356,13 @@ namespace _8th_Circle_Server
             house1stLivingRoom.mNorthLink = house1stentranceway;
             house1stBathroom.mNorthLink = house1stHallway;
 
+            Doorway house1stBathroomdwy = new Doorway("door", Direction.DIRECTION_NORTH,
+                house1stBathroom);
+            Doorway house1stHalldwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+                house1stHallway);
+            house1stBathroomdwy.mCompanion = house1stHalldwy;
+            house1stHalldwy.mCompanion = house1stBathroomdwy;
+            
             house1stentranceway.mUpLink = house2ndHallway;
             house2ndHallway.mDownLink = house1stentranceway;
             house2ndHallway.mEastLink = house2ndKittyroom;
@@ -415,6 +422,7 @@ namespace _8th_Circle_Server
             getRoom(0, 0, 0).mWestLink = house1stentranceway;
             mAreaList.Add(geraldineArea);
         }// createHouse
+
     }// Class World
 
 }// Namespace _8th_Circle_Server
