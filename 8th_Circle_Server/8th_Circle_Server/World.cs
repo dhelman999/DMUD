@@ -436,6 +436,34 @@ namespace _8th_Circle_Server
             houseBasepart5.mNorthLink = houseBaseBathroom;
             houseBaseBathroom.mSouthLink = houseBasepart5;
 
+            Doorway houseBaseBathroomdwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+                houseBaseBathroom);
+            Doorway houseBasementbdwy = new Doorway("door", Direction.DIRECTION_NORTH,
+                houseBasepart5);
+            houseBaseBathroomdwy.mCompanion = houseBasementbdwy;
+            houseBasementbdwy.mCompanion = houseBaseBathroomdwy;
+
+            Doorway houseBaseLaundrydwy = new Doorway("door", Direction.DIRECTION_EAST,
+                houseBaseLaundryRoom);
+            Doorway houseBasementbdwy2 = new Doorway("door", Direction.DIRECTION_WEST,
+                houseBaseentrance);
+            houseBaseLaundrydwy.mCompanion = houseBasementbdwy2;
+            houseBasementbdwy2.mCompanion = houseBaseLaundrydwy;
+
+            Doorway houseBaseGameroomdwy = new Doorway("door", Direction.DIRECTION_EAST,
+                houseBaseCloset);
+            Doorway houseBasementbdwy3 = new Doorway("door", Direction.DIRECTION_WEST,
+                houseBasepart2);
+            houseBaseGameroomdwy.mCompanion = houseBasementbdwy3;
+            houseBasementbdwy3.mCompanion = houseBaseGameroomdwy;
+
+            Doorway houseBaseSumproomdwy = new Doorway("door", Direction.DIRECTION_WEST,
+                houseBaseSumpRoom);
+            Doorway houseBasementbdwy4 = new Doorway("door", Direction.DIRECTION_EAST,
+                houseBasepart2);
+            houseBaseSumproomdwy.mCompanion = houseBasementbdwy4;
+            houseBasementbdwy4.mCompanion = houseBaseSumproomdwy;
+
             geraldineArea.mRoomList.Add(house1stentranceway);
             geraldineArea.mRoomList.Add(house1stHallway);
             geraldineArea.mRoomList.Add(house1stKitchen);
