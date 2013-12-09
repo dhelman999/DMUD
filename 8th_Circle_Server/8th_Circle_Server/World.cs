@@ -119,6 +119,8 @@ namespace _8th_Circle_Server
             chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
             chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
+            chest.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
+            chest.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
             chest.mName = "chest1";
             chest.mInventory.Capacity = 20;
             chest.mWorld = this;
@@ -130,6 +132,9 @@ namespace _8th_Circle_Server
             chest.mEventList.Add(eventData);
             chest.mMobId = 1;
             chest.mIsActive = false;
+            chest.mKeyId = 3;
+            chest.mStartingRespawnTime = 60;
+            chest.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest);
 
             Container chest2 = new Container();
@@ -137,6 +142,8 @@ namespace _8th_Circle_Server
             chest2.mFlagList.Add(objectFlags.FLAG_OPENABLE);
             chest2.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
             chest2.mFlagList.Add(objectFlags.FLAG_LOCKED);
+            chest2.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
+            chest2.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
             chest2.mName = "large wooden chest2";
             chest2.mInventory.Capacity = 20;
             chest2.mWorld = this;
@@ -148,6 +155,9 @@ namespace _8th_Circle_Server
             chest2.mEventList.Add(eventData);
             chest2.mMobId = 2;
             chest2.mIsActive = false;
+            chest2.mKeyId = 3;
+            chest2.mStartingRespawnTime = 60;
+            chest2.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest2);
 
             //Container chest1a = new Container((Container)mFullMobList[1]);
@@ -173,7 +183,28 @@ namespace _8th_Circle_Server
             Container chest2d = new Container((Container)protoArea.mFullMobList[1]);
             getRoom(1, 1, 1).addObject(chest2c);
             getRoom(1, 1, 1).addObject(chest2d);
-            
+
+            Mob key = new Mob();
+            key.mDescription = "An old brass key, what does it unlock?";
+            key.mFlagList.Add(objectFlags.FLAG_GETTABLE);
+            key.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
+            key.mFlagList.Add(objectFlags.FLAG_STORABLE);
+            key.mName = "brass key";
+            key.mInventory.Capacity = 0;
+            key.mWorld = this;
+            key.mMobId = 3;
+            key.mIsActive = false;
+            mFullMobList.Add(key);
+
+            Mob key1a = new Mob((Mob)mFullMobList[2]);
+            key1a.mInstanceId = 1;
+            key1a.mStartingRoom = key1a.mCurrentRoom = getRoom(2, 2, 2);
+            key1a.mStartingArea = key1a.mCurrentArea = key1a.mStartingRoom.mCurrentArea;
+            protoArea.mFullMobList.Add(key1a);
+
+            Mob key2a = new Mob((Mob)protoArea.mFullMobList[2]);
+            getRoom(2, 2, 2).addObject(key2a);
+
             mAreaHandler.registerArea(protoArea);
 
             createHouse();

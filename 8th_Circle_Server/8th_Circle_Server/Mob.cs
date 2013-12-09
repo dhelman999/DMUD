@@ -13,6 +13,9 @@ namespace _8th_Circle_Server
         FLAG_OPENABLE,
         FLAG_CLOSEABLE,
         FLAG_LOCKED,
+        FLAG_LOCKABLE,
+        FLAG_UNLOCKED,
+        FLAG_UNLOCKABLE,
         FLAG_HIDDEN,
         FLAG_INVISIBLE,
         FLAG_GETTABLE,
@@ -97,6 +100,7 @@ namespace _8th_Circle_Server
             mExitStr = mob.mName;
             mDescription = mob.mDescription;
             mShortDescription = mob.mShortDescription;
+            mWorld = mob.mWorld;
             mWorldLoc = mob.mWorldLoc;
             mInventory = new ArrayList();
             mInventory = (ArrayList)mob.mInventory.Clone();
@@ -256,6 +260,33 @@ namespace _8th_Circle_Server
                 return "You can't look like that";
         }// viewed
 
+        public virtual string get(Mob mob)
+        {
+            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
+            {
+                if (mob.mInventory.Count < mob.mInventory.Capacity)
+                {
+                    mob.mCurrentArea.mObjectList.Remove(this);
+                    mob.mCurrentRoom.mObjectList.Remove(this);
+                    mob.mWorld.mObjectList.Remove(this);
+                    if (mob is Player)
+                        this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
+                    else
+                        this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
+                    mob.mInventory.Add(this);
+
+                    return "you get " + exitString();
+                }// if
+                else
+                {
+                    return "your inventory is full";
+                }// else
+            }// if
+            else
+                return "you can't get that";
+                
+        }// get
+
         public virtual string open(ClientHandler clientHandler)
         {
             return "You can't open that";
@@ -265,6 +296,16 @@ namespace _8th_Circle_Server
         {
             return "You can't close that";
         }// close
+
+        public virtual string lck(Mob mob)
+        {
+            return "You can't lock that";
+        }// lck
+
+        public virtual string unlock(Mob mob)
+        {
+            return "You can't unlock that";
+        }// unlock
 
         public virtual string destory()
         {
@@ -284,13 +325,27 @@ namespace _8th_Circle_Server
 
         public virtual void respawn()
         {
-            // blank
+            Mob mob = new Mob(this);
+            mob.mIsActive = true;
+            mob.mCurrentArea.mObjectList.Add(mob);
+            mob.mCurrentRoom.mObjectList.Add(mob);
+            mob.mWorld.mObjectList.Add(mob);
         }// respawn
 
         public virtual string exitString()
         {
             return mName;
         }// exitString
+
+        public virtual string lck()
+        {
+            return "you can't lock that";
+        }
+
+        public virtual string unlock()
+        {
+            return "you can't unlock that";
+        }// unlock
 
     }// Class Mob
 

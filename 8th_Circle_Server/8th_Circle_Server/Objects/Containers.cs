@@ -10,12 +10,14 @@ namespace _8th_Circle_Server
     {
         // Member Variables
         public bool mIsOpen;
+        public int mKeyId;
 
         public Container() : base()
         {
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
             mIsOpen = false;
+            mKeyId = -1;
         }// Constructor
 
         public Container(Container mob)
@@ -45,6 +47,7 @@ namespace _8th_Circle_Server
             mIsOpen = mob.mIsOpen;
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
+            mKeyId = mob.mKeyId;
         }// Copy Constructor
 
         public override string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
@@ -102,6 +105,10 @@ namespace _8th_Circle_Server
             {
                 if(mIsOpen)
                     ret = mName + " is already open";
+                else if (mFlagList.Contains(objectFlags.FLAG_LOCKED))
+                {
+                    return mName + " is locked";
+                }// else
                 else
                 {
                     ret = "You open the " + mName;
@@ -129,6 +136,74 @@ namespace _8th_Circle_Server
 
             return ret;
         }// close
+
+        public override string lck(Mob mob)
+        {
+            bool foundKey = false;
+            foreach(Mob key in mob.mInventory)
+            {
+               if(key.mMobId == mKeyId)
+                  foundKey = true;
+            }// foreach
+
+            if (foundKey)
+            {
+                if (mFlagList.Contains(objectFlags.FLAG_LOCKABLE))
+                {
+                    if (mIsOpen)
+                        return "you cannot lock " + mName + ", it is open!";
+
+                    if (mFlagList.Contains(objectFlags.FLAG_UNLOCKED))
+                    {
+                        this.mFlagList.Add(objectFlags.FLAG_LOCKED);
+                        this.mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
+                        return "you lock " + mName;
+                    }// if
+                    else
+                    {
+                        return mName + " is not unlocked";
+                    }// if
+                }// if
+                else
+                    return "you can't lock " + mName;
+            }// if
+            else
+                return "you don't have the right key to lock " + mName;
+        }// lck
+
+        public override string unlock(Mob mob)
+        {
+            bool foundKey = false;
+            foreach (Mob key in mob.mInventory)
+            {
+                if (key.mMobId == mKeyId)
+                    foundKey = true;
+            }// foreach
+
+            if (foundKey)
+            {
+                if (mIsOpen)
+                    return "you cannot unlock " + mName + ", it is open!";
+
+                if (mFlagList.Contains(objectFlags.FLAG_UNLOCKABLE))
+                {
+                    if (mFlagList.Contains(objectFlags.FLAG_LOCKED))
+                    {
+                        this.mFlagList.Add(objectFlags.FLAG_UNLOCKED);
+                        this.mFlagList.Remove(objectFlags.FLAG_LOCKED);
+                        return "you unlock " + mName;
+                    }// if
+                    else
+                    {
+                        return mName + " is not locked";
+                    }// if
+                }// if
+                else
+                    return "you can't unlock " + mName;
+            }// if
+            else
+                return "you don't have the right key to unlock " + mName;
+        }// unlock
 
         public override void respawn()
         {

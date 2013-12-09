@@ -66,6 +66,10 @@ namespace _8th_Circle_Server
         COMMAND_TELL,
         COMMAND_OPEN,
         COMMAND_CLOSE,
+        COMMAND_GET,
+        COMMAND_INVENTORY,
+        COMMAND_LOCK,
+        COMMAND_UNLOCK,
         COMMAND_SPAWN,
         COMMAND_DESTROY,
         INVALID
@@ -282,6 +286,26 @@ namespace _8th_Circle_Server
 
             pt = new Command("spawn", null, 3, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
                 predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("get", null, 1, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_GET,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("inventory", null, 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_INVENTORY,
+                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("lock", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOCK,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("unlock", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_UNLOCK,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -563,6 +587,41 @@ namespace _8th_Circle_Server
                     tempCommand.predicate1Value = (Mob)commandQueue[1];
                     commandQueue[0] = tempCommand;
                     clientHandler.safeWrite(((Mob)commandQueue[1]).destory());
+                    break;
+
+                case commandName.COMMAND_GET:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).get(clientHandler.mPlayer));
+                    break;
+
+                case commandName.COMMAND_INVENTORY:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    commandQueue[0] = tempCommand;
+                    clientHandler.safeWrite("Inventory:\n");
+                    foreach (Mob mob in clientHandler.mPlayer.mInventory)
+                    {
+                        clientHandler.safeWrite(" " + mob.mName);
+                    }// foreach
+                    break;
+
+                case commandName.COMMAND_LOCK:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).lck(clientHandler.mPlayer));
+                    break;
+
+                case commandName.COMMAND_UNLOCK:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).unlock(clientHandler.mPlayer));
                     break;
 
                 case commandName.COMMAND_SPAWN:

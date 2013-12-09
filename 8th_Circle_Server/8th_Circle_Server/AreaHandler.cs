@@ -62,8 +62,9 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
+                
                 Console.WriteLine("area handler tick!");
-                foreach (Container mob in area.mFullMobList)
+                foreach (Mob mob in area.mFullMobList)
                 {
                     if ((mob.mCurrentRespawnTime -= TICKTIME) <= 0)
                     {
