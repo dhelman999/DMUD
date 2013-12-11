@@ -469,6 +469,7 @@ namespace _8th_Circle_Server
 
             Doorway testdoor = new Doorway("door", houseBasepart3);
             houseBasepart3.addDoor(testdoor, Direction.SOUTH);
+            houseBasepart4.addDoor(testdoor, Direction.NORTH);
 
             Doorway houseBaseBathroomdwy = new Doorway("door", Direction.SOUTH,
                 houseBaseBathroom);

@@ -86,20 +86,7 @@ namespace _8th_Circle_Server
             mName = name;
             mExits = new ArrayList();
             mRoomList = new Room[MAXROOMS];
-            mRoomList[(int)Direction.NORTH] = currentRoom.mNorthLink;
-            mRoomList[(int)Direction.SOUTH] = currentRoom.mSouthLink;
-            mRoomList[(int)Direction.EAST] = currentRoom.mEastLink;
-            mRoomList[(int)Direction.WEST] = currentRoom.mWestLink;
-            mRoomList[(int)Direction.UP] = currentRoom.mUpLink;
-            mRoomList[(int)Direction.DOWN] = currentRoom.mDownLink;
-            mRoomList[(int)Direction.NORTHWEST] = currentRoom.mNorthwestLink;
-            mRoomList[(int)Direction.NORTHEAST] = currentRoom.mNortheastLink;
-            mRoomList[(int)Direction.SOUTHWEST] = currentRoom.mSouthwestLink;
-            mRoomList[(int)Direction.SOUTHEAST] = currentRoom.mSoutheastLink;
             mCurrentRoom = currentRoom;
-            currentRoom.mObjectList.Add(this);
-            currentRoom.mCurrentArea.mObjectList.Add(this);
-            currentRoom.mCurrentArea.mWorld.mObjectList.Add(this);
             mBidirectional = true;
             mCompanion = null;
             mIsToggled = false;
@@ -114,18 +101,14 @@ namespace _8th_Circle_Server
             {
                 mIsOpen = true;
                 opened();
-                if (mBidirectional && mCompanion != null && !mIsToggled)
+                for(int i=0; i < mRoomList.Length; ++i)
                 {
-                    mIsToggled = mCompanion.mIsToggled = true;
-                    mCompanion.open(clientHandler);
-                    foreach (Player pl in mCurrentRoom.mPlayerList)
-                        pl.mClientHandler.safeWrite(exitString() + " opens");
-                    foreach (Player pl in mCompanion.mCurrentRoom.mPlayerList)
-                        pl.mClientHandler.safeWrite(mCompanion.exitString() + " opens");
-                }// if
-                mIsToggled = false;
+                    if (mRoomList[i] != null)
+                        foreach (Player pl in mRoomList[i].mPlayerList)
+                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens");
+                }// for
 
-                return "you open " + exitString();
+                return "you open " + clientHandler.mPlayer.mCurrentRoom.getDoorString(this);
             }// else
         }// open
 
@@ -137,18 +120,14 @@ namespace _8th_Circle_Server
             {
                 mIsOpen = false;
                 closed();
-                if (mBidirectional && mCompanion != null && !mIsToggled)
+                for (int i = 0; i < mRoomList.Length; ++i)
                 {
-                    mIsToggled = mCompanion.mIsToggled = true;
-                    mCompanion.close(clientHandler);
-                    foreach (Player pl in mCurrentRoom.mPlayerList)
-                        pl.mClientHandler.safeWrite(exitString() + " closes");
-                    foreach (Player pl in mCompanion.mCurrentRoom.mPlayerList)
-                        pl.mClientHandler.safeWrite(mCompanion.exitString() + " closes");
-                }// if
-                mIsToggled = false;
+                    if (mRoomList[i] != null)
+                        foreach (Player pl in mRoomList[i].mPlayerList)
+                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes");
+                }// for
 
-                return "you close " + exitString();
+                return "you close " + clientHandler.mPlayer.mCurrentRoom.getDoorString(this);
             }// else
         }// close
 
@@ -282,7 +261,15 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            switch (mPrimaryExit)
+            Direction direction = Direction.INVALID;
+            for(int i=0;i < mCurrentRoom.mDoorwayList.Length; ++i)
+            {
+                if(mCurrentRoom.mDoorwayList[i] != null &&
+                   mCurrentRoom.mDoorwayList[i].Equals(this))
+                    direction = (Direction)(i);
+            }// for
+
+            switch (direction)
             {
                 case Direction.NORTH:
                     ret += "north";

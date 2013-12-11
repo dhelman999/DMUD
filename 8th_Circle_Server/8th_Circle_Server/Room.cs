@@ -73,25 +73,45 @@ namespace _8th_Circle_Server
         public string exitString()
         {
             string exitStr = "Exits: ";
-            if (mNorthLink != null)
+            if (mNorthLink != null && 
+                (mDoorwayList[(int)Direction.NORTH] == null ||
+                mDoorwayList[(int)Direction.NORTH].mIsOpen))
                 exitStr += "North ";
-            if (mSouthLink != null)
+            if (mSouthLink != null &&
+                (mDoorwayList[(int)Direction.SOUTH] == null || 
+                mDoorwayList[(int)Direction.SOUTH].mIsOpen))
                 exitStr += "South ";
-            if (mEastLink != null)
+            if (mEastLink != null &&
+                (mDoorwayList[(int)Direction.EAST] == null || 
+                mDoorwayList[(int)Direction.EAST].mIsOpen))
                 exitStr += "East ";
-            if (mWestLink != null)
+            if (mWestLink != null &&
+                (mDoorwayList[(int)Direction.WEST] == null ||
+                mDoorwayList[(int)Direction.WEST].mIsOpen))
                 exitStr += "West ";
-            if (mUpLink != null)
+            if (mUpLink != null &&
+                (mDoorwayList[(int)Direction.UP] == null ||
+                mDoorwayList[(int)Direction.UP].mIsOpen))
                 exitStr += "Up ";
-            if (mDownLink != null)
+            if (mDownLink != null &&
+                (mDoorwayList[(int)Direction.DOWN] == null || 
+                mDoorwayList[(int)Direction.DOWN].mIsOpen))
                 exitStr += "Down ";
-            if (mNorthwestLink != null)
+            if (mNorthwestLink != null &&
+                (mDoorwayList[(int)Direction.NORTHWEST] == null || 
+                mDoorwayList[(int)Direction.NORTHWEST].mIsOpen))
                 exitStr += "Northwest ";
-            if (mNortheastLink != null)
+            if (mNortheastLink != null &&
+                (mDoorwayList[(int)Direction.NORTHEAST] == null || 
+                mDoorwayList[(int)Direction.NORTHEAST].mIsOpen))
                 exitStr += "Northeast ";
-            if (mSouthwestLink != null)
+            if (mSouthwestLink != null &&
+                (mDoorwayList[(int)Direction.SOUTHWEST] == null ||
+                mDoorwayList[(int)Direction.SOUTHWEST].mIsOpen))
                 exitStr += "Southwest ";
-            if (mSoutheastLink != null)
+            if (mSoutheastLink != null &&
+                (mDoorwayList[(int)Direction.SOUTHEAST] == null ||
+                mDoorwayList[(int)Direction.SOUTHEAST].mIsOpen))
                 exitStr += "Southeast ";
 
             exitStr += "\n";
@@ -142,9 +162,23 @@ namespace _8th_Circle_Server
         public void addDoor(Doorway door, Direction dir)
         {
             mDoorwayList[(int)dir] = door;
+            door.mRoomList[(int)dir] = this;
             door.closed();
         }// addDorr
 
+        public string getDoorString(Doorway door)
+        {
+            int target = (int)Direction.INVALID;
+
+            for (int i = 0; i < mDoorwayList.Length; ++i)
+            {
+                if (mDoorwayList[i] != null &&
+                   mDoorwayList[i].Equals(door))
+                    target = i;
+            }
+
+            return ((Direction)(target)).ToString().ToLower() + " " + door.mName;
+        }// getDoorString
     }// Class Room
 
 }// Namespace _8th_Circle_Server

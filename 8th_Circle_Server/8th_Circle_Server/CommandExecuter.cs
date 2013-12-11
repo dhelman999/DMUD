@@ -572,6 +572,10 @@ namespace _8th_Circle_Server
                     clientHandler.safeWrite(clientString);
                     break;
 
+                    //TODO
+                    // make sure to error check if there isnt the right number
+                    // of tokens given to commands that only accept 2 tokens
+                    // sending this just the close token crashes
                 case commandName.COMMAND_CLOSE:
                     clientString = ((Mob)commandQueue[1]).close(clientHandler);
                     tempCommand = (Command)commandQueue[0];
@@ -947,7 +951,12 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
                 if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);        
+                {
+                //TODO
+                // Is there a better way to do this?
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                }
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -960,7 +969,10 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mWorld.mAreaList);
                 if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);            
+                {
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                }
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || 
@@ -973,27 +985,57 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(clientHandler.mPlayer.mCurrentArea.mNpcList);
                 if (validity == validityType.VALID_LOCAL)
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);    
-            }// if
-
-            // Search through all appropriate lists
-            foreach (ArrayList ar in targetList)
-            {
-                if(ar.Count > 0)
                 {
-                    for(int i=0; i < ar.Count; ++i)
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                }
+            }// if
+                //TODO
+                // There has got to be a better way to do this
+            ArrayList ar;
+            Doorway[] dw;
+            for (int j = 0; j < targetList.Count; ++j)
+            {
+                if (targetList[j] is ArrayList)
+                {
+                    ar = (ArrayList)targetList[j];
+
+                    if (ar.Count > 0)
                     {
-                        // TODO
-                        // This threw an exception when this was a foreach,
-                        // saying the enum was modified, probably need to do locking around this
-                        if(validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).exitString().ToLower()))
+                        for (int i = 0; i < ar.Count; ++i)
                         {
-                            ret = errorCode.E_OK;
-                            targetPredicates.Add((Mob)ar[i]);
-                        }// if
-                    }// for
-                }// if
-            }// foreach
+                            // TODO
+                            // This threw an exception when this was a foreach,
+                            // saying the enum was modified, probably need to do locking around this
+                            if (validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).exitString().ToLower()))
+                            {
+                                ret = errorCode.E_OK;
+                                targetPredicates.Add((Mob)ar[i]);
+                            }// if
+                        }// for
+                    }// if
+                }
+                if (targetList[j] is Doorway[])
+                {
+                    dw = (Doorway[])targetList[j];
+
+                    if (dw.Length > 0)
+                    {
+                        for (int i = 0; i < dw.Length; ++i)
+                        {
+                            // TODO
+                            // This threw an exception when this was a foreach,
+                            // saying the enum was modified, probably need to do locking around this
+                            if (dw[i] != null &&
+                                validatePredicate(tokens[0].ToLower(), ((Doorway)dw[i]).exitString().ToLower()))
+                            {
+                                ret = errorCode.E_OK;
+                                targetPredicates.Add((Doorway)dw[i]);
+                            }// if
+                        }// for
+                    }// if
+                }
+            }// for
 
             if (ret == errorCode.E_OK)
             {
