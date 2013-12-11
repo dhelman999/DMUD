@@ -10,16 +10,16 @@ namespace _8th_Circle_Server
     {
         enum connectionDirection
         {
-            DIRECTION_NORTH=0,
-            DIRECTION_SOUTH,
-            DIRECTION_EAST,
-            DIRECTION_WEST,
-            DIRECTION_UP,
-            DIRECTION_DOWN,
-            DIRECTION_NORTHWEST,
-            DIRECTION_NORTHEAST,
-            DIRECTION_SOUTHWEST,
-            DIRECTION_SOUTHEAST
+            NORTH=0,
+            SOUTH,
+            EAST,
+            WEST,
+            UP,
+            DOWN,
+            NORTHWEST,
+            NORTHEAST,
+            SOUTHWEST,
+            SOUTHEAST
         };// connectionDirection
 
         struct ConnectionPoint

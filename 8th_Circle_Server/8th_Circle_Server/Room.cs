@@ -23,11 +23,12 @@ namespace _8th_Circle_Server
         public Room mNorthwestLink;
         public Room mSouthwestLink;
         public Room mSoutheastLink;
-        public int[] mWorldLoc;
+        public int []mWorldLoc;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
         public ArrayList mObjectList;
         public Area mCurrentArea;
+        public Doorway[] mDoorwayList;
 
         public Room()
         {
@@ -36,6 +37,7 @@ namespace _8th_Circle_Server
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();
             mWorldLoc = new int[3];
+            mDoorwayList = new Doorway[11];
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
                 mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
         }// Constructor
@@ -46,6 +48,7 @@ namespace _8th_Circle_Server
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
                 mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
             mWorldLoc = new int[3];
+            mDoorwayList = new Doorway[11];
             mWorldLoc[0] = mWorldLoc[1] = mWorldLoc[2] = -1;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
@@ -58,6 +61,7 @@ namespace _8th_Circle_Server
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
                 mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
             mWorldLoc = new int[3];
+            mDoorwayList = new Doorway[11];
             mWorldLoc[0] = xCoord;
             mWorldLoc[1] = yCoord;
             mWorldLoc[2] = zCoord;
@@ -91,22 +95,28 @@ namespace _8th_Circle_Server
                 exitStr += "Southeast ";
 
             exitStr += "\n";
+            for (Direction dir = Direction.NORTH; dir < Direction.INVALID; ++dir)
+            {
+                if (mDoorwayList[(int)dir] != null)
+                {
+                    exitStr += dir.ToString().ToLower() + " " + mDoorwayList[(int)dir].mName;
+                    exitStr += "\n";
+                }// if   
+            }// for
+
             exitStr += "Objects: ";
             for (int i = 0; i < mObjectList.Count; ++i)
-            {
                 exitStr += ((Mob)mObjectList[i]).exitString() + "\n";
-            }// for
+
             if (mObjectList.Count == 0)
                 exitStr += "\n";
             for (int i = 0; i < mNpcList.Count; ++i)
-            {
                 exitStr += ((Mob)mNpcList[i]).mName + "\n";
-            }// for
+
             exitStr += "Players: ";
             for (int i = 0; i < mPlayerList.Count; ++i)
-            {
                 exitStr += ((Player)mPlayerList[i]).mName + "\n";
-            }// for
+
             exitStr += "\n";
             return exitStr;
         }// exitString
@@ -128,6 +138,12 @@ namespace _8th_Circle_Server
             mob.mCurrentArea.mObjectList.Add(mob);
             mObjectList.Add(mob);
         }// addObject
+
+        public void addDoor(Doorway door, Direction dir)
+        {
+            mDoorwayList[(int)dir] = door;
+            door.closed();
+        }// addDorr
 
     }// Class Room
 

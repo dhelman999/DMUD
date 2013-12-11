@@ -386,10 +386,10 @@ namespace _8th_Circle_Server
             house1stLivingRoom.mWestLink = house1stDiningRoom;
             house1stLivingRoom.mNorthLink = house1stentranceway;
             house1stBathroom.mNorthLink = house1stHallway;
-
-            Doorway house1stBathroomdwy = new Doorway("door", Direction.DIRECTION_NORTH,
+            
+            Doorway house1stBathroomdwy = new Doorway("door", Direction.NORTH,
                 house1stBathroom);
-            Doorway house1stHalldwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+            Doorway house1stHalldwy = new Doorway("door", Direction.SOUTH,
                 house1stHallway);
             house1stBathroomdwy.mCompanion = house1stHalldwy;
             house1stHalldwy.mCompanion = house1stBathroomdwy;
@@ -411,29 +411,29 @@ namespace _8th_Circle_Server
 
             // TODO
             // This needs to be simplified, this is ridiculous
-            Doorway house2ndHalldwy1 = new Doorway("door", Direction.DIRECTION_WEST,
+            Doorway house2ndHalldwy1 = new Doorway("door", Direction.WEST,
                 house2ndHallway);
-            Doorway house2ndHalldwy2 = new Doorway("door", Direction.DIRECTION_EAST,
+            Doorway house2ndHalldwy2 = new Doorway("door", Direction.EAST,
                 house2ndHallway);
-            Doorway house2ndHalldwy3 = new Doorway("door", Direction.DIRECTION_SOUTH,
+            Doorway house2ndHalldwy3 = new Doorway("door", Direction.SOUTH,
                 house2ndHallway);
-            Doorway house2ndHalldwy4 = new Doorway("door", Direction.DIRECTION_SOUTHWEST,
+            Doorway house2ndHalldwy4 = new Doorway("door", Direction.SOUTHWEST,
                 house2ndHallway);
-            Doorway house2ndBathroomdwy1 = new Doorway("door", Direction.DIRECTION_EAST,
+            Doorway house2ndBathroomdwy1 = new Doorway("door", Direction.EAST,
                 house2ndBathroom);
-            Doorway house2ndBathroomdwy2 = new Doorway("door", Direction.DIRECTION_SOUTH,
+            Doorway house2ndBathroomdwy2 = new Doorway("door", Direction.SOUTH,
                house2ndBathroom);
-            Doorway house2ndBlueroomdwy1 = new Doorway("door", Direction.DIRECTION_NORTH,
+            Doorway house2ndBlueroomdwy1 = new Doorway("door", Direction.NORTH,
                 house2ndBlueroom);
-            Doorway house2ndKittyroomdwy1 = new Doorway("door", Direction.DIRECTION_WEST,
+            Doorway house2ndKittyroomdwy1 = new Doorway("door", Direction.WEST,
                 house2ndKittyroom);
-            Doorway house2ndBedroomdwy1 = new Doorway("door", Direction.DIRECTION_NORTHEAST,
+            Doorway house2ndBedroomdwy1 = new Doorway("door", Direction.NORTHEAST,
                 house2ndBedroom);
-            Doorway house2ndBedroomdwy2 = new Doorway("door", Direction.DIRECTION_NORTH,
+            Doorway house2ndBedroomdwy2 = new Doorway("door", Direction.NORTH,
                 house2ndBedroom);
-            Doorway house2ndKittyroomdwy2 = new Doorway("door", Direction.DIRECTION_NORTH,
+            Doorway house2ndKittyroomdwy2 = new Doorway("door", Direction.NORTH,
                 house2ndKittyroom);
-            Doorway house2ndKittyClosetdwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+            Doorway house2ndKittyClosetdwy = new Doorway("door", Direction.SOUTH,
                 house2ndKittyCloset);
             house2ndHalldwy1.mCompanion = house2ndBathroomdwy1;
             house2ndHalldwy2.mCompanion = house2ndKittyroomdwy1;
@@ -467,30 +467,33 @@ namespace _8th_Circle_Server
             houseBasepart5.mNorthLink = houseBaseBathroom;
             houseBaseBathroom.mSouthLink = houseBasepart5;
 
-            Doorway houseBaseBathroomdwy = new Doorway("door", Direction.DIRECTION_SOUTH,
+            Doorway testdoor = new Doorway("door", houseBasepart3);
+            houseBasepart3.addDoor(testdoor, Direction.SOUTH);
+
+            Doorway houseBaseBathroomdwy = new Doorway("door", Direction.SOUTH,
                 houseBaseBathroom);
-            Doorway houseBasementbdwy = new Doorway("door", Direction.DIRECTION_NORTH,
+            Doorway houseBasementbdwy = new Doorway("door", Direction.NORTH,
                 houseBasepart5);
             houseBaseBathroomdwy.mCompanion = houseBasementbdwy;
             houseBasementbdwy.mCompanion = houseBaseBathroomdwy;
 
-            Doorway houseBaseLaundrydwy = new Doorway("door", Direction.DIRECTION_EAST,
+            Doorway houseBaseLaundrydwy = new Doorway("door", Direction.EAST,
                 houseBaseLaundryRoom);
-            Doorway houseBasementbdwy2 = new Doorway("door", Direction.DIRECTION_WEST,
+            Doorway houseBasementbdwy2 = new Doorway("door", Direction.WEST,
                 houseBaseentrance);
             houseBaseLaundrydwy.mCompanion = houseBasementbdwy2;
             houseBasementbdwy2.mCompanion = houseBaseLaundrydwy;
 
-            Doorway houseBaseGameroomdwy = new Doorway("door", Direction.DIRECTION_EAST,
+            Doorway houseBaseGameroomdwy = new Doorway("door", Direction.EAST,
                 houseBaseCloset);
-            Doorway houseBasementbdwy3 = new Doorway("door", Direction.DIRECTION_WEST,
+            Doorway houseBasementbdwy3 = new Doorway("door", Direction.WEST,
                 houseBasepart2);
             houseBaseGameroomdwy.mCompanion = houseBasementbdwy3;
             houseBasementbdwy3.mCompanion = houseBaseGameroomdwy;
 
-            Doorway houseBaseSumproomdwy = new Doorway("door", Direction.DIRECTION_WEST,
+            Doorway houseBaseSumproomdwy = new Doorway("door", Direction.WEST,
                 houseBaseSumpRoom);
-            Doorway houseBasementbdwy4 = new Doorway("door", Direction.DIRECTION_EAST,
+            Doorway houseBasementbdwy4 = new Doorway("door", Direction.EAST,
                 houseBasepart2);
             houseBaseSumproomdwy.mCompanion = houseBasementbdwy4;
             houseBasementbdwy4.mCompanion = houseBaseSumproomdwy;
