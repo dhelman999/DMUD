@@ -163,7 +163,6 @@ namespace _8th_Circle_Server
         {
             mDoorwayList[(int)dir] = door;
             door.mRoomList[(int)dir] = this;
-            door.closed();
         }// addDorr
 
         public string getDoorString(Doorway door)
