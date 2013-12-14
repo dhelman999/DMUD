@@ -14,6 +14,8 @@ namespace _8th_Circle_Server
 
         internal const int TICKTIME = 5;
 
+        static int sAreaTimer;
+
         // Member Variables
         public ArrayList mAreaList;
 
@@ -22,6 +24,7 @@ namespace _8th_Circle_Server
 
         public AreaHandler()
         {
+            sAreaTimer = 10;
             mAreaList = new ArrayList();
             mQueueLock = new object();
         }// Constructor
@@ -60,40 +63,38 @@ namespace _8th_Circle_Server
 
         private void processAreas()
         {
+            Console.WriteLine("area handler tick!");
             foreach (Area area in mAreaList)
-            {
-                
-                Console.WriteLine("area handler tick!");
+            {         
                 foreach (Mob mob in area.mFullMobList)
                 {
-                    if ((mob.mCurrentRespawnTime -= TICKTIME) <= 0)
-                    {
-                        bool found = false;
-
-                        for(int i = 0; i < area.mObjectList.Count; ++i)
-                        {
-                            Mob tmp = (Mob)area.mObjectList[i];
-                            if (mob.mMobId == tmp.mMobId &&
-                                mob.mInstanceId == tmp.mInstanceId)
-                            {
-                                tmp.destory();
-                                mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
-                                mob.respawn();
-                                found = true;
-                                break;
-                            }// if
-                        }// for
-
-                        // TODO
-                        // Make mobs from other areas despawn after the timer
-                        // so other dropped items/mobs won't litter areas
-                        // they don't belong in
-                        if (!found)
-                        {
+                   bool found = false;
+                   if ((mob.mCurrentRespawnTime-= TICKTIME) <= 0)
+                   {
+                      for(int i = 0; i < area.mObjectList.Count; ++i)
+                      {
+                         Mob tmp = (Mob)area.mObjectList[i];
+                         if (mob.mMobId == tmp.mMobId &&
+                             mob.mInstanceId == tmp.mInstanceId)
+                         {
+                            tmp.destory();
                             mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
                             mob.respawn();
-                        }// if
-                    }// if
+                            found = true;
+                            break;
+                         }// if
+                      }// for
+
+                      // TODO
+                      // Make mobs from other areas despawn after the timer
+                      // so other dropped items/mobs won't litter areas
+                      // they don't belong in
+                      if (!found)
+                      {
+                         mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
+                         mob.respawn();
+                      }// if
+                   }// if
                 }// foreach
             }// foreach
         }// processArea
