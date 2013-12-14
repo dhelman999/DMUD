@@ -19,6 +19,7 @@ namespace _8th_Circle_Server
         FLAG_HIDDEN,
         FLAG_INVISIBLE,
         FLAG_GETTABLE,
+        FLAG_DROPPABLE,
         FLAG_PUSHABLE,
         FLAG_STORABLE,
         FLAG_USEABLE,
@@ -306,6 +307,25 @@ namespace _8th_Circle_Server
                 return "you can't get that";
                 
         }// get
+
+        public virtual string drop(Mob mob)
+        {
+            if (mFlagList.Contains(objectFlags.FLAG_DROPPABLE))
+            {
+                mob.mCurrentArea.mObjectList.Add(this);
+                mob.mCurrentRoom.mObjectList.Add(this);
+                mob.mWorld.mObjectList.Add(this);
+                if (mob is Player)
+                    this.mFlagList.Remove(objectFlags.FLAG_PLAYER_OWNED);
+                else
+                    this.mFlagList.Remove(objectFlags.FLAG_NPC_OWNED);
+                mob.mInventory.Remove(this);
+
+                return "you drop " + exitString(mCurrentRoom);
+            }// if
+            else
+                return "you can't drop that";
+        }// drop
 
         public virtual string open(ClientHandler clientHandler)
         {

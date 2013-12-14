@@ -68,6 +68,7 @@ namespace _8th_Circle_Server
             key.mFlagList.Add(objectFlags.FLAG_GETTABLE);
             key.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
             key.mFlagList.Add(objectFlags.FLAG_STORABLE);
+            key.mFlagList.Add(objectFlags.FLAG_DROPPABLE);
             key.mName = "brass key";
             key.mInventory.Capacity = 0;
             key.mWorld = this;

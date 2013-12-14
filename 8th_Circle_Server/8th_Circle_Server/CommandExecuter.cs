@@ -71,6 +71,7 @@ namespace _8th_Circle_Server
         COMMAND_INVENTORY,
         COMMAND_LOCK,
         COMMAND_UNLOCK,
+        COMMAND_DROP,
         COMMAND_SPAWN,
         COMMAND_DESTROY
     };// commandName
@@ -287,6 +288,11 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("get", null, 1, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_GET,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("drop", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DROP,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
@@ -608,6 +614,14 @@ namespace _8th_Circle_Server
                     tempCommand.predicate1Value = (Mob)commandQueue[1];
                     commandQueue[0] = tempCommand;
                     clientHandler.safeWrite(((Mob)commandQueue[1]).get(clientHandler.mPlayer));
+                    break;
+
+                case commandName.COMMAND_DROP:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = clientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).drop(clientHandler.mPlayer));
                     break;
 
                 case commandName.COMMAND_INVENTORY:
@@ -968,6 +982,7 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
                 }
             }// if
 
@@ -984,6 +999,7 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
                 }
             }// if
 
@@ -1000,6 +1016,7 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
                 }
             }// if
 
