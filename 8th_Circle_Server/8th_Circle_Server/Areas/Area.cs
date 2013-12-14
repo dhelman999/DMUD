@@ -8,37 +8,6 @@ namespace _8th_Circle_Server
 {
     class Area
     {
-        //TODO
-        // replace with direction
-        enum connectionDirection
-        {
-            NORTH=0,
-            SOUTH,
-            EAST,
-            WEST,
-            UP,
-            DOWN,
-            NORTHWEST,
-            NORTHEAST,
-            SOUTHWEST,
-            SOUTHEAST
-        };// connectionDirection
-
-        struct ConnectionPoint
-        {
-            Room localRoom;
-            Room remoteRoom;
-            connectionDirection connectPoint;
-
-            public ConnectionPoint(Room localRoom, Room remoteRoom,
-                                   connectionDirection connectPoint)
-            {
-                this.localRoom = localRoom;
-                this.remoteRoom = remoteRoom;
-                this.connectPoint = connectPoint;
-            }// Constructor
-        }// struct ConnectionPoints
-
         // Debug
         internal const bool DEBUG = false;
 
