@@ -23,7 +23,8 @@ namespace _8th_Circle_Server
         public override string destroy()
         {
             return "You can't destroy a player!";
-        }
+        }// destroy
+
     }// Class Player
 
 }// Namespace _8th_Circle_Server

@@ -85,8 +85,6 @@ namespace _8th_Circle_Server
             addNewMob(mobId, startingRoom, startingArea, newName);
         }
 
-        // TODO
-        // Find a better way to not adjust the index
         public void addMob(MOBLIST mobId, Room startingRoom, Area startingArea)
         {
             string name = ((Mob)mFullMobList[(int)mobId]).mName;

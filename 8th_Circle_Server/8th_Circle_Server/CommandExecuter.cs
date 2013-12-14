@@ -431,7 +431,7 @@ namespace _8th_Circle_Server
             {
                 clientHandler.safeWrite("You can't use the " + currentCommand.command + " command that way");
                 return;
-            }
+            }// else if
             
             errorCode error = errorCode.E_OK;
             // In this case, the player must have sent us a verb that has multiple arguements.
@@ -661,7 +661,7 @@ namespace _8th_Circle_Server
                             mobID > fma.Count)
                         {
                             clientHandler.safeWrite("MobID is outside the valid range");
-                        }
+                        }// if
                         else
                         {
                             if (fma[mobID] is Container)
@@ -675,7 +675,7 @@ namespace _8th_Circle_Server
                                 clientHandler.mPlayer.mCurrentArea.mObjectList.Add(cont);
                                 clientHandler.mPlayer.mCurrentRoom.mObjectList.Add(cont);
                                 clientHandler.safeWrite("spawning " + cont.mName);
-                            }
+                            }// if
                             else if (fma[mobID] is Mob)
                             {
                                 Mob mob = new Mob();
@@ -686,17 +686,17 @@ namespace _8th_Circle_Server
                                 clientHandler.mPlayer.mCurrentArea.mObjectList.Add(mob);
                                 clientHandler.mPlayer.mCurrentRoom.mObjectList.Add(mob);
                                 clientHandler.safeWrite("spawning " + mob.mName);
-                            }
+                            }// else if
                             else
                             {
                                 clientHandler.safeWrite("Something went wrong");
-                            }
-                        }
-                    }
+                            }// else
+                        }// else
+                    }// try
                     catch
                     {
                         clientHandler.safeWrite("That is not a valid MobID");
-                    }
+                    }// catch
                     break;
 
                 case commandName.COMMAND_LOOK:
@@ -865,7 +865,7 @@ namespace _8th_Circle_Server
                         eventData.validity = command.validity;
                         clientHandler.mEventHandler.enQueueEvent(eventData);
                     }// if       
-                }
+                }// if
             }// else if
             else
             {
@@ -908,7 +908,7 @@ namespace _8th_Circle_Server
                         {
                             clientHandler.safeWrite("Can't find " + tokens[0]);
                             break;
-                        }
+                        }// if
 
                         if ((grammarIndex < currentCommand.grammar.Length))
                             command = command.Substring(tokens[0].Length + 1);
@@ -925,7 +925,7 @@ namespace _8th_Circle_Server
                     {
                         clientHandler.safeWrite("You can't " + errorString);
                         break;
-                    }
+                    }// if
                 }// if (currentCommand.grammar[grammarIndex++] == grammarType.PREDICATE)
                 else if (currentCommand.grammar[grammarIndex-1] == grammarType.PREP)
                 {
@@ -948,7 +948,7 @@ namespace _8th_Circle_Server
                     {
                         clientHandler.safeWrite("You are not able to " + errorString);
                         break;
-                    }
+                    }// if
                 }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
 
@@ -983,15 +983,14 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                    
-                }
+                }// if
                 if(validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 if(validity == validityType.VALID_INVLOCAL)
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mInventory);
-                }
+                }// if
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -1007,14 +1006,14 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                }
+                }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 if (validity == validityType.VALID_INVLOCAL)
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mInventory);
-                }
+                }// if
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || 
@@ -1030,14 +1029,14 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                }
+                }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 if(validity == validityType.VALID_INVLOCAL)
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mInventory);
-                }
+                }// if
             }// if
 
             foreach(ArrayList ar in targetList)
@@ -1065,7 +1064,7 @@ namespace _8th_Circle_Server
                 {
                     commandQueue.Add(targetPredicates[0]);
                     ret = errorCode.E_OK;
-                }
+                }// if
                 else if (tokens.Length == 2)
                 {
                     try
@@ -1077,7 +1076,7 @@ namespace _8th_Circle_Server
                         {
                             commandQueue.Add(targetPredicates[index]);
                             ret = errorCode.E_OK;
-                        }
+                        }// if
                     }// try
                     catch
                     {  // silently fail, the return code will correctly error

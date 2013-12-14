@@ -160,7 +160,7 @@ namespace _8th_Circle_Server
             catch
             {
                 mStreamReader.Close();
-            }
+            }// catch
         }// safeWrite
 
         private void playerLeft()

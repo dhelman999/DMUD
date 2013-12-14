@@ -179,10 +179,11 @@ namespace _8th_Circle_Server
                 if (mDoorwayList[i] != null &&
                    mDoorwayList[i].Equals(door))
                     target = i;
-            }
+            }// for
 
             return ((Direction)(target)).ToString().ToLower() + " " + door.mName;
         }// getDoorString
+
     }// Class Room
 
 }// Namespace _8th_Circle_Server

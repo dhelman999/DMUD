@@ -73,7 +73,6 @@ namespace _8th_Circle_Server
             mStartingRespawnTime = mCurrentRespawnTime = 15;
             mMobId = -1;
             mInstanceId = 0;
-
         }// Constructor
 
         public Mob(string name)
@@ -379,7 +378,7 @@ namespace _8th_Circle_Server
         public virtual string lck()
         {
             return "you can't lock that";
-        }
+        }// lck
 
         public virtual string unlock()
         {
