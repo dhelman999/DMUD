@@ -148,8 +148,6 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
-        // TODO
-        // See if you need this or if it is better to split it into two functions
         public void addObject(Mob mob)
         {
             // Remove old references
@@ -157,7 +155,7 @@ namespace _8th_Circle_Server
             {
                 mob.mCurrentArea.mObjectList.Remove(mob);
                 mob.mCurrentRoom.mObjectList.Remove(mob);
-            }
+            }// if
             
             // Add new references
             mob.mCurrentArea = mCurrentArea;

@@ -94,8 +94,6 @@ namespace _8th_Circle_Server
         }// Constructor
     }// Prepositions
 
-    // TODO
-    // This is horrible.
     struct Command
     {
         public string command;      
@@ -587,10 +585,6 @@ namespace _8th_Circle_Server
                     clientHandler.safeWrite(clientString);
                     break;
 
-                    //TODO
-                    // make sure to error check if there isnt the right number
-                    // of tokens given to commands that only accept 2 tokens
-                    // sending this just the close token crashes
                 case commandName.COMMAND_CLOSE:
                     clientString = ((Mob)commandQueue[1]).close(clientHandler);
                     tempCommand = (Command)commandQueue[0];
@@ -972,8 +966,6 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mCurrentArea.mObjectList);
                 if (validity == validityType.VALID_LOCAL)
                 {
-                //TODO
-                // Is there a better way to do this?
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
                 }
