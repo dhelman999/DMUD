@@ -14,8 +14,6 @@ namespace _8th_Circle_Server
 
         internal const int TICKTIME = 5;
 
-        static int sAreaTimer;
-
         // Member Variables
         public ArrayList mAreaList;
 
@@ -24,7 +22,6 @@ namespace _8th_Circle_Server
 
         public AreaHandler()
         {
-            sAreaTimer = 10;
             mAreaList = new ArrayList();
             mQueueLock = new object();
         }// Constructor
@@ -65,7 +62,9 @@ namespace _8th_Circle_Server
         {
             Console.WriteLine("area handler tick!");
             foreach (Area area in mAreaList)
-            {         
+            {
+                area.mCurrentRespawnTimer -= TICKTIME;
+                // Check to respawn
                 foreach (Mob mob in area.mFullMobList)
                 {
                    bool found = false;
@@ -77,7 +76,7 @@ namespace _8th_Circle_Server
                          if (mob.mMobId == tmp.mMobId &&
                              mob.mInstanceId == tmp.mInstanceId)
                          {
-                            tmp.destory();
+                            tmp.destroy();
                             mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
                             mob.respawn();
                             found = true;
@@ -85,10 +84,6 @@ namespace _8th_Circle_Server
                          }// if
                       }// for
 
-                      // TODO
-                      // Make mobs from other areas despawn after the timer
-                      // so other dropped items/mobs won't litter areas
-                      // they don't belong in
                       if (!found)
                       {
                          mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
@@ -96,6 +91,39 @@ namespace _8th_Circle_Server
                       }// if
                    }// if
                 }// foreach
+
+                // TODO
+                // Isn't there a better way to do this crap?
+                // Check to despawn
+                for (int i = 0; i < area.mObjectList.Count; ++i)
+                {
+                    if (area.mCurrentRespawnTimer <= 0)
+                    {
+                        Mob mob = null;
+                        if (area.mObjectList[i] != null)
+                            mob = (Mob)area.mObjectList[i];
+
+                        if (mob != null &&
+                            mob.mStartingRoom != mob.mCurrentRoom)
+                            mob.destroy();
+                    }// if
+
+                    for (int j = 0; j < area.mObjectList.Count; ++j)
+                    {
+                        if (j == i)
+                            continue;
+
+                        if (((Mob)area.mObjectList[i]).mMobId == ((Mob)area.mObjectList[j]).mMobId &&
+                            ((Mob)area.mObjectList[i]).mInstanceId == ((Mob)area.mObjectList[j]).mInstanceId)
+                        {
+                            ((Mob)area.mObjectList[j]).destroy();
+                        }// if
+                    }// for
+                }// for
+
+                if(area.mCurrentRespawnTimer <= 0)
+                    area.mCurrentRespawnTimer = area.mStartingRespawnTimer;
+
             }// foreach
         }// processArea
 

@@ -293,7 +293,7 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("drop", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DROP,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -605,7 +605,7 @@ namespace _8th_Circle_Server
                     tempCommand.commandOwner = clientHandler.mPlayer;
                     tempCommand.predicate1Value = (Mob)commandQueue[1];
                     commandQueue[0] = tempCommand;
-                    clientHandler.safeWrite(((Mob)commandQueue[1]).destory());
+                    clientHandler.safeWrite(((Mob)commandQueue[1]).destroy());
                     break;
 
                 case commandName.COMMAND_GET:
@@ -982,8 +982,10 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                    targetList.Add(clientHandler.mPlayer.mInventory);
+                    
                 }
+                if(validity == validityType.VALID_INVENTORY)
+                    targetList.Add(clientHandler.mPlayer.mInventory);
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -999,8 +1001,9 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                    targetList.Add(clientHandler.mPlayer.mInventory);
                 }
+                if (validity == validityType.VALID_INVENTORY)
+                    targetList.Add(clientHandler.mPlayer.mInventory);
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || 
@@ -1016,8 +1019,9 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
-                    targetList.Add(clientHandler.mPlayer.mInventory);
                 }
+                if (validity == validityType.VALID_INVENTORY)
+                    targetList.Add(clientHandler.mPlayer.mInventory);
             }// if
 
             foreach(ArrayList ar in targetList)

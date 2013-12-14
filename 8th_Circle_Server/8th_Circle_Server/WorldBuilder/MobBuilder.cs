@@ -31,7 +31,7 @@ namespace _8th_Circle_Server
             eventData.eventFlag = EventFlag.EVENT_TELL_PLAYER;
             eventData.commandName = commandName.COMMAND_LOOK;
             eventData.prepType = PrepositionType.PREP_IN;
-            eventData.data = "A voice speaks to you from within " + chest.mName;
+            eventData.data = "A voice speaks to you from within the chest";
             chest.mEventList.Add(eventData);
             chest.mMobId = (int)MOBLIST.EVENT_CHEST1;
             chest.mIsActive = false;
@@ -82,13 +82,15 @@ namespace _8th_Circle_Server
         // the name is passed to the eventhandler upon creation of the intial object
         public void addMob(MOBLIST mobId, Room startingRoom, Area startingArea, string newName)
         {
-            addNewMob(mobId, startingRoom, startingArea, newName);
+            addNewMob(mobId-1, startingRoom, startingArea, newName);
         }
 
+        // TODO
+        // Find a better way to not adjust the index
         public void addMob(MOBLIST mobId, Room startingRoom, Area startingArea)
         {
-            string name = ((Mob)mFullMobList[(int)mobId]).mName;
-            addNewMob(mobId, startingRoom, startingArea, name);
+            string name = ((Mob)mFullMobList[(int)mobId-1]).mName;
+            addNewMob(mobId-1, startingRoom, startingArea, name);
         }
 
         private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea, string newName)
@@ -96,18 +98,18 @@ namespace _8th_Circle_Server
             Mob mob = null;
             Container cont = null;
 
-            if (mFullMobList[(int)mobId-1] is Container)
+            if (mFullMobList[(int)mobId] is Container)
             {
-                cont = new Container((Container)mFullMobList[(int)mobId-1]);
+                cont = new Container((Container)mFullMobList[(int)mobId]);
                 mob = cont;
             }
             else
-                mob = new Mob((Mob)mFullMobList[(int)mobId-1]);
+                mob = new Mob((Mob)mFullMobList[(int)mobId]);
 
             int instanceCount = 1;
             foreach (Mob target in startingArea.mFullMobList)
             {
-                if ((int)mobId == target.mMobId)
+                if ((int)mobId+1 == target.mMobId)
                     ++instanceCount;
             }
             mob.mInstanceId = instanceCount;

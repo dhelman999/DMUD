@@ -122,7 +122,7 @@ namespace _8th_Circle_Server
             addAreas();
 
             // Register areas in the area handler
-            mAreaHandler.registerArea(protoArea);         
+            mAreaHandler.registerArea(protoArea);     
         }// Constructor
 
 

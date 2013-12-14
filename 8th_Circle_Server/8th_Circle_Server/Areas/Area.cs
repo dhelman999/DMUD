@@ -8,6 +8,8 @@ namespace _8th_Circle_Server
 {
     class Area
     {
+        //TODO
+        // replace with direction
         enum connectionDirection
         {
             NORTH=0,
@@ -47,6 +49,8 @@ namespace _8th_Circle_Server
         public ArrayList mNpcList;
         public ArrayList mObjectList;
         public ArrayList mFullMobList;
+        public int mStartingRespawnTimer;
+        public int mCurrentRespawnTimer;
         public World mWorld;
         public ArrayList mConnectionList;
         public string mName;
@@ -55,6 +59,7 @@ namespace _8th_Circle_Server
         public Area()
         {
             mAreaOffset = 0;
+            mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new ArrayList();
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();

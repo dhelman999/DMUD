@@ -311,15 +311,14 @@ namespace _8th_Circle_Server
         public virtual string drop(Mob mob)
         {
             if (mFlagList.Contains(objectFlags.FLAG_DROPPABLE))
-            {
-                mob.mCurrentArea.mObjectList.Add(this);
-                mob.mCurrentRoom.mObjectList.Add(this);
-                mob.mWorld.mObjectList.Add(this);
+            {  
                 if (mob is Player)
                     this.mFlagList.Remove(objectFlags.FLAG_PLAYER_OWNED);
                 else
                     this.mFlagList.Remove(objectFlags.FLAG_NPC_OWNED);
                 mob.mInventory.Remove(this);
+                mCurrentRoom = mob.mCurrentRoom;
+                mCurrentRoom.addObject(this);
 
                 return "you drop " + exitString(mCurrentRoom);
             }// if
@@ -347,7 +346,7 @@ namespace _8th_Circle_Server
             return "You can't unlock that";
         }// unlock
 
-        public virtual string destory()
+        public virtual string destroy()
         {
             mCurrentArea.mObjectList.Remove(this);
             mCurrentArea.mNpcList.Remove(this);
