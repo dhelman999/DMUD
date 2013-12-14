@@ -97,8 +97,7 @@ namespace _8th_Circle_Server
     // This is horrible.
     struct Command
     {
-        public string command;
-        public Mob commandOwner;
+        public string command;      
         public string shortName;
         public int matchNumber;
         public int maxTokens;
@@ -108,9 +107,10 @@ namespace _8th_Circle_Server
         public Preposition prep2Value;
         public commandName commandName;
         public predicateType predicate1;
-        public Mob predicate1Value;
         public predicateType predicate2;
+        public Mob predicate1Value;
         public Mob predicate2Value;
+        public Mob commandOwner;
         public validityType validity;
 
         public Command(string command, string shortName, int matchNumber, 
@@ -141,7 +141,6 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = true;
 
         // Member Variables
-        public ArrayList mNounList;
         public ArrayList mVerbList;
         public ArrayList mPrepList;
         public ArrayList mCommandList;
@@ -150,7 +149,6 @@ namespace _8th_Circle_Server
         public CommandExecuter()
         {
             mVerbList = new ArrayList();
-            mNounList = new ArrayList();
             mPrepList = new ArrayList();
             mCommandList = new ArrayList();
             mGrammarList = new ArrayList();
@@ -438,7 +436,7 @@ namespace _8th_Circle_Server
             Command currentCommand = new Command();
             Command tempCommand;
             currentCommand = (Command)commandQueue[0];
-            bool wasMoveCommand = false;
+            bool refreshRoomDesc = false;
             int commandIndex = 0;
             Room currentRoom = clientHandler.mPlayer.mCurrentRoom;
             Player player;
@@ -504,61 +502,61 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_NORTH:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move north");
                     break;
 
                 case commandName.COMMAND_SOUTH:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move south");
                     break;
 
                 case commandName.COMMAND_EAST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move east");
                     break;
 
                 case commandName.COMMAND_WEST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move west");
                     break;
 
                 case commandName.COMMAND_UP:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move up");
                     break;
 
                 case commandName.COMMAND_DOWN:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move down");
                     break;
 
                 case commandName.COMMAND_NORTHWEST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move northwest");
                     break;
 
                 case commandName.COMMAND_NORTHEAST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move northeast");
                     break;
 
                 case commandName.COMMAND_SOUTHWEST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move southwest");
                     break;
 
                 case commandName.COMMAND_SOUTHEAST:
-                    wasMoveCommand = true;
+                    refreshRoomDesc = true;
                     if (!clientHandler.mPlayer.move(currentCommand.command))
                         clientHandler.safeWrite("You can't move southeast");
                     break;
@@ -808,7 +806,7 @@ namespace _8th_Circle_Server
             }// switch (currentCommand.commandName)
 
             // If the player moved, remember to actually print out the room
-            if (wasMoveCommand)
+            if (refreshRoomDesc)
             {
                 clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
                     "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
