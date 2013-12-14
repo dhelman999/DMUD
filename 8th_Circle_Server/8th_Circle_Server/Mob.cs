@@ -132,7 +132,7 @@ namespace _8th_Circle_Server
                 case "north":
                     if (mCurrentRoom.mNorthLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.NORTH] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.NORTH].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTH]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mNorthLink);
                         ret = true;
@@ -142,7 +142,7 @@ namespace _8th_Circle_Server
                 case "south":
                     if (mCurrentRoom.mSouthLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.SOUTH] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.SOUTH].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTH]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mSouthLink);
                         ret = true;
@@ -152,7 +152,7 @@ namespace _8th_Circle_Server
                 case "east":
                     if (mCurrentRoom.mEastLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.EAST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.EAST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.EAST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mEastLink);
                         ret = true;
@@ -162,7 +162,7 @@ namespace _8th_Circle_Server
                 case "west":
                     if (mCurrentRoom.mWestLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.WEST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.WEST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.WEST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mWestLink);
                         ret = true;
@@ -172,7 +172,7 @@ namespace _8th_Circle_Server
                 case "up":
                     if (mCurrentRoom.mUpLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.UP] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.UP].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.UP]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mUpLink);
                         ret = true;
@@ -182,7 +182,7 @@ namespace _8th_Circle_Server
                 case "down":
                     if (mCurrentRoom.mDownLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.DOWN] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.DOWN].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.DOWN]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mDownLink);
                         ret = true;
@@ -192,7 +192,7 @@ namespace _8th_Circle_Server
                 case "northwest":
                     if (mCurrentRoom.mNorthwestLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mNorthwestLink);
                         ret = true;
@@ -202,7 +202,7 @@ namespace _8th_Circle_Server
                 case "northeast":
                     if (mCurrentRoom.mNortheastLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mNortheastLink);
                         ret = true;
@@ -212,7 +212,7 @@ namespace _8th_Circle_Server
                 case "southwest":
                     if (mCurrentRoom.mSouthwestLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mSouthwestLink);
                         ret = true;
@@ -222,7 +222,7 @@ namespace _8th_Circle_Server
                 case "southeast":
                     if (mCurrentRoom.mSoutheastLink != null &&
                         (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST] == null ||
-                        mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST].mIsOpen))
+                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST]).mIsOpen))
                     {
                         changeRoom(mCurrentRoom.mSoutheastLink);
                         ret = true;
@@ -295,7 +295,7 @@ namespace _8th_Circle_Server
                         this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
                     mob.mInventory.Add(this);
 
-                    return "you get " + exitString();
+                    return "you get " + exitString(mCurrentRoom);
                 }// if
                 else
                 {
@@ -352,7 +352,7 @@ namespace _8th_Circle_Server
             mob.mWorld.mObjectList.Add(mob);
         }// respawn
 
-        public virtual string exitString()
+        public virtual string exitString(Room currentRoom)
         {
             return mName;
         }// exitString

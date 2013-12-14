@@ -45,13 +45,14 @@ namespace _8th_Circle_Server
             mIsLocked = false;
             mName = name;
             mRoomList = new Room[MAXROOMS];
-            mCurrentRoom = currentRoom;
         }// Constructor
 
         public override string open(ClientHandler clientHandler)
         {
             if (mIsLocked)
-                return mName + " is locked";
+                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is locked";
+            if (mIsOpen)
+                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is already open";
             else
             {
                 mIsOpen = true;
@@ -69,7 +70,9 @@ namespace _8th_Circle_Server
         public override string close(ClientHandler clientHandler)
         {
             if (mIsLocked)
-                return mName + " is locked";
+                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is locked";
+            if (!mIsOpen)
+                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is already closed";
             else
             {
                 mIsOpen = false;
@@ -84,16 +87,19 @@ namespace _8th_Circle_Server
             }// else
         }// close
 
-        public override string exitString()
+        public override string exitString(Room currentRoom)
         {
             string ret = string.Empty;
 
             Direction direction = Direction.INVALID;
-            for(int i=0;i < mCurrentRoom.mDoorwayList.Length; ++i)
+            for (int i = 0; i < currentRoom.mDoorwayList.Count; ++i)
             {
-                if(mCurrentRoom.mDoorwayList[i] != null &&
-                   mCurrentRoom.mDoorwayList[i].Equals(this))
+                if (currentRoom.mDoorwayList[i] != null &&
+                    currentRoom.mDoorwayList[i].Equals(this))
+                {
                     direction = (Direction)(i);
+                    break;
+                }
             }// for
 
             switch (direction)

@@ -990,52 +990,23 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mCurrentRoom.mDoorwayList);
                 }
             }// if
-                //TODO
-                // There has got to be a better way to do this
-            ArrayList ar;
-            Doorway[] dw;
-            for (int j = 0; j < targetList.Count; ++j)
+
+            foreach(ArrayList ar in targetList)
             {
-                if (targetList[j] is ArrayList)
+                if (ar.Count > 0)
                 {
-                    ar = (ArrayList)targetList[j];
-
-                    if (ar.Count > 0)
+                    foreach (Mob mob in ar)
                     {
-                        for (int i = 0; i < ar.Count; ++i)
+                        if (mob != null &&
+                        validatePredicate(tokens[0].ToLower(), 
+                        mob.exitString(clientHandler.mPlayer.mCurrentRoom).ToLower()))
                         {
-                            // TODO
-                            // This threw an exception when this was a foreach,
-                            // saying the enum was modified, probably need to do locking around this
-                            if (validatePredicate(tokens[0].ToLower(), ((Mob)ar[i]).exitString().ToLower()))
-                            {
-                                ret = errorCode.E_OK;
-                                targetPredicates.Add((Mob)ar[i]);
-                            }// if
-                        }// for
-                    }// if
-                }
-                if (targetList[j] is Doorway[])
-                {
-                    dw = (Doorway[])targetList[j];
-
-                    if (dw.Length > 0)
-                    {
-                        for (int i = 0; i < dw.Length; ++i)
-                        {
-                            // TODO
-                            // This threw an exception when this was a foreach,
-                            // saying the enum was modified, probably need to do locking around this
-                            if (dw[i] != null &&
-                                validatePredicate(tokens[0].ToLower(), ((Doorway)dw[i]).exitString().ToLower()))
-                            {
-                                ret = errorCode.E_OK;
-                                targetPredicates.Add((Doorway)dw[i]);
-                            }// if
-                        }// for
-                    }// if
-                }
-            }// for
+                            ret = errorCode.E_OK;
+                            targetPredicates.Add(mob);
+                        }// if
+                    }// foreach
+                }// if
+            }// foreach
 
             if (ret == errorCode.E_OK)
             {
