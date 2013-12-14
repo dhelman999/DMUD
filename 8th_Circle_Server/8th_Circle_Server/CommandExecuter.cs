@@ -31,6 +31,7 @@ namespace _8th_Circle_Server
     {
         VALID_INVENTORY = 0,
         VALID_LOCAL,
+        VALID_INVLOCAL,
         VALID_AREA,
         VALID_GLOBAL,
         INVALID
@@ -248,7 +249,7 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("look", null, 1, 3, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_ALL, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_ALL, predicateType.INVALID, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -986,6 +987,11 @@ namespace _8th_Circle_Server
                 }
                 if(validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
+                if(validity == validityType.VALID_INVLOCAL)
+                {
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
+                }
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -1004,6 +1010,11 @@ namespace _8th_Circle_Server
                 }
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
+                if (validity == validityType.VALID_INVLOCAL)
+                {
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
+                }
             }// if
 
             if (predType == predicateType.PREDICATE_NPC || 
@@ -1022,6 +1033,11 @@ namespace _8th_Circle_Server
                 }
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(clientHandler.mPlayer.mInventory);
+                if(validity == validityType.VALID_INVLOCAL)
+                {
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mInventory);
+                }
             }// if
 
             foreach(ArrayList ar in targetList)

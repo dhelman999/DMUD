@@ -12,8 +12,6 @@ namespace _8th_Circle_Server
         EVENT_TELL_PLAYER
     };// EventFlag
 
-    // TODO
-    // See if you can shorten this up
     struct EventData
     {
         public EventFlag eventFlag;
