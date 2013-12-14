@@ -49,7 +49,8 @@ namespace _8th_Circle_Server
 
     enum commandName
     {
-        COMMAND_LOOK=0,
+        INVALID,
+        COMMAND_LOOK,
         COMMAND_EXIT,
         COMMAND_NORTH,
         COMMAND_SOUTH,
@@ -71,14 +72,14 @@ namespace _8th_Circle_Server
         COMMAND_LOCK,
         COMMAND_UNLOCK,
         COMMAND_SPAWN,
-        COMMAND_DESTROY,
-        INVALID
+        COMMAND_DESTROY
     };// commandName
 
     enum errorCode
     {
         E_OK = 0,
-        E_INVALID_SYNTAX
+        E_INVALID_SYNTAX,
+        E_INVALID_COMMAND_USAGE
     };// errorCode
 
     struct Preposition
@@ -247,7 +248,7 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 256, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
+            pt = new Command("look", null, 1, 3, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
                 predicateType.PREDICATE_ALL, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
@@ -282,7 +283,7 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("spawn", null, 3, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
+            pt = new Command("spawn", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
                 predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
@@ -405,17 +406,27 @@ namespace _8th_Circle_Server
             // verbs, then something went wrong, bail out.
             if (!foundMatch || commandList.Count != 1)
             {
-                clientHandler.safeWrite(tokens[0] + " is not a valid command");
+                if (currentCommand.commandName != commandName.INVALID)
+                    clientHandler.safeWrite("You can't " + currentCommand.command + " like that");
+                else
+                    clientHandler.safeWrite(tokens[0] + " is not a valid command");
                 return;
             }// if
 
             // If the player only sent us a single verb and we found a match, we are done
             // call execute on the verb with no arguements
-            if (tokens.Length == 1)
+            if (tokens.Length == 1 && currentCommand.grammar.Length == 1)
             {
                 execute(commandList, clientHandler);
                 return;
             }// if
+            else if((tokens.Length > 1 && currentCommand.grammar.Length == 1) ||
+                    (tokens.Length == 1 && currentCommand.grammar.Length > 1) ||
+                    tokens.Length > currentCommand.maxTokens)
+            {
+                clientHandler.safeWrite("You can't use the " + currentCommand.command + " command that way");
+                return;
+            }
             
             errorCode error = errorCode.E_OK;
             // In this case, the player must have sent us a verb that has multiple arguements.
@@ -424,11 +435,17 @@ namespace _8th_Circle_Server
             error = populateCommandList(currentCommand, command.Substring(tokens[0].Length+1), 
                                         commandList, clientHandler);
 
-            if(error == errorCode.E_OK)
+            if (error == errorCode.E_OK)
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
                 execute(commandList, clientHandler);
+            else if (error == errorCode.E_INVALID_COMMAND_USAGE)
+                clientHandler.safeWrite("you can't use the " + currentCommand.command + " command like that");
+            else if (error == errorCode.E_INVALID_SYNTAX)
+            { } // do nothing it has been handled earlier
+            else
+                clientHandler.safeWrite("You can't do that");
         }// process
 
         public void execute(ArrayList commandQueue, ClientHandler clientHandler)
@@ -925,6 +942,11 @@ namespace _8th_Circle_Server
                     }
                 }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
+
+            if (grammarIndex != currentCommand.grammar.Length)
+            {
+                return errorCode.E_INVALID_COMMAND_USAGE;
+            }// if
 
             return ret;
         }// populateCommandList
