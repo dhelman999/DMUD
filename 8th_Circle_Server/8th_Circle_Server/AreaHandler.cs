@@ -34,8 +34,12 @@ namespace _8th_Circle_Server
 
         public static void spinWork(AreaHandler areaHandler)
         {
+            bool processed;
+
             while (true)
             {
+                processed = false;
+
                 try
                 {
                     Thread.Sleep(TICKTIME*1000);
@@ -43,10 +47,15 @@ namespace _8th_Circle_Server
                 catch
                 {
                     areaHandler.processAreas();
+                    areaHandler.processNpcs();
+                    processed = true;
                 }// catch
 
-                areaHandler.processAreas();
-
+                if (!processed)
+                {
+                    areaHandler.processAreas();
+                    areaHandler.processNpcs();
+                }// if
             }// while
         }// spinWork
 
@@ -126,6 +135,23 @@ namespace _8th_Circle_Server
 
             }// foreach
         }// processArea
+
+        // TODO
+        // Add respawns to Npcs
+        private void processNpcs()
+        {
+            foreach (Area area in mAreaList)
+            {
+                foreach (Npc npc in area.mNpcList)
+                {
+                    if ((npc.mCurrentActionCounter -= TICKTIME) <= 0)
+                    {
+                        npc.mCurrentActionCounter = npc.mStartingActionCounter;
+                        npc.randomAction();
+                    }// if
+                }// foreach
+            }// foreach
+        }// processNpcs
 
     }// Class AreaHandler
 

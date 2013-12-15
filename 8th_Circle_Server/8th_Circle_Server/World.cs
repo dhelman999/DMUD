@@ -125,7 +125,6 @@ namespace _8th_Circle_Server
             mAreaHandler.registerArea(protoArea);     
         }// Constructor
 
-        // TODO
         public Room getRoom(int z, int y, int x)
         {
             return mWorldGrid[z, y, x];

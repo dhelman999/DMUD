@@ -8,13 +8,18 @@ namespace _8th_Circle_Server
 {
     class Npc : Mob
     {
+        public int mStartingActionCounter;
+        public int mCurrentActionCounter;
+
         public Npc() : base()
         {
+            mStartingActionCounter = mCurrentActionCounter = 30;
         }// Constructor
 
         public Npc(string newName) : base()
         {
             mName = newName;
+            mStartingActionCounter = mCurrentActionCounter = 30;
         }// Constructor
 
         //TODO
@@ -45,7 +50,139 @@ namespace _8th_Circle_Server
             mCurrentOwner = mob.mCurrentOwner;
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
+            mStartingActionCounter = mCurrentActionCounter = 30;
         }// Copy Constructor
+
+        // TODO
+        // Needs to be more generic
+        public void randomAction()
+        {
+            Console.WriteLine("random action taken");
+            Random rand = new Random();
+            if (rand.NextDouble() < .5)
+            {
+                foreach (Player player in mCurrentRoom.mPlayerList)
+                {
+                    player.mClientHandler.safeWrite(mName + " purrs softly");
+                }// foreach
+            }// if
+            else
+            {
+                ArrayList commandQueue = new ArrayList();
+                addExits(commandQueue);
+
+                int index = (int)(commandQueue.Count * rand.NextDouble());
+                Command com = (Command)commandQueue[index];
+                foreach (Player player in mCurrentRoom.mPlayerList)
+                {
+                    player.mClientHandler.safeWrite(mName + " scampers off");
+                }// foreach
+
+                switch (com.command)
+                {
+                    case "north":
+                        changeRoom(mCurrentRoom.mNorthLink);
+                        break;
+                    case "south":
+                        changeRoom(mCurrentRoom.mSouthLink);
+                        break;
+                    case "east":
+                        changeRoom(mCurrentRoom.mEastLink);
+                        break;
+                    case "west":
+                        changeRoom(mCurrentRoom.mWestLink);
+                        break;
+                    case "up":
+                        changeRoom(mCurrentRoom.mUpLink);
+                        break;
+                    case "down":
+                        changeRoom(mCurrentRoom.mDownLink);
+                        break;
+                    case "northwest":
+                        changeRoom(mCurrentRoom.mNorthwestLink);
+                        break;
+                    case "northeast":
+                        changeRoom(mCurrentRoom.mNortheastLink);
+                        break;
+                    case "southwest":
+                        changeRoom(mCurrentRoom.mSouthwestLink);
+                        break;
+                    case "southeast":
+                        changeRoom(mCurrentRoom.mSoutheastLink);
+                        break;
+
+                    default:
+                        Console.WriteLine("something went wrong");
+                        break;
+                }// switch
+            }// else
+        }// randomAction
+
+        // TODO
+        // Needs to be more generic
+        private void addExits(ArrayList commandQueue)
+        {
+            if(mCurrentRoom.mNorthLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.NORTH] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTH]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[0]);
+            }// if
+            if (mCurrentRoom.mSouthLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.SOUTH] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTH]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[1]);
+            }// if
+            if (mCurrentRoom.mEastLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.EAST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.EAST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[2]);
+            }// if
+            if (mCurrentRoom.mWestLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.WEST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.WEST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[3]);
+            }// if
+            if (mCurrentRoom.mUpLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.UP] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.UP]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[4]);
+            }// if
+            if (mCurrentRoom.mDownLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.DOWN] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.DOWN]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[5]);
+            }// if
+            if (mCurrentRoom.mNortheastLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[6]);
+            }// if
+            if (mCurrentRoom.mNorthwestLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[7]);
+            }// if
+            if (mCurrentRoom.mSoutheastLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[8]);
+            }// if
+            if (mCurrentRoom.mSouthwestLink != null &&
+              (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST] == null ||
+              ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST]).mIsOpen))
+            {
+                commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[9]);
+            }// if
+        }// addExits
 
     }// Class Npc
 
