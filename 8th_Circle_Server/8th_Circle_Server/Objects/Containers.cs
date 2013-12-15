@@ -50,7 +50,7 @@ namespace _8th_Circle_Server
             mKeyId = mob.mKeyId;
         }// Copy Constructor
 
-        public override string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
+        public override string viewed(Mob viewer, Preposition prep)
         {
             bool foundAtOrIn = false;
             string ret = string.Empty;
@@ -97,7 +97,7 @@ namespace _8th_Circle_Server
             return ret;
         }// viewed
 
-        public override string open(ClientHandler clientHandler)
+        public override string open(Mob mob)
         {
             string ret = string.Empty;
 
@@ -119,7 +119,7 @@ namespace _8th_Circle_Server
             return ret;
         }// open
 
-        public override string close(ClientHandler clientHandler)
+        public override string close(Mob mob)
         {
             string ret = string.Empty;
 

@@ -47,12 +47,12 @@ namespace _8th_Circle_Server
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
-        public override string open(ClientHandler clientHandler)
+        public override string open(Mob mob)
         {
             if (mIsLocked)
-                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is locked";
+                return mob.mCurrentRoom.getDoorString(this) + " is locked";
             if (mIsOpen)
-                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is already open";
+                return mob.mCurrentRoom.getDoorString(this) + " is already open";
             else
             {
                 mIsOpen = true;
@@ -63,16 +63,16 @@ namespace _8th_Circle_Server
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens");
                 }// for
 
-                return "you open " + clientHandler.mPlayer.mCurrentRoom.getDoorString(this);
+                return "you open " + mob.mCurrentRoom.getDoorString(this);
             }// else
         }// open
 
-        public override string close(ClientHandler clientHandler)
+        public override string close(Mob mob)
         {
             if (mIsLocked)
-                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is locked";
+                return mob.mCurrentRoom.getDoorString(this) + " is locked";
             if (!mIsOpen)
-                return clientHandler.mPlayer.mCurrentRoom.getDoorString(this) + " is already closed";
+                return mob.mCurrentRoom.getDoorString(this) + " is already closed";
             else
             {
                 mIsOpen = false;
@@ -83,7 +83,7 @@ namespace _8th_Circle_Server
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes");
                 }// for
 
-                return "you close " + clientHandler.mPlayer.mCurrentRoom.getDoorString(this);
+                return "you close " + mob.mCurrentRoom.getDoorString(this);
             }// else
         }// close
 

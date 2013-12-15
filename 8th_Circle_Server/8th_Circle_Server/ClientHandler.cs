@@ -108,7 +108,7 @@ namespace _8th_Circle_Server
         static void ClientResponder(ClientHandler clientHandler)
         {
             commandData cmdData = new commandData();
-            cmdData.clientHandler = clientHandler;
+            cmdData.mob = clientHandler.mPlayer;
             clientHandler.mCmdString = "Please enter your player's name.";
             clientHandler.safeWrite(clientHandler.mCmdString);
 

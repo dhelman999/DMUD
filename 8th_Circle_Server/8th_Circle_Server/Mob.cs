@@ -282,7 +282,7 @@ namespace _8th_Circle_Server
             return string.Empty;
         }// used
 
-        public virtual string viewed(Mob viewer, Preposition prep, ClientHandler clientHandler)
+        public virtual string viewed(Mob viewer, Preposition prep)
         {
             bool foundAt = false;
             foreach (PrepositionType pType in mPrepList)
@@ -345,12 +345,12 @@ namespace _8th_Circle_Server
                 return "you can't drop that";
         }// drop
 
-        public virtual string open(ClientHandler clientHandler)
+        public virtual string open(Mob mob)
         {
             return "You can't open that";
         }// open
 
-        public virtual string close(ClientHandler clientHandler)
+        public virtual string close(Mob mob)
         {
             return "You can't close that";
         }// close

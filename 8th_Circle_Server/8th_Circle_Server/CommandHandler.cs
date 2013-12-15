@@ -12,12 +12,12 @@ namespace _8th_Circle_Server
     struct commandData
     {
         public string command;
-        public ClientHandler clientHandler;
+        public Mob mob;
 
-        public commandData(string command, ClientHandler ch)
+        public commandData(string command, Mob mob)
         {
             this.command = command;
-            this.clientHandler = ch;
+            this.mob = mob;
         }// Constructor
     }// commandData
 
@@ -63,7 +63,7 @@ namespace _8th_Circle_Server
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
                         comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
-                        commandExecuter.process(comData.command, comData.clientHandler);
+                        commandExecuter.process(comData.command, comData.mob);
                     }// while
                 }// catch
             }// while

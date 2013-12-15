@@ -73,48 +73,13 @@ namespace _8th_Circle_Server
 
                 int index = (int)(commandQueue.Count * rand.NextDouble());
                 Command com = (Command)commandQueue[index];
+                commandQueue.Clear();
+                commandQueue.Add(com);
                 foreach (Player player in mCurrentRoom.mPlayerList)
                 {
                     player.mClientHandler.safeWrite(mName + " scampers off");
                 }// foreach
-
-                switch (com.command)
-                {
-                    case "north":
-                        changeRoom(mCurrentRoom.mNorthLink);
-                        break;
-                    case "south":
-                        changeRoom(mCurrentRoom.mSouthLink);
-                        break;
-                    case "east":
-                        changeRoom(mCurrentRoom.mEastLink);
-                        break;
-                    case "west":
-                        changeRoom(mCurrentRoom.mWestLink);
-                        break;
-                    case "up":
-                        changeRoom(mCurrentRoom.mUpLink);
-                        break;
-                    case "down":
-                        changeRoom(mCurrentRoom.mDownLink);
-                        break;
-                    case "northwest":
-                        changeRoom(mCurrentRoom.mNorthwestLink);
-                        break;
-                    case "northeast":
-                        changeRoom(mCurrentRoom.mNortheastLink);
-                        break;
-                    case "southwest":
-                        changeRoom(mCurrentRoom.mSouthwestLink);
-                        break;
-                    case "southeast":
-                        changeRoom(mCurrentRoom.mSoutheastLink);
-                        break;
-
-                    default:
-                        Console.WriteLine("something went wrong");
-                        break;
-                }// switch
+                mCurrentArea.mCommandExecuter.execute(commandQueue, this);
             }// else
         }// randomAction
 
