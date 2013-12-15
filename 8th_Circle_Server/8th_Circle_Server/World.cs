@@ -54,33 +54,33 @@ namespace _8th_Circle_Server
             Room currentRoom = new Room();
 
             mWorldGrid = new Room[MAXZSIZE, MAXYSIZE, MAXXSIZE];
-            mWorldGrid[0, 0, 0] = new Room("Room 0,0,0", 0, 0, 0);
-            mWorldGrid[1, 0, 0] = new Room("Room 1,0,0", 1, 0, 0);
-            mWorldGrid[2, 0, 0] = new Room("Room 2,0,0", 2, 0, 0);
-            mWorldGrid[0, 1, 0] = new Room("Room 0,1,0", 0, 1, 0);
-            mWorldGrid[1, 1, 0] = new Room("Room 1,1,0", 1, 1, 0);
-            mWorldGrid[2, 1, 0] = new Room("Room 2,1,0", 2, 1, 0);
-            mWorldGrid[0, 2, 0] = new Room("Room 0,2,0", 0, 2, 0);
-            mWorldGrid[1, 2, 0] = new Room("Room 1,2,0", 1, 2, 0);
-            mWorldGrid[2, 2, 0] = new Room("Room 2,2,0", 2, 2, 0);
-            mWorldGrid[0, 0, 1] = new Room("Room 0,0,1", 0, 0, 1);
-            mWorldGrid[1, 0, 1] = new Room("Room 1,0,1", 1, 0, 1);
-            mWorldGrid[2, 0, 1] = new Room("Room 2,0,1", 2, 0, 1);
-            mWorldGrid[0, 1, 1] = new Room("Room 0,1,1", 0, 1, 1);
-            mWorldGrid[1, 1, 1] = new Room("Room 1,1,1", 1, 1, 1);
-            mWorldGrid[2, 1, 1] = new Room("Room 2,1,1", 2, 1, 1);
-            mWorldGrid[0, 2, 1] = new Room("Room 0,2,1", 0, 2, 1);
-            mWorldGrid[1, 2, 1] = new Room("Room 1,2,1", 1, 2, 1);
-            mWorldGrid[2, 2, 1] = new Room("Room 2,2,1", 2, 2, 1);
-            mWorldGrid[0, 0, 2] = new Room("Room 0,0,2", 0, 0, 2);
-            mWorldGrid[1, 0, 2] = new Room("Room 1,0,2", 1, 0, 2);
-            mWorldGrid[2, 0, 2] = new Room("Room 2,0,2", 2, 0, 2);
-            mWorldGrid[0, 1, 2] = new Room("Room 0,1,2", 0, 1, 2);
-            mWorldGrid[1, 1, 2] = new Room("Room 1,1,2", 1, 1, 2);
-            mWorldGrid[2, 1, 2] = new Room("Room 2,1,2", 2, 1, 2);
-            mWorldGrid[0, 2, 2] = new Room("Room 0,2,2", 0, 2, 2);
-            mWorldGrid[1, 2, 2] = new Room("Room 1,2,2", 1, 2, 2);
-            mWorldGrid[2, 2, 2] = new Room("Room 2,2,2", 2, 2, 2);
+            mWorldGrid[0, 0, 0] = new Room("Room 0,0,0", 0, 0, 0, 0);
+            mWorldGrid[1, 0, 0] = new Room("Room 1,0,0", 1, 0, 0, 0);
+            mWorldGrid[2, 0, 0] = new Room("Room 2,0,0", 2, 0, 0, 0);
+            mWorldGrid[0, 1, 0] = new Room("Room 0,1,0", 0, 1, 0, 0);
+            mWorldGrid[1, 1, 0] = new Room("Room 1,1,0", 1, 1, 0, 0);
+            mWorldGrid[2, 1, 0] = new Room("Room 2,1,0", 2, 1, 0, 0);
+            mWorldGrid[0, 2, 0] = new Room("Room 0,2,0", 0, 2, 0, 0);
+            mWorldGrid[1, 2, 0] = new Room("Room 1,2,0", 1, 2, 0, 0);
+            mWorldGrid[2, 2, 0] = new Room("Room 2,2,0", 2, 2, 0, 0);
+            mWorldGrid[0, 0, 1] = new Room("Room 0,0,1", 0, 0, 1, 0);
+            mWorldGrid[1, 0, 1] = new Room("Room 1,0,1", 1, 0, 1, 0);
+            mWorldGrid[2, 0, 1] = new Room("Room 2,0,1", 2, 0, 1, 0);
+            mWorldGrid[0, 1, 1] = new Room("Room 0,1,1", 0, 1, 1, 0);
+            mWorldGrid[1, 1, 1] = new Room("Room 1,1,1", 1, 1, 1, 0);
+            mWorldGrid[2, 1, 1] = new Room("Room 2,1,1", 2, 1, 1, 0);
+            mWorldGrid[0, 2, 1] = new Room("Room 0,2,1", 0, 2, 1, 0);
+            mWorldGrid[1, 2, 1] = new Room("Room 1,2,1", 1, 2, 1, 0);
+            mWorldGrid[2, 2, 1] = new Room("Room 2,2,1", 2, 2, 1, 0);
+            mWorldGrid[0, 0, 2] = new Room("Room 0,0,2", 0, 0, 2, 0);
+            mWorldGrid[1, 0, 2] = new Room("Room 1,0,2", 1, 0, 2, 0);
+            mWorldGrid[2, 0, 2] = new Room("Room 2,0,2", 2, 0, 2, 0);
+            mWorldGrid[0, 1, 2] = new Room("Room 0,1,2", 0, 1, 2, 0);
+            mWorldGrid[1, 1, 2] = new Room("Room 1,1,2", 1, 1, 2, 0);
+            mWorldGrid[2, 1, 2] = new Room("Room 2,1,2", 2, 1, 2, 0);
+            mWorldGrid[0, 2, 2] = new Room("Room 0,2,2", 0, 2, 2, 0);
+            mWorldGrid[1, 2, 2] = new Room("Room 1,2,2", 1, 2, 2, 0);
+            mWorldGrid[2, 2, 2] = new Room("Room 2,2,2", 2, 2, 2, 0);
 
             for (int i = 0; i < 3; i++)
             {
@@ -125,7 +125,7 @@ namespace _8th_Circle_Server
             mAreaHandler.registerArea(protoArea);     
         }// Constructor
 
-
+        // TODO
         public Room getRoom(int z, int y, int x)
         {
             return mWorldGrid[z, y, x];

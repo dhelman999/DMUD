@@ -6,12 +6,39 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+    enum RoomID
+    {
+        INVALID,
+        GERALD_1ST_ENT,
+        GERALD_1ST_HALLWAY,
+        GERALD_1ST_KITCHEN,
+        GERALD_1ST_BATHROOM,
+        GERALD_1ST_DININGROOM,
+        GERALD_1ST_LIVINGROOM,
+        GERALD_2ND_HALLWAY,
+        GERALD_2ND_BATHROOM,
+        GERALD_2ND_KITTYROOM,
+        GERALD_2ND_KITTYCLOSET,
+        GERALD_2ND_BLUEROOM,
+        GERALD_2ND_BEDROOM,
+        GERALD_BASE_PART1,
+        GERALD_BASE_PART2,
+        GERALD_BASE_PART3,
+        GERALD_BASE_PART4,
+        GERALD_BASE_PART5,
+        GERALD_BASE_LAUNDRYROOM,
+        GERALD_BASE_CLOSET,
+        GERALD_BASE_SUMPROOM,
+        GERALD_BASE_BATHROOM
+    }// RoomID
+
     class Room
     {
         // Debug
         internal const bool DEBUG = false;
 
         // Member Variables
+        public RoomID mRoomID;
         public string mDescription;
         public Room mNorthLink;
         public Room mSouthLink;
@@ -59,7 +86,7 @@ namespace _8th_Circle_Server
             mObjectList = new ArrayList();
         }// Constructor
 
-        public Room(string desc, int xCoord, int yCoord, int zCoord)
+        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID)
         {
             mDescription = desc;
             mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
@@ -72,6 +99,7 @@ namespace _8th_Circle_Server
             mWorldLoc[0] = xCoord;
             mWorldLoc[1] = yCoord;
             mWorldLoc[2] = zCoord;
+            this.mRoomID = roomID;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();

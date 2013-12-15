@@ -42,6 +42,17 @@ namespace _8th_Circle_Server
             mCommandExecuter = new CommandExecuter();
         }// Constructor
 
+        public Room getRoom(RoomID roomID)
+        {
+            foreach(Room room in mRoomList)
+            {
+                if (room.mRoomID == roomID)
+                    return room;
+            }// foreach
+
+            return null;
+        }// getRoom
+
     }// Class Area
 
 }// Namespace _8th_Circle_Server

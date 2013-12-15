@@ -21,89 +21,89 @@ namespace _8th_Circle_Server
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " +
                 "leading up.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT);
             house1stentranceway.mCurrentArea = geraldineArea;
             Room house1stHallway = new Room("The west hallway is empty besides a few pictures",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_HALLWAY);
             house1stHallway.mCurrentArea = geraldineArea;
             Room house1stKitchen = new Room("The kitchen has a nice view of the outside to the west; " +
                 "there are also stairs leading down and a doorway to the north",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET);
+                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_KITCHEN);
             house1stKitchen.mCurrentArea = geraldineArea;
             Room house1stDiningRoom = new Room("The dining room is blue with various pictures; one is " +
                 "particularly interesting, featuring a type of chicken",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_DININGROOM);
             house1stDiningRoom.mCurrentArea = geraldineArea;
             Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " +
                 "the north wall",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM);
             house1stLivingRoom.mCurrentArea = geraldineArea;
             Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " +
                 "a sink and toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_2ND_BATHROOM);
             house1stBathroom.mCurrentArea = geraldineArea;
 
             Room house2ndHallway = new Room("The hallway to the 2nd floor.  This is a long corridor\n with " +
                 "many rooms attached to it with stairs leading down at the base.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_HALLWAY);
             house2ndHallway.mCurrentArea = geraldineArea;
             Room house2ndKittyroom = new Room("The kittyroom, there is not much here besides some litterboxes.",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYROOM);
             house2ndKittyroom.mCurrentArea = geraldineArea;
             Room house2ndKittyCloset = new Room("The closet of the kittyroom holds various appliances such as " +
                 "vaccuums and other cleaning supplies",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYCLOSET);
             house2ndKittyCloset.mCurrentArea = geraldineArea;
             Room house2ndBathroom = new Room("A small master bathroom has a sink, shower and toilet",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET + 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BATHROOM);
             house2ndBathroom.mCurrentArea = geraldineArea;
             Room house2ndBedroom = new Room("The master bedroom is huge with two sliding door closets\n and " +
                 "windows on the north and northwest sides",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BEDROOM);
             house2ndBedroom.mCurrentArea = geraldineArea;
             Room house2ndBlueroom = new Room("The blueroom has a large bookshelf, a sliding door closet and " +
                 "a loveseat",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BLUEROOM);
             house2ndBlueroom.mCurrentArea = geraldineArea;
 
             Room houseBaseentrance = new Room("The bottom of the stairs leads to the basement.\n This " +
                 " is a large basement that spans to the south with \nrooms attached on both sides.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART1);
             houseBaseentrance.mCurrentArea = geraldineArea;
             Room houseBasepart2 = new Room("There is a piano here along the wall with light grey\n " +
                 "carpet with the walls being a darker grey",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART2);
             houseBasepart2.mCurrentArea = geraldineArea;
             Room houseBasepart3 = new Room("There isn't much to this piece of the basement besides\n " +
                 "some pictures on both the west and east walls.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART3);
             houseBasepart3.mCurrentArea = geraldineArea;
             Room houseBasepart4 = new Room("You have reached the southern corner of the basement.\n " +
                 "There is a computer desk here with a glowing PC and monitor.  There are all\n " +
                 "sorts of figurines of wonderous power sitting on the desk along with pictures\n " +
                 "depicting awesome scenes of wonder and adventure.  Something about this room\n " +
                 "seems filled with some sort of power.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART4);
             houseBasepart4.mCurrentArea = geraldineArea;
             Room houseBasepart5 = new Room("The southwest most edge of the basement, there is a\n " +
                 "couch on the south end of the wall facing a TV in the corner beside a doorway",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART5);
             houseBasepart5.mCurrentArea = geraldineArea;
             Room houseBaseBathroom = new Room("The bathroom has a standing shower as well as a long \n " +
                 "vanity with an accompanying toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_BATHROOM);
             houseBaseBathroom.mCurrentArea = geraldineArea;
             Room houseBaseCloset = new Room("This is a closet that has large holding shelves with\n " +
                 "board games from top to bottom.  This is an impressive collection indeed!",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_CLOSET);
             houseBaseCloset.mCurrentArea = geraldineArea;
             Room houseBaseLaundryRoom = new Room("The laundry room has no carpet and has many shelves\n " +
                 "with various pieces of hardware and tools",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_LAUNDRYROOM);
             houseBaseLaundryRoom.mCurrentArea = geraldineArea;
             Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " +
                 "for storage",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1);
+                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM);
             houseBaseSumpRoom.mCurrentArea = geraldineArea;
 
             house2ndHallway.mCurrentArea = geraldineArea;
@@ -230,7 +230,7 @@ namespace _8th_Circle_Server
 
         public void addNpcs(Area area)
         {
-            addMob(MOBLIST.MAX, (Room)area.mRoomList[0], area);
+            addMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
         }// addNpcs
 
     }// class World
