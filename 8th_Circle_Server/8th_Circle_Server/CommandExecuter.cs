@@ -1011,7 +1011,7 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 if (validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mPlayerList);
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 }// if
             }// if
@@ -1034,11 +1034,12 @@ namespace _8th_Circle_Server
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 if(validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mObjectList);
+                    targetList.Add(clientHandler.mPlayer.mCurrentRoom.mNpcList);
                     targetList.Add(clientHandler.mPlayer.mInventory);
                 }// if
             }// if
-
+            // TODO
+            // See if we have added the same list multiple times
             foreach(ArrayList ar in targetList)
             {
                 if (ar.Count > 0)

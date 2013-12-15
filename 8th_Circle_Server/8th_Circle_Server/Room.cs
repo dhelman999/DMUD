@@ -148,6 +148,8 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
+        // TODO
+        // Do we need to have both a addobject and addnpc
         public void addObject(Mob mob)
         {
             // Remove old references
@@ -162,6 +164,22 @@ namespace _8th_Circle_Server
             mob.mCurrentRoom = this;
             mob.mCurrentArea.mObjectList.Add(mob);
             mObjectList.Add(mob);
+        }// addObject
+
+        public void addNpc(Mob mob)
+        {
+            // Remove old references
+            if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
+            {
+                mob.mCurrentArea.mNpcList.Remove(mob);
+                mob.mCurrentRoom.mNpcList.Remove(mob);
+            }// if
+
+            // Add new references
+            mob.mCurrentArea = mCurrentArea;
+            mob.mCurrentRoom = this;
+            mob.mCurrentArea.mNpcList.Add(mob);
+            mNpcList.Add(mob);
         }// addObject
 
         public void addDoor(Doorway door, Direction dir)

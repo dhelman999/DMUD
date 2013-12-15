@@ -24,6 +24,7 @@ namespace _8th_Circle_Server
         public ArrayList mConnectionList;
         public string mName;
         public string mDescription;
+        public CommandExecuter mCommandExecuter;
 
         public Area()
         {
@@ -38,6 +39,7 @@ namespace _8th_Circle_Server
             mConnectionList = new ArrayList();
             mName = string.Empty;
             mDescription = string.Empty;
+            mCommandExecuter = new CommandExecuter();
         }// Constructor
 
     }// Class Area

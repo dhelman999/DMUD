@@ -7,16 +7,36 @@ namespace _8th_Circle_Server
 {
     enum MOBLIST
     {
+        // Reserved for players
         PLAYER=-1,
+
+        // Objects
+        BRASS_KEY,
         EVENT_CHEST1,
         EVENT_CHEST2,
-        BRASS_KEY,
+        
+        // NPCs
+        MAX
     }// MOBLIST
 
     partial class World
     {
         private void addMobs()
         {
+            // This order must be the same as the enum defined above
+            Mob key = new Mob();
+            key.mDescription = "An old brass key, what does it unlock?";
+            key.mFlagList.Add(objectFlags.FLAG_GETTABLE);
+            key.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
+            key.mFlagList.Add(objectFlags.FLAG_STORABLE);
+            key.mFlagList.Add(objectFlags.FLAG_DROPPABLE);
+            key.mName = "brass key";
+            key.mInventory.Capacity = 0;
+            key.mWorld = this;
+            key.mMobId = (int)MOBLIST.BRASS_KEY;
+            key.mIsActive = false;
+            mFullMobList.Add(key);
+
             Container chest = new Container();
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
             chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
@@ -63,18 +83,16 @@ namespace _8th_Circle_Server
             chest2.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest2);
 
-            Mob key = new Mob();
-            key.mDescription = "An old brass key, what does it unlock?";
-            key.mFlagList.Add(objectFlags.FLAG_GETTABLE);
-            key.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
-            key.mFlagList.Add(objectFlags.FLAG_STORABLE);
-            key.mFlagList.Add(objectFlags.FLAG_DROPPABLE);
-            key.mName = "brass key";
-            key.mInventory.Capacity = 0;
-            key.mWorld = this;
-            key.mMobId = (int)MOBLIST.BRASS_KEY;
-            key.mIsActive = false;
-            mFullMobList.Add(key);
+            Npc max = new Npc();
+            max.mDescription = "A super big fluffy cute kitty kat... you just want to hug him";
+            max.mName = "Max the MaineCoon";
+            max.mInventory.Capacity = 0;
+            max.mWorld = this;
+            max.mMobId = (int)MOBLIST.MAX;
+            max.mIsActive = true;
+            max.mStartingRespawnTime = 120;
+            max.mCurrentRespawnTime = 120;
+            mFullMobList.Add(max);
         }// addMobs
 
         // TODO
@@ -95,12 +113,18 @@ namespace _8th_Circle_Server
         {
             Mob mob = null;
             Container cont = null;
+            Npc npc = null;
 
             if (mFullMobList[(int)mobId] is Container)
             {
                 cont = new Container((Container)mFullMobList[(int)mobId]);
                 mob = cont;
-            }
+            }// if
+            else if (mFullMobList[(int)mobId] is Npc)
+            {
+                npc = new Npc((Npc)mFullMobList[(int)mobId]);
+                mob = npc;
+            }// if
             else
                 mob = new Mob((Mob)mFullMobList[(int)mobId]);
 
@@ -117,17 +141,30 @@ namespace _8th_Circle_Server
 
             Mob mob2 = null;
             Container cont2 = null;
+            Npc npc2 = null;
 
+            // TODO
+            // this whole functionality needs to be made more generic and rethought
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
-            }
+                mob2.mName = newName;
+                startingRoom.addObject(mob2);
+            }// if
+            if (mob is Npc)
+            {
+                npc2 = new Npc((Npc)mob);
+                mob2 = npc2;
+                mob2.mName = newName;
+                startingRoom.addNpc(mob2);
+            }// if
             else
+            {
                 mob2 = new Mob(mob);
-
-            mob2.mName = newName;
-            startingRoom.addObject(mob2);
+                mob2.mName = newName;
+                startingRoom.addObject(mob2);
+            }// else
         }// addMob
 
     }// class World

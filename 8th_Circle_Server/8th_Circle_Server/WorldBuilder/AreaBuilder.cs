@@ -221,9 +221,17 @@ namespace _8th_Circle_Server
             geraldineArea.mRoomList.Add(houseBaseSumpRoom);
 
             getRoom(0, 0, 0).mWestLink = house1stentranceway;
+
+            addNpcs(geraldineArea);
+
             mAreaList.Add(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
         }// geraldineArea
+
+        public void addNpcs(Area area)
+        {
+            addMob(MOBLIST.MAX, (Room)area.mRoomList[0], area);
+        }// addNpcs
 
     }// class World
 
