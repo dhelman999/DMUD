@@ -160,11 +160,16 @@ namespace _8th_Circle_Server
             }// for
 
             exitStr += "Objects: ";
-            for (int i = 0; i < mObjectList.Count; ++i)
-                exitStr += ((Mob)mObjectList[i]).exitString(this) + "\n";
-
             if (mObjectList.Count == 0)
                 exitStr += "\n";
+
+            for (int i = 0; i < mObjectList.Count; ++i)
+                exitStr += ((Mob)mObjectList[i]).exitString(this) + "\n";          
+
+            exitStr += "Npcs: ";
+            if (mNpcList.Count == 0)
+                exitStr += "\n";
+
             for (int i = 0; i < mNpcList.Count; ++i)
                 exitStr += ((Mob)mNpcList[i]).mName + "\n";
 

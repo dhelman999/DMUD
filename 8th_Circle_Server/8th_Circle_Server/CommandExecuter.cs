@@ -508,8 +508,9 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_TELL:
                     ++commandIndex;
                     player = (Player)commandQueue[commandIndex++];
-                    ((Player)mob).mClientHandler.safeWrite("You tell " + player.mName + " \"" + commandQueue[commandIndex] +
-                        "\"");
+                    if(mob is Player)
+                        ((Player)mob).mClientHandler.safeWrite("You tell " + player.mName + " \"" + 
+                            commandQueue[commandIndex] + "\"");
                     player.mClientHandler.safeWrite(mob.mName + " tells you \"" + 
                         commandQueue[commandIndex] + "\"");
                     tempCommand = (Command)commandQueue[0];

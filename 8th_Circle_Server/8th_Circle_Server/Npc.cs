@@ -65,6 +65,22 @@ namespace _8th_Circle_Server
                 {
                     player.mClientHandler.safeWrite(mName + " purrs softly");
                 }// foreach
+                ArrayList commandQueue = new ArrayList();
+                Command com = new Command();
+                foreach(Command cmd in mCurrentArea.mCommandExecuter.mVerbList)
+                {
+                    if (cmd.commandName == commandName.COMMAND_TELL)
+                        com = cmd;
+                }
+                
+                foreach (Player pl in mCurrentArea.mPlayerList)
+                {
+                    commandQueue.Add(com);
+                    commandQueue.Add(pl);
+                    commandQueue.Add("purrr");
+                    mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                    commandQueue.Clear();
+                }
             }// if
             else
             {
