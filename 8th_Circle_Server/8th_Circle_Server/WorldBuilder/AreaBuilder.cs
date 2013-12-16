@@ -231,6 +231,7 @@ namespace _8th_Circle_Server
         public void addNpcs(Area area)
         {
             addMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
+            addMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
         }// addNpcs
 
     }// class World

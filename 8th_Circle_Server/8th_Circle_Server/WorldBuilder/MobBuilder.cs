@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 
@@ -14,7 +15,8 @@ namespace _8th_Circle_Server
         BRASS_KEY,
         EVENT_CHEST1,
         EVENT_CHEST2,
-        
+        FIRST_CIRCLE,
+
         // NPCs
         MAX
     }// MOBLIST
@@ -82,6 +84,26 @@ namespace _8th_Circle_Server
             chest2.mStartingRespawnTime = 60;
             chest2.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest2);
+
+            Mob first_circle = new Mob();
+            first_circle.mDescription = "The first of eight ancient golden circles";
+            first_circle.mFlagList.Add(objectFlags.FLAG_GETTABLE);
+            first_circle.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
+            first_circle.mFlagList.Add(objectFlags.FLAG_STORABLE);
+            first_circle.mFlagList.Add(objectFlags.FLAG_DUPLICATED);
+            first_circle.mFlagList.Add(objectFlags.FLAG_USEABLE);
+            first_circle.mName = "1st Circle";
+            eventData = new EventData();
+            eventData.eventFlag = EventFlag.EVENT_TELEPORT;
+            eventData.commandName = commandName.COMMAND_GET;
+            ArrayList ar = new ArrayList();
+            eventData.data = RoomID.GERALD_2ND_KITTYCLOSET;
+            first_circle.mEventList.Add(eventData);
+            first_circle.mInventory.Capacity = 0;
+            first_circle.mWorld = this;
+            first_circle.mMobId = (int)MOBLIST.FIRST_CIRCLE;
+            first_circle.mIsActive = false;
+            mFullMobList.Add(first_circle);
 
             Npc max = new Npc();
             max.mDescription = "A super big fluffy cute kitty kat... you just want to hug him";
@@ -152,7 +174,7 @@ namespace _8th_Circle_Server
                 mob2.mName = newName;
                 startingRoom.addObject(mob2);
             }// if
-            if (mob is Npc)
+            else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);
                 mob2 = npc2;

@@ -26,6 +26,7 @@ namespace _8th_Circle_Server
         FLAG_INSPECTABLE,
         FLAG_IDENTIFYABLE,
         FLAG_STEALABLE,
+        FLAG_DUPLICATED
     };// flags
 
     class Mob
@@ -304,18 +305,35 @@ namespace _8th_Circle_Server
         {
             if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
             {
+                // TODO
+                // Make a unique flag so you cant keep getting them
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    mob.mCurrentArea.mObjectList.Remove(this);
-                    mob.mCurrentRoom.mObjectList.Remove(this);
-                    mob.mWorld.mObjectList.Remove(this);
-                    if (mob is Player)
-                        this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
-                    else
-                        this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
-                    mob.mInventory.Add(this);
+                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATED))
+                    {
+                        Mob dup = new Mob(this);
 
-                    return "you get " + exitString(mCurrentRoom);
+                        if (mob is Player)
+                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
+                        else
+                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
+                        mob.mInventory.Add(this);
+
+                        return "you get " + exitString(mCurrentRoom);
+                    }
+                    else
+                    {
+                        mob.mCurrentArea.mObjectList.Remove(this);
+                        mob.mCurrentRoom.mObjectList.Remove(this);
+                        mob.mWorld.mObjectList.Remove(this);
+                        if (mob is Player)
+                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
+                        else
+                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
+                        mob.mInventory.Add(this);
+
+                        return "you get " + exitString(mCurrentRoom);
+                    }
                 }// if
                 else
                 {

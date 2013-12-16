@@ -9,7 +9,8 @@ namespace _8th_Circle_Server
 {
     enum EventFlag
     {
-        EVENT_TELL_PLAYER
+        EVENT_TELL_PLAYER,
+        EVENT_TELEPORT
     };// EventFlag
 
     struct EventData
@@ -51,15 +52,17 @@ namespace _8th_Circle_Server
         // Member Variables
         public ArrayList mEventCache;
         public Queue mEventQueue;
+        public World mWorld;
 
         private object mQueueLock;
         private Thread mSpinWorkThread; 
 
-        public EventHandler()
+        public EventHandler(World world)
         {
             mEventCache = new ArrayList();
             mEventQueue = new Queue();
             mQueueLock = new object();
+            mWorld = world;
         }// Constructor
 
         public void start()
@@ -105,6 +108,20 @@ namespace _8th_Circle_Server
                         {
                             ((Player)eventData.trigger).mClientHandler.safeWrite((string)eventData.data);
                         }// if
+                        break;
+                        
+                    case EventFlag.EVENT_TELEPORT:
+                        if (eventData.trigger is Player)
+                        {
+                            RoomID rid = (RoomID)eventData.data;
+                            ((Area)mWorld.mAreaList[1]).getRoom(rid).addPlayer(eventData.trigger);
+                            ((Player)eventData.trigger).mClientHandler.safeWrite("You feel a " +
+                               "mystical energy whisk you away, only to find yourself...");
+                            ((Player)eventData.trigger).mClientHandler.safeWrite(
+                                eventData.trigger.mCurrentRoom.mDescription);
+                            ((Player)eventData.trigger).mClientHandler.safeWrite(
+                                eventData.trigger.mCurrentRoom.exitString());
+                        }
                         break;
 
                     default:

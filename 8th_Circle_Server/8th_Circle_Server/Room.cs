@@ -215,6 +215,24 @@ namespace _8th_Circle_Server
             mNpcList.Add(mob);
         }// addObject
 
+        // TODO
+        // Combine all these functions into 1
+        public void addPlayer(Mob mob)
+        {
+            // Remove old references
+            if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
+            {
+                mob.mCurrentArea.mPlayerList.Remove(mob);
+                mob.mCurrentRoom.mPlayerList.Remove(mob);
+            }// if
+
+            // Add new references
+            mob.mCurrentArea = mCurrentArea;
+            mob.mCurrentRoom = this;
+            mob.mCurrentArea.mPlayerList.Add(mob);
+            mPlayerList.Add(mob);
+        }// addObject
+
         public void addDoor(Doorway door, Direction dir)
         {
             mDoorwayList[(int)dir] = door;

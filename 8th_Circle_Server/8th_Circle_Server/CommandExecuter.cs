@@ -74,7 +74,8 @@ namespace _8th_Circle_Server
         COMMAND_UNLOCK,
         COMMAND_DROP,
         COMMAND_SPAWN,
-        COMMAND_DESTROY
+        COMMAND_DESTROY,
+        COMMAND_USE
     };// commandName
 
     enum errorCode
@@ -932,12 +933,26 @@ namespace _8th_Circle_Server
 
         private void checkEvent(Command command, Mob mob)
         {
+            // TODO
+            // Do we need this?
+            /*
             if (command.predicate1 != predicateType.INVALID &&
                 command.predicate2 != predicateType.INVALID)
             {
-
-            }// if
-            else if (command.predicate1 != predicateType.INVALID &&
+                if (mob.mEventList.Count > 0)
+                {
+                    EventData eventData = (EventData)mob.mEventList[0];
+                    if (command.commandName == eventData.commandName)
+                    {
+                        eventData.trigger = command.commandOwner;
+                        eventData.eventObject = command.predicate1Value;
+                        eventData.eventRoom = command.predicate1Value.mCurrentRoom;
+                        eventData.validity = command.validity;
+                        ((Player)mob).mClientHandler.mEventHandler.enQueueEvent(eventData);
+                    }
+                }
+            }// if*/
+            if (command.predicate1 != predicateType.INVALID &&
                      command.predicate1 != predicateType.PREDICATE_CUSTOM)
             {
                 if ( command.predicate1Value.mEventList.Count > 0)

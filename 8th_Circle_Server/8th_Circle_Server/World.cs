@@ -33,7 +33,7 @@ namespace _8th_Circle_Server
         public World()
         {
             mCommandHandler = new CommandHandler(this);
-            mEventHandler = new EventHandler();
+            mEventHandler = new EventHandler(this);
             mAreaHandler = new AreaHandler();
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
