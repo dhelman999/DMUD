@@ -6,6 +6,13 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+    enum AreaID
+    {
+        AID_PROTOAREA,
+        AID_GERALDINEMANOR,
+        AID_NEWBIEAREA
+    }// AreaID
+
     class Area
     {
         // Debug
@@ -25,6 +32,7 @@ namespace _8th_Circle_Server
         public string mName;
         public string mDescription;
         public CommandExecuter mCommandExecuter;
+        public AreaID mAreaID;
 
         public Area()
         {
@@ -40,6 +48,7 @@ namespace _8th_Circle_Server
             mName = string.Empty;
             mDescription = string.Empty;
             mCommandExecuter = new CommandExecuter();
+            mAreaID = 0;
         }// Constructor
 
         public Room getRoom(RoomID roomID)

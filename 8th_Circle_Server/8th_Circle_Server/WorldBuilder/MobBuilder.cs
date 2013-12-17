@@ -97,7 +97,7 @@ namespace _8th_Circle_Server
             eventData.eventFlag = EventFlag.EVENT_TELEPORT;
             eventData.commandName = commandName.COMMAND_GET;
             ArrayList ar = new ArrayList();
-            eventData.data = RoomID.GERALD_2ND_KITTYCLOSET;
+            eventData.data = RoomID.GPG_PLAYER_START;
             first_circle.mEventList.Add(eventData);
             first_circle.mInventory.Capacity = 0;
             first_circle.mWorld = this;

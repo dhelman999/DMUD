@@ -114,7 +114,7 @@ namespace _8th_Circle_Server
                         if (eventData.trigger is Player)
                         {
                             RoomID rid = (RoomID)eventData.data;
-                            ((Area)mWorld.mAreaList[1]).getRoom(rid).addPlayer(eventData.trigger);
+                            ((Area)mWorld.mAreaList[2]).getRoom(rid).addPlayer(eventData.trigger);
                             ((Player)eventData.trigger).mClientHandler.safeWrite("You feel a " +
                                "mystical energy whisk you away, only to find yourself...");
                             ((Player)eventData.trigger).mClientHandler.safeWrite(

@@ -10,6 +10,7 @@ namespace _8th_Circle_Server
         private void addAreas()
         {
             addGeraldineArea();
+            addNewbieArea();
         }// addAreas
 
         private void addGeraldineArea()
@@ -222,17 +223,168 @@ namespace _8th_Circle_Server
 
             getRoom(0, 0, 0).mWestLink = house1stentranceway;
 
-            addNpcs(geraldineArea);
-
+            addGeraldineNpcs(geraldineArea);
+            geraldineArea.mAreaID = AreaID.AID_GERALDINEMANOR;
             mAreaList.Add(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
         }// geraldineArea
 
-        public void addNpcs(Area area)
+        public void addGeraldineNpcs(Area area)
         {
             addMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
             addMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
         }// addNpcs
+
+        public void addNewbieArea()
+        {
+            Area newbieArea = new Area();
+            newbieArea.mName = "Goblin Prooving Grounds";
+            newbieArea.mDescription = "This area is the leftover pits where unworthy goblins were abandoned " +
+             "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
+             "and were cast out until they prooved themselves";
+            newbieArea.mWorld = this;
+            newbieArea.mAreaID = AreaID.AID_NEWBIEAREA;
+
+            Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in " +
+                "every direction, although you see some walls to your west",
+                BAO, BAO, BAO, RoomID.GPG_PLAYER_START, newbieArea);
+            gpg_playerStart.mCurrentArea = newbieArea;
+            Room gpg_1 = new Room("GPG 1",
+                BAO-1, BAO+3, BAO, RoomID.GPG_ROOM_1, newbieArea);
+            Room gpg_2 = new Room("GPG 2",
+                BAO, BAO+3, BAO, RoomID.GPG_ROOM_2, newbieArea);
+            Room gpg_3 = new Room("GPG 3",
+                BAO+1, BAO+3, BAO, RoomID.GPG_ROOM_3, newbieArea);
+            Room gpg_4 = new Room("GPG 4",
+                BAO+2, BAO+3, BAO, RoomID.GPG_ROOM_4, newbieArea);
+            Room gpg_5 = new Room("GPG 5",
+                BAO+3, BAO+3, BAO, RoomID.GPG_ROOM_5, newbieArea);
+            Room gpg_6 = new Room("GPG 6",
+                BAO+4, BAO+3, BAO, RoomID.GPG_ROOM_6, newbieArea);
+            Room gpg_7 = new Room("GPG 7",
+                BAO-1, BAO+2, BAO, RoomID.GPG_ROOM_7, newbieArea);
+            Room gpg_8 = new Room("GPG 8",
+                BAO, BAO+2, BAO, RoomID.GPG_ROOM_8, newbieArea);
+            Room gpg_9 = new Room("GPG 9",
+                BAO+1, BAO+2, BAO, RoomID.GPG_ROOM_9, newbieArea);
+            Room gpg_10 = new Room("GPG 10",
+                BAO+2, BAO+2, BAO, RoomID.GPG_ROOM_10, newbieArea);
+            Room gpg_11 = new Room("GPG 11",
+                BAO+3, BAO+2, BAO, RoomID.GPG_ROOM_11, newbieArea);
+            Room gpg_12 = new Room("GPG 12",
+                BAO+4, BAO+2, BAO, RoomID.GPG_ROOM_12, newbieArea);
+            Room gpg_13 = new Room("GPG 13",
+                BAO-1, BAO+1, BAO, RoomID.GPG_ROOM_13, newbieArea);
+            Room gpg_14 = new Room("GPG 14",
+                BAO, BAO+1, BAO, RoomID.GPG_ROOM_14, newbieArea);
+            Room gpg_15 = new Room("GPG 15",
+                BAO+1, BAO+1, BAO, RoomID.GPG_ROOM_15, newbieArea);
+            Room gpg_16 = new Room("GPG 16",
+                BAO+2, BAO+1, BAO, RoomID.GPG_ROOM_16, newbieArea);
+            Room gpg_17 = new Room("GPG 17",
+                BAO+3, BAO+1, BAO, RoomID.GPG_ROOM_17, newbieArea);
+            Room gpg_18 = new Room("GPG 18",
+                BAO+4, BAO+1, BAO, RoomID.GPG_ROOM_18, newbieArea);
+            Room gpg_19 = new Room("GPG 19",
+                BAO-1, BAO, BAO, RoomID.GPG_ROOM_19, newbieArea);
+            Room gpg_21 = new Room("GPG 21",
+                BAO+1, BAO, BAO, RoomID.GPG_ROOM_21, newbieArea);
+            Room gpg_22 = new Room("GPG 22",
+                BAO+2, BAO, BAO, RoomID.GPG_ROOM_22, newbieArea);
+            Room gpg_23 = new Room("GPG 23",
+                BAO+3, BAO, BAO, RoomID.GPG_ROOM_23, newbieArea);
+            Room gpg_24 = new Room("GPG 24",
+                BAO+4, BAO, BAO, RoomID.GPG_ROOM_24, newbieArea);
+            Room gpg_25 = new Room("GPG 25",
+                BAO-1, BAO-1, BAO, RoomID.GPG_ROOM_25, newbieArea);
+            Room gpg_26 = new Room("GPG 26",
+                BAO, BAO-1, BAO, RoomID.GPG_ROOM_26, newbieArea);
+            Room gpg_27 = new Room("GPG 27",
+                BAO+1, BAO-1, BAO, RoomID.GPG_ROOM_27, newbieArea);
+            Room gpg_28 = new Room("GPG 28",
+                BAO+2, BAO-1, BAO, RoomID.GPG_ROOM_28, newbieArea);
+            Room gpg_29 = new Room("GPG 29",
+                BAO+3, BAO-1, BAO, RoomID.GPG_ROOM_29, newbieArea);
+            Room gpg_30 = new Room("GPG 30",
+                BAO+4, BAO-1, BAO, RoomID.GPG_ROOM_30, newbieArea);
+            Room gpg_31 = new Room("GPG 31",
+                BAO-1, BAO-2, BAO, RoomID.GPG_ROOM_31, newbieArea);
+            Room gpg_32 = new Room("GPG 32",
+                BAO, BAO-2, BAO, RoomID.GPG_ROOM_32, newbieArea);
+            Room gpg_33 = new Room("GPG 33",
+                BAO+1, BAO-2, BAO, RoomID.GPG_ROOM_33, newbieArea);
+            Room gpg_34 = new Room("GPG 34",
+                BAO+2, BAO-2, BAO, RoomID.GPG_ROOM_34, newbieArea);
+            Room gpg_35 = new Room("GPG 35",
+                BAO+3, BAO-2, BAO, RoomID.GPG_ROOM_35, newbieArea);
+            Room gpg_36 = new Room("GPG 36",
+                BAO+4, BAO-2, BAO, RoomID.GPG_ROOM_36, newbieArea);
+
+            mAreaList.Add(newbieArea);
+
+            foreach (Room room in newbieArea.mRoomList)
+            {
+                Room nwRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1] + 1, 
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room nRoom = getRoom(room.mWorldLoc[0], room.mWorldLoc[1] + 1,
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room neRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1] + 1,
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room wRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1],
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room eRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1],
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room swRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1] - 1,
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room sRoom = getRoom(room.mWorldLoc[0], room.mWorldLoc[1] - 1,
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room seRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1] - 1,
+                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+
+                if (nwRoom != null)
+                {
+                    room.mNorthwestLink = nwRoom;
+                    nwRoom.mSoutheastLink = room;
+                }
+                if (nRoom != null)
+                {
+                    room.mNorthLink = nRoom;
+                    nRoom.mSouthLink = room;
+                }
+                if (neRoom != null)
+                {
+                    room.mNortheastLink = neRoom;
+                    neRoom.mSouthwestLink = room;
+                }
+                if (wRoom != null)
+                {
+                    room.mWestLink = wRoom;
+                    wRoom.mEastLink = room;
+                }
+                if (eRoom != null)
+                {
+                    room.mEastLink = eRoom;
+                    eRoom.mWestLink = room;
+                }
+                if (swRoom != null)
+                {
+                    room.mSouthwestLink = swRoom;
+                    swRoom.mNortheastLink = room;
+                }
+                if (sRoom != null)
+                {
+                    room.mSouthLink = sRoom;
+                    sRoom.mNorthLink = room;
+                }
+                if (seRoom != null)
+                {
+                    room.mSoutheastLink = seRoom;
+                    seRoom.mNorthwestLink = room;
+                }
+            }
+            
+            mAreaHandler.registerArea(newbieArea);
+        }// addNewbieArea
 
     }// class World
 

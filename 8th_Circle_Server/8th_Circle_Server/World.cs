@@ -12,6 +12,7 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = false;
 
         internal const int HOUSE_OFFSET = 10000;
+        internal const int BAO = 1000;
 
         // Constants
         const int MAXXSIZE = 3;
@@ -108,6 +109,7 @@ namespace _8th_Circle_Server
                 }// for
             }// for
 
+            protoArea.mAreaID = AreaID.AID_PROTOAREA;
             // Add Proto testing area
             mAreaList.Add(protoArea);
             // Add all global mobs in the game
@@ -128,6 +130,48 @@ namespace _8th_Circle_Server
         public Room getRoom(int z, int y, int x)
         {
             return mWorldGrid[z, y, x];
+        }// getRoom
+
+        public Area getArea(AreaID areaID)
+        {
+            foreach (Area area in mAreaList)
+            {
+                if (area.mAreaID == areaID)
+                    return area;
+            }
+
+            return null;
+        }// getArea
+
+        public Room getRoom(RoomID roomID, AreaID areaID)
+        {
+            Area area = getArea(areaID);
+
+            foreach (Room room in area.mRoomList)
+            {
+                if (room.mRoomID == roomID)
+                    return room;
+            }
+
+            return null;
+
+        }// getRoom
+
+        public Room getRoom(int x, int y, int z, AreaID areaID)
+        {
+            Area area = getArea(areaID);
+
+            foreach (Room room in area.mRoomList)
+            {
+                // TODO
+                // Change this to mAreaLoc
+                if (room.mWorldLoc[0] == x &&
+                    room.mWorldLoc[1] == y &&
+                    room.mWorldLoc[2] == z)
+                    return room;
+            }
+
+            return null;
         }// getRoom
 
         public Area getArea(string areaName)

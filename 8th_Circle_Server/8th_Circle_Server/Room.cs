@@ -9,6 +9,7 @@ namespace _8th_Circle_Server
     enum RoomID
     {
         INVALID,
+        // Geraldine Manor
         GERALD_1ST_ENT,
         GERALD_1ST_HALLWAY,
         GERALD_1ST_KITCHEN,
@@ -29,7 +30,44 @@ namespace _8th_Circle_Server
         GERALD_BASE_LAUNDRYROOM,
         GERALD_BASE_CLOSET,
         GERALD_BASE_SUMPROOM,
-        GERALD_BASE_BATHROOM
+        GERALD_BASE_BATHROOM,
+        // Goblin Prooving Grounds
+        GPG_PLAYER_START,
+        GPG_ROOM_1,
+        GPG_ROOM_2,
+        GPG_ROOM_3,
+        GPG_ROOM_4,
+        GPG_ROOM_5,
+        GPG_ROOM_6,
+        GPG_ROOM_7,
+        GPG_ROOM_8,
+        GPG_ROOM_9,
+        GPG_ROOM_10,
+        GPG_ROOM_11,
+        GPG_ROOM_12,
+        GPG_ROOM_13,
+        GPG_ROOM_14,
+        GPG_ROOM_15,
+        GPG_ROOM_16,
+        GPG_ROOM_17,
+        GPG_ROOM_18,
+        GPG_ROOM_19,
+        GPG_ROOM_21,
+        GPG_ROOM_22,
+        GPG_ROOM_23,
+        GPG_ROOM_24,
+        GPG_ROOM_25,
+        GPG_ROOM_26,
+        GPG_ROOM_27,
+        GPG_ROOM_28,
+        GPG_ROOM_29,
+        GPG_ROOM_30,
+        GPG_ROOM_31,
+        GPG_ROOM_32,
+        GPG_ROOM_33,
+        GPG_ROOM_34,
+        GPG_ROOM_35,
+        GPG_ROOM_36
     }// RoomID
 
     class Room
@@ -103,6 +141,27 @@ namespace _8th_Circle_Server
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();
+        }// Constructor
+
+        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area)
+        {
+            mDescription = desc;
+            mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
+                mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
+            mWorldLoc = new int[3];
+            mDoorwayList = new ArrayList();
+            for (int i = 0; i < (int)Direction.INVALID; ++i)
+                mDoorwayList.Add(null);
+
+            mWorldLoc[0] = xCoord;
+            mWorldLoc[1] = yCoord;
+            mWorldLoc[2] = zCoord;
+            this.mRoomID = roomID;
+            mPlayerList = new ArrayList();
+            mNpcList = new ArrayList();
+            mObjectList = new ArrayList();
+            mCurrentArea = area;
+            area.mRoomList.Add(this);
         }// Constructor
 
         public string exitString()
@@ -253,6 +312,60 @@ namespace _8th_Circle_Server
             return ((Direction)(target)).ToString().ToLower() + " " + door.mName;
         }// getDoorString
 
+        public void generateSurroundingLinks(Room nwRoom, Room nRoom, Room neRoom,
+            Room wRoom, Room eRoom, Room swRoom, Room sRoom, Room seRoom, Room upRoom, Room downRoom)
+        {
+            if (nwRoom != null)
+            {
+                this.mNorthwestLink = nwRoom;
+                nwRoom.mSoutheastLink = this;
+            }
+            if (nRoom != null)
+            {
+                this.mNorthLink = nRoom;
+                nRoom.mSouthLink = this;
+            }
+            if (neRoom != null)
+            {
+                this.mNortheastLink = neRoom;
+                neRoom.mSouthwestLink = this;
+            }
+            if (wRoom != null)
+            {
+                this.mWestLink = wRoom;
+                wRoom.mEastLink = this;
+            }
+            if (eRoom != null)
+            {
+                this.mEastLink = eRoom;
+                eRoom.mWestLink = this;
+            }
+            if (swRoom != null)
+            {
+                this.mSouthwestLink = swRoom;
+                swRoom.mNortheastLink = this;
+            }
+            if (sRoom != null)
+            {
+                this.mSouthLink = sRoom;
+                sRoom.mNorthLink = this;
+            }
+            if (seRoom != null)
+            {
+                this.mSoutheastLink = seRoom;
+                seRoom.mNorthwestLink = this;
+            }
+            if (upRoom != null)
+            {
+                this.mUpLink = upRoom;
+                upRoom.mDownLink = this;
+            }
+            if (downRoom != null)
+            {
+                this.mDownLink = downRoom;
+                downRoom.mUpLink = this;
+            }
+        }// generateSurroundingLinks
     }// Class Room
 
 }// Namespace _8th_Circle_Server
