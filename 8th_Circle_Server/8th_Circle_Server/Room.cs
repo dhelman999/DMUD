@@ -67,7 +67,48 @@ namespace _8th_Circle_Server
         GPG_ROOM_33,
         GPG_ROOM_34,
         GPG_ROOM_35,
-        GPG_ROOM_36
+        GPG_ROOM_36,
+        GPG_ROOM_37,
+        GPG_ROOM_38,
+        GPG_ROOM_39,
+        GPG_ROOM_40,
+        GPG_ROOM_41,
+        GPG_ROOM_42,
+        GPG_ROOM_43,
+        GPG_ROOM_44,
+        GPG_ROOM_45,
+        GPG_ROOM_46,
+        GPG_ROOM_47,
+        GPG_ROOM_48,
+        GPG_ROOM_49,
+        GPG_ROOM_50,
+        GPG_ROOM_51,
+        GPG_ROOM_52,
+        GPG_ROOM_53,
+        GPG_ROOM_54,
+        GPG_ROOM_55,
+        GPG_ROOM_56,
+        GPG_ROOM_57,
+        GPG_ROOM_58,
+        GPG_ROOM_59,
+        GPG_ROOM_60,
+        GPG_ROOM_61,
+        GPG_ROOM_62,
+        GPG_ROOM_63,
+        GPG_ROOM_64,
+        GPG_ROOM_65,
+        GPG_ROOM_66,
+        GPG_ROOM_67,
+        GPG_ROOM_68,
+        GPG_ROOM_69,
+        GPG_ROOM_70,
+        GPG_ROOM_71,
+        GPG_ROOM_72,
+        GPG_ROOM_73,
+        GPG_ROOM_74,
+        GPG_ROOM_75,
+        GPG_ROOM_76,
+        GPG_ROOM_77
     }// RoomID
 
     class Room
@@ -366,6 +407,61 @@ namespace _8th_Circle_Server
                 downRoom.mUpLink = this;
             }
         }// generateSurroundingLinks
+
+        public void removeDualLinks(Direction direction)
+        {
+            if (direction == Direction.NORTH)
+            {
+                this.mNorthLink.mSouthLink = null;
+                this.mNorthLink = null;
+            }
+            else if (direction == Direction.SOUTH)
+            {
+                this.mSouthLink.mNorthLink = null;
+                this.mSouthLink = null;
+            }
+            else if (direction == Direction.EAST)
+            {
+                this.mEastLink.mWestLink = null;
+                this.mEastLink = null;
+            }
+            else if (direction == Direction.WEST)
+            {
+                this.mWestLink.mEastLink = null;
+                this.mWestLink = null;
+            }
+            else if (direction == Direction.UP)
+            {
+                this.mUpLink.mDownLink = null;
+                this.mUpLink = null;
+            }
+            else if (direction == Direction.DOWN)
+            {
+                this.mDownLink.mUpLink = null;
+                this.mDownLink = null;
+            }
+            else if (direction == Direction.NORTHWEST)
+            {
+                this.mNorthwestLink.mSoutheastLink = null;
+                this.mNorthwestLink = null;
+            }
+            else if (direction == Direction.NORTHEAST)
+            {
+                this.mNortheastLink.mSouthwestLink = null;
+                this.mNortheastLink = null;
+            }
+            else if (direction == Direction.SOUTHWEST)
+            {
+                this.mSouthwestLink.mNortheastLink = null;
+                this.mSouthwestLink = null;
+            }
+            else if (direction == Direction.SOUTHEAST)
+            {
+                this.mSoutheastLink.mNorthwestLink = null;
+                this.mSoutheastLink = null;
+            }
+        }// removeDualLinks
+
     }// Class Room
 
 }// Namespace _8th_Circle_Server
