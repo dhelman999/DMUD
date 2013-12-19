@@ -504,6 +504,7 @@ namespace _8th_Circle_Server
             gpg_62.removeDualLinks(Direction.NORTHEAST);
             gpg_62.removeDualLinks(Direction.SOUTHEAST);
             gpg_63.removeDualLinks(Direction.SOUTHEAST);
+            gpg_63.removeDualLinks(Direction.SOUTH);
             gpg_64.removeDualLinks(Direction.SOUTH);
             gpg_64.removeDualLinks(Direction.SOUTHWEST);
             gpg_64.removeDualLinks(Direction.SOUTHEAST);
@@ -524,6 +525,16 @@ namespace _8th_Circle_Server
             gpg_78.removeDualLinks(Direction.NORTHWEST);
             gpg_78.removeDualLinks(Direction.NORTHEAST);
             gpg_78.removeDualLinks(Direction.EAST);
+            gpg_70 = null;
+            gpg_41.removeTripleLinks(Direction.WEST);
+            gpg_48.removeTripleLinks(Direction.WEST);
+            gpg_55.removeTripleLinks(Direction.WEST);
+            gpg_62.removeTripleLinks(Direction.WEST);
+            gpg_69.removeTripleLinks(Direction.WEST);
+            gpg_76.removeTripleLinks(Direction.WEST);
+
+            addMob(MOBLIST.BASIC_CHEST, gpg_56, newbieArea);
+            addMob(MOBLIST.SWITCH, gpg_29, newbieArea);
 
             mAreaHandler.registerArea(newbieArea);
         }// addNewbieArea

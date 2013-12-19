@@ -314,6 +314,11 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("use", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_USE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -652,8 +657,8 @@ namespace _8th_Circle_Server
                     ((Player)mob).mClientHandler.safeWrite("Inventory:\n");
                     foreach (Mob mob2 in mob.mInventory)
                     {
-                        if(mob2 is Player)
-                            ((Player)mob2).mClientHandler.safeWrite(" " + mob.mName);
+                        if(mob is Player)
+                            ((Player)mob).mClientHandler.safeWrite(" " + mob2.mName);
                     }// foreach
                     break;
 
@@ -662,7 +667,8 @@ namespace _8th_Circle_Server
                     tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
                     tempCommand.predicate1Value = (Mob)commandQueue[1];
                     commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).lck(mob));
+                    if (mob is Player)
+                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).lck(mob));
                     break;
 
                 case commandName.COMMAND_UNLOCK:
@@ -670,7 +676,21 @@ namespace _8th_Circle_Server
                     tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
                     tempCommand.predicate1Value = (Mob)commandQueue[1];
                     commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).unlock(mob));
+                    if (mob is Player)
+                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).unlock(mob));
+                    break;
+
+                    // TODO
+                    // The eventhandler use is getting bypassed by the use implementation in the mob
+                case commandName.COMMAND_USE:
+                    tempCommand = (Command)commandQueue[0];
+                    tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
+                    tempCommand.predicate1Value = (Mob)commandQueue[1];
+                    commandQueue[0] = tempCommand;
+                    if (mob is Player)
+                    {
+                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).use(mob));
+                    }
                     break;
 
                 case commandName.COMMAND_SPAWN:
@@ -933,28 +953,13 @@ namespace _8th_Circle_Server
 
         private void checkEvent(Command command, Mob mob)
         {
-            // TODO
-            // Do we need this?
-            /*
-            if (command.predicate1 != predicateType.INVALID &&
-                command.predicate2 != predicateType.INVALID)
-            {
-                if (mob.mEventList.Count > 0)
-                {
-                    EventData eventData = (EventData)mob.mEventList[0];
-                    if (command.commandName == eventData.commandName)
-                    {
-                        eventData.trigger = command.commandOwner;
-                        eventData.eventObject = command.predicate1Value;
-                        eventData.eventRoom = command.predicate1Value.mCurrentRoom;
-                        eventData.validity = command.validity;
-                        ((Player)mob).mClientHandler.mEventHandler.enQueueEvent(eventData);
-                    }
-                }
-            }// if*/
             if (command.predicate1 != predicateType.INVALID &&
                      command.predicate1 != predicateType.PREDICATE_CUSTOM)
             {
+                // TODO
+                // This triggers successfully with the USE, but I think it will probably
+                // trigger on any verb that has a valid predicate with an event in its
+                // eventlist...
                 if ( command.predicate1Value.mEventList.Count > 0)
                 {
                     EventData eventData = (EventData)command.predicate1Value.mEventList[0];

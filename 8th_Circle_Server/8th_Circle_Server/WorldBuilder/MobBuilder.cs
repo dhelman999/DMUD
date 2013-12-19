@@ -16,7 +16,8 @@ namespace _8th_Circle_Server
         EVENT_CHEST1,
         EVENT_CHEST2,
         FIRST_CIRCLE,
-
+        BASIC_CHEST,
+        SWITCH,
         // NPCs
         MAX
     }// MOBLIST
@@ -96,7 +97,6 @@ namespace _8th_Circle_Server
             eventData = new EventData();
             eventData.eventFlag = EventFlag.EVENT_TELEPORT;
             eventData.commandName = commandName.COMMAND_GET;
-            ArrayList ar = new ArrayList();
             eventData.data = RoomID.GPG_PLAYER_START;
             first_circle.mEventList.Add(eventData);
             first_circle.mInventory.Capacity = 0;
@@ -105,6 +105,43 @@ namespace _8th_Circle_Server
             first_circle.mIsActive = false;
             mFullMobList.Add(first_circle);
 
+            Container no_event_chest = new Container();
+            no_event_chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
+            no_event_chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
+            no_event_chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
+            no_event_chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
+            no_event_chest.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
+            no_event_chest.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
+            no_event_chest.mName = "wooden chest";
+            no_event_chest.mInventory.Capacity = 20;
+            no_event_chest.mWorld = this;
+            no_event_chest.mMobId = (int)MOBLIST.BASIC_CHEST;
+            no_event_chest.mIsActive = false;
+            no_event_chest.mKeyId = (int)MOBLIST.BRASS_KEY;
+            no_event_chest.mStartingRespawnTime = 60;
+            no_event_chest.mCurrentRespawnTime = 60;
+            mFullMobList.Add(no_event_chest);
+
+            // TODO
+            // Need to find a way to genericly add basic mobs
+            // and then later add events to the area mob instances
+            // and not have the global mob hold the events
+            Mob basic_switch = new Mob();
+            basic_switch.mDescription = "A switch, it must trigger something...";
+            basic_switch.mFlagList.Add(objectFlags.FLAG_USEABLE);
+            basic_switch.mName = "switch";
+            EventData ed = new EventData();
+            ed.data = AreaID.AID_NEWBIEAREA;
+            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
+            ed.commandName = commandName.COMMAND_USE;
+            basic_switch.mEventList.Add(ed);
+            basic_switch.mWorld = this;
+            basic_switch.mMobId = (int)MOBLIST.SWITCH;
+            basic_switch.mStartingRespawnTime = 60;
+            basic_switch.mCurrentRespawnTime = 60;
+            mFullMobList.Add(basic_switch);
+
+            // NPCs start here
             Npc max = new Npc();
             max.mDescription = "A super big fluffy cute kitty kat... you just want to hug him";
             max.mName = "Max the MaineCoon";

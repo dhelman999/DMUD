@@ -383,6 +383,26 @@ namespace _8th_Circle_Server
             return "You can't unlock that";
         }// unlock
 
+        public virtual string use(Mob mob)
+        {
+            // TODO
+            // This is handled by the checkEvent
+            string ret = string.Empty;
+            if (mFlagList.Contains(objectFlags.FLAG_USEABLE))
+            {
+                //EventData ed = (EventData)mEventList[0];
+                //ed.trigger = mob;
+                //ed.eventRoom = mCurrentRoom;
+                //ret = "You use " + mName;
+                //mWorld.mEventHandler.enQueueEvent(ed);  
+                ret = "You use the " + mName;
+            }
+            else
+                ret = "You can't use that";
+
+            return ret;
+        }// unlock
+
         public virtual string destroy()
         {
             mCurrentArea.mObjectList.Remove(this);

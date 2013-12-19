@@ -462,6 +462,136 @@ namespace _8th_Circle_Server
             }
         }// removeDualLinks
 
+        public void removeTripleLinks(Direction direction)
+        {
+            if (direction == Direction.NORTH)
+            {
+                if (mNorthLink != null)
+                {
+                    mNorthLink.mSouthLink = null;
+                    mNorthLink = null;
+                }
+                if (mNorthwestLink != null)
+                {
+                    mNorthwestLink.mSoutheastLink = null;
+                    mNorthwestLink = null;
+                }
+                if (mNortheastLink != null)
+                {
+                    mNortheastLink.mSouthwestLink = null;
+                    mNortheastLink = null;
+                }
+            }
+            else if (direction == Direction.SOUTH)
+            {
+                if (mSouthLink != null)
+                {
+                    mSouthLink.mNorthLink = null;
+                    mSouthLink = null;
+                }
+                if (mSouthwestLink != null)
+                {
+                    mSouthwestLink.mNortheastLink = null;
+                    mSouthwestLink = null;
+                }
+                if (mSoutheastLink != null)
+                {
+                    mSoutheastLink.mNorthwestLink = null;
+                    mSoutheastLink = null;
+                }
+            }
+            else if (direction == Direction.EAST)
+            {
+                if (mEastLink != null)
+                {
+                    mEastLink.mWestLink = null;
+                    mEastLink = null;
+                }
+                if (mNortheastLink != null)
+                {
+                    mNortheastLink.mSouthwestLink = null;
+                    mNortheastLink = null;
+                }
+                if (mSoutheastLink != null)
+                {
+                    mSoutheastLink.mNorthwestLink = null;
+                    mSoutheastLink = null;
+                }
+            }
+            else if (direction == Direction.WEST)
+            {
+                if (mWestLink != null)
+                {
+                    mWestLink.mEastLink = null;
+                    mWestLink = null;
+                }
+                if (mNorthwestLink != null)
+                {
+                    mNorthwestLink.mSoutheastLink = null;
+                    mNorthwestLink = null;
+                }
+                if (mSouthwestLink != null)
+                {
+                    mSouthwestLink.mNortheastLink = null;
+                    mSouthwestLink = null;
+                }
+            }
+        }// removeTripleLinks
+
+        public void addDualLinks(Room targetRoom, Direction direction)
+        {
+            if (direction == Direction.NORTH)
+            {
+                this.mNorthLink = targetRoom;
+                targetRoom.mSouthLink = this;
+            }
+            else if (direction == Direction.SOUTH)
+            {
+                this.mSouthLink = targetRoom;
+                targetRoom.mNorthLink = this;
+            }
+            else if (direction == Direction.EAST)
+            {
+                this.mEastLink = targetRoom;
+                targetRoom.mWestLink = this;
+            }
+            else if (direction == Direction.WEST)
+            {
+                this.mWestLink = targetRoom;
+                targetRoom.mEastLink = this;
+            }
+            else if (direction == Direction.UP)
+            {
+                this.mUpLink = targetRoom;
+                targetRoom.mDownLink = this;
+            }
+            else if (direction == Direction.DOWN)
+            {
+                this.mDownLink = targetRoom;
+                targetRoom.mUpLink = this;
+            }
+            else if (direction == Direction.NORTHWEST)
+            {
+                this.mNorthwestLink = targetRoom;
+                targetRoom.mSoutheastLink = this;
+            }
+            else if (direction == Direction.NORTHEAST)
+            {
+                this.mNortheastLink = targetRoom;
+                targetRoom.mSouthwestLink = this;
+            }
+            else if (direction == Direction.SOUTHWEST)
+            {
+                this.mSouthwestLink = targetRoom;
+                targetRoom.mNortheastLink = this;
+            }
+            else if (direction == Direction.SOUTHEAST)
+            {
+                this.mSoutheastLink = targetRoom;
+                targetRoom.mNorthwestLink = this;
+            }
+        }// addDualLinks
+
     }// Class Room
 
 }// Namespace _8th_Circle_Server
