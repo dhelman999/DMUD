@@ -130,11 +130,6 @@ namespace _8th_Circle_Server
             basic_switch.mDescription = "A switch, it must trigger something...";
             basic_switch.mFlagList.Add(objectFlags.FLAG_USEABLE);
             basic_switch.mName = "switch";
-            EventData ed = new EventData();
-            ed.data = AreaID.AID_NEWBIEAREA;
-            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
-            ed.commandName = commandName.COMMAND_USE;
-            basic_switch.mEventList.Add(ed);
             basic_switch.mWorld = this;
             basic_switch.mMobId = (int)MOBLIST.SWITCH;
             basic_switch.mStartingRespawnTime = 60;
@@ -222,6 +217,44 @@ namespace _8th_Circle_Server
             {
                 mob2 = new Mob(mob);
                 mob2.mName = newName;
+                startingRoom.addObject(mob2);
+            }// else
+        }// addNewMob
+
+        public void addMob(Mob mob, Room startingRoom, Area startingArea)
+        {
+            int instanceCount = 1;
+            foreach (Mob target in startingArea.mFullMobList)
+            {
+                if ((int)mob.mMobId == target.mMobId)
+                    ++instanceCount;
+            }
+            mob.mInstanceId = instanceCount;
+            mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
+            mob.mStartingArea = mob.mCurrentArea = startingArea;
+            startingArea.mFullMobList.Add(mob);
+
+            Mob mob2 = null;
+            Container cont2 = null;
+            Npc npc2 = null;
+
+            // TODO
+            // this whole functionality needs to be made more generic and rethought
+            if (mob is Container)
+            {
+                cont2 = new Container((Container)mob);
+                mob2 = cont2;
+                startingRoom.addObject(mob2);
+            }// if
+            else if (mob is Npc)
+            {
+                npc2 = new Npc((Npc)mob);
+                mob2 = npc2;
+                startingRoom.addNpc(mob2);
+            }// if
+            else
+            {
+                mob2 = new Mob(mob);
                 startingRoom.addObject(mob2);
             }// else
         }// addMob

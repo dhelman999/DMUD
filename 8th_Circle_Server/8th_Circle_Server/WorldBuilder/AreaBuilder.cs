@@ -534,7 +534,16 @@ namespace _8th_Circle_Server
             gpg_76.removeTripleLinks(Direction.WEST);
 
             addMob(MOBLIST.BASIC_CHEST, gpg_56, newbieArea);
-            addMob(MOBLIST.SWITCH, gpg_29, newbieArea);
+            // Find a way to minimize this
+            Mob basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
+            basic_switch.mStartingRoom = gpg_29;
+            basic_switch.mStartingArea = newbieArea;
+            EventData ed = new EventData();
+            ed.data = AreaID.AID_NEWBIEAREA;
+            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
+            ed.commandName = commandName.COMMAND_USE;
+            basic_switch.mEventList.Add(ed);
+            addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
             mAreaHandler.registerArea(newbieArea);
         }// addNewbieArea
