@@ -118,7 +118,7 @@ namespace _8th_Circle_Server
             // Add specific mobs
             addMob(MOBLIST.EVENT_CHEST1, getRoom(1, 1, 1), protoArea);
             addMob(MOBLIST.EVENT_CHEST1, getRoom(1, 1, 1), protoArea, "newChest");
-            addMob(MOBLIST.BRASS_KEY, getRoom(2, 2, 2), protoArea, "steel key");
+            addMob(MOBLIST.BASIC_KEY, getRoom(2, 2, 2), protoArea, "steel key");
 
             // Add all global areas
             addAreas();

@@ -290,7 +290,12 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("get", null, 1, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_GET,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("get", null, 1, 4, grammarType.VERB, gramVerbPredPrepPred, commandName.COMMAND_GET,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_OBJECT, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -609,6 +614,7 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_OPEN:
+                    
                     clientString = ((Mob)commandQueue[1]).open(mob);
                     tempCommand = (Command)commandQueue[0];
                     tempCommand.commandOwner = mob;
@@ -634,12 +640,43 @@ namespace _8th_Circle_Server
                     ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).destroy());
                     break;
 
+                // TODO
+                // Is this the best way to check the token counts?
                 case commandName.COMMAND_GET:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).get(mob));
+                    if (commandQueue.Count == 1)
+                    {
+                    }
+                    else if (commandQueue.Count == 2)
+                    {
+                        tempCommand = (Command)commandQueue[0];
+                        tempCommand.commandOwner = mob;
+                        tempCommand.predicate1Value = (Mob)commandQueue[1];
+                        commandQueue[0] = tempCommand;
+                        if (mob is Player)
+                            ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).get(mob));
+                    }
+                    else if (commandQueue.Count == 3)
+                    {
+                    }
+                    else if (commandQueue.Count == 4)
+                    {
+                        tempCommand = (Command)commandQueue[0];
+                        tempCommand.commandOwner = mob;
+                        tempCommand.predicate1Value = (Mob)commandQueue[1];
+                        tempCommand.prep1Value = (Preposition)commandQueue[2];
+                        tempCommand.predicate2Value = (Mob)commandQueue[3];
+                        commandQueue[0] = tempCommand;
+                        if (mob is Player)
+                        {
+                            ((Player)mob).mClientHandler.safeWrite(
+                                ((Mob)commandQueue[1]).get(mob, tempCommand.prep1Value.prepType, tempCommand.predicate2Value));
+                        }// if
+                    }
+                    else
+                    {
+                        if (mob is Player)
+                            ((Player)mob).mClientHandler.safeWrite("you can't get like that");
+                    }
                     break;
 
                 case commandName.COMMAND_DROP:
@@ -1101,6 +1138,13 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(target.mCurrentRoom.mObjectList);
                     targetList.Add(target.mInventory);
+                    foreach(Mob cont in target.mCurrentRoom.mObjectList)
+                    {
+                        if (cont is Container)
+                        {
+                            targetList.Add(cont.mInventory);
+                        }
+                    }
                 }// if
             }// if
 

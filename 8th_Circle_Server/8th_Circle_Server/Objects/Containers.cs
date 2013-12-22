@@ -6,11 +6,13 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+    // TODO
+    // If we moved the mKeyId to the base class, is it worth 
+    // having this class around?
     class Container : Mob
     {
         // Member Variables
         public bool mIsOpen;
-        public int mKeyId;
 
         public Container() : base()
         {
@@ -142,7 +144,7 @@ namespace _8th_Circle_Server
             bool foundKey = false;
             foreach(Mob key in mob.mInventory)
             {
-               if(key.mMobId == mKeyId)
+               if(key.mKeyId == mKeyId)
                   foundKey = true;
             }// foreach
 
@@ -176,7 +178,7 @@ namespace _8th_Circle_Server
             bool foundKey = false;
             foreach (Mob key in mob.mInventory)
             {
-                if (key.mMobId == mKeyId)
+                if (key.mKeyId == mKeyId)
                     foundKey = true;
             }// foreach
 

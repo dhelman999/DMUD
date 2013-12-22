@@ -533,7 +533,34 @@ namespace _8th_Circle_Server
             gpg_69.removeTripleLinks(Direction.WEST);
             gpg_76.removeTripleLinks(Direction.WEST);
 
-            addMob(MOBLIST.BASIC_CHEST, gpg_56, newbieArea);
+            Container wooden_chest = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
+            wooden_chest.mKeyId = 4;
+            wooden_chest.mStartingRoom = gpg_56;
+            wooden_chest.mStartingArea = newbieArea;
+            wooden_chest.mName = "wooden chest";         
+            addMob(wooden_chest, gpg_56, newbieArea);
+
+            Mob basic_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            basic_key.mKeyId = 4;
+            basic_key.mName = "brass key";
+            basic_key.mStartingRoom = gpg_70;
+            basic_key.mStartingArea = newbieArea;
+
+            Container small_metal_cage = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
+            small_metal_cage.mName = "small metal cage";
+            small_metal_cage.mKeyId = 5;
+            small_metal_cage.mStartingRoom = gpg_71;
+            small_metal_cage.mStartingArea = newbieArea;
+            small_metal_cage.mInventory.Add(basic_key);
+            addMob(small_metal_cage, gpg_71, newbieArea);
+
+            Mob steel_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            steel_key.mKeyId = 5;
+            steel_key.mStartingRoom = gpg_46;
+            steel_key.mStartingArea = newbieArea;
+            steel_key.mName = "a small steel key";
+            addMob(steel_key, gpg_46, newbieArea);
+
             // Find a way to minimize this
             Mob basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
             basic_switch.mStartingRoom = gpg_29;

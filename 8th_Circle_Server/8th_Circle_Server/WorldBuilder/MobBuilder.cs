@@ -12,7 +12,7 @@ namespace _8th_Circle_Server
         PLAYER=-1,
 
         // Objects
-        BRASS_KEY,
+        BASIC_KEY,
         EVENT_CHEST1,
         EVENT_CHEST2,
         FIRST_CIRCLE,
@@ -34,9 +34,10 @@ namespace _8th_Circle_Server
             key.mFlagList.Add(objectFlags.FLAG_STORABLE);
             key.mFlagList.Add(objectFlags.FLAG_DROPPABLE);
             key.mName = "brass key";
+            key.mKeyId = (int)MOBLIST.BASIC_KEY;
             key.mInventory.Capacity = 0;
             key.mWorld = this;
-            key.mMobId = (int)MOBLIST.BRASS_KEY;
+            key.mMobId = (int)MOBLIST.BASIC_KEY;
             key.mIsActive = false;
             mFullMobList.Add(key);
 
@@ -58,7 +59,7 @@ namespace _8th_Circle_Server
             chest.mEventList.Add(eventData);
             chest.mMobId = (int)MOBLIST.EVENT_CHEST1;
             chest.mIsActive = false;
-            chest.mKeyId = (int)MOBLIST.BRASS_KEY;
+            chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest.mStartingRespawnTime = 60;
             chest.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest);
@@ -81,7 +82,7 @@ namespace _8th_Circle_Server
             chest2.mEventList.Add(eventData);
             chest2.mMobId = (int)MOBLIST.EVENT_CHEST2;
             chest2.mIsActive = false;
-            chest2.mKeyId = (int)MOBLIST.BRASS_KEY;
+            chest2.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest2.mStartingRespawnTime = 60;
             chest2.mCurrentRespawnTime = 60;
             mFullMobList.Add(chest2);
@@ -117,7 +118,7 @@ namespace _8th_Circle_Server
             no_event_chest.mWorld = this;
             no_event_chest.mMobId = (int)MOBLIST.BASIC_CHEST;
             no_event_chest.mIsActive = false;
-            no_event_chest.mKeyId = (int)MOBLIST.BRASS_KEY;
+            no_event_chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             no_event_chest.mStartingRespawnTime = 60;
             no_event_chest.mCurrentRespawnTime = 60;
             mFullMobList.Add(no_event_chest);

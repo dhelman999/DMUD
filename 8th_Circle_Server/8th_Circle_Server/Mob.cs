@@ -56,6 +56,7 @@ namespace _8th_Circle_Server
         public int mInstanceId;
         public int mStartingRespawnTime;
         public int mCurrentRespawnTime;
+        public int mKeyId;
 
         public Mob()
         {
@@ -73,7 +74,7 @@ namespace _8th_Circle_Server
             mIsActive = true;
             mStartingRespawnTime = mCurrentRespawnTime = 15;
             mMobId = -1;
-            mInstanceId = 0;
+            mInstanceId = mKeyId = 0;
         }// Constructor
 
         public Mob(string name)
@@ -92,7 +93,7 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mMobId = -1;
-            mInstanceId = 0;
+            mInstanceId = mKeyId = 0;
         }// Constructor
 
         public Mob(Mob mob)
@@ -122,6 +123,7 @@ namespace _8th_Circle_Server
             mCurrentOwner = mob.mCurrentOwner;
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
+            mKeyId = mob.mKeyId;
         }// Copy Constructor
 
         public bool move(string direction)
@@ -343,6 +345,74 @@ namespace _8th_Circle_Server
             else
                 return "you can't get that";
                 
+        }// get
+
+        // TODO
+        // Needs to be a cleaner interface for this sort of thing
+        public virtual string get(Mob mob, PrepositionType prepType, Mob container)
+        {
+            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
+            {
+                // TODO
+                // Make a unique flag so you cant keep getting them
+                if (mob.mInventory.Count < mob.mInventory.Capacity)
+                {
+                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATED))
+                    {
+                        Mob dup = new Mob(this);
+
+                        if (mob is Player)
+                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
+                        else
+                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
+                        mob.mInventory.Add(this);
+
+                        return "you get " + exitString(mCurrentRoom);
+                    }
+                    else
+                    {
+                        if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                        {
+                            if (prepType == PrepositionType.PREP_FROM)
+                            {
+                                if (container.mInventory.Contains(this))
+                                {
+                                    mob.mCurrentArea.mObjectList.Remove(this);
+                                    mob.mCurrentRoom.mObjectList.Remove(this);
+                                    mob.mWorld.mObjectList.Remove(this);
+                                    if (mob is Player)
+                                        this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
+                                    else
+                                        this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
+                                    container.mInventory.Remove(this);
+                                    mob.mInventory.Add(this);
+
+                                    return "you get " + exitString(mCurrentRoom);
+                                }
+                                else
+                                {
+                                    return container.mName + " does not contain a " + this.mName;
+                                }
+                            }
+                            else
+                            {
+                                return "you can't get like that";
+                            }
+                        }
+                        else
+                        {
+                            return container.mName + " is closed";
+                        }
+                    }
+                }// if
+                else
+                {
+                    return "your inventory is full";
+                }// else
+            }// if
+            else
+                return "you can't get that";
+
         }// get
 
         public virtual string drop(Mob mob)
