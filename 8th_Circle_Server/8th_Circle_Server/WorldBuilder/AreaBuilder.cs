@@ -555,6 +555,7 @@ namespace _8th_Circle_Server
             addMob(small_metal_cage, gpg_71, newbieArea);
 
             Mob steel_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            steel_key.mFlagList.Add(objectFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
             steel_key.mStartingRoom = gpg_46;
             steel_key.mStartingArea = newbieArea;

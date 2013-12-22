@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace _8th_Circle_Server
 {
@@ -75,7 +76,8 @@ namespace _8th_Circle_Server
         COMMAND_DROP,
         COMMAND_SPAWN,
         COMMAND_DESTROY,
-        COMMAND_USE
+        COMMAND_USE,
+        COMMAND_SEARCH
     };// commandName
 
     enum errorCode
@@ -324,6 +326,11 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("search", null, 3, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SEARCH,
+                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -439,7 +446,9 @@ namespace _8th_Circle_Server
 
             // If the player only sent us a single verb and we found a match, we are done
             // call execute on the verb with no arguements
-            if (tokens.Length == 1 && currentCommand.grammar.Length == 1)
+            if (tokens.Length == 1 && 
+                currentCommand.grammar.Length == 1 &&
+                mob.mActionTimer == 0)
             {
                 execute(commandList, mob);
                 return;
@@ -728,6 +737,19 @@ namespace _8th_Circle_Server
                     {
                         ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).use(mob));
                     }
+                    break;
+
+                // TODO
+                // Need to find a way to freeze mobs, probably by events like a timer 
+                // after they are frozen or something
+                case commandName.COMMAND_SEARCH:
+                    if (mob is Player)
+                    {
+                        ((Player)mob).mClientHandler.safeWrite("you start searching...");
+                        mob.mActionTimer = 4;
+                        Thread mSearchThread = new Thread(() => searchTask(mob));
+                        mSearchThread.Start();
+                    }// if
                     break;
 
                 case commandName.COMMAND_SPAWN:
@@ -1278,6 +1300,14 @@ namespace _8th_Circle_Server
 
             return found;
         }// validatePredicate
+
+        public static void searchTask(Mob mob)
+        {
+            Thread.Sleep(4000);
+            string searchResult = mob.search();
+            if (mob is Player)
+                ((Player)mob).mClientHandler.safeWrite(searchResult);
+        }// searchTask
 
     }// Class CommandExecuter
 

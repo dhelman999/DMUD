@@ -63,7 +63,8 @@ namespace _8th_Circle_Server
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
                         comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
-                        commandExecuter.process(comData.command, comData.mob);
+                        if(comData.mob.mActionTimer <= 0)
+                            commandExecuter.process(comData.command, comData.mob);
                     }// while
                 }// catch
             }// while

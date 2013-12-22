@@ -12,7 +12,7 @@ namespace _8th_Circle_Server
         // Debug
         internal const bool DEBUG = false;
 
-        internal const int TICKTIME = 5;
+        internal const int TICKTIME = 1;
 
         // Member Variables
         public ArrayList mAreaList;
@@ -70,9 +70,18 @@ namespace _8th_Circle_Server
         private void processAreas()
         {
             Console.WriteLine("area handler tick!");
+
             foreach (Area area in mAreaList)
             {
                 area.mCurrentRespawnTimer -= TICKTIME;
+                
+                // Update action timers
+                foreach(Player pl in area.mPlayerList)
+                {
+                    if (pl.mActionTimer > 0)
+                        --(pl.mActionTimer);
+                }
+
                 // Check to respawn
                 foreach (Mob mob in area.mFullMobList)
                 {

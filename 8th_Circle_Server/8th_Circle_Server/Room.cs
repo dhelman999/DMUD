@@ -259,23 +259,51 @@ namespace _8th_Circle_Server
                 }// if   
             }// for
 
+            // TODO
+            // the newline isn't displayed when a hidden object is skipped putting the objects
+            // and the npcs on the same line, need to find an elegant way of doing this
             exitStr += "Objects: ";
-            if (mObjectList.Count == 0)
-                exitStr += "\n";
 
+            int visibleObjects = 0;
+            string tmp = string.Empty;
+            // TODO
+            // Probably add something like a targetList instead of repeating this
+            // multiple times
             for (int i = 0; i < mObjectList.Count; ++i)
-                exitStr += ((Mob)mObjectList[i]).exitString(this) + "\n";          
+            {
+                if (!((Mob)mObjectList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                {
+                    tmp += ((Mob)mObjectList[i]).exitString(this) + "\n";
+                    ++visibleObjects;
+                }
+            }
+
+            // TODO
+            // This is ugly to do every single time, it will change even more after
+            // people can see invis and see hidden objects etc... think about it
+            if (visibleObjects == 0)
+                exitStr += "\n";
+            else
+                exitStr += tmp;
+
+            tmp = string.Empty;
 
             exitStr += "Npcs: ";
             if (mNpcList.Count == 0)
                 exitStr += "\n";
 
             for (int i = 0; i < mNpcList.Count; ++i)
-                exitStr += ((Mob)mNpcList[i]).mName + "\n";
+            {
+                if (!((Mob)mNpcList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    exitStr += ((Mob)mNpcList[i]).mName + "\n";
+            }
 
             exitStr += "Players: ";
             for (int i = 0; i < mPlayerList.Count; ++i)
-                exitStr += ((Player)mPlayerList[i]).mName + "\n";
+            {
+                if (!((Mob)mPlayerList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    exitStr += ((Player)mPlayerList[i]).mName + "\n";
+            }
 
             exitStr += "\n";
             return exitStr;

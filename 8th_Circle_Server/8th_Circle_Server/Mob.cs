@@ -57,6 +57,7 @@ namespace _8th_Circle_Server
         public int mStartingRespawnTime;
         public int mCurrentRespawnTime;
         public int mKeyId;
+        public int mActionTimer;
 
         public Mob()
         {
@@ -74,7 +75,7 @@ namespace _8th_Circle_Server
             mIsActive = true;
             mStartingRespawnTime = mCurrentRespawnTime = 15;
             mMobId = -1;
-            mInstanceId = mKeyId = 0;
+            mInstanceId = mKeyId = mActionTimer = 0;
         }// Constructor
 
         public Mob(string name)
@@ -93,7 +94,7 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mMobId = -1;
-            mInstanceId = mKeyId = 0;
+            mInstanceId = mKeyId = mActionTimer = 0;
         }// Constructor
 
         public Mob(Mob mob)
@@ -124,6 +125,7 @@ namespace _8th_Circle_Server
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
             mKeyId = mob.mKeyId;
+            mActionTimer = mob.mActionTimer;
         }// Copy Constructor
 
         public bool move(string direction)
@@ -512,6 +514,38 @@ namespace _8th_Circle_Server
         {
             return "you can't unlock that";
         }// unlock
+
+        public virtual string search()
+        {
+            string searchString = string.Empty;
+            Random rand = new Random();
+            ArrayList targetList = new ArrayList();
+            targetList.Add(mCurrentRoom.mObjectList);
+            targetList.Add(mCurrentRoom.mPlayerList);
+            targetList.Add(mCurrentRoom.mNpcList);
+            bool found = false;
+
+            foreach (ArrayList ar in targetList)
+            {
+                foreach (Mob mob in ar)
+                {
+                    if(mob.mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    {
+                        if (rand.NextDouble() > .5)
+                        {
+                            searchString += "you discover " + mob.mName;
+                            mob.mFlagList.Remove(objectFlags.FLAG_HIDDEN);
+                            found = true;
+                        }
+                    }// if
+                }// foreach
+            }// foreach
+
+            if (!found)
+                searchString = "you find nothing";
+
+            return searchString;
+        }// search
 
     }// Class Mob
 
