@@ -6,9 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    // TODO
-    // If we moved the mKeyId to the base class, is it worth 
-    // having this class around?
     class Container : Mob
     {
         // Member Variables
@@ -28,7 +25,7 @@ namespace _8th_Circle_Server
             mDescription = mob.mDescription;
             mShortDescription = mob.mShortDescription;
             mWorld = mob.mWorld;
-            mWorldLoc = mob.mWorldLoc;
+            mAreaLoc = mob.mAreaLoc;
             mInventory = new ArrayList();
             mInventory = (ArrayList)mob.mInventory.Clone();
             mPrepList = new ArrayList();
@@ -210,7 +207,6 @@ namespace _8th_Circle_Server
         public override void respawn()
         {
             Container cont = new Container(this);
-            cont.mIsActive = true;
             cont.mCurrentArea.mObjectList.Add(cont);
             cont.mCurrentRoom.mObjectList.Add(cont);
             cont.mWorld.mObjectList.Add(cont);

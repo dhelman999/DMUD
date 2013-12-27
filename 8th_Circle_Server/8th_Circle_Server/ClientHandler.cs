@@ -60,12 +60,13 @@ namespace _8th_Circle_Server
                             mPlayer.mName = mStreamReader.ReadLine();
                             mPlayer.mWorld = mWorld;
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
-                            Room curRoom = mWorld.getRoom(1, 1, 1);
+                            Room curRoom = mWorld.getRoom(100 + 1, 
+                                100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
                             curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
                             mPlayer.mCurrentArea = curRoom.mCurrentArea;
-                            mPlayer.mWorldLoc[0] = 1;
-                            mPlayer.mWorldLoc[1] = 1;
-                            mPlayer.mWorldLoc[2] = 1;
+                            mPlayer.mAreaLoc[0] = 1;
+                            mPlayer.mAreaLoc[1] = 1;
+                            mPlayer.mAreaLoc[2] = 1;
                             mPlayer.mCurrentRoom = curRoom;
                             mWorld.mPlayerList.Add(mPlayer);
                             curRoom.mPlayerList.Add(mPlayer);   
@@ -122,8 +123,7 @@ namespace _8th_Circle_Server
                     return;
 
                 clientHandler.safeWrite("Welcome to the 8th Circle!");
-                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.mDescription +
-                             "\n" + clientHandler.mPlayer.mCurrentRoom.exitString());
+                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString());
             }// catch
             while (true)
             {

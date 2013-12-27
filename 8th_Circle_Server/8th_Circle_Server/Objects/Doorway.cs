@@ -8,17 +8,18 @@ namespace _8th_Circle_Server
 {
     enum Direction
     {
-        NORTH,
-        SOUTH,
-        EAST,
-        WEST,
         UP,
-        DOWN,
-        NORTHWEST,
+        DIRECTION_START = UP,
+        NORTH,
         NORTHEAST,
-        SOUTHWEST,
+        EAST,
         SOUTHEAST,
-        INVALID
+        DOWN,
+        SOUTH,
+        SOUTHWEST,
+        WEST,
+        NORTHWEST,
+        DIRECTION_END = NORTHWEST
     }// Direction
 
     class Doorway : Mob
@@ -53,10 +54,13 @@ namespace _8th_Circle_Server
                 return mob.mCurrentRoom.getDoorString(this) + " is locked";
             if (mIsOpen)
                 return mob.mCurrentRoom.getDoorString(this) + " is already open";
+            if (mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                return "you can't find that";
+
             else
             {
                 mIsOpen = true;
-                for(int i=0; i < mRoomList.Length; ++i)
+                for (int i = 0; i < mRoomList.Length; ++i)
                 {
                     if (mRoomList[i] != null)
                         foreach (Player pl in mRoomList[i].mPlayerList)
@@ -73,6 +77,9 @@ namespace _8th_Circle_Server
                 return mob.mCurrentRoom.getDoorString(this) + " is locked";
             if (!mIsOpen)
                 return mob.mCurrentRoom.getDoorString(this) + " is already closed";
+            if (mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                return "you can't find that";
+
             else
             {
                 mIsOpen = false;
@@ -91,7 +98,8 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            Direction direction = Direction.INVALID;
+            Direction direction = Direction.DIRECTION_END;
+
             for (int i = 0; i < currentRoom.mDoorwayList.Count; ++i)
             {
                 if (currentRoom.mDoorwayList[i] != null &&

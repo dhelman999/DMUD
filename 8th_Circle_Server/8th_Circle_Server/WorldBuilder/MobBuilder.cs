@@ -8,8 +8,9 @@ namespace _8th_Circle_Server
 {
     enum MOBLIST
     {
+        MOB_START = -1,
         // Reserved for players
-        PLAYER=-1,
+        PLAYER = MOB_START,
 
         // Objects
         BASIC_KEY,
@@ -19,7 +20,9 @@ namespace _8th_Circle_Server
         BASIC_CHEST,
         SWITCH,
         // NPCs
-        MAX
+        MAX,
+
+        MOB_END
     }// MOBLIST
 
     partial class World
@@ -38,7 +41,6 @@ namespace _8th_Circle_Server
             key.mInventory.Capacity = 0;
             key.mWorld = this;
             key.mMobId = (int)MOBLIST.BASIC_KEY;
-            key.mIsActive = false;
             mFullMobList.Add(key);
 
             Container chest = new Container();
@@ -58,7 +60,6 @@ namespace _8th_Circle_Server
             eventData.data = "A voice speaks to you from within the chest";
             chest.mEventList.Add(eventData);
             chest.mMobId = (int)MOBLIST.EVENT_CHEST1;
-            chest.mIsActive = false;
             chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest.mStartingRespawnTime = 60;
             chest.mCurrentRespawnTime = 60;
@@ -81,7 +82,6 @@ namespace _8th_Circle_Server
             eventData.data = "The " + chest.mName + " says \"hello!\"";
             chest2.mEventList.Add(eventData);
             chest2.mMobId = (int)MOBLIST.EVENT_CHEST2;
-            chest2.mIsActive = false;
             chest2.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest2.mStartingRespawnTime = 60;
             chest2.mCurrentRespawnTime = 60;
@@ -92,7 +92,7 @@ namespace _8th_Circle_Server
             first_circle.mFlagList.Add(objectFlags.FLAG_GETTABLE);
             first_circle.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
             first_circle.mFlagList.Add(objectFlags.FLAG_STORABLE);
-            first_circle.mFlagList.Add(objectFlags.FLAG_DUPLICATED);
+            first_circle.mFlagList.Add(objectFlags.FLAG_DUPLICATABLE);
             first_circle.mFlagList.Add(objectFlags.FLAG_USEABLE);
             first_circle.mName = "1st Circle";
             eventData = new EventData();
@@ -103,7 +103,6 @@ namespace _8th_Circle_Server
             first_circle.mInventory.Capacity = 0;
             first_circle.mWorld = this;
             first_circle.mMobId = (int)MOBLIST.FIRST_CIRCLE;
-            first_circle.mIsActive = false;
             mFullMobList.Add(first_circle);
 
             Container no_event_chest = new Container();
@@ -117,16 +116,11 @@ namespace _8th_Circle_Server
             no_event_chest.mInventory.Capacity = 20;
             no_event_chest.mWorld = this;
             no_event_chest.mMobId = (int)MOBLIST.BASIC_CHEST;
-            no_event_chest.mIsActive = false;
             no_event_chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             no_event_chest.mStartingRespawnTime = 60;
             no_event_chest.mCurrentRespawnTime = 60;
             mFullMobList.Add(no_event_chest);
 
-            // TODO
-            // Need to find a way to genericly add basic mobs
-            // and then later add events to the area mob instances
-            // and not have the global mob hold the events
             Mob basic_switch = new Mob();
             basic_switch.mDescription = "A switch, it must trigger something...";
             basic_switch.mFlagList.Add(objectFlags.FLAG_USEABLE);
@@ -139,32 +133,17 @@ namespace _8th_Circle_Server
 
             // NPCs start here
             Npc max = new Npc();
-            max.mDescription = "A super big fluffy cute kitty kat... you just want to hug him";
+            max.mDescription = "A super big fluffy cute black and white kitty cat... you just want to hug him";
             max.mName = "Max the MaineCoon";
             max.mInventory.Capacity = 0;
             max.mWorld = this;
             max.mMobId = (int)MOBLIST.MAX;
-            max.mIsActive = true;
             max.mStartingRespawnTime = 120;
             max.mCurrentRespawnTime = 120;
             mFullMobList.Add(max);
         }// addMobs
 
-        // TODO
-        // this new name only shows up in the predicate list in rooms, not for events since
-        // the name is passed to the eventhandler upon creation of the intial object
-        public void addMob(MOBLIST mobId, Room startingRoom, Area startingArea, string newName)
-        {
-            addNewMob(mobId, startingRoom, startingArea, newName);
-        }
-
-        public void addMob(MOBLIST mobId, Room startingRoom, Area startingArea)
-        {
-            string name = ((Mob)mFullMobList[(int)mobId]).mName;
-            addNewMob(mobId, startingRoom, startingArea, name);
-        }
-
-        private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea, string newName)
+        private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea)
         {
             Mob mob = null;
             Container cont = null;
@@ -204,20 +183,17 @@ namespace _8th_Circle_Server
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
-                mob2.mName = newName;
                 startingRoom.addObject(mob2);
             }// if
             else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);
                 mob2 = npc2;
-                mob2.mName = newName;
                 startingRoom.addNpc(mob2);
             }// if
             else
             {
                 mob2 = new Mob(mob);
-                mob2.mName = newName;
                 startingRoom.addObject(mob2);
             }// else
         }// addNewMob

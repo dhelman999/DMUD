@@ -8,9 +8,8 @@ namespace _8th_Circle_Server
 {
     enum objectFlags
     {
-        FLAG_PLAYER_OWNED = 0,
-        FLAG_NPC_OWNED,
-        FLAG_OPENABLE,
+        FLAG_START,
+        FLAG_OPENABLE = FLAG_START,
         FLAG_CLOSEABLE,
         FLAG_LOCKED,
         FLAG_LOCKABLE,
@@ -26,7 +25,9 @@ namespace _8th_Circle_Server
         FLAG_INSPECTABLE,
         FLAG_IDENTIFYABLE,
         FLAG_STEALABLE,
-        FLAG_DUPLICATED
+        FLAG_DUPLICATABLE,
+        FLAG_SEARCHING,
+        FLAG_END
     };// flags
 
     class Mob
@@ -40,7 +41,7 @@ namespace _8th_Circle_Server
         public string mShortDescription;
         public string mDescription;
         public World mWorld;
-        public int[] mWorldLoc;
+        public int[] mAreaLoc;
         public Room mStartingRoom;
         public Room mCurrentRoom;
         public Area mStartingArea;
@@ -51,7 +52,6 @@ namespace _8th_Circle_Server
         public ArrayList mFlagList;
         public ArrayList mInventory;
         public ArrayList mEventList;
-        public bool mIsActive;
         public int mMobId;
         public int mInstanceId;
         public int mStartingRespawnTime;
@@ -62,7 +62,7 @@ namespace _8th_Circle_Server
         public Mob()
         {
             mName = mDescription = mShortDescription = mExitStr = string.Empty;
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mInventory = new ArrayList();
             mPrepList = new ArrayList();
             mPrepList.Add(PrepositionType.PREP_AT);
@@ -72,8 +72,7 @@ namespace _8th_Circle_Server
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
-            mIsActive = true;
-            mStartingRespawnTime = mCurrentRespawnTime = 15;
+            mStartingRespawnTime = mCurrentRespawnTime = 25;
             mMobId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
         }// Constructor
@@ -82,7 +81,7 @@ namespace _8th_Circle_Server
         {
             mName = mExitStr = name;
             mDescription = mShortDescription = string.Empty;
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mInventory = new ArrayList();
             mPrepList = new ArrayList();
             mPrepList.Add(PrepositionType.PREP_AT);
@@ -104,7 +103,7 @@ namespace _8th_Circle_Server
             mDescription = mob.mDescription;
             mShortDescription = mob.mShortDescription;
             mWorld = mob.mWorld;
-            mWorldLoc = mob.mWorldLoc;
+            mAreaLoc = mob.mAreaLoc;
             mInventory = new ArrayList();
             mInventory = (ArrayList)mob.mInventory.Clone();
             mPrepList = new ArrayList();
@@ -127,123 +126,25 @@ namespace _8th_Circle_Server
             mKeyId = mob.mKeyId;
             mActionTimer = mob.mActionTimer;
         }// Copy Constructor
-
-        public bool move(string direction)
+        
+        public string move(string direction)
         {
-            bool ret = false;
+            string clientString;
+            
+            Direction dir = DirStrToEnum(direction);
 
-            switch (direction)
-            {
-                case "north":
-                    if (mCurrentRoom.mNorthLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.NORTH] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTH]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mNorthLink);
-                        ret = true;
-                    }// if
-                    break;
+            if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
+               (mCurrentRoom.mDoorwayList[(int)dir] == null ||
+               ((Doorway)mCurrentRoom.mDoorwayList[(int)dir]).mIsOpen))
+               clientString = changeRoom((Room)mCurrentRoom.mRoomLinks[(int)dir]);
+            else
+                return "you can't move that way";
 
-                case "south":
-                    if (mCurrentRoom.mSouthLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.SOUTH] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTH]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mSouthLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "east":
-                    if (mCurrentRoom.mEastLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.EAST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.EAST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mEastLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "west":
-                    if (mCurrentRoom.mWestLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.WEST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.WEST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mWestLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "up":
-                    if (mCurrentRoom.mUpLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.UP] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.UP]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mUpLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "down":
-                    if (mCurrentRoom.mDownLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.DOWN] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.DOWN]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mDownLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "northwest":
-                    if (mCurrentRoom.mNorthwestLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHWEST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mNorthwestLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "northeast":
-                    if (mCurrentRoom.mNortheastLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.NORTHEAST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mNortheastLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "southwest":
-                    if (mCurrentRoom.mSouthwestLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHWEST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mSouthwestLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                case "southeast":
-                    if (mCurrentRoom.mSoutheastLink != null &&
-                        (mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST] == null ||
-                        ((Doorway)mCurrentRoom.mDoorwayList[(int)Direction.SOUTHEAST]).mIsOpen))
-                    {
-                        changeRoom(mCurrentRoom.mSoutheastLink);
-                        ret = true;
-                    }// if
-                    break;
-
-                default:
-                    ret = false;
-                    break;
-            }// switch
-
-            return ret;
+            return clientString;
 
         }// move
 
-        public void changeRoom(Room newRoom)
+        public string changeRoom(Room newRoom)
         {
             // Remove old references
             if (this is Player)
@@ -258,9 +159,9 @@ namespace _8th_Circle_Server
 
                 // Add new references
                 newRoom.mPlayerList.Add(this);
-                mWorldLoc[0] = newRoom.mWorldLoc[0];
-                mWorldLoc[1] = newRoom.mWorldLoc[1];
-                mWorldLoc[2] = newRoom.mWorldLoc[2];
+                mAreaLoc[0] = newRoom.mAreaLoc[0];
+                mAreaLoc[1] = newRoom.mAreaLoc[1];
+                mAreaLoc[2] = newRoom.mAreaLoc[2];
                 mCurrentRoom = newRoom;
             }// if
             else
@@ -275,11 +176,13 @@ namespace _8th_Circle_Server
 
                 // Add new references
                 newRoom.mNpcList.Add(this);
-                mWorldLoc[0] = newRoom.mWorldLoc[0];
-                mWorldLoc[1] = newRoom.mWorldLoc[1];
-                mWorldLoc[2] = newRoom.mWorldLoc[2];
+                mAreaLoc[0] = newRoom.mAreaLoc[0];
+                mAreaLoc[1] = newRoom.mAreaLoc[1];
+                mAreaLoc[2] = newRoom.mAreaLoc[2];
                 mCurrentRoom = newRoom;
             }// else
+
+            return mCurrentRoom.exitString();
         }// changeRoom
 
         public virtual string used()
@@ -309,34 +212,31 @@ namespace _8th_Circle_Server
         {
             if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
             {
-                // TODO
-                // Make a unique flag so you cant keep getting them
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATED))
+                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
-
-                        if (mob is Player)
-                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
-                        else
-                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
                         mob.mInventory.Add(this);
 
                         return "you get " + exitString(mCurrentRoom);
                     }
                     else
                     {
-                        mob.mCurrentArea.mObjectList.Remove(this);
-                        mob.mCurrentRoom.mObjectList.Remove(this);
-                        mob.mWorld.mObjectList.Remove(this);
-                        if (mob is Player)
-                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
-                        else
-                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
-                        mob.mInventory.Add(this);
+                        // TODO
+                        // Need to have a common error string for hidden objects that
+                        // does not include their name
+                        if (!mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                        {
+                            mob.mCurrentArea.mObjectList.Remove(this);
+                            mob.mCurrentRoom.mObjectList.Remove(this);
+                            mob.mWorld.mObjectList.Remove(this);
+                            mob.mInventory.Add(this);
 
-                        return "you get " + exitString(mCurrentRoom);
+                            return "you get " + exitString(mCurrentRoom);
+                        }
+                        else
+                            return "you can't find that";
                     }
                 }// if
                 else
@@ -355,18 +255,11 @@ namespace _8th_Circle_Server
         {
             if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
             {
-                // TODO
-                // Make a unique flag so you cant keep getting them
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATED))
+                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
-
-                        if (mob is Player)
-                            this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
-                        else
-                            this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
                         mob.mInventory.Add(this);
 
                         return "you get " + exitString(mCurrentRoom);
@@ -382,36 +275,24 @@ namespace _8th_Circle_Server
                                     mob.mCurrentArea.mObjectList.Remove(this);
                                     mob.mCurrentRoom.mObjectList.Remove(this);
                                     mob.mWorld.mObjectList.Remove(this);
-                                    if (mob is Player)
-                                        this.mFlagList.Add(objectFlags.FLAG_PLAYER_OWNED);
-                                    else
-                                        this.mFlagList.Add(objectFlags.FLAG_NPC_OWNED);
                                     container.mInventory.Remove(this);
                                     mob.mInventory.Add(this);
 
                                     return "you get " + exitString(mCurrentRoom);
-                                }
+                                }// if
                                 else
-                                {
                                     return container.mName + " does not contain a " + this.mName;
-                                }
-                            }
+                            }// if (prepType == PrepositionType.PREP_FROM)
                             else
-                            {
                                 return "you can't get like that";
-                            }
-                        }
+                        }// if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
                         else
-                        {
                             return container.mName + " is closed";
-                        }
-                    }
-                }// if
+                    }// else
+                }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
-                {
                     return "your inventory is full";
-                }// else
-            }// if
+            }// if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
             else
                 return "you can't get that";
 
@@ -421,10 +302,6 @@ namespace _8th_Circle_Server
         {
             if (mFlagList.Contains(objectFlags.FLAG_DROPPABLE))
             {  
-                if (mob is Player)
-                    this.mFlagList.Remove(objectFlags.FLAG_PLAYER_OWNED);
-                else
-                    this.mFlagList.Remove(objectFlags.FLAG_NPC_OWNED);
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
                 mCurrentRoom.addObject(this);
@@ -459,16 +336,9 @@ namespace _8th_Circle_Server
         {
             // TODO
             // This is handled by the checkEvent
-            string ret = string.Empty;
+            string ret;
             if (mFlagList.Contains(objectFlags.FLAG_USEABLE))
-            {
-                //EventData ed = (EventData)mEventList[0];
-                //ed.trigger = mob;
-                //ed.eventRoom = mCurrentRoom;
-                //ret = "You use " + mName;
-                //mWorld.mEventHandler.enQueueEvent(ed);  
                 ret = "You use the " + mName;
-            }
             else
                 ret = "You can't use that";
 
@@ -486,7 +356,6 @@ namespace _8th_Circle_Server
             mCurrentRoom.mObjectList.Remove(this);
             mWorld.mNpcList.Remove(this);
             mWorld.mObjectList.Remove(this);
-            mIsActive = false;
 
             return "destroying " + mName;
         }// destroy
@@ -494,7 +363,6 @@ namespace _8th_Circle_Server
         public virtual void respawn()
         {
             Mob mob = new Mob(this);
-            mob.mIsActive = true;
             mob.mCurrentArea.mObjectList.Add(mob);
             mob.mCurrentRoom.mObjectList.Add(mob);
             mob.mWorld.mObjectList.Add(mob);
@@ -523,20 +391,22 @@ namespace _8th_Circle_Server
             targetList.Add(mCurrentRoom.mObjectList);
             targetList.Add(mCurrentRoom.mPlayerList);
             targetList.Add(mCurrentRoom.mNpcList);
+            targetList.Add(mCurrentRoom.mDoorwayList);
             bool found = false;
 
             foreach (ArrayList ar in targetList)
             {
                 foreach (Mob mob in ar)
                 {
-                    if(mob.mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    if(mob != null &&
+                       mob.mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                     {
                         if (rand.NextDouble() > .5)
                         {
-                            searchString += "you discover " + mob.mName;
+                            searchString += "you discover a " + mob.mName;
                             mob.mFlagList.Remove(objectFlags.FLAG_HIDDEN);
                             found = true;
-                        }
+                        }// if
                     }// if
                 }// foreach
             }// foreach
@@ -546,6 +416,36 @@ namespace _8th_Circle_Server
 
             return searchString;
         }// search
+
+        public static Direction DirStrToEnum(string dirStr)
+        {
+            switch (dirStr)
+            {
+                case "north":
+                    return Direction.NORTH;
+                case "south":
+                    return Direction.SOUTH;
+                case "east":
+                    return Direction.EAST;
+                case "west":
+                    return Direction.WEST;
+                case "up":
+                    return Direction.UP;
+                case "down":
+                    return Direction.DOWN;
+                case "northwest":
+                    return Direction.NORTHWEST;
+                case "northeast":
+                    return Direction.NORTHEAST;
+                case "southwest":
+                    return Direction.SOUTHWEST;
+                case "southeast":
+                    return Direction.SOUTHEAST;
+
+                default:
+                    return Direction.DIRECTION_END;
+            }// switch
+        }// DirStrToEnum
 
     }// Class Mob
 

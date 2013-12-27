@@ -22,104 +22,104 @@ namespace _8th_Circle_Server
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " +
                 "leading up.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT, geraldineArea);
             house1stentranceway.mCurrentArea = geraldineArea;
             Room house1stHallway = new Room("The west hallway is empty besides a few pictures",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_HALLWAY);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_HALLWAY, geraldineArea);
             house1stHallway.mCurrentArea = geraldineArea;
             Room house1stKitchen = new Room("The kitchen has a nice view of the outside to the west; " +
                 "there are also stairs leading down and a doorway to the north",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_KITCHEN);
+                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_KITCHEN, geraldineArea);
             house1stKitchen.mCurrentArea = geraldineArea;
             Room house1stDiningRoom = new Room("The dining room is blue with various pictures; one is " +
                 "particularly interesting, featuring a type of chicken",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_DININGROOM);
+                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_DININGROOM, geraldineArea);
             house1stDiningRoom.mCurrentArea = geraldineArea;
             Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " +
                 "the north wall",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM);
+                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM, geraldineArea);
             house1stLivingRoom.mCurrentArea = geraldineArea;
             Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " +
                 "a sink and toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_2ND_BATHROOM);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
             house1stBathroom.mCurrentArea = geraldineArea;
 
             Room house2ndHallway = new Room("The hallway to the 2nd floor.  This is a long corridor\n with " +
                 "many rooms attached to it with stairs leading down at the base.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_HALLWAY);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_HALLWAY, geraldineArea);
             house2ndHallway.mCurrentArea = geraldineArea;
             Room house2ndKittyroom = new Room("The kittyroom, there is not much here besides some litterboxes.",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYROOM);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYROOM, geraldineArea);
             house2ndKittyroom.mCurrentArea = geraldineArea;
             Room house2ndKittyCloset = new Room("The closet of the kittyroom holds various appliances such as " +
                 "vaccuums and other cleaning supplies",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYCLOSET);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYCLOSET, geraldineArea);
             house2ndKittyCloset.mCurrentArea = geraldineArea;
             Room house2ndBathroom = new Room("A small master bathroom has a sink, shower and toilet",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BATHROOM);
+                HOUSE_OFFSET + 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
             house2ndBathroom.mCurrentArea = geraldineArea;
             Room house2ndBedroom = new Room("The master bedroom is huge with two sliding door closets\n and " +
                 "windows on the north and northwest sides",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BEDROOM);
+                HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BEDROOM, geraldineArea);
             house2ndBedroom.mCurrentArea = geraldineArea;
             Room house2ndBlueroom = new Room("The blueroom has a large bookshelf, a sliding door closet and " +
                 "a loveseat",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BLUEROOM);
+                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BLUEROOM, geraldineArea);
             house2ndBlueroom.mCurrentArea = geraldineArea;
 
             Room houseBaseentrance = new Room("The bottom of the stairs leads to the basement.\n This " +
                 " is a large basement that spans to the south with \nrooms attached on both sides.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART1);
+                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART1, geraldineArea);
             houseBaseentrance.mCurrentArea = geraldineArea;
             Room houseBasepart2 = new Room("There is a piano here along the wall with light grey\n " +
                 "carpet with the walls being a darker grey",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART2);
+                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART2, geraldineArea);
             houseBasepart2.mCurrentArea = geraldineArea;
             Room houseBasepart3 = new Room("There isn't much to this piece of the basement besides\n " +
                 "some pictures on both the west and east walls.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART3);
+                HOUSE_OFFSET, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART3, geraldineArea);
             houseBasepart3.mCurrentArea = geraldineArea;
             Room houseBasepart4 = new Room("You have reached the southern corner of the basement.\n " +
                 "There is a computer desk here with a glowing PC and monitor.  There are all\n " +
                 "sorts of figurines of wonderous power sitting on the desk along with pictures\n " +
                 "depicting awesome scenes of wonder and adventure.  Something about this room\n " +
                 "seems filled with some sort of power.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART4);
+                HOUSE_OFFSET, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART4, geraldineArea);
             houseBasepart4.mCurrentArea = geraldineArea;
             Room houseBasepart5 = new Room("The southwest most edge of the basement, there is a\n " +
                 "couch on the south end of the wall facing a TV in the corner beside a doorway",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART5);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART5, geraldineArea);
             houseBasepart5.mCurrentArea = geraldineArea;
             Room houseBaseBathroom = new Room("The bathroom has a standing shower as well as a long \n " +
                 "vanity with an accompanying toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_BATHROOM);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_BATHROOM, geraldineArea);
             houseBaseBathroom.mCurrentArea = geraldineArea;
             Room houseBaseCloset = new Room("This is a closet that has large holding shelves with\n " +
                 "board games from top to bottom.  This is an impressive collection indeed!",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_CLOSET);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_CLOSET, geraldineArea);
             houseBaseCloset.mCurrentArea = geraldineArea;
             Room houseBaseLaundryRoom = new Room("The laundry room has no carpet and has many shelves\n " +
                 "with various pieces of hardware and tools",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_LAUNDRYROOM);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_LAUNDRYROOM, geraldineArea);
             houseBaseLaundryRoom.mCurrentArea = geraldineArea;
             Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " +
                 "for storage",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM);
-            houseBaseSumpRoom.mCurrentArea = geraldineArea;
+                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM, geraldineArea);
 
+            houseBaseSumpRoom.mCurrentArea = geraldineArea;
             house2ndHallway.mCurrentArea = geraldineArea;
-            house1stentranceway.mWestLink = house1stHallway;
-            house1stentranceway.mSouthLink = house1stLivingRoom;
-            house1stHallway.mEastLink = house1stentranceway;
-            house1stHallway.mSouthLink = house1stBathroom;
-            house1stHallway.mWestLink = house1stKitchen;
-            house1stKitchen.mEastLink = house1stHallway;
-            house1stKitchen.mSouthLink = house1stDiningRoom;
-            house1stDiningRoom.mNorthLink = house1stKitchen;
-            house1stDiningRoom.mEastLink = house1stLivingRoom;
-            house1stLivingRoom.mWestLink = house1stDiningRoom;
-            house1stLivingRoom.mNorthLink = house1stentranceway;
-            house1stBathroom.mNorthLink = house1stHallway;
+            house1stentranceway.mRoomLinks[(int)Direction.WEST] = house1stHallway;
+            house1stentranceway.mRoomLinks[(int)Direction.SOUTH] = house1stLivingRoom;
+            house1stHallway.mRoomLinks[(int)Direction.EAST] = house1stentranceway;
+            house1stHallway.mRoomLinks[(int)Direction.SOUTH] = house1stBathroom;
+            house1stHallway.mRoomLinks[(int)Direction.WEST] = house1stKitchen;
+            house1stKitchen.mRoomLinks[(int)Direction.EAST] = house1stHallway;
+            house1stKitchen.mRoomLinks[(int)Direction.SOUTH] = house1stDiningRoom;
+            house1stDiningRoom.mRoomLinks[(int)Direction.NORTH] = house1stKitchen;
+            house1stDiningRoom.mRoomLinks[(int)Direction.EAST] = house1stLivingRoom;
+            house1stLivingRoom.mRoomLinks[(int)Direction.WEST] = house1stDiningRoom;
+            house1stLivingRoom.mRoomLinks[(int)Direction.NORTH] = house1stentranceway;
+            house1stBathroom.mRoomLinks[(int)Direction.NORTH] = house1stHallway;
 
             Doorway newDoor = new Doorway("door", house1stBathroom);
             house1stBathroom.addDoor(newDoor, Direction.NORTH);
@@ -129,20 +129,20 @@ namespace _8th_Circle_Server
             house1stKitchen.addDoor(newDoor, Direction.DOWN);
             houseBaseentrance.addDoor(newDoor, Direction.UP);
 
-            house1stentranceway.mUpLink = house2ndHallway;
-            house2ndHallway.mDownLink = house1stentranceway;
-            house2ndHallway.mEastLink = house2ndKittyroom;
-            house2ndHallway.mWestLink = house2ndBathroom;
-            house2ndHallway.mSouthLink = house2ndBlueroom;
-            house2ndHallway.mSouthwestLink = house2ndBedroom;
-            house2ndKittyroom.mNorthLink = house2ndKittyCloset;
-            house2ndKittyroom.mWestLink = house2ndHallway;
-            house2ndKittyCloset.mSouthLink = house2ndKittyroom;
-            house2ndBathroom.mEastLink = house2ndHallway;
-            house2ndBathroom.mSouthLink = house2ndBedroom;
-            house2ndBedroom.mNortheastLink = house2ndHallway;
-            house2ndBedroom.mNorthLink = house2ndBathroom;
-            house2ndBlueroom.mNorthLink = house2ndHallway;
+            house1stentranceway.mRoomLinks[(int)Direction.UP] = house2ndHallway;
+            house2ndHallway.mRoomLinks[(int)Direction.DOWN] = house1stentranceway;
+            house2ndHallway.mRoomLinks[(int)Direction.EAST] = house2ndKittyroom;
+            house2ndHallway.mRoomLinks[(int)Direction.WEST] = house2ndBathroom;
+            house2ndHallway.mRoomLinks[(int)Direction.SOUTH] = house2ndBlueroom;
+            house2ndHallway.mRoomLinks[(int)Direction.SOUTHWEST] = house2ndBedroom;
+            house2ndKittyroom.mRoomLinks[(int)Direction.NORTH] = house2ndKittyCloset;
+            house2ndKittyroom.mRoomLinks[(int)Direction.WEST] = house2ndHallway;
+            house2ndKittyCloset.mRoomLinks[(int)Direction.SOUTH] = house2ndKittyroom;
+            house2ndBathroom.mRoomLinks[(int)Direction.EAST] = house2ndHallway;
+            house2ndBathroom.mRoomLinks[(int)Direction.SOUTH] = house2ndBedroom;
+            house2ndBedroom.mRoomLinks[(int)Direction.NORTHEAST] = house2ndHallway;
+            house2ndBedroom.mRoomLinks[(int)Direction.NORTH] = house2ndBathroom;
+            house2ndBlueroom.mRoomLinks[(int)Direction.NORTH] = house2ndHallway;
 
             newDoor = new Doorway("door", house2ndHallway);
             house2ndHallway.addDoor(newDoor, Direction.WEST);
@@ -164,24 +164,24 @@ namespace _8th_Circle_Server
             house2ndBathroom.addDoor(newDoor, Direction.SOUTH);
             house2ndBedroom.addDoor(newDoor, Direction.NORTH);
 
-            houseBaseentrance.mUpLink = house1stKitchen;
-            house1stKitchen.mDownLink = houseBaseentrance;
-            houseBaseentrance.mSouthLink = houseBasepart2;
-            houseBaseentrance.mWestLink = houseBaseLaundryRoom;
-            houseBaseLaundryRoom.mEastLink = houseBaseentrance;
-            houseBasepart2.mNorthLink = houseBaseentrance;
-            houseBasepart2.mWestLink = houseBaseCloset;
-            houseBasepart2.mEastLink = houseBaseSumpRoom;
-            houseBasepart2.mSouthLink = houseBasepart3;
-            houseBaseSumpRoom.mWestLink = houseBasepart2;
-            houseBaseCloset.mEastLink = houseBasepart2;
-            houseBasepart3.mNorthLink = houseBasepart2;
-            houseBasepart3.mSouthLink = houseBasepart4;
-            houseBasepart4.mNorthLink = houseBasepart3;
-            houseBasepart4.mWestLink = houseBasepart5;
-            houseBasepart5.mEastLink = houseBasepart4;
-            houseBasepart5.mNorthLink = houseBaseBathroom;
-            houseBaseBathroom.mSouthLink = houseBasepart5;
+            houseBaseentrance.mRoomLinks[(int)Direction.UP] = house1stKitchen;
+            house1stKitchen.mRoomLinks[(int)Direction.DOWN] = houseBaseentrance;
+            houseBaseentrance.mRoomLinks[(int)Direction.SOUTH] = houseBasepart2;
+            houseBaseentrance.mRoomLinks[(int)Direction.WEST] = houseBaseLaundryRoom;
+            houseBaseLaundryRoom.mRoomLinks[(int)Direction.EAST] = houseBaseentrance;
+            houseBasepart2.mRoomLinks[(int)Direction.NORTH] = houseBaseentrance;
+            houseBasepart2.mRoomLinks[(int)Direction.WEST] = houseBaseCloset;
+            houseBasepart2.mRoomLinks[(int)Direction.EAST] = houseBaseSumpRoom;
+            houseBasepart2.mRoomLinks[(int)Direction.SOUTH] = houseBasepart3;
+            houseBaseSumpRoom.mRoomLinks[(int)Direction.WEST] = houseBasepart2;
+            houseBaseCloset.mRoomLinks[(int)Direction.EAST] = houseBasepart2;
+            houseBasepart3.mRoomLinks[(int)Direction.NORTH] = houseBasepart2;
+            houseBasepart3.mRoomLinks[(int)Direction.SOUTH] = houseBasepart4;
+            houseBasepart4.mRoomLinks[(int)Direction.NORTH] = houseBasepart3;
+            houseBasepart4.mRoomLinks[(int)Direction.WEST] = houseBasepart5;
+            houseBasepart5.mRoomLinks[(int)Direction.EAST] = houseBasepart4;
+            houseBasepart5.mRoomLinks[(int)Direction.NORTH] = houseBaseBathroom;
+            houseBaseBathroom.mRoomLinks[(int)Direction.SOUTH] = houseBasepart5;
 
             newDoor = new Doorway("door", houseBaseentrance);
             houseBaseentrance.addDoor(newDoor, Direction.WEST);
@@ -221,18 +221,21 @@ namespace _8th_Circle_Server
             geraldineArea.mRoomList.Add(houseBasepart5);
             geraldineArea.mRoomList.Add(houseBaseSumpRoom);
 
-            getRoom(0, 0, 0).mWestLink = house1stentranceway;
-
             addGeraldineNpcs(geraldineArea);
             geraldineArea.mAreaID = AreaID.AID_GERALDINEMANOR;
+            geraldineArea.mAreaOffset = HOUSE_OFFSET;
             mAreaList.Add(geraldineArea);
+            Area protoArea = getArea(AreaID.AID_PROTOAREA);
+            getRoom(protoArea.mAreaOffset, protoArea.mAreaOffset, 
+                protoArea.mAreaOffset, AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
+
             mAreaHandler.registerArea(geraldineArea);
         }// geraldineArea
 
         public void addGeraldineNpcs(Area area)
         {
-            addMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
-            addMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
+            addNewMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
+            addNewMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
         }// addNpcs
 
         public void addNewbieArea()
@@ -408,62 +411,76 @@ namespace _8th_Circle_Server
 
             foreach (Room room in newbieArea.mRoomList)
             {
-                Room nwRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1] + 1, 
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room nRoom = getRoom(room.mWorldLoc[0], room.mWorldLoc[1] + 1,
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room neRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1] + 1,
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room wRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1],
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room eRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1],
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room swRoom = getRoom(room.mWorldLoc[0] - 1, room.mWorldLoc[1] - 1,
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room sRoom = getRoom(room.mWorldLoc[0], room.mWorldLoc[1] - 1,
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
-                Room seRoom = getRoom(room.mWorldLoc[0] + 1, room.mWorldLoc[1] - 1,
-                    room.mWorldLoc[2], AreaID.AID_NEWBIEAREA);
+                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1, 
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1,
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1,
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1],
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1],
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
+                    room.mAreaLoc[2] + 1, AreaID.AID_NEWBIEAREA);
+                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
+                    room.mAreaLoc[2] - 1, AreaID.AID_NEWBIEAREA);
 
                 if (nwRoom != null)
                 {
-                    room.mNorthwestLink = nwRoom;
-                    nwRoom.mSoutheastLink = room;
+                    room.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = room;
                 }
                 if (nRoom != null)
                 {
-                    room.mNorthLink = nRoom;
-                    nRoom.mSouthLink = room;
+                    room.mRoomLinks[(int)Direction.NORTH] = nRoom;
+                    nRoom.mRoomLinks[(int)Direction.SOUTH] = room;
                 }
                 if (neRoom != null)
                 {
-                    room.mNortheastLink = neRoom;
-                    neRoom.mSouthwestLink = room;
+                    room.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = room;
                 }
                 if (wRoom != null)
                 {
-                    room.mWestLink = wRoom;
-                    wRoom.mEastLink = room;
+                    room.mRoomLinks[(int)Direction.WEST] = wRoom;
+                    wRoom.mRoomLinks[(int)Direction.EAST] = room;
                 }
                 if (eRoom != null)
                 {
-                    room.mEastLink = eRoom;
-                    eRoom.mWestLink = room;
+                    room.mRoomLinks[(int)Direction.EAST] = eRoom;
+                    eRoom.mRoomLinks[(int)Direction.WEST] = room;
                 }
                 if (swRoom != null)
                 {
-                    room.mSouthwestLink = swRoom;
-                    swRoom.mNortheastLink = room;
+                    room.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = room;
                 }
                 if (sRoom != null)
                 {
-                    room.mSouthLink = sRoom;
-                    sRoom.mNorthLink = room;
+                    room.mRoomLinks[(int)Direction.SOUTH] = sRoom;
+                    sRoom.mRoomLinks[(int)Direction.NORTH] = room;
                 }
                 if (seRoom != null)
                 {
-                    room.mSoutheastLink = seRoom;
-                    seRoom.mNorthwestLink = room;
+                    room.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = room;
+                }
+                if (uRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.UP] = uRoom;
+                    uRoom.mRoomLinks[(int)Direction.DOWN] = room;
+                }
+                if (dRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.DOWN] = dRoom;
+                    dRoom.mRoomLinks[(int)Direction.UP] = room;
                 }
             }// foreach
 
@@ -533,6 +550,11 @@ namespace _8th_Circle_Server
             gpg_69.removeTripleLinks(Direction.WEST);
             gpg_76.removeTripleLinks(Direction.WEST);
 
+            Doorway newDoor = new Doorway("door", gpg_71);
+            newDoor.mFlagList.Add(objectFlags.FLAG_HIDDEN);
+            gpg_71.addDoor(newDoor, Direction.SOUTH);
+            ((Room)(gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
+
             Container wooden_chest = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
             wooden_chest.mKeyId = 4;
             wooden_chest.mStartingRoom = gpg_56;
@@ -548,6 +570,7 @@ namespace _8th_Circle_Server
 
             Container small_metal_cage = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
             small_metal_cage.mName = "small metal cage";
+            small_metal_cage.mDescription = "a small metal cage, I wonder what is inside?";
             small_metal_cage.mKeyId = 5;
             small_metal_cage.mStartingRoom = gpg_71;
             small_metal_cage.mStartingArea = newbieArea;
@@ -559,7 +582,8 @@ namespace _8th_Circle_Server
             steel_key.mKeyId = 5;
             steel_key.mStartingRoom = gpg_46;
             steel_key.mStartingArea = newbieArea;
-            steel_key.mName = "a small steel key";
+            steel_key.mName = "small steel key";
+            steel_key.mDescription = "a small steel key, I wonder what it opens?";
             addMob(steel_key, gpg_46, newbieArea);
 
             // Find a way to minimize this

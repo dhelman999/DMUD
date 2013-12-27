@@ -9,9 +9,11 @@ namespace _8th_Circle_Server
 {
     enum EventFlag
     {
-        EVENT_TELL_PLAYER,
+        EVENT_START,
+        EVENT_TELL_PLAYER = EVENT_START,
         EVENT_TELEPORT,
-        EVENT_GPG_WALL_REMOVE
+        EVENT_GPG_WALL_REMOVE,
+        EVENT_END
     };// EventFlag
 
     struct EventData
@@ -118,8 +120,6 @@ namespace _8th_Circle_Server
                             ((Area)mWorld.mAreaList[2]).getRoom(rid).addPlayer(eventData.trigger);
                             ((Player)eventData.trigger).mClientHandler.safeWrite("You feel a " +
                                "mystical energy whisk you away, only to find yourself...");
-                            ((Player)eventData.trigger).mClientHandler.safeWrite(
-                                eventData.trigger.mCurrentRoom.mDescription);
                             ((Player)eventData.trigger).mClientHandler.safeWrite(
                                 eventData.trigger.mCurrentRoom.exitString());
                         }

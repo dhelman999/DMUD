@@ -9,15 +9,17 @@ namespace _8th_Circle_Server
 {
     enum grammarType
     {
-        VERB = 0,
+        GRAMMAR_START,
+        VERB = GRAMMAR_START,
         PREP,
         PREDICATE,
-        INVALID
+        GRAMMAR_END
     };// grammarType
 
     enum predicateType
     {
-        PREDICATE_OBJECT = 0,
+        PREDICATE_START,
+        PREDICATE_OBJECT = PREDICATE_START,
         PREDICATE_PLAYER,
         PREDICATE_NPC,
         PREDICATE_PLAYER_OR_NPC,
@@ -25,34 +27,36 @@ namespace _8th_Circle_Server
         PREDICATE_OBJECT_OR_NPC,
         PREDICATE_ALL,
         PREDICATE_CUSTOM,
-        INVALID
+        PREDICATE_END
     }// predicateType
 
     enum validityType
     {
-        VALID_INVENTORY = 0,
+        VALID_START,
+        VALID_INVENTORY = VALID_START,
         VALID_LOCAL,
         VALID_INVLOCAL,
         VALID_AREA,
         VALID_GLOBAL,
-        INVALID
+        VALID_END
     };// validityType
 
     enum PrepositionType
     {
-        PREP_IN=0,
+        PREP_START,
+        PREP_IN = PREP_START,
         PREP_ON,
         PREP_WITH,
         PREP_AT,
         PREP_FROM,
         PREP_OFF,
-        PREP_INVALID
+        PREP_END
     };// PrepositionType
 
     enum commandName
     {
-        INVALID,
-        COMMAND_LOOK,
+        COMMAND_START,
+        COMMAND_LOOK = COMMAND_START,
         COMMAND_EXIT,
         COMMAND_NORTH,
         COMMAND_SOUTH,
@@ -77,14 +81,18 @@ namespace _8th_Circle_Server
         COMMAND_SPAWN,
         COMMAND_DESTROY,
         COMMAND_USE,
-        COMMAND_SEARCH
+        COMMAND_SEARCH,
+        COMMAND_WHO,
+        COMMAND_END
     };// commandName
 
     enum errorCode
     {
-        E_OK = 0,
+        E_START,
+        E_OK = E_START,
         E_INVALID_SYNTAX,
-        E_INVALID_COMMAND_USAGE
+        E_INVALID_COMMAND_USAGE,
+        E_END
     };// errorCode
 
     struct Preposition
@@ -186,83 +194,83 @@ namespace _8th_Circle_Server
             gramVerbPredPrepPred[3] = grammarType.PREDICATE;
 
             // Add Verbs
-            Command pt = new Command("north", "n", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTH,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            Command pt = new Command("up", "u", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_UP,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("south", "s", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SOUTH,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+            pt = new Command("north", "n", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("northeast", "ne", 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTHEAST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("east", "e", 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_EAST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("west", "w", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_WEST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("up", "u", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_UP,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("down", "d", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_DOWN,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("northeast", "ne", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTHEAST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
-            mCommandList.Add(pt);
-            mVerbList.Add(pt);
-
-            pt = new Command("northwest", "nw", 6, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTHWEST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("southeast", "se", 6, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SOUTHEAST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("down", "d", 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_DOWN,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("south", "s", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SOUTH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("southwest", "sw", 6, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SOUTHWEST,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("west", "w", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_WEST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("northwest", "nw", 6, 1, grammarType.VERB, gramVerb, commandName.COMMAND_NORTHWEST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("exit", null, 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_EXIT,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("look", null, 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_LOOK,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("look", null, 1, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("look", null, 1, 3, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_ALL, predicateType.INVALID, validityType.VALID_INVLOCAL);
+                predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("say", null, 3, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_SAY,
-                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("yell", null, 2, 256, grammarType.VERB, gramVerbPred, commandName.COMMAND_YELL,
-                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_AREA);
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_AREA);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -277,17 +285,17 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("close", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
-                predicateType.PREDICATE_OBJECT, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("destroy", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DESTROY,
-                predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
             pt = new Command("spawn", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
-                predicateType.PREDICATE_CUSTOM, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -307,7 +315,7 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("inventory", null, 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_INVENTORY,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -327,7 +335,12 @@ namespace _8th_Circle_Server
             mVerbList.Add(pt);
 
             pt = new Command("search", null, 3, 1, grammarType.VERB, gramVerb, commandName.COMMAND_SEARCH,
-                predicateType.INVALID, predicateType.INVALID, validityType.VALID_LOCAL);
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("who", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_WHO,
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_GLOBAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -430,7 +443,7 @@ namespace _8th_Circle_Server
             // verbs, then something went wrong, bail out.
             if (!foundMatch || commandList.Count != 1)
             {
-                if (currentCommand.commandName != commandName.INVALID)
+                if (currentCommand.commandName != commandName.COMMAND_END)
                 {
                     if (mob is Player)
                         ((Player)mob).mClientHandler.safeWrite("You can't " +
@@ -450,7 +463,9 @@ namespace _8th_Circle_Server
                 currentCommand.grammar.Length == 1 &&
                 mob.mActionTimer == 0)
             {
-                execute(commandList, mob);
+                string clientString = execute(commandList, mob);
+                if (mob is Player)
+                    ((Player)mob).mClientHandler.safeWrite(clientString);
                 return;
             }// if
             else if((tokens.Length > 1 && currentCommand.grammar.Length == 1) ||
@@ -471,31 +486,33 @@ namespace _8th_Circle_Server
                                         commandList, mob);
 
             if (error == errorCode.E_OK)
+            {
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
-                execute(commandList, mob);
+                string clientString = execute(commandList, mob);
+                if (mob is Player)
+                    ((Player)mob).mClientHandler.safeWrite(clientString);
+            }
             else if (error == errorCode.E_INVALID_COMMAND_USAGE)
             {
-                if(mob is Player)
-                   ((Player)mob).mClientHandler.safeWrite("you can't use the " + currentCommand.command + 
-                       " command like that");
+                if (mob is Player)
+                    ((Player)mob).mClientHandler.safeWrite("you can't use the " + currentCommand.command +
+                        " command like that");
             }
             else if (error == errorCode.E_INVALID_SYNTAX)
             { } // do nothing it has been handled earlier
             else
             {
-                if(mob is Player)
-                   ((Player)mob).mClientHandler.safeWrite("You can't do that");
+                if (mob is Player)
+                    ((Player)mob).mClientHandler.safeWrite("You can't do that");
             }
         }// process
 
-        public void execute(ArrayList commandQueue, Mob mob)
+        public string execute(ArrayList commandQueue, Mob mob)
         {
             Command currentCommand = new Command();
-            Command tempCommand;
             currentCommand = (Command)commandQueue[0];
-            bool refreshRoomDesc = false;
             int commandIndex = 0;
             Room currentRoom = mob.mCurrentRoom;
             Player player;
@@ -508,22 +525,16 @@ namespace _8th_Circle_Server
                 // Says something to all players in the current room
                 case commandName.COMMAND_SAY:
                     ++commandIndex;
-
                     foreach (Player currentPlayer in currentRoom.mPlayerList)
                     {
                         if (currentPlayer.Equals(mob))
-                        {
-                            if(mob is Player)
-                            ((Player)mob).mClientHandler.safeWrite("You say \"" + commandQueue[commandIndex] +
-                                "\"");
-                        }// if
+                            clientString = "You say \"" + commandQueue[commandIndex] + "\"";
                         else
-                        {
-                            currentPlayer.mClientHandler.safeWrite(mob.mName + 
-                                " says " + "\"" + commandQueue[commandIndex] + "\"");
-                        }// else
+                            clientString = mob.mName + " says " + "\"" + commandQueue[commandIndex] + "\"";
+
+                        currentPlayer.mClientHandler.safeWrite(clientString);
                     }// foreach
-                    break;
+                    return "";
 
                 case commandName.COMMAND_TELL:
                     ++commandIndex;
@@ -533,487 +544,188 @@ namespace _8th_Circle_Server
                             commandQueue[commandIndex] + "\"");
                     player.mClientHandler.safeWrite(mob.mName + " tells you \"" + 
                         commandQueue[commandIndex] + "\"");
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = player;
-                    commandQueue[0] = tempCommand;
                     break;
 
                 case commandName.COMMAND_YELL:
                     ++commandIndex;
-                    
                     foreach (Player currentPlayer in mob.mCurrentArea.mPlayerList)
                     {
                         if (currentPlayer.Equals(mob))
-                        {
-                            ((Player)mob).mClientHandler.safeWrite("You yell " + "\"" + commandQueue[commandIndex] +
-                                "\"");
-                        }// if
+                            clientString = "You yell " + "\"" + commandQueue[commandIndex] + "\"";
                         else
-                        {
-                            currentPlayer.mClientHandler.safeWrite(mob.mName +
-                                " yells \"" + commandQueue[commandIndex] + "\"");
-                        }// else
+                            clientString = mob.mName + " yells \"" + commandQueue[commandIndex] + "\"";
+
+                        currentPlayer.mClientHandler.safeWrite(clientString);
                     }// foreach
-                    
-                    break;
+                    return "";
 
                 case commandName.COMMAND_EXIT:
-                    ((Player)mob).mClientHandler.safeWrite("exit was the command");
+                    clientString = "exit was the command";
                     break;
 
                 case commandName.COMMAND_NORTH:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move north");
-                    break;
-
                 case commandName.COMMAND_SOUTH:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move south");
-                    break;
-
                 case commandName.COMMAND_EAST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move east");
-                    break;
-
                 case commandName.COMMAND_WEST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move west");
-                    break;
-
                 case commandName.COMMAND_UP:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move up");
-                    break;
-
                 case commandName.COMMAND_DOWN:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move down");
-                    break;
-
                 case commandName.COMMAND_NORTHWEST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move northwest");
-                    break;
-
                 case commandName.COMMAND_NORTHEAST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move northeast");
-                    break;
-
                 case commandName.COMMAND_SOUTHWEST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move southwest");
-                    break;
-
                 case commandName.COMMAND_SOUTHEAST:
-                    refreshRoomDesc = true;
-                    if (!mob.move(currentCommand.command))
-                        ((Player)mob).mClientHandler.safeWrite("You can't move southeast");
+                    clientString = mob.move(currentCommand.command);
                     break;
 
-                case commandName.COMMAND_OPEN:
-                    
-                    clientString = ((Mob)commandQueue[1]).open(mob);
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(clientString);
+                case commandName.COMMAND_OPEN: 
+                    clientString = ((Mob)commandQueue[++commandIndex]).open(mob);
                     break;
 
                 case commandName.COMMAND_CLOSE:
-                    clientString = ((Mob)commandQueue[1]).close(mob);
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(clientString);
+                    clientString = ((Mob)commandQueue[++commandIndex]).close(mob);
                     break;
 
                 case commandName.COMMAND_DESTROY:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).destroy());
+                    clientString = ((Mob)commandQueue[++commandIndex]).destroy();
                     break;
 
-                // TODO
-                // Is this the best way to check the token counts?
                 case commandName.COMMAND_GET:
-                    if (commandQueue.Count == 1)
-                    {
-                    }
-                    else if (commandQueue.Count == 2)
-                    {
-                        tempCommand = (Command)commandQueue[0];
-                        tempCommand.commandOwner = mob;
-                        tempCommand.predicate1Value = (Mob)commandQueue[1];
-                        commandQueue[0] = tempCommand;
-                        if (mob is Player)
-                            ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).get(mob));
-                    }
-                    else if (commandQueue.Count == 3)
-                    {
-                    }
+                    ++commandIndex;
+                    if (commandQueue.Count == 2)
+                        clientString = ((Mob)commandQueue[commandIndex]).get(mob);
                     else if (commandQueue.Count == 4)
                     {
-                        tempCommand = (Command)commandQueue[0];
-                        tempCommand.commandOwner = mob;
-                        tempCommand.predicate1Value = (Mob)commandQueue[1];
-                        tempCommand.prep1Value = (Preposition)commandQueue[2];
-                        tempCommand.predicate2Value = (Mob)commandQueue[3];
-                        commandQueue[0] = tempCommand;
-                        if (mob is Player)
-                        {
-                            ((Player)mob).mClientHandler.safeWrite(
-                                ((Mob)commandQueue[1]).get(mob, tempCommand.prep1Value.prepType, tempCommand.predicate2Value));
-                        }// if
-                    }
+                        clientString = ((Mob)commandQueue[commandIndex]).get(mob, 
+                                       ((Preposition)commandQueue[++commandIndex]).prepType,
+                                       (Mob)commandQueue[++commandIndex]);
+                    }// else if
                     else
-                    {
-                        if (mob is Player)
-                            ((Player)mob).mClientHandler.safeWrite("you can't get like that");
-                    }
+                        clientString = "you can't get like that";
                     break;
 
                 case commandName.COMMAND_DROP:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).drop(mob));
+                    clientString = ((Mob)commandQueue[++commandIndex]).drop(mob);
                     break;
 
                 case commandName.COMMAND_INVENTORY:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = mob;
-                    commandQueue[0] = tempCommand;
-                    ((Player)mob).mClientHandler.safeWrite("Inventory:\n");
+                    clientString += "Inventory:\n";
                     foreach (Mob mob2 in mob.mInventory)
-                    {
-                        if(mob is Player)
-                            ((Player)mob).mClientHandler.safeWrite(" " + mob2.mName);
-                    }// foreach
+                        clientString += " " + mob2.mName + "\n";
                     break;
 
                 case commandName.COMMAND_LOCK:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    if (mob is Player)
-                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).lck(mob));
+                    clientString = ((Mob)commandQueue[++commandIndex]).lck(mob);
                     break;
 
                 case commandName.COMMAND_UNLOCK:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    if (mob is Player)
-                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).unlock(mob));
+                    clientString = ((Mob)commandQueue[++commandIndex]).unlock(mob);
                     break;
 
-                    // TODO
-                    // The eventhandler use is getting bypassed by the use implementation in the mob
                 case commandName.COMMAND_USE:
-                    tempCommand = (Command)commandQueue[0];
-                    tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
-                    tempCommand.predicate1Value = (Mob)commandQueue[1];
-                    commandQueue[0] = tempCommand;
-                    if (mob is Player)
-                    {
-                        ((Player)mob).mClientHandler.safeWrite(((Mob)commandQueue[1]).use(mob));
-                    }
+                    clientString = ((Mob)commandQueue[++commandIndex]).use(mob);
                     break;
 
-                // TODO
-                // Need to find a way to freeze mobs, probably by events like a timer 
-                // after they are frozen or something
                 case commandName.COMMAND_SEARCH:
-                    if (mob is Player)
-                    {
-                        ((Player)mob).mClientHandler.safeWrite("you start searching...");
-                        mob.mActionTimer = 4;
-                        Thread mSearchThread = new Thread(() => searchTask(mob));
-                        mSearchThread.Start();
-                    }// if
+                    clientString = "you start searching...";
+                    mob.mActionTimer = 4;
+                    mob.mFlagList.Add(objectFlags.FLAG_SEARCHING);
+                    Thread searchThread = new Thread(() => searchTask(mob));
+                    searchThread.Start();
                     break;
+
+                case commandName.COMMAND_WHO:
+                    ++commandIndex;
+                    if (((string)commandQueue[commandIndex]).Equals("all"))
+                    {
+                        clientString = "\nPlayer\t\tArea\n\n";
+                        foreach (Player pl in mob.mWorld.mPlayerList)
+                            clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
+                    }// if
+                    else if (((string)commandQueue[commandIndex]).Equals("area"))
+                    {
+                        clientString = "\nPlayer\t\tArea\n\n";
+                        foreach (Player pl in mob.mCurrentArea.mPlayerList)
+                            clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
+                    }// else if
+                    else
+                        return "you can't use who like that";
+
+                    return clientString;
 
                 case commandName.COMMAND_SPAWN:
                     try
                     {
-                        int mobID = Int32.Parse((string)commandQueue[1]);
+                        int mobID = Int32.Parse((string)commandQueue[++commandIndex]);
                         ArrayList fma = ((Player)mob).mClientHandler.mWorld.mFullMobList;
                         if (mobID < 0 ||
                             mobID > fma.Count)
-                        {
-                            if(mob is Player)
-                                ((Player)mob).mClientHandler.safeWrite("MobID is outside the valid range");
-                        }// if
+                            clientString = "MobID is outside the valid range";
                         else
                         {
                             if (fma[mobID] is Container)
                             {
                                 Container cont = new Container();
                                 cont = (Container)fma[mobID];
-                                cont.mIsActive = true;
                                 ((Player)mob).mClientHandler.mWorld.mObjectList.Add(cont);
                                 cont.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 cont.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
                                 ((Player)mob).mClientHandler.mPlayer.mCurrentArea.mObjectList.Add(cont);
                                 ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.mObjectList.Add(cont);
-                                ((Player)mob).mClientHandler.safeWrite("spawning " + cont.mName);
+                                clientString = "spawning " + cont.mName;
                             }// if
                             else if (fma[mobID] is Mob)
                             {
                                 Mob mob2 = new Mob();
                                 mob2 = (Mob)fma[mobID];
-                                mob2.mIsActive = true;
                                 mob2.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 mob2.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.mObjectList.Add(mob);
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.mObjectList.Add(mob);
-                                ((Player)mob).mClientHandler.safeWrite("spawning " + mob.mName);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.mObjectList.Add(mob2);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.mObjectList.Add(mob2);
+                                clientString = "spawning " + mob2.mName;
                             }// else if
                             else
-                            {
-                                if(mob is Player)
-                                    ((Player)mob).mClientHandler.safeWrite("Something went wrong");
-                            }// else
+                                clientString = "Something went wrong";
                         }// else
                     }// try
                     catch
-                    {
-                        if(mob is Player)
-                            ((Player)mob).mClientHandler.safeWrite("That is not a valid MobID");
-                    }// catch
+                    { 
+                        clientString = "That is not a valid MobID"; 
+                    }
                     break;
 
                 case commandName.COMMAND_LOOK:
-
                     // This is a single look command with no arguements, simply print
                     // out the current room the player is in.
                     if (commandQueue.Count == 1)
-                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mDescription +
-                            "\n" + currentRoom.exitString());
+                        clientString = currentRoom.viewed();
                     // The player looked in a direction, print out that connected rooms
                     // location
                     else if (commandQueue.Count == 2)
-                    {
-                        switch (((string)commandQueue[++commandIndex]).ToLower())
-                        {
-                            case "north":
-                                if (currentRoom.mNorthLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mNorthLink.mDescription +
-                                           "\n" + currentRoom.mNorthLink.exitString());
-                                }
-                                else
-                                {
-                                    if(mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the north");
-                                }
-                                break;
-
-                            case "south":
-                                if (currentRoom.mSouthLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mSouthLink.mDescription +
-                                        "\n" + currentRoom.mSouthLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the south");
-                                }
-                                break;
-
-                            case "east":
-                                if (currentRoom.mEastLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mEastLink.mDescription +
-                                            "\n" + currentRoom.mEastLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the east");
-                                }
-                                break;
-
-                            case "west":
-                                if (currentRoom.mWestLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mWestLink.mDescription +
-                                            "\n" + currentRoom.mWestLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the west");
-                                }
-                                break;
-
-                            case "up":
-                                if (currentRoom.mUpLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mUpLink.mDescription +
-                                            "\n" + currentRoom.mUpLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing above");
-                                }
-                                break;
-
-                            case "down":
-                                if (currentRoom.mDownLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mDownLink.mDescription +
-                                            "\n" + currentRoom.mDownLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing below");
-                                }
-                                break;
-
-                            case "northwest":
-                                if (currentRoom.mNorthwestLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mNorthwestLink.mDescription +
-                                            "\n" + currentRoom.mNorthwestLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the northwest");
-                                }
-                                break;
-
-                            case "northeast":
-                                if (currentRoom.mNortheastLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mNortheastLink.mDescription +
-                                            "\n" + currentRoom.mNortheastLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the northeast");
-                                }
-                                break;
-
-                            case "southwest":
-                                if (currentRoom.mSouthwestLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mSouthwestLink.mDescription +
-                                            "\n" + currentRoom.mSouthwestLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the southwest");
-                                }
-                                break;
-
-                            case "southeast":
-                                if (currentRoom.mSoutheastLink != null)
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite(currentRoom.mSoutheastLink.mDescription +
-                                            "\n" + currentRoom.mSoutheastLink.exitString());
-                                }
-                                else
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("There is nothing to the southeast");
-                                }
-                                break;
-
-                            default:
-                                {
-                                    if (mob is Player)
-                                        ((Player)mob).mClientHandler.safeWrite("You can't look in that direction");
-                                }
-                                break;
-                        }// switch (((string)commandQueue[++commandIndex]).ToLower())
-                    }// else if (commandQueue.Count > 1)
+                        clientString = mob.mCurrentRoom.viewed((string)commandQueue[++commandIndex]);
                     else if (commandQueue.Count == 3)
-                    {
-                        clientString = string.Empty;
-                        clientString = ((Mob)commandQueue[2]).viewed(mob,
-                            (Preposition)commandQueue[1]);
-                        ((Player)mob).mClientHandler.safeWrite(clientString);
-
-                        tempCommand = (Command)commandQueue[0];
-                        tempCommand.commandOwner = ((Player)mob).mClientHandler.mPlayer;
-                        tempCommand.prep1Value = (Preposition)commandQueue[1];
-                        tempCommand.predicate1Value = (Mob)commandQueue[2];
-                        commandQueue[0] = tempCommand;
-                    }// else if
+                        clientString = ((Mob)commandQueue[2]).viewed(mob,(Preposition)commandQueue[1]);
                     else
-                    {
-                        clientString = string.Empty;
-                        clientString = ((Mob)commandQueue[2]).viewed(mob,
-                            (Preposition)commandQueue[1]);
-                        ((Player)mob).mClientHandler.safeWrite(clientString);
-
-                        tempCommand = (Command)commandQueue[0];
-                        tempCommand.commandOwner = mob;
-                        tempCommand.prep1Value = (Preposition)commandQueue[1];
-                        tempCommand.predicate1Value = (Mob)commandQueue[2];
-                        commandQueue[0] = tempCommand;
-
-                    }// else
+                        clientString = ((Mob)commandQueue[2]).viewed(mob, (Preposition)commandQueue[1]);
                     break;
 
                 default:
-                    if(mob is Player)
-                        ((Player)mob).mClientHandler.safeWrite("huh?");
+                    clientString = "huh?";
                     break;
             }// switch (currentCommand.commandName)
 
-            // If the player moved, remember to actually print out the room
-            if (refreshRoomDesc)
-            {
-                if(mob is Player)
-                    ((Player)mob).mClientHandler.safeWrite(mob.mCurrentRoom.mDescription +
-                        "\n" + mob.mCurrentRoom.exitString());
-            }// if
-            
-            checkEvent((Command)commandQueue[0], mob);
+            checkEvent(commandQueue, mob);
 
+            return clientString;
         }// execute
 
-        private void checkEvent(Command command, Mob mob)
+        private void checkEvent(ArrayList commandQueue, Mob mob)
         {
-            if (command.predicate1 != predicateType.INVALID &&
-                     command.predicate1 != predicateType.PREDICATE_CUSTOM)
+            // Fill eventArgs
+            fillEventArgs(commandQueue, mob);
+
+            Command command = (Command)commandQueue[0];
+
+            if (command.predicate1 != predicateType.PREDICATE_END &&
+                command.predicate1 != predicateType.PREDICATE_CUSTOM)
             {
                 // TODO
                 // This triggers successfully with the USE, but I think it will probably
@@ -1035,8 +747,7 @@ namespace _8th_Circle_Server
                 }// if
             }// else if
             else
-            {
-            }// else
+            { }// else
         }// checkEvent
 
         private errorCode populateCommandList(Command currentCommand, string command,
@@ -1063,12 +774,15 @@ namespace _8th_Circle_Server
 
                     // If the predicate is a player, we only accept the very next token to
                     // search for a valid playername
-                    if (targetPredicate != predicateType.INVALID &&
+                    if (targetPredicate != predicateType.PREDICATE_END &&
                         targetPredicate != predicateType.PREDICATE_CUSTOM)
                     {
                         tokens = command.Split(' ');
                         errorString += " " + tokens[0];
-                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList,
+                        ret = doesPredicateExist(tokens[0], 
+                                                 targetPredicate, 
+                                                 currentCommand.validity, 
+                                                 commandList,
                                                  mob);
 
                         if (ret != errorCode.E_OK)
@@ -1078,7 +792,7 @@ namespace _8th_Circle_Server
                             break;
                         }// if
 
-                        if ((grammarIndex < currentCommand.grammar.Length))
+                        if (grammarIndex < currentCommand.grammar.Length)
                             command = command.Substring(tokens[0].Length + 1);
                     }// if
                     // If the predicate is custom, we simply dump the rest of the command
@@ -1107,8 +821,14 @@ namespace _8th_Circle_Server
                         {
                             commandList.Add(prep);
                             ret = errorCode.E_OK;
-                            if((grammarIndex < currentCommand.grammar.Length))
-                                command = command.Substring(tokens[0].Length + 1);
+
+                            if ((grammarIndex < currentCommand.grammar.Length))
+                            {
+                                if (command.Length > tokens[0].Length)
+                                    command = command.Substring(tokens[0].Length + 1);
+                                else
+                                    return errorCode.E_INVALID_COMMAND_USAGE;
+                            }// if
                             break;
                         }// if
                     }// foreach
@@ -1123,15 +843,15 @@ namespace _8th_Circle_Server
             }// while (grammarIndex < currentCommand.grammar.Length)
 
             if (grammarIndex != currentCommand.grammar.Length)
-            {
                 return errorCode.E_INVALID_COMMAND_USAGE;
-            }// if
 
             return ret;
         }// populateCommandList
 
-        private errorCode doesPredicateExist(string name, predicateType predType,
-                                             validityType validity, ArrayList commandQueue,
+        private errorCode doesPredicateExist(string name, 
+                                             predicateType predType,
+                                             validityType validity, 
+                                             ArrayList commandQueue,
                                              Mob target)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
@@ -1163,9 +883,7 @@ namespace _8th_Circle_Server
                     foreach(Mob cont in target.mCurrentRoom.mObjectList)
                     {
                         if (cont is Container)
-                        {
                             targetList.Add(cont.mInventory);
-                        }
                     }
                 }// if
             }// if
@@ -1224,8 +942,8 @@ namespace _8th_Circle_Server
                     foreach (Mob mob in ar)
                     {
                         if (mob != null &&
-                        validatePredicate(tokens[0].ToLower(),
-                        mob.exitString(target.mCurrentRoom).ToLower()))
+                            validatePredicate(tokens[0].ToLower(),
+                                              mob.exitString(target.mCurrentRoom).ToLower()))
                         {
                             ret = errorCode.E_OK;
                             targetPredicates.Add(mob);
@@ -1301,12 +1019,48 @@ namespace _8th_Circle_Server
             return found;
         }// validatePredicate
 
+        private void fillEventArgs(ArrayList commandQueue, Mob mob)
+        {
+            Command command = (Command)commandQueue[0];
+            grammarType []grammar = command.grammar;
+            int predicateCount = 0;
+            int prepCount = 0;
+
+            if (mob is Player)
+                command.commandOwner = (Player)mob;
+            else
+                command.commandOwner = mob;
+
+            for (int i = 1; i < grammar.Length; ++i)
+            {
+                if (grammar[i] == grammarType.PREDICATE)
+                {
+                    if (++predicateCount == 1)
+                       if(!(commandQueue[i] is string))
+                            command.predicate1Value = (Mob)commandQueue[i];
+                    else
+                       if (!(commandQueue[i] is string))
+                          command.predicate2Value = (Mob)commandQueue[i];
+                }// if
+                else if (grammar[i] == grammarType.PREP)
+                {
+                    if (++prepCount == 1)
+                        command.prep1Value = (Preposition)commandQueue[i];
+                    else
+                        command.prep2Value = (Preposition)commandQueue[i];
+                }// if
+            }// for
+
+            commandQueue[0] = command;
+        }// fillEventArgs
+
         public static void searchTask(Mob mob)
         {
             Thread.Sleep(4000);
             string searchResult = mob.search();
             if (mob is Player)
                 ((Player)mob).mClientHandler.safeWrite(searchResult);
+            mob.mFlagList.Remove(objectFlags.FLAG_SEARCHING);
         }// searchTask
 
     }// Class CommandExecuter

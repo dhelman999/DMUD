@@ -13,6 +13,7 @@ namespace _8th_Circle_Server
 
         internal const int HOUSE_OFFSET = 10000;
         internal const int BAO = 1000;
+        internal const int PROTO_OFFSET = 100;
 
         // Constants
         const int MAXXSIZE = 3;
@@ -50,75 +51,62 @@ namespace _8th_Circle_Server
             Area protoArea = new Area();
             protoArea.mName = "Proto Area";
             protoArea.mDescription = "The testing area for the 8th Circle";
+            protoArea.mAreaID = AreaID.AID_PROTOAREA;
+            protoArea.mAreaOffset = PROTO_OFFSET;
             protoArea.mWorld = this;
 
+            mWorldGrid = new Room[MAXXSIZE, MAXYSIZE, MAXZSIZE];
             Room currentRoom = new Room();
 
-            mWorldGrid = new Room[MAXZSIZE, MAXYSIZE, MAXXSIZE];
-            mWorldGrid[0, 0, 0] = new Room("Room 0,0,0", 0, 0, 0, 0);
-            mWorldGrid[1, 0, 0] = new Room("Room 1,0,0", 1, 0, 0, 0);
-            mWorldGrid[2, 0, 0] = new Room("Room 2,0,0", 2, 0, 0, 0);
-            mWorldGrid[0, 1, 0] = new Room("Room 0,1,0", 0, 1, 0, 0);
-            mWorldGrid[1, 1, 0] = new Room("Room 1,1,0", 1, 1, 0, 0);
-            mWorldGrid[2, 1, 0] = new Room("Room 2,1,0", 2, 1, 0, 0);
-            mWorldGrid[0, 2, 0] = new Room("Room 0,2,0", 0, 2, 0, 0);
-            mWorldGrid[1, 2, 0] = new Room("Room 1,2,0", 1, 2, 0, 0);
-            mWorldGrid[2, 2, 0] = new Room("Room 2,2,0", 2, 2, 0, 0);
-            mWorldGrid[0, 0, 1] = new Room("Room 0,0,1", 0, 0, 1, 0);
-            mWorldGrid[1, 0, 1] = new Room("Room 1,0,1", 1, 0, 1, 0);
-            mWorldGrid[2, 0, 1] = new Room("Room 2,0,1", 2, 0, 1, 0);
-            mWorldGrid[0, 1, 1] = new Room("Room 0,1,1", 0, 1, 1, 0);
-            mWorldGrid[1, 1, 1] = new Room("Room 1,1,1", 1, 1, 1, 0);
-            mWorldGrid[2, 1, 1] = new Room("Room 2,1,1", 2, 1, 1, 0);
-            mWorldGrid[0, 2, 1] = new Room("Room 0,2,1", 0, 2, 1, 0);
-            mWorldGrid[1, 2, 1] = new Room("Room 1,2,1", 1, 2, 1, 0);
-            mWorldGrid[2, 2, 1] = new Room("Room 2,2,1", 2, 2, 1, 0);
-            mWorldGrid[0, 0, 2] = new Room("Room 0,0,2", 0, 0, 2, 0);
-            mWorldGrid[1, 0, 2] = new Room("Room 1,0,2", 1, 0, 2, 0);
-            mWorldGrid[2, 0, 2] = new Room("Room 2,0,2", 2, 0, 2, 0);
-            mWorldGrid[0, 1, 2] = new Room("Room 0,1,2", 0, 1, 2, 0);
-            mWorldGrid[1, 1, 2] = new Room("Room 1,1,2", 1, 1, 2, 0);
-            mWorldGrid[2, 1, 2] = new Room("Room 2,1,2", 2, 1, 2, 0);
-            mWorldGrid[0, 2, 2] = new Room("Room 0,2,2", 0, 2, 2, 0);
-            mWorldGrid[1, 2, 2] = new Room("Room 1,2,2", 1, 2, 2, 0);
-            mWorldGrid[2, 2, 2] = new Room("Room 2,2,2", 2, 2, 2, 0);
+            Room pa1 = new Room("Room 0,0,0", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_1, protoArea);
+            Room pa2 = new Room("Room 1,0,0", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_2, protoArea);
+            Room pa3 = new Room("Room 2,0,0", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_3, protoArea);
+            Room pa4 = new Room("Room 0,1,0", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_4, protoArea);
+            Room pa5 = new Room("Room 1,1,0", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_5, protoArea);
+            Room pa6 = new Room("Room 2,1,0", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_6, protoArea);
+            Room pa7 = new Room("Room 0,2,0", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_7, protoArea);
+            Room pa8 = new Room("Room 1,2,0", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_8, protoArea);
+            Room pa9 = new Room("Room 2,2,0", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_9, protoArea);
+            Room pa10 = new Room("Room 0,0,1", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_10, protoArea);
+            Room pa11 = new Room("Room 1,0,1", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_11, protoArea);
+            Room pa12 = new Room("Room 2,0,1", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_12, protoArea);
+            Room pa13 = new Room("Room 0,1,1", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_13, protoArea);
+            Room pa14 = new Room("Room 1,1,1", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_14, protoArea);
+            Room pa15 = new Room("Room 2,1,1", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_15, protoArea);
+            Room pa16 = new Room("Room 0,2,1", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_16, protoArea);
+            Room pa17 = new Room("Room 1,2,1", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_17, protoArea);
+            Room pa18 = new Room("Room 2,2,1", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_18, protoArea);
+            Room pa19 = new Room("Room 0,0,2", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_19, protoArea);
+            Room pa20 = new Room("Room 1,0,2", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_20, protoArea);
+            Room pa21 = new Room("Room 2,0,2", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_21, protoArea);
+            Room pa22 = new Room("Room 0,1,2", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_22, protoArea);
+            Room pa23 = new Room("Room 1,1,2", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_23, protoArea);
+            Room pa24 = new Room("Room 2,1,2", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_24, protoArea);
+            Room pa25 = new Room("Room 0,2,2", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_25, protoArea);
+            Room pa26 = new Room("Room 1,2,2", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_26, protoArea);
+            Room pa27 = new Room("Room 2,2,2", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_27, protoArea);
 
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    for (int k = 0; k < 3; k++)
-                    {
-                        currentRoom = getRoom(i, j, k);
-                        currentRoom.mCurrentArea = protoArea;
-                        mRoomList.Add(currentRoom);
-                        protoArea.mRoomList.Add(currentRoom);
-                        createLinks(currentRoom);
-                    }// for
-                }// for
-            }// for
-
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    for (int k = 0; k < 3; k++)
-                    {
-                        createSideLinks(getRoom(i, j, k));
-                    }// for
-                }// for
-            }// for
-
-            protoArea.mAreaID = AreaID.AID_PROTOAREA;
             // Add Proto testing area
             mAreaList.Add(protoArea);
+            createLinks();
+
             // Add all global mobs in the game
             addMobs();
 
             // Add specific mobs
-            addMob(MOBLIST.EVENT_CHEST1, getRoom(1, 1, 1), protoArea);
-            addMob(MOBLIST.EVENT_CHEST1, getRoom(1, 1, 1), protoArea, "newChest");
-            addMob(MOBLIST.BASIC_KEY, getRoom(2, 2, 2), protoArea, "steel key");
+            Container event_chest1 = new Container((Container)mFullMobList[(int)MOBLIST.EVENT_CHEST1]);
+            event_chest1.mKeyId = 3;
+            event_chest1.mStartingRoom = pa14;
+            event_chest1.mStartingArea = protoArea;
+            event_chest1.mName = "proto chest";
+            addMob(event_chest1, pa14, protoArea);
+
+            Mob basic_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            basic_key.mKeyId = 3;
+            basic_key.mStartingRoom = pa27;
+            basic_key.mStartingArea = protoArea;
+            basic_key.mName = "proto key";
+            addMob(basic_key, pa27, protoArea);
 
             // Add all global areas
             addAreas();
@@ -126,11 +114,6 @@ namespace _8th_Circle_Server
             // Register areas in the area handler
             mAreaHandler.registerArea(protoArea);     
         }// Constructor
-
-        public Room getRoom(int z, int y, int x)
-        {
-            return mWorldGrid[z, y, x];
-        }// getRoom
 
         public Area getArea(AreaID areaID)
         {
@@ -163,11 +146,9 @@ namespace _8th_Circle_Server
 
             foreach (Room room in area.mRoomList)
             {
-                // TODO
-                // Change this to mAreaLoc
-                if (room.mWorldLoc[0] == x &&
-                    room.mWorldLoc[1] == y &&
-                    room.mWorldLoc[2] == z)
+                if (room.mAreaLoc[0] == x &&
+                    room.mAreaLoc[1] == y &&
+                    room.mAreaLoc[2] == z)
                     return room;
             }
 
@@ -185,57 +166,83 @@ namespace _8th_Circle_Server
             return null;
         }// getArea
 
-        private void createLinks(Room currentRoom)
+        private void createLinks()
         {
-            // North Links
-            if (currentRoom.mWorldLoc[1] < 2)
-                currentRoom.mNorthLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1] + 1,
-                    currentRoom.mWorldLoc[2]];
-            // West Links
-            if (currentRoom.mWorldLoc[0] > 0)
-                currentRoom.mWestLink = mWorldGrid[currentRoom.mWorldLoc[0] - 1, currentRoom.mWorldLoc[1],
-                    currentRoom.mWorldLoc[2]];
-            // East Links
-            if (currentRoom.mWorldLoc[0] < 2)
-                currentRoom.mEastLink = mWorldGrid[currentRoom.mWorldLoc[0] + 1, currentRoom.mWorldLoc[1],
-                    currentRoom.mWorldLoc[2]];
-            // South Links
-            if (currentRoom.mWorldLoc[1] > 0)
-                currentRoom.mSouthLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1] - 1,
-                    currentRoom.mWorldLoc[2]];
-            // Up/Down Links
-            if (currentRoom.mWorldLoc[1] < 2)
+            foreach (Room room in getArea(AreaID.AID_PROTOAREA).mRoomList)
             {
-                if (currentRoom.mWorldLoc[0] == 1 &&
-                    currentRoom.mWorldLoc[1] == 1 &&
-                    currentRoom.mWorldLoc[2] == 1)
+                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1],
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1],
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1,
+                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
+                    room.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
+                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
+                    room.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
+
+                if (nwRoom != null)
                 {
-                    currentRoom.mUpLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1],
-                        currentRoom.mWorldLoc[2] + 1];
-                    currentRoom.mDownLink = mWorldGrid[currentRoom.mWorldLoc[0], currentRoom.mWorldLoc[1],
-                        currentRoom.mWorldLoc[2] - 1];
-                    currentRoom.mUpLink.mDownLink = currentRoom;
-                    currentRoom.mDownLink.mUpLink = currentRoom;
-                }// if
-            }// if
+                    room.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = room;
+                }
+                if (nRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.NORTH] = nRoom;
+                    nRoom.mRoomLinks[(int)Direction.SOUTH] = room;
+                }
+                if (neRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = room;
+                }
+                if (wRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.WEST] = wRoom;
+                    wRoom.mRoomLinks[(int)Direction.EAST] = room;
+                }
+                if (eRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.EAST] = eRoom;
+                    eRoom.mRoomLinks[(int)Direction.WEST] = room;
+                }
+                if (swRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = room;
+                }
+                if (sRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.SOUTH] = sRoom;
+                    sRoom.mRoomLinks[(int)Direction.NORTH] = room;
+                }
+                if (seRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = room;
+                }
+                if (uRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.UP] = uRoom;
+                    uRoom.mRoomLinks[(int)Direction.DOWN] = room;
+                }
+                if (dRoom != null)
+                {
+                    room.mRoomLinks[(int)Direction.DOWN] = dRoom;
+                    dRoom.mRoomLinks[(int)Direction.UP] = room;
+                }
+            }// foreach
         }// createLinks
-
-        private void createSideLinks(Room currentRoom)
-        {
-            // Northwest/Southeast Links
-            if (currentRoom.mNorthLink != null && currentRoom.mNorthLink.mWestLink != null)
-            {
-                currentRoom.mNorthwestLink = currentRoom.mNorthLink.mWestLink;
-                currentRoom.mNorthwestLink.mSoutheastLink = currentRoom;
-            }// if
-
-            // Northeast/Southwest Links
-            if (currentRoom.mNorthLink != null && currentRoom.mNorthLink.mEastLink != null)
-            {
-                currentRoom.mNortheastLink = currentRoom.mNorthLink.mEastLink;
-                currentRoom.mNortheastLink.mSouthwestLink = currentRoom;
-            }// if
-        }// createSideLinks
 
     }// Class World
 

@@ -9,8 +9,10 @@ namespace _8th_Circle_Server
     enum AreaID
     {
         AID_PROTOAREA,
+        AID_START = AID_PROTOAREA,
         AID_GERALDINEMANOR,
-        AID_NEWBIEAREA
+        AID_NEWBIEAREA,
+        AID_END
     }// AreaID
 
     class Area
@@ -28,7 +30,6 @@ namespace _8th_Circle_Server
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
         public World mWorld;
-        public ArrayList mConnectionList;
         public string mName;
         public string mDescription;
         public CommandExecuter mCommandExecuter;
@@ -44,7 +45,6 @@ namespace _8th_Circle_Server
             mObjectList = new ArrayList();
             mFullMobList = new ArrayList();
             mWorld = null;
-            mConnectionList = new ArrayList();
             mName = string.Empty;
             mDescription = string.Empty;
             mCommandExecuter = new CommandExecuter();

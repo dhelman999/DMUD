@@ -8,9 +8,10 @@ namespace _8th_Circle_Server
 {
     enum RoomID
     {
-        INVALID,
+        ROOMID_START,
+
         // Geraldine Manor
-        GERALD_1ST_ENT,
+        GERALD_1ST_ENT = ROOMID_START,
         GERALD_1ST_HALLWAY,
         GERALD_1ST_KITCHEN,
         GERALD_1ST_BATHROOM,
@@ -31,6 +32,7 @@ namespace _8th_Circle_Server
         GERALD_BASE_CLOSET,
         GERALD_BASE_SUMPROOM,
         GERALD_BASE_BATHROOM,
+
         // Goblin Prooving Grounds
         GPG_PLAYER_START,
         GPG_ROOM_1,
@@ -108,7 +110,39 @@ namespace _8th_Circle_Server
         GPG_ROOM_74,
         GPG_ROOM_75,
         GPG_ROOM_76,
-        GPG_ROOM_77
+        GPG_ROOM_77,
+
+        // Proto Area
+        PROTO_1,
+        PROTO_2,
+        PROTO_3,
+        PROTO_4,
+        PROTO_5,
+        PROTO_6,
+        PROTO_7,
+        PROTO_8,
+        PROTO_9,
+        PROTO_10,
+        PROTO_11,
+        PROTO_12,
+        PROTO_13,
+        PROTO_14,
+        PROTO_15,
+        PROTO_16,
+        PROTO_17,
+        PROTO_18,
+        PROTO_19,
+        PROTO_20,
+        PROTO_21,
+        PROTO_22,
+        PROTO_23,
+        PROTO_24,
+        PROTO_25,
+        PROTO_26,
+        PROTO_27,
+
+        // Last Room
+        ROOMID_END
     }// RoomID
 
     class Room
@@ -119,22 +153,13 @@ namespace _8th_Circle_Server
         // Member Variables
         public RoomID mRoomID;
         public string mDescription;
-        public Room mNorthLink;
-        public Room mSouthLink;
-        public Room mEastLink;
-        public Room mWestLink;
-        public Room mUpLink;
-        public Room mDownLink;
-        public Room mNortheastLink;
-        public Room mNorthwestLink;
-        public Room mSouthwestLink;
-        public Room mSoutheastLink;
-        public int []mWorldLoc;
+        public int []mAreaLoc;
         public ArrayList mPlayerList;
         public ArrayList mNpcList;
         public ArrayList mObjectList;
         public Area mCurrentArea;
         public ArrayList mDoorwayList;
+        public ArrayList mRoomLinks;
 
         public Room()
         {
@@ -142,24 +167,28 @@ namespace _8th_Circle_Server
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mDoorwayList = new ArrayList();
-            for (int i = 0; i < (int)Direction.INVALID; ++i)
+            mRoomLinks = new ArrayList();
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
                 mDoorwayList.Add(null);
-            mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
-                mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
+                mRoomLinks.Add(null);
+            }               
         }// Constructor
 
         public Room(string desc)
         {
             mDescription = desc;
-            mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
-                mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mDoorwayList = new ArrayList();
-            for (int i = 0; i < (int)Direction.INVALID; ++i)
+            mRoomLinks = new ArrayList();
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
                 mDoorwayList.Add(null);
-            mWorldLoc[0] = mWorldLoc[1] = mWorldLoc[2] = -1;
+                mRoomLinks.Add(null);
+            }      
+            mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
             mObjectList = new ArrayList();
@@ -168,16 +197,17 @@ namespace _8th_Circle_Server
         public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID)
         {
             mDescription = desc;
-            mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
-                mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mDoorwayList = new ArrayList();
-            for (int i = 0; i < (int)Direction.INVALID; ++i)
+            mRoomLinks = new ArrayList();
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
                 mDoorwayList.Add(null);
-
-            mWorldLoc[0] = xCoord;
-            mWorldLoc[1] = yCoord;
-            mWorldLoc[2] = zCoord;
+                mRoomLinks.Add(null);
+            }      
+            mAreaLoc[0] = xCoord;
+            mAreaLoc[1] = yCoord;
+            mAreaLoc[2] = zCoord;
             this.mRoomID = roomID;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
@@ -187,16 +217,17 @@ namespace _8th_Circle_Server
         public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area)
         {
             mDescription = desc;
-            mNorthLink = mSouthLink = mEastLink = mWestLink = mUpLink = mDownLink =
-                mNortheastLink = mNorthwestLink = mSouthwestLink = mSoutheastLink = null;
-            mWorldLoc = new int[3];
+            mAreaLoc = new int[3];
             mDoorwayList = new ArrayList();
-            for (int i = 0; i < (int)Direction.INVALID; ++i)
+            mRoomLinks = new ArrayList();
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
                 mDoorwayList.Add(null);
-
-            mWorldLoc[0] = xCoord;
-            mWorldLoc[1] = yCoord;
-            mWorldLoc[2] = zCoord;
+                mRoomLinks.Add(null);
+            }      
+            mAreaLoc[0] = xCoord;
+            mAreaLoc[1] = yCoord;
+            mAreaLoc[2] = zCoord;
             this.mRoomID = roomID;
             mPlayerList = new ArrayList();
             mNpcList = new ArrayList();
@@ -205,67 +236,98 @@ namespace _8th_Circle_Server
             area.mRoomList.Add(this);
         }// Constructor
 
+        public string viewed()
+        {
+            return exitString();
+        }// viewed
+
+        public string viewed(string direction)
+        {
+            Room remoteRoom = null;
+            bool validRoom = false;
+            Direction dir = Mob.DirStrToEnum(direction);
+
+            if (mRoomLinks[(int)dir] != null)
+            {
+                remoteRoom = (Room)mRoomLinks[(int)dir];
+                validRoom = true;
+            }
+
+            if(validRoom)
+                return remoteRoom.exitString();
+
+            return "you can't look that way";
+        }// viewed
+
         public string exitString()
         {
-            string exitStr = "Exits: ";
-            if (mNorthLink != null && 
+            string exitStr = mDescription + "\n" + "Exits: ";
+            string tmp = string.Empty;
+            int visibleObjects = 0;
+
+            if (mRoomLinks[(int)Direction.NORTH] != null &&
                 (mDoorwayList[(int)Direction.NORTH] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.NORTH]).mIsOpen))
                 exitStr += "North ";
-            if (mSouthLink != null &&
+            if (mRoomLinks[(int)Direction.SOUTH] != null &&
                 (mDoorwayList[(int)Direction.SOUTH] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.SOUTH]).mIsOpen))
                 exitStr += "South ";
-            if (mEastLink != null &&
-                (mDoorwayList[(int)Direction.EAST] == null || 
+            if (mRoomLinks[(int)Direction.EAST] != null &&
+                (mDoorwayList[(int)Direction.EAST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.EAST]).mIsOpen))
                 exitStr += "East ";
-            if (mWestLink != null &&
+            if (mRoomLinks[(int)Direction.WEST] != null &&
                 (mDoorwayList[(int)Direction.WEST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.WEST]).mIsOpen))
                 exitStr += "West ";
-            if (mUpLink != null &&
+            if (mRoomLinks[(int)Direction.UP] != null &&
                 (mDoorwayList[(int)Direction.UP] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.UP]).mIsOpen))
                 exitStr += "Up ";
-            if (mDownLink != null &&
-                (mDoorwayList[(int)Direction.DOWN] == null || 
+            if (mRoomLinks[(int)Direction.DOWN] != null &&
+                (mDoorwayList[(int)Direction.DOWN] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.DOWN]).mIsOpen))
                 exitStr += "Down ";
-            if (mNorthwestLink != null &&
-                (mDoorwayList[(int)Direction.NORTHWEST] == null || 
+            if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
+                (mDoorwayList[(int)Direction.NORTHWEST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.NORTHWEST]).mIsOpen))
                 exitStr += "Northwest ";
-            if (mNortheastLink != null &&
-                (mDoorwayList[(int)Direction.NORTHEAST] == null || 
+            if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
+                (mDoorwayList[(int)Direction.NORTHEAST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.NORTHEAST]).mIsOpen))
                 exitStr += "Northeast ";
-            if (mSouthwestLink != null &&
+            if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
                 (mDoorwayList[(int)Direction.SOUTHWEST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.SOUTHWEST]).mIsOpen))
                 exitStr += "Southwest ";
-            if (mSoutheastLink != null &&
+            if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
                 (mDoorwayList[(int)Direction.SOUTHEAST] == null ||
                 ((Doorway)mDoorwayList[(int)Direction.SOUTHEAST]).mIsOpen))
                 exitStr += "Southeast ";
 
             exitStr += "\n";
-            for (Direction dir = Direction.NORTH; dir < Direction.INVALID; ++dir)
+
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 if (mDoorwayList[(int)dir] != null)
                 {
-                    exitStr += dir.ToString().ToLower() + " " + ((Doorway)mDoorwayList[(int)dir]).mName;
-                    exitStr += "\n";
+                    if (!((Doorway)mDoorwayList[(int)dir]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    {
+                        ++visibleObjects;
+                        tmp += dir.ToString().ToLower() + " " + ((Doorway)mDoorwayList[(int)dir]).mName + "\n";        
+                    }// if
                 }// if   
             }// for
 
-            // TODO
-            // the newline isn't displayed when a hidden object is skipped putting the objects
-            // and the npcs on the same line, need to find an elegant way of doing this
-            exitStr += "Objects: ";
+            if (visibleObjects != 0)
+                exitStr += tmp;
 
-            int visibleObjects = 0;
-            string tmp = string.Empty;
+            visibleObjects = 0;
+            tmp = string.Empty;
+
+            exitStr += "Objects: ";
+            
             // TODO
             // Probably add something like a targetList instead of repeating this
             // multiple times
@@ -273,14 +335,11 @@ namespace _8th_Circle_Server
             {
                 if (!((Mob)mObjectList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                 {
-                    tmp += ((Mob)mObjectList[i]).exitString(this) + "\n";
                     ++visibleObjects;
-                }
-            }
+                    tmp += ((Mob)mObjectList[i]).exitString(this) + "\n";
+                }// if
+            }// for
 
-            // TODO
-            // This is ugly to do every single time, it will change even more after
-            // people can see invis and see hidden objects etc... think about it
             if (visibleObjects == 0)
                 exitStr += "\n";
             else
@@ -296,16 +355,17 @@ namespace _8th_Circle_Server
             {
                 if (!((Mob)mNpcList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                     exitStr += ((Mob)mNpcList[i]).mName + "\n";
-            }
+            }// if
 
             exitStr += "Players: ";
             for (int i = 0; i < mPlayerList.Count; ++i)
             {
                 if (!((Mob)mPlayerList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                     exitStr += ((Player)mPlayerList[i]).mName + "\n";
-            }
+            }// if
 
             exitStr += "\n";
+
             return exitStr;
         }// exitString
 
@@ -369,255 +429,46 @@ namespace _8th_Circle_Server
 
         public string getDoorString(Doorway door)
         {
-            int target = (int)Direction.INVALID;
+            Direction dir;
 
-            for (int i = 0; i < mDoorwayList.Count; ++i)
+            for (dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                if (mDoorwayList[i] != null &&
-                   mDoorwayList[i].Equals(door))
-                    target = i;
+                if(mDoorwayList[(int)dir] != null &&
+                   mDoorwayList[(int)dir].Equals(door))
+                   break;
             }// for
 
-            return ((Direction)(target)).ToString().ToLower() + " " + door.mName;
+            return dir.ToString().ToLower() + " " + door.mName;
         }// getDoorString
 
-        public void generateSurroundingLinks(Room nwRoom, Room nRoom, Room neRoom,
-            Room wRoom, Room eRoom, Room swRoom, Room sRoom, Room seRoom, Room upRoom, Room downRoom)
+        public void removeDualLinks(Direction dir)
         {
-            if (nwRoom != null)
+            if(mRoomLinks[(int)dir] != null)
             {
-                this.mNorthwestLink = nwRoom;
-                nwRoom.mSoutheastLink = this;
-            }
-            if (nRoom != null)
-            {
-                this.mNorthLink = nRoom;
-                nRoom.mSouthLink = this;
-            }
-            if (neRoom != null)
-            {
-                this.mNortheastLink = neRoom;
-                neRoom.mSouthwestLink = this;
-            }
-            if (wRoom != null)
-            {
-                this.mWestLink = wRoom;
-                wRoom.mEastLink = this;
-            }
-            if (eRoom != null)
-            {
-                this.mEastLink = eRoom;
-                eRoom.mWestLink = this;
-            }
-            if (swRoom != null)
-            {
-                this.mSouthwestLink = swRoom;
-                swRoom.mNortheastLink = this;
-            }
-            if (sRoom != null)
-            {
-                this.mSouthLink = sRoom;
-                sRoom.mNorthLink = this;
-            }
-            if (seRoom != null)
-            {
-                this.mSoutheastLink = seRoom;
-                seRoom.mNorthwestLink = this;
-            }
-            if (upRoom != null)
-            {
-                this.mUpLink = upRoom;
-                upRoom.mDownLink = this;
-            }
-            if (downRoom != null)
-            {
-                this.mDownLink = downRoom;
-                downRoom.mUpLink = this;
-            }
-        }// generateSurroundingLinks
-
-        public void removeDualLinks(Direction direction)
-        {
-            if (direction == Direction.NORTH)
-            {
-                this.mNorthLink.mSouthLink = null;
-                this.mNorthLink = null;
-            }
-            else if (direction == Direction.SOUTH)
-            {
-                this.mSouthLink.mNorthLink = null;
-                this.mSouthLink = null;
-            }
-            else if (direction == Direction.EAST)
-            {
-                this.mEastLink.mWestLink = null;
-                this.mEastLink = null;
-            }
-            else if (direction == Direction.WEST)
-            {
-                this.mWestLink.mEastLink = null;
-                this.mWestLink = null;
-            }
-            else if (direction == Direction.UP)
-            {
-                this.mUpLink.mDownLink = null;
-                this.mUpLink = null;
-            }
-            else if (direction == Direction.DOWN)
-            {
-                this.mDownLink.mUpLink = null;
-                this.mDownLink = null;
-            }
-            else if (direction == Direction.NORTHWEST)
-            {
-                this.mNorthwestLink.mSoutheastLink = null;
-                this.mNorthwestLink = null;
-            }
-            else if (direction == Direction.NORTHEAST)
-            {
-                this.mNortheastLink.mSouthwestLink = null;
-                this.mNortheastLink = null;
-            }
-            else if (direction == Direction.SOUTHWEST)
-            {
-                this.mSouthwestLink.mNortheastLink = null;
-                this.mSouthwestLink = null;
-            }
-            else if (direction == Direction.SOUTHEAST)
-            {
-                this.mSoutheastLink.mNorthwestLink = null;
-                this.mSoutheastLink = null;
-            }
+                Direction oppositeDir = (Direction)(((int)dir + 5) % 10);
+                Room linkedRoom = (Room)mRoomLinks[(int)dir];
+                if (linkedRoom != null && 
+                    linkedRoom.mRoomLinks[(int)oppositeDir] != null)
+                    linkedRoom.mRoomLinks[(int)oppositeDir] = null;
+                mRoomLinks[(int)dir] = null;
+            }// if
         }// removeDualLinks
 
-        public void removeTripleLinks(Direction direction)
+        public void removeTripleLinks(Direction dir)
         {
-            if (direction == Direction.NORTH)
-            {
-                if (mNorthLink != null)
-                {
-                    mNorthLink.mSouthLink = null;
-                    mNorthLink = null;
-                }
-                if (mNorthwestLink != null)
-                {
-                    mNorthwestLink.mSoutheastLink = null;
-                    mNorthwestLink = null;
-                }
-                if (mNortheastLink != null)
-                {
-                    mNortheastLink.mSouthwestLink = null;
-                    mNortheastLink = null;
-                }
-            }
-            else if (direction == Direction.SOUTH)
-            {
-                if (mSouthLink != null)
-                {
-                    mSouthLink.mNorthLink = null;
-                    mSouthLink = null;
-                }
-                if (mSouthwestLink != null)
-                {
-                    mSouthwestLink.mNortheastLink = null;
-                    mSouthwestLink = null;
-                }
-                if (mSoutheastLink != null)
-                {
-                    mSoutheastLink.mNorthwestLink = null;
-                    mSoutheastLink = null;
-                }
-            }
-            else if (direction == Direction.EAST)
-            {
-                if (mEastLink != null)
-                {
-                    mEastLink.mWestLink = null;
-                    mEastLink = null;
-                }
-                if (mNortheastLink != null)
-                {
-                    mNortheastLink.mSouthwestLink = null;
-                    mNortheastLink = null;
-                }
-                if (mSoutheastLink != null)
-                {
-                    mSoutheastLink.mNorthwestLink = null;
-                    mSoutheastLink = null;
-                }
-            }
-            else if (direction == Direction.WEST)
-            {
-                if (mWestLink != null)
-                {
-                    mWestLink.mEastLink = null;
-                    mWestLink = null;
-                }
-                if (mNorthwestLink != null)
-                {
-                    mNorthwestLink.mSoutheastLink = null;
-                    mNorthwestLink = null;
-                }
-                if (mSouthwestLink != null)
-                {
-                    mSouthwestLink.mNortheastLink = null;
-                    mSouthwestLink = null;
-                }
-            }
+            removeDualLinks((Direction)(((int)dir + 9) % 10));
+            removeDualLinks(dir);
+            removeDualLinks((Direction)(((int)dir + 1) % 10));
         }// removeTripleLinks
 
-        public void addDualLinks(Room targetRoom, Direction direction)
+        public void addDualLinks(Room targetRoom, Direction dir)
         {
-            if (direction == Direction.NORTH)
+            if (targetRoom != null)
             {
-                this.mNorthLink = targetRoom;
-                targetRoom.mSouthLink = this;
-            }
-            else if (direction == Direction.SOUTH)
-            {
-                this.mSouthLink = targetRoom;
-                targetRoom.mNorthLink = this;
-            }
-            else if (direction == Direction.EAST)
-            {
-                this.mEastLink = targetRoom;
-                targetRoom.mWestLink = this;
-            }
-            else if (direction == Direction.WEST)
-            {
-                this.mWestLink = targetRoom;
-                targetRoom.mEastLink = this;
-            }
-            else if (direction == Direction.UP)
-            {
-                this.mUpLink = targetRoom;
-                targetRoom.mDownLink = this;
-            }
-            else if (direction == Direction.DOWN)
-            {
-                this.mDownLink = targetRoom;
-                targetRoom.mUpLink = this;
-            }
-            else if (direction == Direction.NORTHWEST)
-            {
-                this.mNorthwestLink = targetRoom;
-                targetRoom.mSoutheastLink = this;
-            }
-            else if (direction == Direction.NORTHEAST)
-            {
-                this.mNortheastLink = targetRoom;
-                targetRoom.mSouthwestLink = this;
-            }
-            else if (direction == Direction.SOUTHWEST)
-            {
-                this.mSouthwestLink = targetRoom;
-                targetRoom.mNortheastLink = this;
-            }
-            else if (direction == Direction.SOUTHEAST)
-            {
-                this.mSoutheastLink = targetRoom;
-                targetRoom.mNorthwestLink = this;
-            }
+                Direction oppositeDir = (Direction)(((int)dir + 5) % 10);
+                mRoomLinks[(int)dir] = targetRoom;
+                targetRoom.mRoomLinks[(int)oppositeDir] = this;
+            }// if
         }// addDualLinks
 
     }// Class Room
