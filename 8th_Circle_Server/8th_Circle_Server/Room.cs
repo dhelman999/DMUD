@@ -359,15 +359,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.getRes(ResType.OBJECT).Remove(mob);
-                mob.mCurrentRoom.getRes(ResType.OBJECT).Remove(mob);
+                mob.mCurrentArea.getRes(mob.mResType).Remove(mob);
+                mob.mCurrentRoom.getRes(mob.mResType).Remove(mob);
             }// if
             
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.getRes(ResType.OBJECT).Add(mob);
-            getRes(ResType.OBJECT).Add(mob);
+            mob.mCurrentArea.getRes(mob.mResType).Add(mob);
+            getRes(mob.mResType).Add(mob);
         }// addObject
 
         public void addNpc(Mob mob)
@@ -375,15 +375,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.getRes(ResType.NPC).Remove(mob);
-                mob.mCurrentRoom.getRes(ResType.NPC).Remove(mob);
+                mob.mCurrentArea.getRes(mob.mResType).Remove(mob);
+                mob.mCurrentRoom.getRes(mob.mResType).Remove(mob);
             }// if
 
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.getRes(ResType.NPC).Add(mob);
-            getRes(ResType.NPC).Add(mob);
+            mob.mCurrentArea.getRes(mob.mResType).Add(mob);
+            getRes(mob.mResType).Add(mob);
         }// addObject
 
         // TODO
@@ -393,15 +393,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.getRes(ResType.PLAYER).Remove(mob);
-                mob.mCurrentRoom.getRes(ResType.PLAYER).Remove(mob);
+                mob.mCurrentArea.getRes(mob.mResType).Remove(mob);
+                mob.mCurrentRoom.getRes(mob.mResType).Remove(mob);
             }// if
 
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.getRes(ResType.PLAYER).Add(mob);
-            getRes(ResType.PLAYER).Add(mob);
+            mob.mCurrentArea.getRes(mob.mResType).Add(mob);
+            getRes(mob.mResType).Add(mob);
         }// addObject
 
         public void addDoor(Doorway door, Direction dir)

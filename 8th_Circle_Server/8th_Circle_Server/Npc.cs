@@ -14,12 +14,14 @@ namespace _8th_Circle_Server
         public Npc() : base()
         {
             mStartingActionCounter = mCurrentActionCounter = 30;
+            mResType = ResType.NPC;
         }// Constructor
 
         public Npc(string newName) : base()
         {
             mName = newName;
             mStartingActionCounter = mCurrentActionCounter = 30;
+            mResType = ResType.NPC;
         }// Constructor
 
         //TODO
@@ -51,6 +53,7 @@ namespace _8th_Circle_Server
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
             mStartingActionCounter = mCurrentActionCounter = 30;
+            mResType = mob.mResType;
         }// Copy Constructor
 
         // TODO

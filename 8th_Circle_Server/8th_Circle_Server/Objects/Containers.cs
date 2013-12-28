@@ -17,6 +17,7 @@ namespace _8th_Circle_Server
             mPrepList.Add(PrepositionType.PREP_IN);
             mIsOpen = false;
             mKeyId = -1;
+            mResType = ResType.OBJECT;
         }// Constructor
 
         public Container(Container mob)
@@ -47,6 +48,7 @@ namespace _8th_Circle_Server
             mMobId = mob.mMobId;
             mInstanceId = mob.mInstanceId;
             mKeyId = mob.mKeyId;
+            mResType = mob.mResType;
         }// Copy Constructor
 
         public override string viewed(Mob viewer, Preposition prep)
@@ -207,9 +209,9 @@ namespace _8th_Circle_Server
         public override void respawn()
         {
             Container cont = new Container(this);
-            cont.mCurrentArea.getRes(ResType.OBJECT).Add(cont);
-            cont.mCurrentRoom.getRes(ResType.OBJECT).Add(cont);
-            cont.mWorld.getRes(ResType.OBJECT).Add(cont);
+            cont.mCurrentArea.getRes(cont.mResType).Add(cont);
+            cont.mCurrentRoom.getRes(cont.mResType).Add(cont);
+            cont.mWorld.getRes(cont.mResType).Add(cont);
         }// respawn
 
     }// Class Container
