@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    struct commandData
+    public struct commandData
     {
         public string command;
         public Mob mob;
@@ -21,7 +21,7 @@ namespace _8th_Circle_Server
         }// Constructor
     }// commandData
 
-    class CommandHandler
+    public class CommandHandler
     {
         // Debug
         internal const bool DEBUG = true;     

@@ -47,7 +47,7 @@ namespace _8th_Circle_Server
         }// Constructor
     }// EventData
 
-    class EventHandler
+    public class EventHandler
     {
         // Debug
         internal const bool DEBUG = false;

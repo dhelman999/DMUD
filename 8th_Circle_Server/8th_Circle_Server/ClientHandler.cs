@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    class ClientHandler
+    public class ClientHandler
     {
         // Debug
         internal const bool DEBUG = true;
@@ -63,14 +63,14 @@ namespace _8th_Circle_Server
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
                             Room curRoom = mWorld.getRoom(100 + 1, 
                                 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
-                            curRoom.mCurrentArea.getRes(ResType.PLAYER).Add(mPlayer);
+                            curRoom.mCurrentArea.addRes(mPlayer);
                             mPlayer.mCurrentArea = curRoom.mCurrentArea;
                             mPlayer.mAreaLoc[0] = 1;
                             mPlayer.mAreaLoc[1] = 1;
                             mPlayer.mAreaLoc[2] = 1;
                             mPlayer.mCurrentRoom = curRoom;
-                            mWorld.getRes(ResType.PLAYER).Add(mPlayer);
-                            curRoom.getRes(ResType.PLAYER).Add(mPlayer);   
+                            mWorld.addRes(mPlayer);
+                            curRoom.addRes(mPlayer);
                         }// lock
 
                         foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
@@ -171,9 +171,9 @@ namespace _8th_Circle_Server
                 player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
             }// foreach
 
-            mPlayer.mCurrentRoom.getRes(ResType.PLAYER).Remove(mPlayer);
-            mPlayer.mCurrentArea.getRes(ResType.PLAYER).Remove(mPlayer);
-            mWorld.getRes(ResType.PLAYER).Remove(mPlayer);
+            mPlayer.mCurrentRoom.removeRes(mPlayer);
+            mPlayer.mCurrentArea.removeRes(mPlayer);
+            mWorld.removeRes(mPlayer);
             mStreamReader.Close();
             mStreamWriter.Close();
             mNetworkStream.Close();

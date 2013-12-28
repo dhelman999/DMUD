@@ -209,9 +209,9 @@ namespace _8th_Circle_Server
         public override void respawn()
         {
             Container cont = new Container(this);
-            cont.mCurrentArea.getRes(cont.mResType).Add(cont);
-            cont.mCurrentRoom.getRes(cont.mResType).Add(cont);
-            cont.mWorld.getRes(cont.mResType).Add(cont);
+            cont.mCurrentArea.addRes(cont);
+            cont.mCurrentRoom.addRes(cont);
+            cont.mWorld.addRes(cont);
         }// respawn
 
     }// Class Container

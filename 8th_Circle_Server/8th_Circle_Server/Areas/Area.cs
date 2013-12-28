@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    enum AreaID
+    public enum AreaID
     {
         AID_PROTOAREA,
         AID_START = AID_PROTOAREA,
@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         AID_END
     }// AreaID
 
-    class Area : ResourceHandler
+    public class Area : ResourceHandler
     {
         // Debug
         internal const bool DEBUG = false;

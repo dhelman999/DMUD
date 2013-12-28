@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    enum Direction
+    public enum Direction
     {
         UP,
         DIRECTION_START = UP,
@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
         DIRECTION_END = NORTHWEST
     }// Direction
 
-    class Doorway : Mob
+    public class Doorway : Mob
     {
         // Constants
         internal const int MAXROOMS = 10;

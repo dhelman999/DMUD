@@ -30,7 +30,7 @@ namespace _8th_Circle_Server
         FLAG_END
     };// flags
 
-    class Mob
+    public class Mob
     {
         // Debug
         internal const bool DEBUG = false;
@@ -148,16 +148,16 @@ namespace _8th_Circle_Server
         public string changeRoom(Room newRoom)
         {
             // Remove old references
-            mCurrentRoom.getRes(mResType).Remove(this);
+            mCurrentRoom.removeRes(this);
             if (mCurrentArea != newRoom.mCurrentArea)
             {
-                mCurrentArea.getRes(mResType).Remove(this);
+                mCurrentArea.removeRes(this);
                 mCurrentArea = newRoom.mCurrentArea;
-                newRoom.mCurrentArea.getRes(mResType).Add(this);
+                newRoom.mCurrentArea.removeRes(this);
             }// if
 
             // Add new references
-            newRoom.getRes(mResType).Add(this);
+            newRoom.addRes(this);
             mAreaLoc[0] = newRoom.mAreaLoc[0];
             mAreaLoc[1] = newRoom.mAreaLoc[1];
             mAreaLoc[2] = newRoom.mAreaLoc[2];
@@ -209,9 +209,9 @@ namespace _8th_Circle_Server
                         // does not include their name
                         if (!mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                         {
-                            mob.mCurrentArea.getRes(mResType).Remove(this);
-                            mob.mCurrentRoom.getRes(mResType).Remove(this);
-                            mob.mWorld.getRes(mResType).Remove(this);
+                            mob.mCurrentArea.removeRes(this);
+                            mob.mCurrentRoom.removeRes(this);
+                            mob.mWorld.removeRes(this);
                             mob.mInventory.Add(this);
 
                             return "you get " + exitString(mCurrentRoom);
@@ -253,9 +253,9 @@ namespace _8th_Circle_Server
                             {
                                 if (container.mInventory.Contains(this))
                                 {
-                                    mob.mCurrentArea.getRes(mResType).Remove(this);
-                                    mob.mCurrentRoom.getRes(mResType).Remove(this);
-                                    mob.mWorld.getRes(mResType).Remove(this);
+                                    mob.mCurrentArea.removeRes(this);
+                                    mob.mCurrentRoom.removeRes(this);
+                                    mob.mWorld.removeRes(this);
                                     container.mInventory.Remove(this);
                                     mob.mInventory.Add(this);
 
@@ -328,15 +328,15 @@ namespace _8th_Circle_Server
 
         public virtual string destroy()
         {
-            mCurrentArea.getRes(ResType.OBJECT).Remove(this);
-            mCurrentArea.getRes(ResType.NPC).Remove(this);
+            mCurrentArea.removeRes(this);
+            mCurrentArea.removeRes(this);
             mCurrentOwner = null;
             mInventory.Clear();
             mEventList.Clear();
-            mCurrentRoom.getRes(ResType.NPC).Remove(this);
-            mCurrentRoom.getRes(ResType.OBJECT).Remove(this);
-            mWorld.getRes(ResType.NPC).Remove(this);
-            mWorld.getRes(ResType.OBJECT).Remove(this);
+            mCurrentRoom.removeRes(this);
+            mCurrentRoom.removeRes(this);
+            mWorld.removeRes(this);
+            mWorld.removeRes(this);
 
             return "destroying " + mName;
         }// destroy
@@ -344,9 +344,9 @@ namespace _8th_Circle_Server
         public virtual void respawn()
         {
             Mob mob = new Mob(this);
-            mob.mCurrentArea.getRes(mob.mResType).Add(mob);
-            mob.mCurrentRoom.getRes(mob.mResType).Add(mob);
-            mob.mWorld.getRes(mob.mResType).Add(mob);
+            mob.mCurrentArea.addRes(mob);
+            mob.mCurrentRoom.addRes(mob);
+            mob.mWorld.addRes(mob);
         }// respawn
 
         public virtual string exitString(Room currentRoom)

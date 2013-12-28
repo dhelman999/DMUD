@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    partial class World : ResourceHandler
+    public partial class World : ResourceHandler
     {
         // Debug
         internal const bool DEBUG = false;

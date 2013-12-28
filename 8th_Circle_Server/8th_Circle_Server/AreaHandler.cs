@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    class AreaHandler
+    public class AreaHandler
     {
         // Debug
         internal const bool DEBUG = false;

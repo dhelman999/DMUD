@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    enum grammarType
+    public enum grammarType
     {
         GRAMMAR_START,
         VERB = GRAMMAR_START,
@@ -16,7 +16,7 @@ namespace _8th_Circle_Server
         GRAMMAR_END
     };// grammarType
 
-    enum predicateType
+    public enum predicateType
     {
         PREDICATE_START,
         PREDICATE_OBJECT = PREDICATE_START,
@@ -30,7 +30,7 @@ namespace _8th_Circle_Server
         PREDICATE_END
     }// predicateType
 
-    enum validityType
+    public enum validityType
     {
         VALID_START,
         VALID_INVENTORY = VALID_START,
@@ -41,7 +41,7 @@ namespace _8th_Circle_Server
         VALID_END
     };// validityType
 
-    enum PrepositionType
+    public enum PrepositionType
     {
         PREP_START,
         PREP_IN = PREP_START,
@@ -53,7 +53,7 @@ namespace _8th_Circle_Server
         PREP_END
     };// PrepositionType
 
-    enum commandName
+    public enum commandName
     {
         COMMAND_START,
         COMMAND_LOOK = COMMAND_START,
@@ -86,7 +86,7 @@ namespace _8th_Circle_Server
         COMMAND_END
     };// commandName
 
-    enum errorCode
+    public enum errorCode
     {
         E_START,
         E_OK = E_START,
@@ -95,7 +95,7 @@ namespace _8th_Circle_Server
         E_END
     };// errorCode
 
-    struct Preposition
+    public struct Preposition
     {
         public string name;
         public PrepositionType prepType;
@@ -147,7 +147,7 @@ namespace _8th_Circle_Server
         }// Constructor
     }// struct Command
 
-    class CommandExecuter
+    public class CommandExecuter
     {
         // Debug
         internal const bool DEBUG = true;
@@ -665,11 +665,11 @@ namespace _8th_Circle_Server
                             {
                                 Container cont = new Container();
                                 cont = (Container)fma[mobID];
-                                ((Player)mob).mClientHandler.mWorld.getRes(ResType.OBJECT).Add(cont);
+                                ((Player)mob).mClientHandler.mWorld.addRes(cont);
                                 cont.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 cont.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.getRes(ResType.OBJECT).Add(cont);
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.getRes(ResType.OBJECT).Add(cont);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.addRes(cont);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.addRes(cont);
                                 clientString = "spawning " + cont.mName;
                             }// if
                             else if (fma[mobID] is Mob)
@@ -678,8 +678,8 @@ namespace _8th_Circle_Server
                                 mob2 = (Mob)fma[mobID];
                                 mob2.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 mob2.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.getRes(ResType.OBJECT).Add(mob2);
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.getRes(ResType.OBJECT).Add(mob2);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.addRes(mob2);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.addRes(mob2);
                                 clientString = "spawning " + mob2.mName;
                             }// else if
                             else
