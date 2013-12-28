@@ -236,7 +236,7 @@ namespace _8th_Circle_Server
         {
             addNewMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
             addNewMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
-        }// addNpcs
+        }// addGeraldineNpcs
 
         public void addNewbieArea()
         {

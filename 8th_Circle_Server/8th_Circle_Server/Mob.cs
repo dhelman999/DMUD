@@ -285,7 +285,7 @@ namespace _8th_Circle_Server
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
-                mCurrentRoom.addObject(this);
+                mCurrentRoom.addMobResource(this);
 
                 return "you drop " + exitString(mCurrentRoom);
             }// if

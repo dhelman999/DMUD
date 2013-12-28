@@ -177,25 +177,20 @@ namespace _8th_Circle_Server
             Container cont2 = null;
             Npc npc2 = null;
 
-            // TODO
-            // this whole functionality needs to be made more generic and rethought
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
-                startingRoom.addObject(mob2);
             }// if
             else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);
                 mob2 = npc2;
-                startingRoom.addNpc(mob2);
             }// if
             else
-            {
                 mob2 = new Mob(mob);
-                startingRoom.addObject(mob2);
-            }// else
+
+			startingRoom.addMobResource(mob2);
         }// addNewMob
 
         public void addMob(Mob mob, Room startingRoom, Area startingArea)
@@ -215,25 +210,20 @@ namespace _8th_Circle_Server
             Container cont2 = null;
             Npc npc2 = null;
 
-            // TODO
-            // this whole functionality needs to be made more generic and rethought
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
-                startingRoom.addObject(mob2);
             }// if
             else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);
                 mob2 = npc2;
-                startingRoom.addNpc(mob2);
             }// if
             else
-            {
                 mob2 = new Mob(mob);
-                startingRoom.addObject(mob2);
-            }// else
+
+            startingRoom.addMobResource(mob2);
         }// addMob
 
     }// class World
