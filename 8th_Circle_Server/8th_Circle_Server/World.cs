@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    partial class World
+    partial class World : ResourceHandler
     {
         // Debug
         internal const bool DEBUG = false;
@@ -23,27 +23,20 @@ namespace _8th_Circle_Server
         // Member Variables
         public CommandHandler mCommandHandler;
         public EventHandler mEventHandler;
-        public AreaHandler mAreaHandler;
-        public ArrayList mPlayerList;
-        public ArrayList mNpcList;
+        public AreaHandler mAreaHandler;  
         public ArrayList mAreaList;
-        public ArrayList mRoomList;
-        public ArrayList mObjectList;
+        public ArrayList mRoomList; 
         public ArrayList mFullMobList;
         private Room[, ,] mWorldGrid;
 
-        public World()
+        public World() : base()
         {
             mCommandHandler = new CommandHandler(this);
             mEventHandler = new EventHandler(this);
             mAreaHandler = new AreaHandler();
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
-            mObjectList = new ArrayList();
             mFullMobList = new ArrayList();
-
             mCommandHandler.start();
             mEventHandler.start();
             mAreaHandler.start();
@@ -244,6 +237,7 @@ namespace _8th_Circle_Server
             }// foreach
         }// createLinks
 
+        
     }// Class World
 
 }// Namespace _8th_Circle_Server

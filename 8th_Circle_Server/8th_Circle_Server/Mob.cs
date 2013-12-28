@@ -149,16 +149,16 @@ namespace _8th_Circle_Server
             // Remove old references
             if (this is Player)
             {
-                mCurrentRoom.mPlayerList.Remove(this);
+                mCurrentRoom.getRes(ResType.PLAYER).Remove(this);
                 if (mCurrentArea != newRoom.mCurrentArea)
                 {
-                    mCurrentArea.mPlayerList.Remove(this);
+                    mCurrentArea.getRes(ResType.PLAYER).Remove(this);
                     mCurrentArea = newRoom.mCurrentArea;
-                    newRoom.mCurrentArea.mPlayerList.Add(this);
+                    newRoom.mCurrentArea.getRes(ResType.PLAYER).Add(this);
                 }// if
 
                 // Add new references
-                newRoom.mPlayerList.Add(this);
+                newRoom.getRes(ResType.PLAYER).Add(this);
                 mAreaLoc[0] = newRoom.mAreaLoc[0];
                 mAreaLoc[1] = newRoom.mAreaLoc[1];
                 mAreaLoc[2] = newRoom.mAreaLoc[2];
@@ -166,16 +166,16 @@ namespace _8th_Circle_Server
             }// if
             else
             {
-                mCurrentRoom.mNpcList.Remove(this);
+                mCurrentRoom.getRes(ResType.NPC).Remove(this);
                 if (mCurrentArea != newRoom.mCurrentArea)
                 {
-                    mCurrentArea.mNpcList.Remove(this);
+                    mCurrentArea.getRes(ResType.NPC).Remove(this);
                     mCurrentArea = newRoom.mCurrentArea;
-                    newRoom.mCurrentArea.mNpcList.Add(this);
+                    newRoom.mCurrentArea.getRes(ResType.NPC).Add(this);
                 }// if
 
                 // Add new references
-                newRoom.mNpcList.Add(this);
+                newRoom.getRes(ResType.NPC).Add(this);
                 mAreaLoc[0] = newRoom.mAreaLoc[0];
                 mAreaLoc[1] = newRoom.mAreaLoc[1];
                 mAreaLoc[2] = newRoom.mAreaLoc[2];
@@ -228,9 +228,9 @@ namespace _8th_Circle_Server
                         // does not include their name
                         if (!mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                         {
-                            mob.mCurrentArea.mObjectList.Remove(this);
-                            mob.mCurrentRoom.mObjectList.Remove(this);
-                            mob.mWorld.mObjectList.Remove(this);
+                            mob.mCurrentArea.getRes(ResType.OBJECT).Remove(this);
+                            mob.mCurrentRoom.getRes(ResType.OBJECT).Remove(this);
+                            mob.mWorld.getRes(ResType.OBJECT).Remove(this);
                             mob.mInventory.Add(this);
 
                             return "you get " + exitString(mCurrentRoom);
@@ -272,9 +272,9 @@ namespace _8th_Circle_Server
                             {
                                 if (container.mInventory.Contains(this))
                                 {
-                                    mob.mCurrentArea.mObjectList.Remove(this);
-                                    mob.mCurrentRoom.mObjectList.Remove(this);
-                                    mob.mWorld.mObjectList.Remove(this);
+                                    mob.mCurrentArea.getRes(ResType.OBJECT).Remove(this);
+                                    mob.mCurrentRoom.getRes(ResType.OBJECT).Remove(this);
+                                    mob.mWorld.getRes(ResType.OBJECT).Remove(this);
                                     container.mInventory.Remove(this);
                                     mob.mInventory.Add(this);
 
@@ -347,15 +347,15 @@ namespace _8th_Circle_Server
 
         public virtual string destroy()
         {
-            mCurrentArea.mObjectList.Remove(this);
-            mCurrentArea.mNpcList.Remove(this);
+            mCurrentArea.getRes(ResType.OBJECT).Remove(this);
+            mCurrentArea.getRes(ResType.NPC).Remove(this);
             mCurrentOwner = null;
             mInventory.Clear();
             mEventList.Clear();
-            mCurrentRoom.mNpcList.Remove(this);
-            mCurrentRoom.mObjectList.Remove(this);
-            mWorld.mNpcList.Remove(this);
-            mWorld.mObjectList.Remove(this);
+            mCurrentRoom.getRes(ResType.NPC).Remove(this);
+            mCurrentRoom.getRes(ResType.OBJECT).Remove(this);
+            mWorld.getRes(ResType.NPC).Remove(this);
+            mWorld.getRes(ResType.OBJECT).Remove(this);
 
             return "destroying " + mName;
         }// destroy
@@ -363,9 +363,9 @@ namespace _8th_Circle_Server
         public virtual void respawn()
         {
             Mob mob = new Mob(this);
-            mob.mCurrentArea.mObjectList.Add(mob);
-            mob.mCurrentRoom.mObjectList.Add(mob);
-            mob.mWorld.mObjectList.Add(mob);
+            mob.mCurrentArea.getRes(ResType.OBJECT).Add(mob);
+            mob.mCurrentRoom.getRes(ResType.OBJECT).Add(mob);
+            mob.mWorld.getRes(ResType.OBJECT).Add(mob);
         }// respawn
 
         public virtual string exitString(Room currentRoom)
@@ -388,9 +388,9 @@ namespace _8th_Circle_Server
             string searchString = string.Empty;
             Random rand = new Random();
             ArrayList targetList = new ArrayList();
-            targetList.Add(mCurrentRoom.mObjectList);
-            targetList.Add(mCurrentRoom.mPlayerList);
-            targetList.Add(mCurrentRoom.mNpcList);
+            targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
+            targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
+            targetList.Add(mCurrentRoom.getRes(ResType.NPC));
             targetList.Add(mCurrentRoom.mDoorwayList);
             bool found = false;
 

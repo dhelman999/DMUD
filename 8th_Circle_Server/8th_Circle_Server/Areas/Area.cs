@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         AID_END
     }// AreaID
 
-    class Area
+    class Area : ResourceHandler
     {
         // Debug
         internal const bool DEBUG = false;
@@ -23,30 +23,20 @@ namespace _8th_Circle_Server
         // Member Variables
         public int mAreaOffset;
         public ArrayList mRoomList;
-        public ArrayList mPlayerList;
-        public ArrayList mNpcList;
-        public ArrayList mObjectList;
         public ArrayList mFullMobList;
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
         public World mWorld;
-        public string mName;
-        public string mDescription;
         public CommandExecuter mCommandExecuter;
         public AreaID mAreaID;
 
-        public Area()
+        public Area() : base()
         {
             mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new ArrayList();
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
-            mObjectList = new ArrayList();
             mFullMobList = new ArrayList();
             mWorld = null;
-            mName = string.Empty;
-            mDescription = string.Empty;
             mCommandExecuter = new CommandExecuter();
             mAreaID = 0;
         }// Constructor

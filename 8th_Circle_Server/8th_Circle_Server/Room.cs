@@ -145,28 +145,20 @@ namespace _8th_Circle_Server
         ROOMID_END
     }// RoomID
 
-    class Room
+    class Room : ResourceHandler
     {
         // Debug
         internal const bool DEBUG = false;
 
         // Member Variables
         public RoomID mRoomID;
-        public string mDescription;
         public int []mAreaLoc;
-        public ArrayList mPlayerList;
-        public ArrayList mNpcList;
-        public ArrayList mObjectList;
         public Area mCurrentArea;
         public ArrayList mDoorwayList;
         public ArrayList mRoomLinks;
 
-        public Room()
+        public Room() : base()
         {
-            mDescription = string.Empty;
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
-            mObjectList = new ArrayList();
             mAreaLoc = new int[3];
             mDoorwayList = new ArrayList();
             mRoomLinks = new ArrayList();
@@ -177,7 +169,7 @@ namespace _8th_Circle_Server
             }               
         }// Constructor
 
-        public Room(string desc)
+        public Room(string desc) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -189,12 +181,9 @@ namespace _8th_Circle_Server
                 mRoomLinks.Add(null);
             }      
             mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
-            mObjectList = new ArrayList();
         }// Constructor
 
-        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID)
+        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -208,13 +197,10 @@ namespace _8th_Circle_Server
             mAreaLoc[0] = xCoord;
             mAreaLoc[1] = yCoord;
             mAreaLoc[2] = zCoord;
-            this.mRoomID = roomID;
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
-            mObjectList = new ArrayList();
+            mRoomID = roomID;
         }// Constructor
 
-        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area)
+        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -228,10 +214,7 @@ namespace _8th_Circle_Server
             mAreaLoc[0] = xCoord;
             mAreaLoc[1] = yCoord;
             mAreaLoc[2] = zCoord;
-            this.mRoomID = roomID;
-            mPlayerList = new ArrayList();
-            mNpcList = new ArrayList();
-            mObjectList = new ArrayList();
+            mRoomID = roomID;
             mCurrentArea = area;
             area.mRoomList.Add(this);
         }// Constructor
@@ -331,12 +314,12 @@ namespace _8th_Circle_Server
             // TODO
             // Probably add something like a targetList instead of repeating this
             // multiple times
-            for (int i = 0; i < mObjectList.Count; ++i)
+            for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
             {
-                if (!((Mob)mObjectList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                if (!((Mob)getRes(ResType.OBJECT)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                 {
                     ++visibleObjects;
-                    tmp += ((Mob)mObjectList[i]).exitString(this) + "\n";
+                    tmp += ((Mob)getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
                 }// if
             }// for
 
@@ -348,20 +331,20 @@ namespace _8th_Circle_Server
             tmp = string.Empty;
 
             exitStr += "Npcs: ";
-            if (mNpcList.Count == 0)
+            if (getRes(ResType.NPC).Count == 0)
                 exitStr += "\n";
 
-            for (int i = 0; i < mNpcList.Count; ++i)
+            for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
             {
-                if (!((Mob)mNpcList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
-                    exitStr += ((Mob)mNpcList[i]).mName + "\n";
+                if (!((Mob)getRes(ResType.NPC)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    exitStr += ((Mob)getRes(ResType.NPC)[i]).mName + "\n";
             }// if
 
             exitStr += "Players: ";
-            for (int i = 0; i < mPlayerList.Count; ++i)
+            for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
-                if (!((Mob)mPlayerList[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
-                    exitStr += ((Player)mPlayerList[i]).mName + "\n";
+                if (!((Mob)getRes(ResType.PLAYER)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    exitStr += ((Player)getRes(ResType.PLAYER)[i]).mName + "\n";
             }// if
 
             exitStr += "\n";
@@ -376,15 +359,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.mObjectList.Remove(mob);
-                mob.mCurrentRoom.mObjectList.Remove(mob);
+                mob.mCurrentArea.getRes(ResType.OBJECT).Remove(mob);
+                mob.mCurrentRoom.getRes(ResType.OBJECT).Remove(mob);
             }// if
             
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.mObjectList.Add(mob);
-            mObjectList.Add(mob);
+            mob.mCurrentArea.getRes(ResType.OBJECT).Add(mob);
+            getRes(ResType.OBJECT).Add(mob);
         }// addObject
 
         public void addNpc(Mob mob)
@@ -392,15 +375,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.mNpcList.Remove(mob);
-                mob.mCurrentRoom.mNpcList.Remove(mob);
+                mob.mCurrentArea.getRes(ResType.NPC).Remove(mob);
+                mob.mCurrentRoom.getRes(ResType.NPC).Remove(mob);
             }// if
 
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.mNpcList.Add(mob);
-            mNpcList.Add(mob);
+            mob.mCurrentArea.getRes(ResType.NPC).Add(mob);
+            getRes(ResType.NPC).Add(mob);
         }// addObject
 
         // TODO
@@ -410,15 +393,15 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.mPlayerList.Remove(mob);
-                mob.mCurrentRoom.mPlayerList.Remove(mob);
+                mob.mCurrentArea.getRes(ResType.PLAYER).Remove(mob);
+                mob.mCurrentRoom.getRes(ResType.PLAYER).Remove(mob);
             }// if
 
             // Add new references
             mob.mCurrentArea = mCurrentArea;
             mob.mCurrentRoom = this;
-            mob.mCurrentArea.mPlayerList.Add(mob);
-            mPlayerList.Add(mob);
+            mob.mCurrentArea.getRes(ResType.PLAYER).Add(mob);
+            getRes(ResType.PLAYER).Add(mob);
         }// addObject
 
         public void addDoor(Doorway door, Direction dir)

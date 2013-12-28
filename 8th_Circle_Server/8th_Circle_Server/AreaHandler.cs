@@ -76,7 +76,7 @@ namespace _8th_Circle_Server
                 area.mCurrentRespawnTimer -= TICKTIME;
                 
                 // Update action timers
-                foreach(Player pl in area.mPlayerList)
+                foreach (Player pl in area.getRes(ResType.PLAYER))
                 {
                     if (pl.mActionTimer > 0)
                         --(pl.mActionTimer);
@@ -88,9 +88,9 @@ namespace _8th_Circle_Server
                    bool found = false;
                    if ((mob.mCurrentRespawnTime-= TICKTIME) <= 0)
                    {
-                      for(int i = 0; i < area.mObjectList.Count; ++i)
+                       for (int i = 0; i < area.getRes(ResType.OBJECT).Count; ++i)
                       {
-                         Mob tmp = (Mob)area.mObjectList[i];
+                          Mob tmp = (Mob)area.getRes(ResType.OBJECT)[i];
                          if (mob.mMobId == tmp.mMobId &&
                              mob.mInstanceId == tmp.mInstanceId)
                          {
@@ -113,28 +113,28 @@ namespace _8th_Circle_Server
                 // TODO
                 // Isn't there a better way to do this crap?
                 // Check to despawn
-                for (int i = 0; i < area.mObjectList.Count; ++i)
+                for (int i = 0; i < area.getRes(ResType.OBJECT).Count; ++i)
                 {
                     if (area.mCurrentRespawnTimer <= 0)
                     {
                         Mob mob = null;
-                        if (area.mObjectList[i] != null)
-                            mob = (Mob)area.mObjectList[i];
+                        if (area.getRes(ResType.OBJECT)[i] != null)
+                            mob = (Mob)area.getRes(ResType.OBJECT)[i];
 
                         if (mob != null &&
                             mob.mStartingRoom != mob.mCurrentRoom)
                             mob.destroy();
                     }// if
 
-                    for (int j = 0; j < area.mObjectList.Count; ++j)
+                    for (int j = 0; j < area.getRes(ResType.OBJECT).Count; ++j)
                     {
                         if (j == i)
                             continue;
 
-                        if (((Mob)area.mObjectList[i]).mMobId == ((Mob)area.mObjectList[j]).mMobId &&
-                            ((Mob)area.mObjectList[i]).mInstanceId == ((Mob)area.mObjectList[j]).mInstanceId)
+                        if (((Mob)area.getRes(ResType.OBJECT)[i]).mMobId == ((Mob)area.getRes(ResType.OBJECT)[j]).mMobId &&
+                            ((Mob)area.getRes(ResType.OBJECT)[i]).mInstanceId == ((Mob)area.getRes(ResType.OBJECT)[j]).mInstanceId)
                         {
-                            ((Mob)area.mObjectList[j]).destroy();
+                            ((Mob)area.getRes(ResType.OBJECT)[j]).destroy();
                         }// if
                     }// for
                 }// for
@@ -151,7 +151,7 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
-                foreach (Npc npc in area.mNpcList)
+                foreach (Npc npc in area.getRes(ResType.NPC))
                 {
                     if ((npc.mCurrentActionCounter -= TICKTIME) <= 0)
                     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -62,17 +63,17 @@ namespace _8th_Circle_Server
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
                             Room curRoom = mWorld.getRoom(100 + 1, 
                                 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
-                            curRoom.mCurrentArea.mPlayerList.Add(mPlayer);
+                            curRoom.mCurrentArea.getRes(ResType.PLAYER).Add(mPlayer);
                             mPlayer.mCurrentArea = curRoom.mCurrentArea;
                             mPlayer.mAreaLoc[0] = 1;
                             mPlayer.mAreaLoc[1] = 1;
                             mPlayer.mAreaLoc[2] = 1;
                             mPlayer.mCurrentRoom = curRoom;
-                            mWorld.mPlayerList.Add(mPlayer);
-                            curRoom.mPlayerList.Add(mPlayer);   
+                            mWorld.getRes(ResType.PLAYER).Add(mPlayer);
+                            curRoom.getRes(ResType.PLAYER).Add(mPlayer);   
                         }// lock
 
-                        foreach (Player player in mPlayer.mWorld.mPlayerList)
+                        foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
                         {
                             player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
                         }// foreach
@@ -165,14 +166,14 @@ namespace _8th_Circle_Server
 
         private void playerLeft()
         {
-            foreach (Player player in mPlayer.mWorld.mPlayerList)
+            foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
             {
                 player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
             }// foreach
 
-            mPlayer.mCurrentRoom.mPlayerList.Remove(mPlayer);
-            mPlayer.mCurrentArea.mPlayerList.Remove(mPlayer);
-            mWorld.mPlayerList.Remove(mPlayer);
+            mPlayer.mCurrentRoom.getRes(ResType.PLAYER).Remove(mPlayer);
+            mPlayer.mCurrentArea.getRes(ResType.PLAYER).Remove(mPlayer);
+            mWorld.getRes(ResType.PLAYER).Remove(mPlayer);
             mStreamReader.Close();
             mStreamWriter.Close();
             mNetworkStream.Close();

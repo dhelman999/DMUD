@@ -525,7 +525,7 @@ namespace _8th_Circle_Server
                 // Says something to all players in the current room
                 case commandName.COMMAND_SAY:
                     ++commandIndex;
-                    foreach (Player currentPlayer in currentRoom.mPlayerList)
+                    foreach (Player currentPlayer in currentRoom.getRes(ResType.PLAYER))
                     {
                         if (currentPlayer.Equals(mob))
                             clientString = "You say \"" + commandQueue[commandIndex] + "\"";
@@ -548,7 +548,7 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_YELL:
                     ++commandIndex;
-                    foreach (Player currentPlayer in mob.mCurrentArea.mPlayerList)
+                    foreach (Player currentPlayer in mob.mCurrentArea.getRes(ResType.PLAYER))
                     {
                         if (currentPlayer.Equals(mob))
                             clientString = "You yell " + "\"" + commandQueue[commandIndex] + "\"";
@@ -637,13 +637,13 @@ namespace _8th_Circle_Server
                     if (((string)commandQueue[commandIndex]).Equals("all"))
                     {
                         clientString = "\nPlayer\t\tArea\n\n";
-                        foreach (Player pl in mob.mWorld.mPlayerList)
+                        foreach (Player pl in mob.mWorld.getRes(ResType.PLAYER))
                             clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
                     }// if
                     else if (((string)commandQueue[commandIndex]).Equals("area"))
                     {
                         clientString = "\nPlayer\t\tArea\n\n";
-                        foreach (Player pl in mob.mCurrentArea.mPlayerList)
+                        foreach (Player pl in mob.mCurrentArea.getRes(ResType.PLAYER))
                             clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
                     }// else if
                     else
@@ -665,11 +665,11 @@ namespace _8th_Circle_Server
                             {
                                 Container cont = new Container();
                                 cont = (Container)fma[mobID];
-                                ((Player)mob).mClientHandler.mWorld.mObjectList.Add(cont);
+                                ((Player)mob).mClientHandler.mWorld.getRes(ResType.OBJECT).Add(cont);
                                 cont.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 cont.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.mObjectList.Add(cont);
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.mObjectList.Add(cont);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.getRes(ResType.OBJECT).Add(cont);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.getRes(ResType.OBJECT).Add(cont);
                                 clientString = "spawning " + cont.mName;
                             }// if
                             else if (fma[mobID] is Mob)
@@ -678,8 +678,8 @@ namespace _8th_Circle_Server
                                 mob2 = (Mob)fma[mobID];
                                 mob2.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
                                 mob2.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.mObjectList.Add(mob2);
-                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.mObjectList.Add(mob2);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentArea.getRes(ResType.OBJECT).Add(mob2);
+                                ((Player)mob).mClientHandler.mPlayer.mCurrentRoom.getRes(ResType.OBJECT).Add(mob2);
                                 clientString = "spawning " + mob2.mName;
                             }// else if
                             else
@@ -866,21 +866,21 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.mObjectList);
+                    targetList.Add(target.mWorld.getRes(ResType.OBJECT));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mCurrentArea.mObjectList);
+                    targetList.Add(target.mCurrentArea.getRes(ResType.OBJECT));
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mObjectList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
                     targetList.Add(target.mCurrentRoom.mDoorwayList);
                 }// if
                 if(validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);
                 if(validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mObjectList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
                     targetList.Add(target.mInventory);
-                    foreach(Mob cont in target.mCurrentRoom.mObjectList)
+                    foreach(Mob cont in target.mCurrentRoom.getRes(ResType.OBJECT))
                     {
                         if (cont is Container)
                             targetList.Add(cont.mInventory);
@@ -894,19 +894,19 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if(validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.mPlayerList);
+                    targetList.Add(target.mWorld.getRes(ResType.PLAYER));
                 if (validity == validityType.VALID_AREA)
                     targetList.Add(target.mWorld.mAreaList);
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mPlayerList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));
                     targetList.Add(target.mCurrentRoom.mDoorwayList);
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);
                 if (validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mPlayerList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));
                     targetList.Add(target.mInventory);
                 }// if
             }// if
@@ -917,19 +917,19 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.mNpcList);
+                    targetList.Add(target.mWorld.getRes(ResType.NPC));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mCurrentArea.mNpcList);
+                    targetList.Add(target.mCurrentArea.getRes(ResType.NPC));
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mNpcList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.NPC));
                     targetList.Add(target.mCurrentRoom.mDoorwayList);
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);
                 if(validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.mNpcList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.NPC));
                     targetList.Add(target.mInventory);
                 }// if
             }// if

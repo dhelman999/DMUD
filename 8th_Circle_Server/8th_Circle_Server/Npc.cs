@@ -61,7 +61,7 @@ namespace _8th_Circle_Server
             Random rand = new Random();
             if (rand.NextDouble() < .5)
             {
-                foreach (Player player in mCurrentRoom.mPlayerList)
+                foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
                 {
                     player.mClientHandler.safeWrite(mName + " purrs softly");
                 }// foreach
@@ -72,8 +72,8 @@ namespace _8th_Circle_Server
                     if (cmd.commandName == commandName.COMMAND_TELL)
                         com = cmd;
                 }
-                
-                foreach (Player pl in mCurrentArea.mPlayerList)
+
+                foreach (Player pl in mCurrentArea.getRes(ResType.PLAYER))
                 {
                     commandQueue.Add(com);
                     commandQueue.Add(pl);
@@ -93,7 +93,7 @@ namespace _8th_Circle_Server
                     Command com = (Command)commandQueue[index];
                     commandQueue.Clear();
                     commandQueue.Add(com);
-                    foreach (Player player in mCurrentRoom.mPlayerList)
+                    foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
                     {
                         player.mClientHandler.safeWrite(mName + " scampers off");
                     }// foreach
