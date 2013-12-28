@@ -154,17 +154,15 @@ namespace _8th_Circle_Server
         public RoomID mRoomID;
         public int []mAreaLoc;
         public Area mCurrentArea;
-        public ArrayList mDoorwayList;
         public ArrayList mRoomLinks;
 
         public Room() : base()
         {
             mAreaLoc = new int[3];
-            mDoorwayList = new ArrayList();
             mRoomLinks = new ArrayList();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                mDoorwayList.Add(null);
+                getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }               
         }// Constructor
@@ -173,11 +171,10 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mDoorwayList = new ArrayList();
             mRoomLinks = new ArrayList();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                mDoorwayList.Add(null);
+                getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
             mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
@@ -187,11 +184,10 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mDoorwayList = new ArrayList();
             mRoomLinks = new ArrayList();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                mDoorwayList.Add(null);
+                getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
             mAreaLoc[0] = xCoord;
@@ -204,11 +200,10 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mDoorwayList = new ArrayList();
             mRoomLinks = new ArrayList();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                mDoorwayList.Add(null);
+                getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
             mAreaLoc[0] = xCoord;
@@ -249,56 +244,56 @@ namespace _8th_Circle_Server
             int visibleObjects = 0;
 
             if (mRoomLinks[(int)Direction.NORTH] != null &&
-                (mDoorwayList[(int)Direction.NORTH] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.NORTH]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTH]).mIsOpen))
                 exitStr += "North ";
             if (mRoomLinks[(int)Direction.SOUTH] != null &&
-                (mDoorwayList[(int)Direction.SOUTH] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.SOUTH]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTH] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).mIsOpen))
                 exitStr += "South ";
             if (mRoomLinks[(int)Direction.EAST] != null &&
-                (mDoorwayList[(int)Direction.EAST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.EAST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.EAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.EAST]).mIsOpen))
                 exitStr += "East ";
             if (mRoomLinks[(int)Direction.WEST] != null &&
-                (mDoorwayList[(int)Direction.WEST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.WEST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.WEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.WEST]).mIsOpen))
                 exitStr += "West ";
             if (mRoomLinks[(int)Direction.UP] != null &&
-                (mDoorwayList[(int)Direction.UP] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.UP]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.UP] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.UP]).mIsOpen))
                 exitStr += "Up ";
             if (mRoomLinks[(int)Direction.DOWN] != null &&
-                (mDoorwayList[(int)Direction.DOWN] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.DOWN]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.DOWN] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.DOWN]).mIsOpen))
                 exitStr += "Down ";
             if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
-                (mDoorwayList[(int)Direction.NORTHWEST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.NORTHWEST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).mIsOpen))
                 exitStr += "Northwest ";
             if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
-                (mDoorwayList[(int)Direction.NORTHEAST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.NORTHEAST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).mIsOpen))
                 exitStr += "Northeast ";
             if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
-                (mDoorwayList[(int)Direction.SOUTHWEST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.SOUTHWEST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).mIsOpen))
                 exitStr += "Southwest ";
             if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
-                (mDoorwayList[(int)Direction.SOUTHEAST] == null ||
-                ((Doorway)mDoorwayList[(int)Direction.SOUTHEAST]).mIsOpen))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).mIsOpen))
                 exitStr += "Southeast ";
 
             exitStr += "\n";
 
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                if (mDoorwayList[(int)dir] != null)
+                if (getRes(ResType.DOORWAY)[(int)dir] != null)
                 {
-                    if (!((Doorway)mDoorwayList[(int)dir]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
                     {
                         ++visibleObjects;
-                        tmp += dir.ToString().ToLower() + " " + ((Doorway)mDoorwayList[(int)dir]).mName + "\n";        
+                        tmp += dir.ToString().ToLower() + " " + ((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mName + "\n";        
                     }// if
                 }// if   
             }// for
@@ -406,7 +401,7 @@ namespace _8th_Circle_Server
 
         public void addDoor(Doorway door, Direction dir)
         {
-            mDoorwayList[(int)dir] = door;
+            getRes(ResType.DOORWAY)[(int)dir] = door;
             door.mRoomList[(int)dir] = this;
         }// addDorr
 
@@ -416,8 +411,8 @@ namespace _8th_Circle_Server
 
             for (dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                if(mDoorwayList[(int)dir] != null &&
-                   mDoorwayList[(int)dir].Equals(door))
+                if(getRes(ResType.DOORWAY)[(int)dir] != null &&
+                   getRes(ResType.DOORWAY)[(int)dir].Equals(door))
                    break;
             }// for
 

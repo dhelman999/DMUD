@@ -872,7 +872,7 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_LOCAL)
                 {
                     targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
-                    targetList.Add(target.mCurrentRoom.mDoorwayList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
                 }// if
                 if(validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);
@@ -900,7 +900,7 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_LOCAL)
                 {
                     targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));
-                    targetList.Add(target.mCurrentRoom.mDoorwayList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);
@@ -923,7 +923,7 @@ namespace _8th_Circle_Server
                 if (validity == validityType.VALID_LOCAL)
                 {
                     targetList.Add(target.mCurrentRoom.getRes(ResType.NPC));
-                    targetList.Add(target.mCurrentRoom.mDoorwayList);
+                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
                     targetList.Add(target.mInventory);

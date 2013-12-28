@@ -113,8 +113,8 @@ namespace _8th_Circle_Server
            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
            {
               if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
-              (mCurrentRoom.mDoorwayList[(int)dir] == null ||
-              ((Doorway)mCurrentRoom.mDoorwayList[(int)dir]).mIsOpen))
+              (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
+              ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
               {
                  commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[(int)dir]);
               }// if

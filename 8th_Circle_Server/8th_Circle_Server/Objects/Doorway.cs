@@ -100,10 +100,10 @@ namespace _8th_Circle_Server
 
             Direction direction = Direction.DIRECTION_END;
 
-            for (int i = 0; i < currentRoom.mDoorwayList.Count; ++i)
+            for (int i = 0; i < currentRoom.getRes(ResType.DOORWAY).Count; ++i)
             {
-                if (currentRoom.mDoorwayList[i] != null &&
-                    currentRoom.mDoorwayList[i].Equals(this))
+                if (currentRoom.getRes(ResType.DOORWAY)[i] != null &&
+                    currentRoom.getRes(ResType.DOORWAY)[i].Equals(this))
                 {
                     direction = (Direction)(i);
                     break;

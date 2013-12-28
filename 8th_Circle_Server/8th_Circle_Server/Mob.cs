@@ -135,8 +135,8 @@ namespace _8th_Circle_Server
             Direction dir = DirStrToEnum(direction);
 
             if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
-               (mCurrentRoom.mDoorwayList[(int)dir] == null ||
-               ((Doorway)mCurrentRoom.mDoorwayList[(int)dir]).mIsOpen))
+               (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
+               ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                clientString = changeRoom((Room)mCurrentRoom.mRoomLinks[(int)dir]);
             else
                 return "you can't move that way";
@@ -372,7 +372,7 @@ namespace _8th_Circle_Server
             targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
             targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
             targetList.Add(mCurrentRoom.getRes(ResType.NPC));
-            targetList.Add(mCurrentRoom.mDoorwayList);
+            targetList.Add(mCurrentRoom.getRes(ResType.DOORWAY));
             bool found = false;
 
             foreach (ArrayList ar in targetList)
