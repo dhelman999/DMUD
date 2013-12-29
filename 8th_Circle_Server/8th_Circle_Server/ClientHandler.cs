@@ -87,8 +87,17 @@ namespace _8th_Circle_Server
                         } while (!mCmdString.Equals("exit"));
 
                         if (DEBUG)
-                            Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
+                        {
+                            
+                            if(mPlayer != null &&
+                               mPlayer.mName != string.Empty)
+                                Console.WriteLine("Player: " + mPlayer.mName + " Client: " + 
+                                    mSocketForClient.RemoteEndPoint + " is now exitting.");
+                            else
+                                Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
                                 " is now exitting.");
+                        }
+
 
                         playerLeft();
                     }// if mSocketForClient
@@ -124,7 +133,9 @@ namespace _8th_Circle_Server
                     return;
 
                 clientHandler.safeWrite("Welcome to the 8th Circle!");
-                clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString());
+                if(clientHandler.mPlayer != null &&
+                   clientHandler.mPlayer.mCurrentRoom != null)
+                   clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString());
             }// catch
             while (true)
             {
@@ -137,6 +148,7 @@ namespace _8th_Circle_Server
                     if (clientHandler.mCmdString.Equals("exit"))
                         break;
 
+                    
                     cmdData.command = clientHandler.mCmdString;
                     clientHandler.mCommandHandler.enQueueCommand(cmdData);
                     clientHandler.safeWrite(clientHandler.mCmdString);
@@ -166,14 +178,18 @@ namespace _8th_Circle_Server
 
         private void playerLeft()
         {
-            foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
+            if (mWorld.getRes(ResType.PLAYER).Count > 0)
             {
-                player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
-            }// foreach
+                foreach (Player player in mWorld.getRes(ResType.PLAYER))
+                {
+                    player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
+                }// foreach
 
-            mPlayer.mCurrentRoom.removeRes(mPlayer);
-            mPlayer.mCurrentArea.removeRes(mPlayer);
-            mWorld.removeRes(mPlayer);
+                mPlayer.mCurrentRoom.removeRes(mPlayer);
+                mPlayer.mCurrentArea.removeRes(mPlayer);
+                mWorld.removeRes(mPlayer);
+            }// if
+
             mStreamReader.Close();
             mStreamWriter.Close();
             mNetworkStream.Close();

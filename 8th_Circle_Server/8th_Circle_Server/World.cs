@@ -33,7 +33,7 @@ namespace _8th_Circle_Server
         {
             mCommandHandler = new CommandHandler(this);
             mEventHandler = new EventHandler(this);
-            mAreaHandler = new AreaHandler();
+            mAreaHandler = new AreaHandler(this);
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
             mFullMobList = new ArrayList();

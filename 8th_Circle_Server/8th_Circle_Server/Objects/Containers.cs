@@ -114,6 +114,14 @@ namespace _8th_Circle_Server
                 {
                     ret = "You open the " + mName;
                     mIsOpen = true;
+                    // TODO
+                    // Make these things better/more generic
+                    foreach (Mob rsmob in mStartingArea.mFullMobList)
+                    {
+                        if (rsmob.mMobId == mMobId &&
+                            rsmob.mInstanceId == mInstanceId)
+                            rsmob.mIsRespawning = true;
+                    }
                 }// else
             }// if
 
@@ -132,6 +140,12 @@ namespace _8th_Circle_Server
                 {
                     ret = "You close the " + mName;
                     mIsOpen = false;
+                    foreach (Mob rsmob in mStartingArea.mFullMobList)
+                    {
+                        if (rsmob.mMobId == mMobId &&
+                            rsmob.mInstanceId == mInstanceId)
+                            rsmob.mIsRespawning = true;
+                    }
                 }// else
             }// if
 
@@ -158,6 +172,12 @@ namespace _8th_Circle_Server
                     {
                         this.mFlagList.Add(objectFlags.FLAG_LOCKED);
                         this.mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
+                        foreach (Mob rsmob in mStartingArea.mFullMobList)
+                        {
+                            if (rsmob.mMobId == mMobId &&
+                                rsmob.mInstanceId == mInstanceId)
+                                rsmob.mIsRespawning = true;
+                        }
                         return "you lock " + mName;
                     }// if
                     else
@@ -192,6 +212,12 @@ namespace _8th_Circle_Server
                     {
                         this.mFlagList.Add(objectFlags.FLAG_UNLOCKED);
                         this.mFlagList.Remove(objectFlags.FLAG_LOCKED);
+                        foreach (Mob rsmob in mStartingArea.mFullMobList)
+                        {
+                            if (rsmob.mMobId == mMobId &&
+                                rsmob.mInstanceId == mInstanceId)
+                                rsmob.mIsRespawning = true;
+                        }
                         return "you unlock " + mName;
                     }// if
                     else
@@ -212,6 +238,8 @@ namespace _8th_Circle_Server
             cont.mCurrentArea.addRes(cont);
             cont.mCurrentRoom.addRes(cont);
             cont.mWorld.addRes(cont);
+            if (mCurrentOwner == null)
+                destroy();
         }// respawn
 
     }// Class Container

@@ -138,8 +138,8 @@ namespace _8th_Circle_Server
             max.mInventory.Capacity = 0;
             max.mWorld = this;
             max.mMobId = (int)MOBLIST.MAX;
-            max.mStartingRespawnTime = 120;
-            max.mCurrentRespawnTime = 120;
+            max.mStartingRespawnTime = 10;
+            max.mCurrentRespawnTime = 10;
             mFullMobList.Add(max);
         }// addMobs
 

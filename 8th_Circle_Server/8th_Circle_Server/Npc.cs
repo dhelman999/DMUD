@@ -108,6 +108,16 @@ namespace _8th_Circle_Server
             }// else
         }// randomAction
 
+        public override void respawn()
+        {
+            Npc mob = new Npc(this);
+            mob.mCurrentArea.addRes(mob);
+            mob.mCurrentRoom.addRes(mob);
+            mob.mWorld.addRes(mob);
+            if (mCurrentOwner == null)
+                destroy();
+        }// respawn
+
         private void addExits(ArrayList commandQueue)
         {
            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)

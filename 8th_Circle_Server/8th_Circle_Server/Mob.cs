@@ -57,6 +57,7 @@ namespace _8th_Circle_Server
         public int mInstanceId;
         public int mStartingRespawnTime;
         public int mCurrentRespawnTime;
+        public bool mIsRespawning;
         public int mKeyId;
         public int mActionTimer;
 
@@ -126,6 +127,7 @@ namespace _8th_Circle_Server
             mInstanceId = mob.mInstanceId;
             mKeyId = mob.mKeyId;
             mActionTimer = mob.mActionTimer;
+            mResType = mob.mResType;
         }// Copy Constructor
         
         public string move(string direction)
@@ -191,13 +193,15 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob)
         {
-            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
+            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE) &&
+                mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
                     if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
+                        mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
                         return "you get " + exitString(mCurrentRoom);
@@ -212,8 +216,14 @@ namespace _8th_Circle_Server
                             mob.mCurrentArea.removeRes(this);
                             mob.mCurrentRoom.removeRes(this);
                             mob.mWorld.removeRes(this);
+                            mCurrentOwner = mob;
                             mob.mInventory.Add(this);
-
+                            foreach (Mob rsmob in mStartingArea.mFullMobList)
+                            {
+                                if (rsmob.mMobId == mMobId &&
+                                    rsmob.mInstanceId == mInstanceId)
+                                    rsmob.mIsRespawning = true;
+                            }
                             return "you get " + exitString(mCurrentRoom);
                         }
                         else
@@ -241,6 +251,7 @@ namespace _8th_Circle_Server
                     if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
+                        mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
                         return "you get " + exitString(mCurrentRoom);
@@ -257,8 +268,14 @@ namespace _8th_Circle_Server
                                     mob.mCurrentRoom.removeRes(this);
                                     mob.mWorld.removeRes(this);
                                     container.mInventory.Remove(this);
+                                    mCurrentOwner = mob;
                                     mob.mInventory.Add(this);
-
+                                    foreach (Mob rsmob in mStartingArea.mFullMobList)
+                                    {
+                                        if (rsmob.mMobId == mMobId &&
+                                            rsmob.mInstanceId == mInstanceId)
+                                            rsmob.mIsRespawning = true;
+                                    }
                                     return "you get " + exitString(mCurrentRoom);
                                 }// if
                                 else
@@ -285,6 +302,7 @@ namespace _8th_Circle_Server
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
+                mCurrentOwner = null;
                 mCurrentRoom.addMobResource(this);
 
                 return "you drop " + exitString(mCurrentRoom);
@@ -337,7 +355,12 @@ namespace _8th_Circle_Server
             mCurrentRoom.removeRes(this);
             mWorld.removeRes(this);
             mWorld.removeRes(this);
-
+            foreach (Mob mob in mStartingArea.mFullMobList)
+            {
+                if (mob.mMobId == mMobId &&
+                    mob.mInstanceId == mInstanceId)
+                    mob.mIsRespawning = true;
+            }
             return "destroying " + mName;
         }// destroy
 
@@ -347,6 +370,8 @@ namespace _8th_Circle_Server
             mob.mCurrentArea.addRes(mob);
             mob.mCurrentRoom.addRes(mob);
             mob.mWorld.addRes(mob);
+            if (mCurrentOwner == null)
+                destroy();
         }// respawn
 
         public virtual string exitString(Room currentRoom)
