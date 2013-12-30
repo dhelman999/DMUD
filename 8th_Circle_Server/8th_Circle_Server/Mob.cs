@@ -78,7 +78,7 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mStartingRespawnTime = mCurrentRespawnTime = 25;
-            mMobId = -1;
+            mMobId = mKeyId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
         }// Constructor
 

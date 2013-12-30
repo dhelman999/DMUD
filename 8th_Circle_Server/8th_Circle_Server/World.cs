@@ -41,12 +41,11 @@ namespace _8th_Circle_Server
             mEventHandler.start();
             mAreaHandler.start();
 
-            Area protoArea = new Area();
+            Area protoArea = new Area(this);
             protoArea.mName = "Proto Area";
             protoArea.mDescription = "The testing area for the 8th Circle";
             protoArea.mAreaID = AreaID.AID_PROTOAREA;
             protoArea.mAreaOffset = PROTO_OFFSET;
-            protoArea.mWorld = this;
 
             mWorldGrid = new Room[MAXXSIZE, MAXYSIZE, MAXZSIZE];
             Room currentRoom = new Room();

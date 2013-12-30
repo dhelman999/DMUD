@@ -719,7 +719,8 @@ namespace _8th_Circle_Server
 
         private void checkEvent(ArrayList commandQueue, Mob mob)
         {
-            // Fill eventArgs
+            // Populate the event args with the triggers and room in which
+            // the event was triggered.
             fillEventArgs(commandQueue, mob);
 
             Command command = (Command)commandQueue[0];
@@ -727,10 +728,6 @@ namespace _8th_Circle_Server
             if (command.predicate1 != predicateType.PREDICATE_END &&
                 command.predicate1 != predicateType.PREDICATE_CUSTOM)
             {
-                // TODO
-                // This triggers successfully with the USE, but I think it will probably
-                // trigger on any verb that has a valid predicate with an event in its
-                // eventlist...
                 if ( command.predicate1Value.mEventList.Count > 0)
                 {
                     EventData eventData = (EventData)command.predicate1Value.mEventList[0];
@@ -746,8 +743,6 @@ namespace _8th_Circle_Server
                     }// if       
                 }// if
             }// else if
-            else
-            { }// else
         }// checkEvent
 
         private errorCode populateCommandList(Command currentCommand, string command,

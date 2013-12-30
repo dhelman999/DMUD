@@ -142,7 +142,6 @@ namespace _8th_Circle_Server
                     // Revert Doorway's initial state
                     foreach (Room room in area.mRoomList)
                         room.respawnDoorways();
-
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
 
                 // Reset Area respawn timer
@@ -168,9 +167,6 @@ namespace _8th_Circle_Server
             }// foreach
         }// processNpcs
 
-        // TODO
-        // Find a generic way to also reset event flags, object flags, and doorways,
-        // such as hidden doorways.
     }// Class AreaHandler
 
 }// Namespace _8th_Circle_Server

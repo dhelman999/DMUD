@@ -43,12 +43,10 @@ namespace _8th_Circle_Server
             mStartingFlagList = new ArrayList();
         }// Constructor
 
-        public Doorway(string name, Room currentRoom)
-            : base()
+        public Doorway(string name) : base(name)
         {
             mIsOpen = mStartingOpenState = false;
             mIsLocked = mStartingLockedState = false;
-            mName = name;
             mRoomList = new Room[MAXROOMS];
             mStartingFlagList = new ArrayList();
         }// Constructor

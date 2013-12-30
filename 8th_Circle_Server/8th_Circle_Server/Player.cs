@@ -12,13 +12,13 @@ namespace _8th_Circle_Server
 
         public Player(ClientHandler ch) : base()
         {
-            this.mClientHandler = ch;
+            mClientHandler = ch;
             mResType = ResType.PLAYER;
         }// Constructor
 
-        public Player()
+        public Player() : base()
         {
-            this.mClientHandler = null;
+            mClientHandler = null;
             mResType = ResType.PLAYER;
         }// Constructor
 

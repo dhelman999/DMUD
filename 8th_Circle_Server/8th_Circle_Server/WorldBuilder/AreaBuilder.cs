@@ -15,10 +15,9 @@ namespace _8th_Circle_Server
 
         private void addGeraldineArea()
         {
-            Area geraldineArea = new Area();
+            Area geraldineArea = new Area(this);
             geraldineArea.mName = "Geraldine Estate";
             geraldineArea.mDescription = "The residence of the esteemed Renee and David";
-            geraldineArea.mWorld = this;
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " +
                 "leading up.",
@@ -121,11 +120,11 @@ namespace _8th_Circle_Server
             house1stLivingRoom.mRoomLinks[(int)Direction.NORTH] = house1stentranceway;
             house1stBathroom.mRoomLinks[(int)Direction.NORTH] = house1stHallway;
 
-            Doorway newDoor = new Doorway("door", house1stBathroom);
+            Doorway newDoor = new Doorway("door");
             house1stBathroom.addDoor(newDoor, Direction.NORTH);
             house1stHallway.addDoor(newDoor, Direction.SOUTH);
 
-            newDoor = new Doorway("door", house1stKitchen);
+            newDoor = new Doorway("door");
             house1stKitchen.addDoor(newDoor, Direction.DOWN);
             houseBaseentrance.addDoor(newDoor, Direction.UP);
 
@@ -144,23 +143,23 @@ namespace _8th_Circle_Server
             house2ndBedroom.mRoomLinks[(int)Direction.NORTH] = house2ndBathroom;
             house2ndBlueroom.mRoomLinks[(int)Direction.NORTH] = house2ndHallway;
 
-            newDoor = new Doorway("door", house2ndHallway);
+            newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.WEST);
             house2ndBathroom.addDoor(newDoor, Direction.EAST);
 
-            newDoor = new Doorway("door", house2ndHallway);
+            newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.EAST);
             house2ndKittyroom.addDoor(newDoor, Direction.WEST);
 
-            newDoor = new Doorway("door", house2ndHallway);
+            newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.SOUTH);
             house2ndBlueroom.addDoor(newDoor, Direction.NORTH);
 
-            newDoor = new Doorway("door", house2ndHallway);
+            newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.SOUTHWEST);
             house2ndBedroom.addDoor(newDoor, Direction.NORTHEAST);
 
-            newDoor = new Doorway("door", house2ndBathroom);
+            newDoor = new Doorway("door");
             house2ndBathroom.addDoor(newDoor, Direction.SOUTH);
             house2ndBedroom.addDoor(newDoor, Direction.NORTH);
 
@@ -183,19 +182,19 @@ namespace _8th_Circle_Server
             houseBasepart5.mRoomLinks[(int)Direction.NORTH] = houseBaseBathroom;
             houseBaseBathroom.mRoomLinks[(int)Direction.SOUTH] = houseBasepart5;
 
-            newDoor = new Doorway("door", houseBaseentrance);
+            newDoor = new Doorway("door");
             houseBaseentrance.addDoor(newDoor, Direction.WEST);
             houseBaseLaundryRoom.addDoor(newDoor, Direction.EAST);
 
-            newDoor = new Doorway("door", houseBasepart2);
+            newDoor = new Doorway("door");
             houseBasepart2.addDoor(newDoor, Direction.WEST);
             houseBaseCloset.addDoor(newDoor, Direction.EAST);
 
-            newDoor = new Doorway("door", houseBasepart2);
+            newDoor = new Doorway("door");
             houseBasepart2.addDoor(newDoor, Direction.EAST);
             houseBaseSumpRoom.addDoor(newDoor, Direction.WEST);
 
-            newDoor = new Doorway("door", houseBaseBathroom);
+            newDoor = new Doorway("door");
             houseBaseBathroom.addDoor(newDoor, Direction.SOUTH);
             houseBasepart5.addDoor(newDoor, Direction.NORTH);
 
@@ -240,12 +239,11 @@ namespace _8th_Circle_Server
 
         public void addNewbieArea()
         {
-            Area newbieArea = new Area();
+            Area newbieArea = new Area(this);
             newbieArea.mName = "Goblin Prooving Grounds";
             newbieArea.mDescription = "This area is the leftover pits where unworthy goblins were abandoned " +
              "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
              "and were cast out until they prooved themselves";
-            newbieArea.mWorld = this;
             newbieArea.mAreaID = AreaID.AID_NEWBIEAREA;
 
             Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in " +
@@ -550,7 +548,7 @@ namespace _8th_Circle_Server
             gpg_69.removeTripleLinks(Direction.WEST);
             gpg_76.removeTripleLinks(Direction.WEST);
 
-            Doorway newDoor = new Doorway("door", gpg_71);
+            Doorway newDoor = new Doorway("door");
             newDoor.mFlagList.Add(objectFlags.FLAG_HIDDEN);
             newDoor.mStartingFlagList.Add(objectFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);

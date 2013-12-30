@@ -31,14 +31,14 @@ namespace _8th_Circle_Server
         public AreaID mAreaID;
         public ArrayList mRevertList;
 
-        public Area() : base()
+        public Area(World world) : base()
         {
             mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new ArrayList();
             mFullMobList = new ArrayList();
             mRevertList = new ArrayList();
-            mWorld = null;
+            mWorld = world;
             mCommandExecuter = new CommandExecuter();
             mAreaID = 0;
         }// Constructor

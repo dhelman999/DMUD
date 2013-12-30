@@ -17,45 +17,17 @@ namespace _8th_Circle_Server
             mResType = ResType.NPC;
         }// Constructor
 
-        public Npc(string newName) : base()
+        public Npc(string newName) : base(newName)
         {
-            mName = newName;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mResType = ResType.NPC;
         }// Constructor
 
-        //TODO
-        // Make these copy constructors better by calling the base class copy contructor
-        public Npc(Npc mob) 
+        public Npc(Npc mob) : base(mob)
         {
-            mName = mob.mName;
-            mDescription = mob.mDescription;
-            mShortDescription = mob.mShortDescription;
-            mWorld = mob.mWorld;
-            mAreaLoc = mob.mAreaLoc;
-            mInventory = new ArrayList();
-            mInventory = (ArrayList)mob.mInventory.Clone();
-            mPrepList = new ArrayList();
-            mPrepList = (ArrayList)mob.mPrepList.Clone();
-            mFlagList = new ArrayList();
-            mFlagList = (ArrayList)mob.mFlagList.Clone();
-            mChildren = (ArrayList)mob.mChildren.Clone();
-            mParent = mob;
-            mEventList = new ArrayList();
-            mEventList = (ArrayList)mob.mEventList.Clone();
-            mInventory.Capacity = mob.mInventory.Capacity;
-            mStartingRespawnTime = mob.mStartingRespawnTime;
-            mCurrentRespawnTime = mStartingRespawnTime;
-            mStartingRoom = mob.mStartingRoom;
-            mCurrentRoom = mob.mCurrentRoom;;
-            mStartingArea = mob.mStartingArea;
-            mCurrentArea = mob.mCurrentArea;
-            mStartingOwner = mob.mStartingOwner;
-            mCurrentOwner = mob.mCurrentOwner;
-            mMobId = mob.mMobId;
-            mInstanceId = mob.mInstanceId;
-            mStartingActionCounter = mCurrentActionCounter = 30;
-            mResType = mob.mResType;
+            mStartingActionCounter = mob.mStartingActionCounter;
+            mCurrentActionCounter = mob.mCurrentActionCounter;
+            mResType = ResType.NPC;
         }// Copy Constructor
 
         // TODO

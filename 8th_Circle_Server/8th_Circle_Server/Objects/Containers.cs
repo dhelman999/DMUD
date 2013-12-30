@@ -16,41 +16,11 @@ namespace _8th_Circle_Server
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
             mIsOpen = false;
-            mKeyId = -1;
-            mResType = ResType.OBJECT;
         }// Constructor
 
-        public Container(Container mob)
+        public Container(Container mob) : base(mob)
         {
-            mName = mob.mName;
-            mDescription = mob.mDescription;
-            mShortDescription = mob.mShortDescription;
-            mWorld = mob.mWorld;
-            mAreaLoc = mob.mAreaLoc;
-            mInventory = new ArrayList();
-            mInventory = (ArrayList)mob.mInventory.Clone();
-            mPrepList = new ArrayList();
-            mPrepList = (ArrayList)mob.mPrepList.Clone();
-            mFlagList = new ArrayList();
-            mFlagList = (ArrayList)mob.mFlagList.Clone();
-            mEventList = new ArrayList();
-            mEventList = (ArrayList)mob.mEventList.Clone();
-            mChildren = (ArrayList)mob.mChildren.Clone();
-            mParent = mob;
-            mInventory.Capacity = mob.mInventory.Capacity;
-            mStartingRespawnTime = mob.mStartingRespawnTime;
-            mCurrentRespawnTime = mStartingRespawnTime;
-            mStartingRoom = mob.mStartingRoom;
-            mCurrentRoom = mob.mCurrentRoom;;
-            mStartingArea = mob.mStartingArea;
-            mCurrentArea = mob.mCurrentArea;
-            mStartingOwner = mob.mStartingOwner;
-            mCurrentOwner = mob.mCurrentOwner;
             mIsOpen = mob.mIsOpen;
-            mMobId = mob.mMobId;
-            mInstanceId = mob.mInstanceId;
-            mKeyId = mob.mKeyId;
-            mResType = mob.mResType;
         }// Copy Constructor
 
         public override string viewed(Mob viewer, Preposition prep)
