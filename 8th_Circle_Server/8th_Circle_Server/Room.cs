@@ -373,6 +373,23 @@ namespace _8th_Circle_Server
             door.mRoomList[(int)dir] = this;
         }// addDorr
 
+        public void respawnDoorways()
+        {
+            ArrayList doorways = getRes(ResType.DOORWAY);
+
+            for (int i = 0; i < doorways.Count; ++i)
+            {
+                Doorway dw = (Doorway)doorways[i];
+                if (dw != null)
+                {
+                    dw.mIsLocked = dw.mStartingLockedState;
+                    dw.mIsOpen = dw.mStartingOpenState;
+                    dw.mFlagList.Clear();
+                    dw.mFlagList = (ArrayList)dw.mStartingFlagList.Clone();
+                }// if
+            }// for
+        }// respawnDoorways
+
         public string getDoorString(Doorway door)
         {
             Direction dir;

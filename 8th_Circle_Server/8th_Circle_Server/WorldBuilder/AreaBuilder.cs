@@ -552,6 +552,7 @@ namespace _8th_Circle_Server
 
             Doorway newDoor = new Doorway("door", gpg_71);
             newDoor.mFlagList.Add(objectFlags.FLAG_HIDDEN);
+            newDoor.mStartingFlagList.Add(objectFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((Room)(gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 

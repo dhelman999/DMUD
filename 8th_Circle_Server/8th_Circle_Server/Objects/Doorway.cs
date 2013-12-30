@@ -29,23 +29,28 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public bool mIsOpen;
+        public bool mStartingOpenState;
         public bool mIsLocked;
+        public bool mStartingLockedState;
         public Room [] mRoomList;
+        public ArrayList mStartingFlagList;
 
         public Doorway() : base()
         {
-            mIsOpen = false;
-            mIsLocked = false;
+            mIsOpen = mStartingOpenState = false;
+            mIsLocked = mStartingLockedState = false;
             mRoomList = new Room[MAXROOMS];
+            mStartingFlagList = new ArrayList();
         }// Constructor
 
         public Doorway(string name, Room currentRoom)
             : base()
         {
-            mIsOpen = false;
-            mIsLocked = false;
+            mIsOpen = mStartingOpenState = false;
+            mIsLocked = mStartingLockedState = false;
             mName = name;
             mRoomList = new Room[MAXROOMS];
+            mStartingFlagList = new ArrayList();
         }// Constructor
 
         public override string open(Mob mob)

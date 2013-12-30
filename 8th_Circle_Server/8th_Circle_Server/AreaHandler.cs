@@ -139,6 +139,10 @@ namespace _8th_Circle_Server
                         mWorld.mEventHandler.enQueueEvent(ed);
                     }// for
 
+                    // Revert Doorway's initial state
+                    foreach (Room room in area.mRoomList)
+                        room.respawnDoorways();
+
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
 
                 // Reset Area respawn timer
