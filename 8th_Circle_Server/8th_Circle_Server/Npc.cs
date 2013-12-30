@@ -25,8 +25,8 @@ namespace _8th_Circle_Server
         }// Constructor
 
         //TODO
-        // Make these copy constructors better
-        public Npc(Npc mob)
+        // Make these copy constructors better by calling the base class copy contructor
+        public Npc(Npc mob) 
         {
             mName = mob.mName;
             mDescription = mob.mDescription;
@@ -39,6 +39,8 @@ namespace _8th_Circle_Server
             mPrepList = (ArrayList)mob.mPrepList.Clone();
             mFlagList = new ArrayList();
             mFlagList = (ArrayList)mob.mFlagList.Clone();
+            mChildren = (ArrayList)mob.mChildren.Clone();
+            mParent = mob;
             mEventList = new ArrayList();
             mEventList = (ArrayList)mob.mEventList.Clone();
             mInventory.Capacity = mob.mInventory.Capacity;
@@ -110,12 +112,13 @@ namespace _8th_Circle_Server
 
         public override void respawn()
         {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
             Npc mob = new Npc(this);
+            mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
             mob.mCurrentRoom.addRes(mob);
             mob.mWorld.addRes(mob);
-            if (mCurrentOwner == null)
-                destroy();
         }// respawn
 
         private void addExits(ArrayList commandQueue)

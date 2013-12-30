@@ -567,6 +567,7 @@ namespace _8th_Circle_Server
             basic_key.mName = "brass key";
             basic_key.mStartingRoom = gpg_70;
             basic_key.mStartingArea = newbieArea;
+            basic_key.mStartingArea = basic_key.mCurrentArea = null;
 
             Container small_metal_cage = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
             small_metal_cage.mName = "small metal cage";

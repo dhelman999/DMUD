@@ -352,8 +352,12 @@ namespace _8th_Circle_Server
             // Remove old references
             if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
             {
-                mob.mCurrentArea.removeRes(mob);
-                mob.mCurrentRoom.removeRes(mob);
+                // Allow duplicates to be dropped in the same room
+                if(!(getRes(mob.mResType).Contains(mob)))
+                {
+                    mob.mCurrentArea.removeRes(mob);
+                    mob.mCurrentRoom.removeRes(mob);
+                }
             }// if
             
             // Add new references

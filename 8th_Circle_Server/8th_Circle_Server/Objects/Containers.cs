@@ -35,6 +35,8 @@ namespace _8th_Circle_Server
             mFlagList = (ArrayList)mob.mFlagList.Clone();
             mEventList = new ArrayList();
             mEventList = (ArrayList)mob.mEventList.Clone();
+            mChildren = (ArrayList)mob.mChildren.Clone();
+            mParent = mob;
             mInventory.Capacity = mob.mInventory.Capacity;
             mStartingRespawnTime = mob.mStartingRespawnTime;
             mCurrentRespawnTime = mStartingRespawnTime;
@@ -116,12 +118,8 @@ namespace _8th_Circle_Server
                     mIsOpen = true;
                     // TODO
                     // Make these things better/more generic
-                    foreach (Mob rsmob in mStartingArea.mFullMobList)
-                    {
-                        if (rsmob.mMobId == mMobId &&
-                            rsmob.mInstanceId == mInstanceId)
-                            rsmob.mIsRespawning = true;
-                    }
+                    if (mParent != null)
+                        mParent.mIsRespawning = true;
                 }// else
             }// if
 
@@ -140,12 +138,8 @@ namespace _8th_Circle_Server
                 {
                     ret = "You close the " + mName;
                     mIsOpen = false;
-                    foreach (Mob rsmob in mStartingArea.mFullMobList)
-                    {
-                        if (rsmob.mMobId == mMobId &&
-                            rsmob.mInstanceId == mInstanceId)
-                            rsmob.mIsRespawning = true;
-                    }
+                    if (mParent != null)
+                        mParent.mIsRespawning = true;
                 }// else
             }// if
 
@@ -170,14 +164,10 @@ namespace _8th_Circle_Server
 
                     if (mFlagList.Contains(objectFlags.FLAG_UNLOCKED))
                     {
-                        this.mFlagList.Add(objectFlags.FLAG_LOCKED);
-                        this.mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
-                        foreach (Mob rsmob in mStartingArea.mFullMobList)
-                        {
-                            if (rsmob.mMobId == mMobId &&
-                                rsmob.mInstanceId == mInstanceId)
-                                rsmob.mIsRespawning = true;
-                        }
+                        mFlagList.Add(objectFlags.FLAG_LOCKED);
+                        mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
+                        if (mParent != null)
+                            mParent.mIsRespawning = true;
                         return "you lock " + mName;
                     }// if
                     else
@@ -210,14 +200,10 @@ namespace _8th_Circle_Server
                 {
                     if (mFlagList.Contains(objectFlags.FLAG_LOCKED))
                     {
-                        this.mFlagList.Add(objectFlags.FLAG_UNLOCKED);
-                        this.mFlagList.Remove(objectFlags.FLAG_LOCKED);
-                        foreach (Mob rsmob in mStartingArea.mFullMobList)
-                        {
-                            if (rsmob.mMobId == mMobId &&
-                                rsmob.mInstanceId == mInstanceId)
-                                rsmob.mIsRespawning = true;
-                        }
+                        mFlagList.Add(objectFlags.FLAG_UNLOCKED);
+                        mFlagList.Remove(objectFlags.FLAG_LOCKED);
+                        if (mParent != null)
+                            mParent.mIsRespawning = true;
                         return "you unlock " + mName;
                     }// if
                     else
@@ -234,12 +220,13 @@ namespace _8th_Circle_Server
 
         public override void respawn()
         {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
             Container cont = new Container(this);
+            mChildren.Add(cont);
             cont.mCurrentArea.addRes(cont);
             cont.mCurrentRoom.addRes(cont);
             cont.mWorld.addRes(cont);
-            if (mCurrentOwner == null)
-                destroy();
         }// respawn
 
     }// Class Container

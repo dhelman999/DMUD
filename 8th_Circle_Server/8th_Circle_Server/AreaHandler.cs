@@ -74,7 +74,6 @@ namespace _8th_Circle_Server
             ArrayList targetList = new ArrayList();
             targetList.Add(mWorld.getRes(ResType.NPC));
             targetList.Add(mWorld.getRes(ResType.PLAYER));
-            //Console.WriteLine("protoProcess called");
 
             // Decrement the action timers for all mobs in the game
             foreach (ArrayList ar in targetList)
@@ -89,39 +88,36 @@ namespace _8th_Circle_Server
             // Process each area
             foreach (Area area in mAreaList)
             {
+                for (int i = 0; i < area.mFullMobList.Count; ++i)
+                {
+                    Mob mob = (Mob)area.mFullMobList[i];
+
+                    if (mob.mIsRespawning &&
+                       (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
+                    {
+                        for (int j = 0; j < mob.mChildren.Count; ++j)
+                        {
+                            Mob child = (Mob)mob.mChildren[j];
+                            child.destroy();
+                            mob.mChildren.Remove(child);
+                            --j;
+                        }
+
+                        Console.WriteLine("respawning " + mob.mName);
+                        mob.respawn();
+                    }
+                }// for
+
+
                 if ((area.mCurrentRespawnTimer -= TICKTIME) <= 0)
                 {
                     targetList.Clear();
                     targetList.Add(area.getRes(ResType.OBJECT));
                     targetList.Add(area.getRes(ResType.NPC));
 
-                    // Check to despawn duplicate mobs
+                    // Loop through all Mob arrays
                     foreach (ArrayList ar in targetList)
                     {
-                        for (int i = 0; i < ar.Count; ++i)
-                        {
-                            Mob mob = (Mob)ar[i];
-
-                            for (int j = 0; j < ar.Count; ++j)
-                            {
-                                if (i == j)
-                                    continue;
-
-                                Mob targetMob = (Mob)ar[j];                            
-
-                                // Destroy duplicates and move to starting location
-                                if (mob.mMobId == targetMob.mMobId &&
-                                    mob.mInstanceId == targetMob.mInstanceId &&
-                                    mob.mStartingArea == area &&
-                                    targetMob.mStartingArea == area)
-                                {
-                                    Console.WriteLine("destroying duples and moving to start location");
-                                    targetMob.destroy();
-                                    mob.mStartingRoom.addMobResource(mob);
-                                }// if
-                            }// for
-                        }// for
-
                         // Check to despawn mobs from other areas
                         for (int i = 0; i < ar.Count; ++i)
                         {
@@ -131,23 +127,11 @@ namespace _8th_Circle_Server
                             {
                                 Console.WriteLine("despawning " + mob.mName + " from other area");
                                 mob.destroy();
+                                --i;
                             }// if
                         }// for
                     }// foreach (ArrayList ar in targetList)
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
-
-                // Check for respawns
-                foreach (Mob mob in area.mFullMobList)
-                {
-                    if (mob.mIsRespawning &&
-                       (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
-                    {
-                        Console.WriteLine("Respawning: " + mob.mName);
-                        mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
-                        mob.respawn();
-                        mob.mIsRespawning = false;
-                    }// if
-                }// foreach
 
                 // Reset Area respawn timer
                 if (area.mCurrentRespawnTimer <= 0)

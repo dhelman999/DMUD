@@ -61,8 +61,8 @@ namespace _8th_Circle_Server
             chest.mEventList.Add(eventData);
             chest.mMobId = (int)MOBLIST.EVENT_CHEST1;
             chest.mKeyId = (int)MOBLIST.BASIC_KEY;
-            chest.mStartingRespawnTime = 60;
-            chest.mCurrentRespawnTime = 60;
+            chest.mStartingRespawnTime = 30;
+            chest.mCurrentRespawnTime = 30;
             mFullMobList.Add(chest);
 
             Container chest2 = new Container();
@@ -83,8 +83,8 @@ namespace _8th_Circle_Server
             chest2.mEventList.Add(eventData);
             chest2.mMobId = (int)MOBLIST.EVENT_CHEST2;
             chest2.mKeyId = (int)MOBLIST.BASIC_KEY;
-            chest2.mStartingRespawnTime = 60;
-            chest2.mCurrentRespawnTime = 60;
+            chest2.mStartingRespawnTime = 30;
+            chest2.mCurrentRespawnTime = 30;
             mFullMobList.Add(chest2);
 
             Mob first_circle = new Mob();
@@ -117,8 +117,8 @@ namespace _8th_Circle_Server
             no_event_chest.mWorld = this;
             no_event_chest.mMobId = (int)MOBLIST.BASIC_CHEST;
             no_event_chest.mKeyId = (int)MOBLIST.BASIC_KEY;
-            no_event_chest.mStartingRespawnTime = 60;
-            no_event_chest.mCurrentRespawnTime = 60;
+            no_event_chest.mStartingRespawnTime = 30;
+            no_event_chest.mCurrentRespawnTime = 30;
             mFullMobList.Add(no_event_chest);
 
             Mob basic_switch = new Mob();
@@ -127,8 +127,8 @@ namespace _8th_Circle_Server
             basic_switch.mName = "switch";
             basic_switch.mWorld = this;
             basic_switch.mMobId = (int)MOBLIST.SWITCH;
-            basic_switch.mStartingRespawnTime = 60;
-            basic_switch.mCurrentRespawnTime = 60;
+            basic_switch.mStartingRespawnTime = 30;
+            basic_switch.mCurrentRespawnTime = 30;
             mFullMobList.Add(basic_switch);
 
             // NPCs start here
@@ -223,7 +223,9 @@ namespace _8th_Circle_Server
             else
                 mob2 = new Mob(mob);
 
+            mob2.mParent = mob;
             startingRoom.addMobResource(mob2);
+            mob.mChildren.Add(mob2);
         }// addMob
 
     }// class World

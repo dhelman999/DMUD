@@ -53,6 +53,8 @@ namespace _8th_Circle_Server
         public ArrayList mFlagList;
         public ArrayList mInventory;
         public ArrayList mEventList;
+        public ArrayList mChildren;
+        public Mob mParent;
         public int mMobId;
         public int mInstanceId;
         public int mStartingRespawnTime;
@@ -70,6 +72,7 @@ namespace _8th_Circle_Server
             mPrepList.Add(PrepositionType.PREP_AT);
             mFlagList = new ArrayList();
             mEventList = new ArrayList();
+            mChildren = new ArrayList();
             mInventory.Capacity = 20;
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
@@ -89,6 +92,7 @@ namespace _8th_Circle_Server
             mPrepList.Add(PrepositionType.PREP_AT);
             mFlagList = new ArrayList();
             mEventList = new ArrayList();
+            mChildren = new ArrayList();
             mInventory.Capacity = 20;
             mStartingRespawnTime = mCurrentRespawnTime = 15;
             mStartingRoom = mCurrentRoom = null;
@@ -114,6 +118,8 @@ namespace _8th_Circle_Server
             mFlagList = (ArrayList)mob.mFlagList.Clone();
             mEventList = new ArrayList();
             mEventList = (ArrayList)mob.mEventList.Clone();
+            mChildren = (ArrayList)mob.mChildren.Clone();
+            mParent = mob;
             mInventory.Capacity = mob.mInventory.Capacity;
             mStartingRespawnTime = mob.mStartingRespawnTime;
             mCurrentRespawnTime = mStartingRespawnTime;
@@ -218,11 +224,10 @@ namespace _8th_Circle_Server
                             mob.mWorld.removeRes(this);
                             mCurrentOwner = mob;
                             mob.mInventory.Add(this);
-                            foreach (Mob rsmob in mStartingArea.mFullMobList)
+                            if (mParent != null)
                             {
-                                if (rsmob.mMobId == mMobId &&
-                                    rsmob.mInstanceId == mInstanceId)
-                                    rsmob.mIsRespawning = true;
+                                mParent.mChildren.Remove(this);
+                                mParent.mIsRespawning = true;
                             }
                             return "you get " + exitString(mCurrentRoom);
                         }
@@ -270,12 +275,12 @@ namespace _8th_Circle_Server
                                     container.mInventory.Remove(this);
                                     mCurrentOwner = mob;
                                     mob.mInventory.Add(this);
-                                    foreach (Mob rsmob in mStartingArea.mFullMobList)
+                                    if (mParent != null)
                                     {
-                                        if (rsmob.mMobId == mMobId &&
-                                            rsmob.mInstanceId == mInstanceId)
-                                            rsmob.mIsRespawning = true;
+                                        mParent.mChildren.Remove(this);
+                                        mParent.mIsRespawning = true;
                                     }
+                                    
                                     return "you get " + exitString(mCurrentRoom);
                                 }// if
                                 else
@@ -304,7 +309,11 @@ namespace _8th_Circle_Server
                 mCurrentRoom = mob.mCurrentRoom;
                 mCurrentOwner = null;
                 mCurrentRoom.addMobResource(this);
-
+                if (mParent != null)
+                {
+                    mParent.mChildren.Add(this);
+                    mParent.mIsRespawning = true;
+                }
                 return "you drop " + exitString(mCurrentRoom);
             }// if
             else
@@ -347,31 +356,29 @@ namespace _8th_Circle_Server
         public virtual string destroy()
         {
             mCurrentArea.removeRes(this);
-            mCurrentArea.removeRes(this);
             mCurrentOwner = null;
             mInventory.Clear();
             mEventList.Clear();
-            mCurrentRoom.removeRes(this);
-            mCurrentRoom.removeRes(this);
+            mCurrentRoom.removeRes(this);   
             mWorld.removeRes(this);
-            mWorld.removeRes(this);
-            foreach (Mob mob in mStartingArea.mFullMobList)
+            if (mParent != null)
             {
-                if (mob.mMobId == mMobId &&
-                    mob.mInstanceId == mInstanceId)
-                    mob.mIsRespawning = true;
+                mParent.mChildren.Remove(this);
+                mParent.mIsRespawning = true;
             }
+            
             return "destroying " + mName;
         }// destroy
 
         public virtual void respawn()
         {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
             Mob mob = new Mob(this);
+            mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
             mob.mCurrentRoom.addRes(mob);
             mob.mWorld.addRes(mob);
-            if (mCurrentOwner == null)
-                destroy();
         }// respawn
 
         public virtual string exitString(Room currentRoom)
