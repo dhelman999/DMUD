@@ -29,6 +29,7 @@ namespace _8th_Circle_Server
         public World mWorld;
         public CommandExecuter mCommandExecuter;
         public AreaID mAreaID;
+        public ArrayList mRevertList;
 
         public Area() : base()
         {
@@ -36,6 +37,7 @@ namespace _8th_Circle_Server
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new ArrayList();
             mFullMobList = new ArrayList();
+            mRevertList = new ArrayList();
             mWorld = null;
             mCommandExecuter = new CommandExecuter();
             mAreaID = 0;

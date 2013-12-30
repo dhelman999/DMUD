@@ -13,6 +13,7 @@ namespace _8th_Circle_Server
         EVENT_TELL_PLAYER = EVENT_START,
         EVENT_TELEPORT,
         EVENT_GPG_WALL_REMOVE,
+        EVENT_GPG_WALL_ADD,
         EVENT_END
     };// EventFlag
 
@@ -103,6 +104,7 @@ namespace _8th_Circle_Server
             while (mEventQueue.Count > 0)
             {
                 EventData eventData = (EventData)mEventQueue.Dequeue();
+                Area area;
 
                 switch (eventData.eventFlag)
                 {
@@ -126,9 +128,11 @@ namespace _8th_Circle_Server
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
-                        ((Player)eventData.trigger).mClientHandler.safeWrite("You hear a massive " +
-                            "rumbling far to the west");
-                        Area area = mWorld.getArea((AreaID)eventData.data);
+                        area = mWorld.getArea((AreaID)eventData.data);
+
+                        foreach (Player pl in area.getRes(ResType.PLAYER))
+                            pl.mClientHandler.safeWrite("The area shakes and rumbles");
+
                         area.getRoom(RoomID.GPG_ROOM_41).addDualLinks(
                             area.getRoom(RoomID.GPG_ROOM_40), Direction.WEST);
                         area.getRoom(RoomID.GPG_ROOM_41).addDualLinks(
@@ -162,7 +166,31 @@ namespace _8th_Circle_Server
                         area.getRoom(RoomID.GPG_ROOM_76).addDualLinks(
                             area.getRoom(RoomID.GPG_ROOM_75), Direction.WEST);
                         break;
-                        
+
+                    case EventFlag.EVENT_GPG_WALL_ADD:
+                        area = mWorld.getArea((AreaID)eventData.data);
+
+                        foreach (Player pl in area.getRes(ResType.PLAYER))
+                            pl.mClientHandler.safeWrite("The area shakes and rumbles");
+
+                        area.getRoom(RoomID.GPG_ROOM_41).removeDualLinks(Direction.WEST);
+                        area.getRoom(RoomID.GPG_ROOM_41).removeDualLinks(Direction.SOUTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_48).removeDualLinks(Direction.NORTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_48).removeDualLinks(Direction.WEST);
+                        area.getRoom(RoomID.GPG_ROOM_48).removeDualLinks(Direction.SOUTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_55).removeDualLinks(Direction.NORTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_55).removeDualLinks(Direction.WEST);
+                        area.getRoom(RoomID.GPG_ROOM_55).removeDualLinks(Direction.SOUTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_62).removeDualLinks(Direction.NORTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_62).removeDualLinks(Direction.WEST);
+                        area.getRoom(RoomID.GPG_ROOM_62).removeDualLinks(Direction.SOUTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_69).removeDualLinks(Direction.NORTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_69).removeDualLinks(Direction.WEST);
+                        area.getRoom(RoomID.GPG_ROOM_69).removeDualLinks(Direction.SOUTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_76).removeDualLinks(Direction.NORTHWEST);
+                        area.getRoom(RoomID.GPG_ROOM_76).removeDualLinks(Direction.WEST);
+                        break;
+
                     default:
                         Console.WriteLine("something went wrong...");
                         break;

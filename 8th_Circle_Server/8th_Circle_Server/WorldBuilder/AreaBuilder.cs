@@ -598,6 +598,23 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
+            // Find a way to minimize this
+            basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
+            basic_switch.mStartingRoom = gpg_37;
+            basic_switch.mStartingArea = newbieArea;
+            ed = new EventData();
+            ed.data = AreaID.AID_NEWBIEAREA;
+            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
+            ed.commandName = commandName.COMMAND_USE;
+            basic_switch.mEventList.Add(ed);
+            addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
+
+            ed = new EventData();
+            ed.data = AreaID.AID_NEWBIEAREA;
+            ed.eventFlag = EventFlag.EVENT_GPG_WALL_ADD;
+            ed.commandName = commandName.COMMAND_USE;
+            newbieArea.mRevertList.Add(ed);
+
             mAreaHandler.registerArea(newbieArea);
         }// addNewbieArea
 

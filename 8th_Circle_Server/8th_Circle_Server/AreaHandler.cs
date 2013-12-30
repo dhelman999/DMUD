@@ -131,6 +131,14 @@ namespace _8th_Circle_Server
                             }// if
                         }// for
                     }// foreach (ArrayList ar in targetList)
+
+                    // Revert events
+                    for (int i = 0; i < area.mRevertList.Count; ++i)
+                    {
+                        EventData ed = (EventData)area.mRevertList[i];
+                        mWorld.mEventHandler.enQueueEvent(ed);
+                    }// for
+
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
 
                 // Reset Area respawn timer
