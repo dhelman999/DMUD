@@ -5,26 +5,19 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public class Player : Mob
+    class CombatNpc : Npc
     {
-        // Member Variables
-        public ClientHandler mClientHandler;
         public CombatStats mStats;
 
-        public Player(ClientHandler ch) : base()
+        public CombatNpc()
         {
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
-            mClientHandler = ch;
-            mResType = ResType.PLAYER;
             mStats = new CombatStats();
+            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
         }// Constructor
 
-        public Player() : base()
+        public CombatNpc(CombatNpc cNpc) : base(cNpc)
         {
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
-            mClientHandler = null;
-            mResType = ResType.PLAYER;
-            mStats = new CombatStats();
+            mStats = cNpc.mStats;
         }// Constructor
 
         public override string viewed(Mob viewer, Preposition prep)
@@ -45,14 +38,14 @@ namespace _8th_Circle_Server
 
                 if (viewer is Player)
                 {
-                    if (mStats.mCurrentHp > ((Player)viewer).mStats.mCurrentHp)
+                    if (mStats.mMaxHp > ((Player)viewer).mStats.mCurrentHp)
                         clientString += " you look healthier than " + viewer.mName;
-                    else if (mStats.mCurrentHp < ((Player)viewer).mStats.mCurrentHp)
+                    else if (mStats.mMaxHp < ((Player)viewer).mStats.mCurrentHp)
                         clientString += viewer.mName + " looks healthier than you";
                     else
                         clientString += "you both appear to have the same level of health";
                 }
-                return clientString + "\n" + mDescription;
+                return "\n" + mDescription;
             }
             else
                 return "You can't look like that";
@@ -64,16 +57,6 @@ namespace _8th_Circle_Server
             return "you fully heal " + mName;
         }// fullheal
 
-        public override string destroy()
-        {
-            return "You can't destroy a player!";
-        }// destroy
+    }// Class CombatNpc
 
-        public string playerString()
-        {
-            return "\n" + mStats.mCurrentHp + "/" + mStats.mMaxHp + " hp\n";
-        }// playerString
-
-    }// Class Player
-
-}// Namespace _8th_Circle_Server
+}// namespace _8th_Circle_Server

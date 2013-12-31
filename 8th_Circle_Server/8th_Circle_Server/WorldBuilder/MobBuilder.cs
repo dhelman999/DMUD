@@ -20,6 +20,7 @@ namespace _8th_Circle_Server
         BASIC_CHEST,
         SWITCH,
         // NPCs
+        GOBLIN_RUNT,
         MAX,
 
         MOB_END
@@ -32,10 +33,10 @@ namespace _8th_Circle_Server
             // This order must be the same as the enum defined above
             Mob key = new Mob();
             key.mDescription = "An old brass key, what does it unlock?";
-            key.mFlagList.Add(objectFlags.FLAG_GETTABLE);
-            key.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
-            key.mFlagList.Add(objectFlags.FLAG_STORABLE);
-            key.mFlagList.Add(objectFlags.FLAG_DROPPABLE);
+            key.mFlagList.Add(mobFlags.FLAG_GETTABLE);
+            key.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
+            key.mFlagList.Add(mobFlags.FLAG_STORABLE);
+            key.mFlagList.Add(mobFlags.FLAG_DROPPABLE);
             key.mName = "brass key";
             key.mKeyId = (int)MOBLIST.BASIC_KEY;
             key.mInventory.Capacity = 0;
@@ -45,11 +46,11 @@ namespace _8th_Circle_Server
 
             Container chest = new Container();
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
-            chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
-            chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            chest.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
-            chest.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
+            chest.mFlagList.Add(mobFlags.FLAG_OPENABLE);
+            chest.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
+            chest.mFlagList.Add(mobFlags.FLAG_LOCKED);
+            chest.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
+            chest.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
             chest.mName = "chest1";
             chest.mInventory.Capacity = 20;
             chest.mWorld = this;
@@ -67,11 +68,11 @@ namespace _8th_Circle_Server
 
             Container chest2 = new Container();
             chest2.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            chest2.mFlagList.Add(objectFlags.FLAG_OPENABLE);
-            chest2.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
-            chest2.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            chest2.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
-            chest2.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
+            chest2.mFlagList.Add(mobFlags.FLAG_OPENABLE);
+            chest2.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
+            chest2.mFlagList.Add(mobFlags.FLAG_LOCKED);
+            chest2.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
+            chest2.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
             chest2.mName = "large wooden chest2";
             chest2.mInventory.Capacity = 20;
             chest2.mWorld = this;
@@ -89,11 +90,11 @@ namespace _8th_Circle_Server
 
             Mob first_circle = new Mob();
             first_circle.mDescription = "The first of eight ancient golden circles";
-            first_circle.mFlagList.Add(objectFlags.FLAG_GETTABLE);
-            first_circle.mFlagList.Add(objectFlags.FLAG_INSPECTABLE);
-            first_circle.mFlagList.Add(objectFlags.FLAG_STORABLE);
-            first_circle.mFlagList.Add(objectFlags.FLAG_DUPLICATABLE);
-            first_circle.mFlagList.Add(objectFlags.FLAG_USEABLE);
+            first_circle.mFlagList.Add(mobFlags.FLAG_GETTABLE);
+            first_circle.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
+            first_circle.mFlagList.Add(mobFlags.FLAG_STORABLE);
+            first_circle.mFlagList.Add(mobFlags.FLAG_DUPLICATABLE);
+            first_circle.mFlagList.Add(mobFlags.FLAG_USEABLE);
             first_circle.mName = "1st Circle";
             eventData = new EventData();
             eventData.eventFlag = EventFlag.EVENT_TELEPORT;
@@ -107,11 +108,11 @@ namespace _8th_Circle_Server
 
             Container no_event_chest = new Container();
             no_event_chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            no_event_chest.mFlagList.Add(objectFlags.FLAG_OPENABLE);
-            no_event_chest.mFlagList.Add(objectFlags.FLAG_CLOSEABLE);
-            no_event_chest.mFlagList.Add(objectFlags.FLAG_LOCKED);
-            no_event_chest.mFlagList.Add(objectFlags.FLAG_LOCKABLE);
-            no_event_chest.mFlagList.Add(objectFlags.FLAG_UNLOCKABLE);
+            no_event_chest.mFlagList.Add(mobFlags.FLAG_OPENABLE);
+            no_event_chest.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
+            no_event_chest.mFlagList.Add(mobFlags.FLAG_LOCKED);
+            no_event_chest.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
+            no_event_chest.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
             no_event_chest.mName = "wooden chest";
             no_event_chest.mInventory.Capacity = 20;
             no_event_chest.mWorld = this;
@@ -123,7 +124,7 @@ namespace _8th_Circle_Server
 
             Mob basic_switch = new Mob();
             basic_switch.mDescription = "A switch, it must trigger something...";
-            basic_switch.mFlagList.Add(objectFlags.FLAG_USEABLE);
+            basic_switch.mFlagList.Add(mobFlags.FLAG_USEABLE);
             basic_switch.mName = "switch";
             basic_switch.mWorld = this;
             basic_switch.mMobId = (int)MOBLIST.SWITCH;
@@ -132,6 +133,19 @@ namespace _8th_Circle_Server
             mFullMobList.Add(basic_switch);
 
             // NPCs start here
+            CombatNpc goblin_runt = new CombatNpc();
+            goblin_runt.mDescription = "A runt of the goblin litter, truely a wretched creature.";
+            goblin_runt.mName = "Goblin Runt";
+            goblin_runt.mInventory.Capacity = 0;
+            goblin_runt.mWorld = this;
+            goblin_runt.mMobId = (int)MOBLIST.GOBLIN_RUNT;
+            goblin_runt.mStartingRespawnTime = 30;
+            goblin_runt.mCurrentRespawnTime = 30;
+            goblin_runt.mStats.mBaseMaxDamage = 5;
+            goblin_runt.mStats.mCurrentHp = 50;
+            goblin_runt.mStats.mMaxHp = 50;
+            mFullMobList.Add(goblin_runt);
+
             Npc max = new Npc();
             max.mDescription = "A super big fluffy cute black and white kitty cat... you just want to hug him";
             max.mName = "Max the MaineCoon";
@@ -209,17 +223,23 @@ namespace _8th_Circle_Server
             Mob mob2 = null;
             Container cont2 = null;
             Npc npc2 = null;
+            CombatNpc cNpc = null;
 
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
             }// if
+            else if (mob is CombatNpc)
+            {
+                cNpc = new CombatNpc((CombatNpc)mob);
+                mob2 = cNpc;
+            }
             else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);
                 mob2 = npc2;
-            }// if
+            }// if 
             else
                 mob2 = new Mob(mob);
 

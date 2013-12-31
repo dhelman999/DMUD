@@ -290,7 +290,7 @@ namespace _8th_Circle_Server
             {
                 if (getRes(ResType.DOORWAY)[(int)dir] != null)
                 {
-                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                     {
                         ++visibleObjects;
                         tmp += dir.ToString().ToLower() + " " + ((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mName + "\n";        
@@ -311,7 +311,7 @@ namespace _8th_Circle_Server
             // multiple times
             for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.OBJECT)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                if (!((Mob)getRes(ResType.OBJECT)[i]).mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                 {
                     ++visibleObjects;
                     tmp += ((Mob)getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
@@ -331,14 +331,14 @@ namespace _8th_Circle_Server
 
             for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.NPC)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                if (!((Mob)getRes(ResType.NPC)[i]).mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                     exitStr += ((Mob)getRes(ResType.NPC)[i]).mName + "\n";
             }// if
 
             exitStr += "Players: ";
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.PLAYER)[i]).mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                if (!((Mob)getRes(ResType.PLAYER)[i]).mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                     exitStr += ((Player)getRes(ResType.PLAYER)[i]).mName + "\n";
             }// if
 

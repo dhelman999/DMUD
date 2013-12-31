@@ -74,11 +74,11 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            if(mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+            if(mFlagList.Contains(mobFlags.FLAG_OPENABLE))
             {
                 if(mIsOpen)
                     ret = mName + " is already open";
-                else if (mFlagList.Contains(objectFlags.FLAG_LOCKED))
+                else if (mFlagList.Contains(mobFlags.FLAG_LOCKED))
                 {
                     return mName + " is locked";
                 }// else
@@ -99,7 +99,7 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            if (mFlagList.Contains(objectFlags.FLAG_CLOSEABLE))
+            if (mFlagList.Contains(mobFlags.FLAG_CLOSEABLE))
             {
                 if (!mIsOpen)
                     ret = mName + " is already closed";
@@ -127,15 +127,15 @@ namespace _8th_Circle_Server
 
             if (foundKey)
             {
-                if (mFlagList.Contains(objectFlags.FLAG_LOCKABLE))
+                if (mFlagList.Contains(mobFlags.FLAG_LOCKABLE))
                 {
                     if (mIsOpen)
                         return "you cannot lock " + mName + ", it is open!";
 
-                    if (mFlagList.Contains(objectFlags.FLAG_UNLOCKED))
+                    if (mFlagList.Contains(mobFlags.FLAG_UNLOCKED))
                     {
-                        mFlagList.Add(objectFlags.FLAG_LOCKED);
-                        mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
+                        mFlagList.Add(mobFlags.FLAG_LOCKED);
+                        mFlagList.Remove(mobFlags.FLAG_UNLOCKED);
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 
@@ -165,12 +165,12 @@ namespace _8th_Circle_Server
                 if (mIsOpen)
                     return "you cannot unlock " + mName + ", it is open!";
 
-                if (mFlagList.Contains(objectFlags.FLAG_UNLOCKABLE))
+                if (mFlagList.Contains(mobFlags.FLAG_UNLOCKABLE))
                 {
-                    if (mFlagList.Contains(objectFlags.FLAG_LOCKED))
+                    if (mFlagList.Contains(mobFlags.FLAG_LOCKED))
                     {
-                        mFlagList.Add(objectFlags.FLAG_UNLOCKED);
-                        mFlagList.Remove(objectFlags.FLAG_LOCKED);
+                        mFlagList.Add(mobFlags.FLAG_UNLOCKED);
+                        mFlagList.Remove(mobFlags.FLAG_LOCKED);
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    enum objectFlags
+    enum mobFlags
     {
         FLAG_START,
         FLAG_OPENABLE = FLAG_START,
@@ -27,6 +27,8 @@ namespace _8th_Circle_Server
         FLAG_STEALABLE,
         FLAG_DUPLICATABLE,
         FLAG_SEARCHING,
+        FLAG_COMBATABLE,
+        FLAG_INCOMBAT,
         FLAG_END
     };// flags
 
@@ -199,12 +201,12 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob)
         {
-            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE) &&
+            if (mFlagList.Contains(mobFlags.FLAG_GETTABLE) &&
                 mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
+                    if (mFlagList.Contains(mobFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -217,7 +219,7 @@ namespace _8th_Circle_Server
                         // TODO
                         // Need to have a common error string for hidden objects that
                         // does not include their name
-                        if (!mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                        if (!mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                         {
                             mob.mCurrentArea.removeRes(this);
                             mob.mCurrentRoom.removeRes(this);
@@ -250,11 +252,11 @@ namespace _8th_Circle_Server
         // Needs to be a cleaner interface for this sort of thing
         public virtual string get(Mob mob, PrepositionType prepType, Mob container)
         {
-            if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
+            if (mFlagList.Contains(mobFlags.FLAG_GETTABLE))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(objectFlags.FLAG_DUPLICATABLE))
+                    if (mFlagList.Contains(mobFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -262,7 +264,7 @@ namespace _8th_Circle_Server
 
                         return "you get " + exitString(mCurrentRoom);
                     }
-                    else if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                    else if (container.mFlagList.Contains(mobFlags.FLAG_OPENABLE))
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -287,13 +289,13 @@ namespace _8th_Circle_Server
                         }// if (prepType == PrepositionType.PREP_FROM)
                         else
                             return "you can't get like that";
-                    }// if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                    }// if (container.mFlagList.Contains(mobFlags.FLAG_OPENABLE))
                     else
                         return container.mName + " is closed";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
                     return "your inventory is full";
-            }// if (mFlagList.Contains(objectFlags.FLAG_GETTABLE))
+            }// if (mFlagList.Contains(mobFlags.FLAG_GETTABLE))
             else
                 return "you can't get that";
 
@@ -301,7 +303,7 @@ namespace _8th_Circle_Server
 
         public virtual string drop(Mob mob)
         {
-            if (mFlagList.Contains(objectFlags.FLAG_DROPPABLE))
+            if (mFlagList.Contains(mobFlags.FLAG_DROPPABLE))
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
@@ -343,7 +345,7 @@ namespace _8th_Circle_Server
         {
             // The actual processing of the event will be handled by checkEvent at the
             // end of command processing
-            if (mFlagList.Contains(objectFlags.FLAG_USEABLE) &&
+            if (mFlagList.Contains(mobFlags.FLAG_USEABLE) &&
                 mEventList.Count > 0)
                 return "You use the " + mName;
             else
@@ -393,6 +395,11 @@ namespace _8th_Circle_Server
             return "you can't unlock that";
         }// unlock
 
+        public virtual string fullheal()
+        {
+            return "you can't fullheal that";
+        }// fullheal
+
         public virtual string search()
         {
             string searchString = string.Empty;
@@ -409,12 +416,12 @@ namespace _8th_Circle_Server
                 foreach (Mob mob in ar)
                 {
                     if(mob != null &&
-                       mob.mFlagList.Contains(objectFlags.FLAG_HIDDEN))
+                       mob.mFlagList.Contains(mobFlags.FLAG_HIDDEN))
                     {
                         if (rand.NextDouble() > .5)
                         {
                             searchString += "you discover a " + mob.mName;
-                            mob.mFlagList.Remove(objectFlags.FLAG_HIDDEN);
+                            mob.mFlagList.Remove(mobFlags.FLAG_HIDDEN);
                             found = true;
                         }// if
                     }// if

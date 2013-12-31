@@ -38,26 +38,30 @@ namespace _8th_Circle_Server
             Random rand = new Random();
             if (rand.NextDouble() < .5)
             {
-                foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
+                // Max movement
+                if (mMobId == (int)MOBLIST.MAX)
                 {
-                    player.mClientHandler.safeWrite(mName + " purrs softly");
-                }// foreach
-                ArrayList commandQueue = new ArrayList();
-                Command com = new Command();
-                foreach(Command cmd in mCurrentArea.mCommandExecuter.mVerbList)
-                {
-                    if (cmd.commandName == commandName.COMMAND_TELL)
-                        com = cmd;
-                }
+                    foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
+                    {
+                        player.mClientHandler.safeWrite(mName + " purrs softly");
+                    }// foreach
+                    ArrayList commandQueue = new ArrayList();
+                    Command com = new Command();
+                    foreach (Command cmd in mCurrentArea.mCommandExecuter.mVerbList)
+                    {
+                        if (cmd.commandName == commandName.COMMAND_TELL)
+                            com = cmd;
+                    }
 
-                foreach (Player pl in mCurrentArea.getRes(ResType.PLAYER))
-                {
-                    commandQueue.Add(com);
-                    commandQueue.Add(pl);
-                    commandQueue.Add("purrr");
-                    mCurrentArea.mCommandExecuter.execute(commandQueue, this);
-                    commandQueue.Clear();
-                }
+                    foreach (Player pl in mCurrentArea.getRes(ResType.PLAYER))
+                    {
+                        commandQueue.Add(com);
+                        commandQueue.Add(pl);
+                        commandQueue.Add("purrr");
+                        mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                        commandQueue.Clear();
+                    }
+                }// if (mMobId == (int)MOBLIST.MAX)
             }// if
             else
             {

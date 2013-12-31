@@ -83,6 +83,7 @@ namespace _8th_Circle_Server
         COMMAND_USE,
         COMMAND_SEARCH,
         COMMAND_WHO,
+        COMMAND_FULLHEAL,
         COMMAND_END
     };// commandName
 
@@ -284,6 +285,11 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("fullheal", "fh", 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_FULLHEAL,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             pt = new Command("close", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
@@ -360,6 +366,7 @@ namespace _8th_Circle_Server
             Command currentCommand = new Command();
             ArrayList commandList = new ArrayList();
             bool foundMatch = false;
+            string clientString = string.Empty;
 
             if (command.Equals(string.Empty))
                 return;
@@ -463,9 +470,12 @@ namespace _8th_Circle_Server
                 currentCommand.grammar.Length == 1 &&
                 mob.mActionTimer == 0)
             {
-                string clientString = execute(commandList, mob);
+                clientString = execute(commandList, mob);
                 if (mob is Player)
+                {
+                    clientString += ((Player)mob).playerString();
                     ((Player)mob).mClientHandler.safeWrite(clientString);
+                }
                 return;
             }// if
             else if((tokens.Length > 1 && currentCommand.grammar.Length == 1) ||
@@ -490,9 +500,12 @@ namespace _8th_Circle_Server
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
-                string clientString = execute(commandList, mob);
+                clientString = execute(commandList, mob);
                 if (mob is Player)
+                {
+                    clientString += ((Player)mob).playerString();
                     ((Player)mob).mClientHandler.safeWrite(clientString);
+                }
             }
             else if (error == errorCode.E_INVALID_COMMAND_USAGE)
             {
@@ -505,7 +518,11 @@ namespace _8th_Circle_Server
             else
             {
                 if (mob is Player)
-                    ((Player)mob).mClientHandler.safeWrite("You can't do that");
+                {
+                    clientString += "You can't do that\n";
+                    clientString += ((Player)mob).playerString();
+                    ((Player)mob).mClientHandler.safeWrite(clientString);
+                }
             }
         }// process
 
@@ -627,9 +644,13 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_SEARCH:
                     clientString = "you start searching...";
                     mob.mActionTimer = 4;
-                    mob.mFlagList.Add(objectFlags.FLAG_SEARCHING);
+                    mob.mFlagList.Add(mobFlags.FLAG_SEARCHING);
                     Thread searchThread = new Thread(() => searchTask(mob));
                     searchThread.Start();
+                    break;
+
+                case commandName.COMMAND_FULLHEAL:
+                    clientString = ((Mob)commandQueue[++commandIndex]).fullheal();
                     break;
 
                 case commandName.COMMAND_WHO:
@@ -1055,7 +1076,7 @@ namespace _8th_Circle_Server
             string searchResult = mob.search();
             if (mob is Player)
                 ((Player)mob).mClientHandler.safeWrite(searchResult);
-            mob.mFlagList.Remove(objectFlags.FLAG_SEARCHING);
+            mob.mFlagList.Remove(mobFlags.FLAG_SEARCHING);
         }// searchTask
 
     }// Class CommandExecuter

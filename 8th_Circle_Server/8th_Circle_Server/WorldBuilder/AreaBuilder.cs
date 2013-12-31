@@ -549,8 +549,8 @@ namespace _8th_Circle_Server
             gpg_76.removeTripleLinks(Direction.WEST);
 
             Doorway newDoor = new Doorway("door");
-            newDoor.mFlagList.Add(objectFlags.FLAG_HIDDEN);
-            newDoor.mStartingFlagList.Add(objectFlags.FLAG_HIDDEN);
+            newDoor.mFlagList.Add(mobFlags.FLAG_HIDDEN);
+            newDoor.mStartingFlagList.Add(mobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((Room)(gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
@@ -578,7 +578,7 @@ namespace _8th_Circle_Server
             addMob(small_metal_cage, gpg_71, newbieArea);
 
             Mob steel_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
-            steel_key.mFlagList.Add(objectFlags.FLAG_HIDDEN);
+            steel_key.mFlagList.Add(mobFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
             steel_key.mStartingRoom = gpg_46;
             steel_key.mStartingArea = newbieArea;
@@ -586,7 +586,6 @@ namespace _8th_Circle_Server
             steel_key.mDescription = "a small steel key, I wonder what it opens?";
             addMob(steel_key, gpg_46, newbieArea);
 
-            // Find a way to minimize this
             Mob basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
             basic_switch.mStartingRoom = gpg_29;
             basic_switch.mStartingArea = newbieArea;
@@ -597,7 +596,6 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
-            // Find a way to minimize this
             basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
             basic_switch.mStartingRoom = gpg_37;
             basic_switch.mStartingArea = newbieArea;
@@ -607,6 +605,11 @@ namespace _8th_Circle_Server
             ed.commandName = commandName.COMMAND_USE;
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
+
+            CombatNpc goblin_runt = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt.mStartingRoom = gpg_22;
+            goblin_runt.mStartingArea = newbieArea;
+            addMob(goblin_runt, gpg_22, newbieArea);
 
             ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;

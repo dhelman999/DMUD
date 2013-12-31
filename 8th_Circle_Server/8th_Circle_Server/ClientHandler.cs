@@ -135,7 +135,9 @@ namespace _8th_Circle_Server
                 clientHandler.safeWrite("Welcome to the 8th Circle!");
                 if(clientHandler.mPlayer != null &&
                    clientHandler.mPlayer.mCurrentRoom != null)
-                   clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString());
+                   clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString() +
+                       ((Player)clientHandler.mPlayer).playerString());
+                
             }// catch
             while (true)
             {
