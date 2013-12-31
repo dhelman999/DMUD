@@ -160,8 +160,8 @@ namespace _8th_Circle_Server
             if (mCurrentArea != newRoom.mCurrentArea)
             {
                 mCurrentArea.removeRes(this);
+                newRoom.mCurrentArea.addRes(this);
                 mCurrentArea = newRoom.mCurrentArea;
-                newRoom.mCurrentArea.removeRes(this);
             }// if
 
             // Add new references
@@ -229,6 +229,7 @@ namespace _8th_Circle_Server
                                 mParent.mChildren.Remove(this);
                                 mParent.mIsRespawning = true;
                             }
+
                             return "you get " + exitString(mCurrentRoom);
                         }
                         else
@@ -261,37 +262,34 @@ namespace _8th_Circle_Server
 
                         return "you get " + exitString(mCurrentRoom);
                     }
-                    else
+                    else if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
                     {
-                        if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                        if (prepType == PrepositionType.PREP_FROM)
                         {
-                            if (prepType == PrepositionType.PREP_FROM)
+                            if (container.mInventory.Contains(this))
                             {
-                                if (container.mInventory.Contains(this))
+                                mob.mCurrentArea.removeRes(this);
+                                mob.mCurrentRoom.removeRes(this);
+                                mob.mWorld.removeRes(this);
+                                container.mInventory.Remove(this);
+                                mCurrentOwner = mob;
+                                mob.mInventory.Add(this);
+                                if (mParent != null)
                                 {
-                                    mob.mCurrentArea.removeRes(this);
-                                    mob.mCurrentRoom.removeRes(this);
-                                    mob.mWorld.removeRes(this);
-                                    container.mInventory.Remove(this);
-                                    mCurrentOwner = mob;
-                                    mob.mInventory.Add(this);
-                                    if (mParent != null)
-                                    {
-                                        mParent.mChildren.Remove(this);
-                                        mParent.mIsRespawning = true;
-                                    }
-                                    
-                                    return "you get " + exitString(mCurrentRoom);
-                                }// if
-                                else
-                                    return container.mName + " does not contain a " + this.mName;
-                            }// if (prepType == PrepositionType.PREP_FROM)
+                                    mParent.mChildren.Remove(this);
+                                    mParent.mIsRespawning = true;
+                                }
+                                
+                                return "you get " + exitString(mCurrentRoom);
+                            }// if
                             else
-                                return "you can't get like that";
-                        }// if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                                return container.mName + " does not contain a " + this.mName;
+                        }// if (prepType == PrepositionType.PREP_FROM)
                         else
-                            return container.mName + " is closed";
-                    }// else
+                            return "you can't get like that";
+                    }// if (container.mFlagList.Contains(objectFlags.FLAG_OPENABLE))
+                    else
+                        return container.mName + " is closed";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
                     return "your inventory is full";
@@ -314,6 +312,7 @@ namespace _8th_Circle_Server
                     mParent.mChildren.Add(this);
                     mParent.mIsRespawning = true;
                 }
+
                 return "you drop " + exitString(mCurrentRoom);
             }// if
             else
@@ -342,15 +341,13 @@ namespace _8th_Circle_Server
 
         public virtual string use(Mob mob)
         {
-            // TODO
-            // This is handled by the checkEvent
-            string ret;
-            if (mFlagList.Contains(objectFlags.FLAG_USEABLE))
-                ret = "You use the " + mName;
+            // The actual processing of the event will be handled by checkEvent at the
+            // end of command processing
+            if (mFlagList.Contains(objectFlags.FLAG_USEABLE) &&
+                mEventList.Count > 0)
+                return "You use the " + mName;
             else
-                ret = "You can't use that";
-
-            return ret;
+                return "You can't use that";
         }// unlock
 
         public virtual string destroy()

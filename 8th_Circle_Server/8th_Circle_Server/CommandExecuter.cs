@@ -891,7 +891,7 @@ namespace _8th_Circle_Server
                 if(validity == validityType.VALID_GLOBAL)
                     targetList.Add(target.mWorld.getRes(ResType.PLAYER));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mWorld.mAreaList);
+                    targetList.Add(target.mCurrentArea.getRes(ResType.PLAYER));
                 if (validity == validityType.VALID_LOCAL)
                 {
                     targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));

@@ -86,8 +86,7 @@ namespace _8th_Circle_Server
                 {
                     ret = "You open the " + mName;
                     mIsOpen = true;
-                    // TODO
-                    // Make these things better/more generic
+
                     if (mParent != null)
                         mParent.mIsRespawning = true;
                 }// else
@@ -108,6 +107,7 @@ namespace _8th_Circle_Server
                 {
                     ret = "You close the " + mName;
                     mIsOpen = false;
+
                     if (mParent != null)
                         mParent.mIsRespawning = true;
                 }// else
@@ -138,12 +138,11 @@ namespace _8th_Circle_Server
                         mFlagList.Remove(objectFlags.FLAG_UNLOCKED);
                         if (mParent != null)
                             mParent.mIsRespawning = true;
+
                         return "you lock " + mName;
                     }// if
                     else
-                    {
                         return mName + " is not unlocked";
-                    }// if
                 }// if
                 else
                     return "you can't lock " + mName;
@@ -174,12 +173,11 @@ namespace _8th_Circle_Server
                         mFlagList.Remove(objectFlags.FLAG_LOCKED);
                         if (mParent != null)
                             mParent.mIsRespawning = true;
+
                         return "you unlock " + mName;
                     }// if
                     else
-                    {
                         return mName + " is not locked";
-                    }// if
                 }// if
                 else
                     return "you can't unlock " + mName;
