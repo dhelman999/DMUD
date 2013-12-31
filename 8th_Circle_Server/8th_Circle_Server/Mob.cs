@@ -400,6 +400,11 @@ namespace _8th_Circle_Server
             return "you can't fullheal that";
         }// fullheal
 
+        public virtual string teleport(Mob target)
+        {
+            return changeRoom(target.mCurrentRoom);
+        }// teleport
+
         public virtual string search()
         {
             string searchString = string.Empty;

@@ -141,9 +141,9 @@ namespace _8th_Circle_Server
             goblin_runt.mMobId = (int)MOBLIST.GOBLIN_RUNT;
             goblin_runt.mStartingRespawnTime = 30;
             goblin_runt.mCurrentRespawnTime = 30;
-            goblin_runt.mStats.mBaseMaxDamage = 5;
-            goblin_runt.mStats.mCurrentHp = 50;
-            goblin_runt.mStats.mMaxHp = 50;
+            goblin_runt.mStats.mBMaxDam = 5;
+            goblin_runt.mStats.mCurrentHp = 25;
+            goblin_runt.mStats.mMaxHp = 25;
             mFullMobList.Add(goblin_runt);
 
             Npc max = new Npc();
@@ -205,6 +205,7 @@ namespace _8th_Circle_Server
                 mob2 = new Mob(mob);
 
 			startingRoom.addMobResource(mob2);
+            mob2.mWorld.addRes(mob2);
         }// addNewMob
 
         public void addMob(Mob mob, Room startingRoom, Area startingArea)
@@ -246,6 +247,7 @@ namespace _8th_Circle_Server
             mob2.mParent = mob;
             startingRoom.addMobResource(mob2);
             mob.mChildren.Add(mob2);
+            mob.mWorld.addRes(mob2);
         }// addMob
 
     }// class World

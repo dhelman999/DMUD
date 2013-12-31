@@ -17,7 +17,7 @@ namespace _8th_Circle_Server
 
         public CombatNpc(CombatNpc cNpc) : base(cNpc)
         {
-            mStats = cNpc.mStats;
+            mStats = new CombatStats(cNpc.mStats);
         }// Constructor
 
         public override string viewed(Mob viewer, Preposition prep)
@@ -50,6 +50,18 @@ namespace _8th_Circle_Server
             else
                 return "You can't look like that";
         }// viewed
+
+        public override void respawn()
+        {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
+            mStats.mCurrentHp = mStats.mMaxHp;
+            CombatNpc mob = new CombatNpc(this);
+            mChildren.Add(mob);
+            mob.mCurrentArea.addRes(mob);
+            mob.mCurrentRoom.addRes(mob);
+            mob.mWorld.addRes(mob);
+        }// respawn
 
         public override string fullheal()
         {

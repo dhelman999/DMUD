@@ -606,10 +606,10 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
-            CombatNpc goblin_runt = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
-            goblin_runt.mStartingRoom = gpg_22;
-            goblin_runt.mStartingArea = newbieArea;
-            addMob(goblin_runt, gpg_22, newbieArea);
+            // TODO
+            // This seems to be not working?
+            CombatNpc goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            addMob(goblin_runt2, gpg_22, newbieArea);
 
             ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;

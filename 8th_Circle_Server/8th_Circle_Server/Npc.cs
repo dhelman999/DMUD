@@ -34,6 +34,9 @@ namespace _8th_Circle_Server
         // Needs to be more generic
         public void randomAction()
         {
+            if (mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
+                return;
+
             Console.WriteLine("random action taken");
             Random rand = new Random();
             if (rand.NextDouble() < .5)

@@ -95,16 +95,24 @@ namespace _8th_Circle_Server
                     if (mob.mIsRespawning &&
                        (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
                     {
-                        for (int j = 0; j < mob.mChildren.Count; ++j)
+                        if (mob.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
                         {
-                            Mob child = (Mob)mob.mChildren[j];
-                            child.destroy();
-                            mob.mChildren.Remove(child);
-                            --j;
+                            mob.mIsRespawning = false;
+                            mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
                         }
+                        else
+                        {
+                            for (int j = 0; j < mob.mChildren.Count; ++j)
+                            {
+                                Mob child = (Mob)mob.mChildren[j];
+                                child.destroy();
+                                mob.mChildren.Remove(child);
+                                --j;
+                            }
 
-                        Console.WriteLine("respawning " + mob.mName);
-                        mob.respawn();
+                            Console.WriteLine("respawning " + mob.mName);
+                            mob.respawn();
+                        }
                     }
                 }// for
 
@@ -156,14 +164,18 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
-                foreach (Npc npc in area.getRes(ResType.NPC))
+                ArrayList npcList = area.getRes(ResType.NPC);
+
+                for (int i = 0; i < npcList.Count; ++i)
                 {
+                    Npc npc = (Npc)npcList[i];
+
                     if ((npc.mCurrentActionCounter -= TICKTIME) <= 0)
                     {
                         npc.mCurrentActionCounter = npc.mStartingActionCounter;
                         npc.randomAction();
                     }// if
-                }// foreach
+                }// for
             }// foreach
         }// processNpcs
 
