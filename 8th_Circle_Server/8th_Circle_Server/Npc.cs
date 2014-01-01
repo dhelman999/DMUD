@@ -10,17 +10,22 @@ namespace _8th_Circle_Server
     {
         public int mStartingActionCounter;
         public int mCurrentActionCounter;
+        public CombatStats mStats;
 
         public Npc() : base()
         {
             mStartingActionCounter = mCurrentActionCounter = 30;
             mResType = ResType.NPC;
+            mStats = new CombatStats();
+            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public Npc(string newName) : base(newName)
         {
             mStartingActionCounter = mCurrentActionCounter = 30;
             mResType = ResType.NPC;
+            mStats = new CombatStats();
+            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public Npc(Npc mob) : base(mob)
@@ -28,7 +33,39 @@ namespace _8th_Circle_Server
             mStartingActionCounter = mob.mStartingActionCounter;
             mCurrentActionCounter = mob.mCurrentActionCounter;
             mResType = ResType.NPC;
+            mStats = new CombatStats(mob.mStats);
         }// Copy Constructor
+
+        public override string viewed(Mob viewer, Preposition prep)
+        {
+            bool foundAt = false;
+            foreach (PrepositionType pType in mPrepList)
+            {
+                if (pType == PrepositionType.PREP_AT)
+                {
+                    foundAt = true;
+                    break;
+                }// if
+            }// foreach
+
+            if (foundAt && prep.prepType == PrepositionType.PREP_AT)
+            {
+                string clientString = string.Empty;
+
+                if (viewer is Player)
+                {
+                    if (mStats.mMaxHp > ((Player)viewer).mStats.mCurrentHp)
+                        clientString += " you look healthier than " + viewer.mName;
+                    else if (mStats.mMaxHp < ((Player)viewer).mStats.mCurrentHp)
+                        clientString += viewer.mName + " looks healthier than you";
+                    else
+                        clientString += "you both appear to have the same level of health";
+                }
+                return "\n" + mDescription;
+            }
+            else
+                return "You can't look like that";
+        }// viewed
 
         // TODO
         // Needs to be more generic
@@ -92,12 +129,19 @@ namespace _8th_Circle_Server
         {
             mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
+            mStats.mCurrentHp = mStats.mMaxHp;
             Npc mob = new Npc(this);
             mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
             mob.mCurrentRoom.addRes(mob);
             mob.mWorld.addRes(mob);
         }// respawn
+
+        public override string fullheal()
+        {
+            mStats.mCurrentHp = mStats.mMaxHp;
+            return "you fully heal " + mName;
+        }// fullheal
 
         private void addExits(ArrayList commandQueue)
         {

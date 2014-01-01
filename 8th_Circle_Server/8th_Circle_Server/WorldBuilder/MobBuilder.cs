@@ -133,7 +133,7 @@ namespace _8th_Circle_Server
             mFullMobList.Add(basic_switch);
 
             // NPCs start here
-            CombatNpc goblin_runt = new CombatNpc();
+            Npc goblin_runt = new Npc();
             goblin_runt.mDescription = "A runt of the goblin litter, truely a wretched creature.";
             goblin_runt.mName = "Goblin Runt";
             goblin_runt.mInventory.Capacity = 0;
@@ -224,18 +224,12 @@ namespace _8th_Circle_Server
             Mob mob2 = null;
             Container cont2 = null;
             Npc npc2 = null;
-            CombatNpc cNpc = null;
 
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
             }// if
-            else if (mob is CombatNpc)
-            {
-                cNpc = new CombatNpc((CombatNpc)mob);
-                mob2 = cNpc;
-            }
             else if (mob is Npc)
             {
                 npc2 = new Npc((Npc)mob);

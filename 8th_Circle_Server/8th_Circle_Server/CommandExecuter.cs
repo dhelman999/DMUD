@@ -661,7 +661,7 @@ namespace _8th_Circle_Server
                     Mob target = (Mob)commandQueue[++commandIndex];
 
                     if (!target.mFlagList.Contains(mobFlags.FLAG_COMBATABLE) ||
-                        !(target is CombatNpc))
+                        !(target is Npc))
                     {
                         clientString = "you can't attack that";
                         break;
@@ -669,7 +669,7 @@ namespace _8th_Circle_Server
 
                     mob.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
                     target.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
-                    ((Player)mob).mStats.mCombatList.Add((CombatNpc)target);
+                    ((Player)mob).mStats.mCombatList.Add((Npc)target);
                     Thread combatThread = new Thread(() => combatTask(mob));
                     combatThread.Start();
                     break;
@@ -731,15 +731,15 @@ namespace _8th_Circle_Server
                                 cont.mCurrentRoom.addRes(cont);
                                 clientString = "spawning " + cont.mName;
                             }// if
-                            else if (fma[mobID] is CombatNpc)
+                            else if (fma[mobID] is Npc)
                             {
-                                CombatNpc cNpc = new CombatNpc((CombatNpc)fma[mobID]);
-                                cNpc.mWorld.addRes(cNpc);
-                                cNpc.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
-                                cNpc.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
-                                cNpc.mCurrentArea.addRes(cNpc);
-                                cNpc.mCurrentRoom.addRes(cNpc);
-                                clientString = "spawning " + cNpc.mName;
+                                Npc npc = new Npc((Npc)fma[mobID]);
+                                npc.mWorld.addRes(npc);
+                                npc.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
+                                npc.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
+                                npc.mCurrentArea.addRes(npc);
+                                npc.mCurrentRoom.addRes(npc);
+                                clientString = "spawning " + npc.mName;
                             }// if
                             else if (fma[mobID] is Mob)
                             {
@@ -1136,7 +1136,7 @@ namespace _8th_Circle_Server
 
                 while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
                 {
-                    foreach (CombatNpc cNpc in pl.mStats.mCombatList)
+                    foreach (Npc npc in pl.mStats.mCombatList)
                     {
                         int damage = 0;
 
@@ -1144,36 +1144,36 @@ namespace _8th_Circle_Server
                         {
                             damage = rand.Next(pl.mStats.mBMinDam, pl.mStats.mBMaxDam) +
                                 pl.mStats.mDamMod;
-                            pl.mClientHandler.safeWrite("you hit the " + cNpc.mName + " for " + damage + " damage");
-                            if((cNpc.mStats.mCurrentHp -= damage) <= 0)
+                            pl.mClientHandler.safeWrite("you hit the " + npc.mName + " for " + damage + " damage");
+                            if((npc.mStats.mCurrentHp -= damage) <= 0)
                             {
-                                pl.mClientHandler.safeWrite("you have slain the " + cNpc.mName);
+                                pl.mClientHandler.safeWrite("you have slain the " + npc.mName);
                                 pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(cNpc);
-                                cNpc.destroy();
+                                pl.mStats.mCombatList.Remove(npc);
+                                npc.destroy();
                                 break;
                             }
                         }
                         else
-                            pl.mClientHandler.safeWrite("you miss " + cNpc.mName);
+                            pl.mClientHandler.safeWrite("you miss " + npc.mName);
 
                         if (rand.NextDouble() > .25)
                         {
-                            damage = rand.Next(cNpc.mStats.mBMinDam, cNpc.mStats.mBMaxDam) + 
-                                cNpc.mStats.mDamMod;
-                            pl.mClientHandler.safeWrite(cNpc.mName + " hits you" + " for " + damage + " damage");
+                            damage = rand.Next(npc.mStats.mBMinDam, npc.mStats.mBMaxDam) + 
+                                npc.mStats.mDamMod;
+                            pl.mClientHandler.safeWrite(npc.mName + " hits you" + " for " + damage + " damage");
                             if ((pl.mStats.mCurrentHp -= damage) <= 0)
                             {
-                                pl.mClientHandler.safeWrite("you have been slain by the" + cNpc.mName);
+                                pl.mClientHandler.safeWrite("you have been slain by the " + npc.mName);
                                 pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                cNpc.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(cNpc);
+                                npc.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
+                                pl.mStats.mCombatList.Remove(npc);
                                 break;
                             }
                         }
                         else
-                            pl.mClientHandler.safeWrite(cNpc.mName + " misses you");
-                    }// foreach (CombatNpc cNpc in pl.mStats.mCombatList)
+                            pl.mClientHandler.safeWrite(npc.mName + " misses you");
+                    }// foreach (Npc npc in pl.mStats.mCombatList)
 
                     pl.mClientHandler.safeWrite(pl.playerString());
                     Thread.Sleep(4000);

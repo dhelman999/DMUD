@@ -606,49 +606,49 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
-            CombatNpc goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            Npc goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_6, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_10, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_17, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_21, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_25, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_29, newbieArea);    
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_32, newbieArea);
             
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_42, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_47, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_62, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_77, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_60, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_37, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_46, newbieArea);
 
-            goblin_runt2 = new CombatNpc((CombatNpc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
+            goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_58, newbieArea);
 
             ed = new EventData();

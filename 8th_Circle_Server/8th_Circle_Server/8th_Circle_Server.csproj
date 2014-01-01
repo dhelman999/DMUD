@@ -49,7 +49,6 @@
     <Compile Include="Areas\Area.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CombatMob.cs" />
-    <Compile Include="CombatNpc.cs" />
     <Compile Include="CommandExecuter.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="EventHandler.cs" />
