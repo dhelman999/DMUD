@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    class Container : Mob
+    public class Container : Mob
     {
         // Member Variables
         public bool mIsOpen;

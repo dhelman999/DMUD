@@ -150,7 +150,7 @@ namespace _8th_Circle_Server
                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                clientString = changeRoom((Room)mCurrentRoom.mRoomLinks[(int)dir]);
             else
-                return "you can't move that way";
+                return "you can't move that way\n";
 
             return clientString;
 
@@ -197,7 +197,7 @@ namespace _8th_Circle_Server
             if (foundAt && prep.prepType == PrepositionType.PREP_AT)
                 return mDescription;
             else
-                return "You can't look like that";
+                return "You can't look like that\n";
         }// viewed
 
         public virtual string get(Mob mob)
@@ -213,7 +213,7 @@ namespace _8th_Circle_Server
                         mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
-                        return "you get " + exitString(mCurrentRoom);
+                        return "you get " + exitString(mCurrentRoom) + "\n";
                     }
                     else
                     {
@@ -233,25 +233,28 @@ namespace _8th_Circle_Server
                                 mParent.mIsRespawning = true;
                             }
 
-                            return "you get " + exitString(mCurrentRoom);
+                            return "you get " + exitString(mCurrentRoom) + "\n";
                         }
                         else
-                            return "you can't find that";
+                            return "you can't find that\n";
                     }
                 }// if
                 else
                 {
-                    return "your inventory is full";
+                    return "your inventory is full\n";
                 }// else
             }// if
             else
-                return "you can't get that";
+                return "you can't get that\n";
                 
         }// get
 
         // TODO
         // Needs to be a cleaner interface for this sort of thing
-        public virtual string get(Mob mob, PrepositionType prepType, Mob container)
+        // Also, this probably won't work as a container when doing
+        // get from with things that are on an object instead of
+        // in an object
+        public virtual string get(Mob mob, PrepositionType prepType, Container container)
         {
             if (mFlagList.Contains(mobFlags.FLAG_GETTABLE))
             {
@@ -263,9 +266,10 @@ namespace _8th_Circle_Server
                         mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
-                        return "you get " + exitString(mCurrentRoom);
+                        return "you get " + exitString(mCurrentRoom) + "\n";
                     }
-                    else if (container.mFlagList.Contains(mobFlags.FLAG_OPENABLE))
+                    else if (container.mFlagList.Contains(mobFlags.FLAG_OPENABLE) &&
+                             container.mIsOpen)
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -283,24 +287,55 @@ namespace _8th_Circle_Server
                                     mParent.mIsRespawning = true;
                                 }
                                 
-                                return "you get " + exitString(mCurrentRoom);
+                                return "you get " + exitString(mCurrentRoom) + "\n";
                             }// if
                             else
-                                return container.mName + " does not contain a " + this.mName;
+                                return container.mName + " does not contain a " + this.mName + "\n";
                         }// if (prepType == PrepositionType.PREP_FROM)
                         else
-                            return "you can't get like that";
+                            return "you can't get like that\n";
                     }// if (container.mFlagList.Contains(mobFlags.FLAG_OPENABLE))
                     else
-                        return container.mName + " is closed";
+                        return container.mName + " is closed\n";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
-                    return "your inventory is full";
+                    return "your inventory is full\n";
             }// if (mFlagList.Contains(mobFlags.FLAG_GETTABLE))
             else
-                return "you can't get that";
+                return "you can't get that\n";
 
         }// get
+
+        public virtual string getall()
+        {
+            string clientString = string.Empty;
+            ArrayList targetList = mCurrentRoom.getRes(ResType.OBJECT);
+
+            for (int i = 0; i < targetList.Count; ++i)
+            {
+                clientString += ((Mob)targetList[i]).get(this);
+                --i;
+            }
+
+            return clientString;
+        }// getall
+
+        public virtual string getall(PrepositionType prepType, Container container)
+        {
+            string clientString = string.Empty;
+            ArrayList targetList = container.mInventory;
+
+            for (int i = 0; i < targetList.Count; ++i)
+            {
+                // TODO
+                // is --i the best way to do so?  I am okay if it is,
+                // just reexamine and make sure
+                clientString += ((Mob)targetList[i]).get(this, prepType, container);
+                --i;
+            }
+
+            return clientString;
+        }// getall
 
         public virtual string drop(Mob mob)
         {
@@ -316,11 +351,24 @@ namespace _8th_Circle_Server
                     mParent.mIsRespawning = true;
                 }
 
-                return "you drop " + exitString(mCurrentRoom);
+                return "you drop " + exitString(mCurrentRoom) + "\n";
             }// if
             else
-                return "you can't drop that";
+                return "you can't drop that\n";
         }// drop
+
+        public virtual string dropall()
+        {
+            string clientString = string.Empty;
+
+            for (int i = 0; i < mInventory.Count; ++i)
+            {
+                clientString += ((Mob)mInventory[i]).drop(this);
+                --i;
+            }
+
+            return clientString;
+        }// dropall
 
         public virtual string open(Mob mob)
         {

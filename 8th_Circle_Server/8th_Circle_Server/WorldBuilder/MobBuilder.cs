@@ -247,12 +247,16 @@ namespace _8th_Circle_Server
             Npc npc2 = null;
             Equipment eq = null;
 
+            // TODO
+            // Probably need to make these things from a list
+            // so we don't have to remember to add them whenever
+            // a new class is made
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
             }// if
-            if (mob is Equipment)
+            else if (mob is Equipment)
             {
                 eq = new Equipment((Equipment)mob);
                 mob2 = eq;

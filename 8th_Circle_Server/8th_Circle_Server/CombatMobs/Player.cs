@@ -48,9 +48,9 @@ namespace _8th_Circle_Server
                         clientString += viewer.mName + " looks healthier than you";
                     else
                         clientString += "you both appear to have the same level of health";
-                }
+                }// if
                 return clientString + "\n" + mDescription;
-            }
+            }// if
             else
                 return "You can't look like that";
         }// viewed
@@ -71,14 +71,23 @@ namespace _8th_Circle_Server
             return "\n" + mStats.mCurrentHp + "/" + mStats.mMaxHp + " hp\n";
         }// playerString
 
+        // TODO
+        // Clean this up
         public override string wearall()
         {
             string clientString = string.Empty;
+            int tmpInvCount = 0;
+
             for (int i = 0; i < mInventory.Count; ++i)
             {
+                tmpInvCount = mInventory.Count;
+
                 if (mInventory[i] is Equipment)
+                {
                     clientString += ((Equipment)mInventory[i]).wear(this) + "\n";
-                
+                    if(tmpInvCount != mInventory.Count)
+                        --i;
+                }// if
             }// for
 
             return clientString;

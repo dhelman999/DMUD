@@ -150,7 +150,6 @@ namespace _8th_Circle_Server
                     if (clientHandler.mCmdString.Equals("exit"))
                         break;
 
-                    
                     cmdData.command = clientHandler.mCmdString;
                     clientHandler.mCommandHandler.enQueueCommand(cmdData);
                     clientHandler.safeWrite(clientHandler.mCmdString);

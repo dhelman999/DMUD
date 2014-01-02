@@ -85,6 +85,20 @@ namespace _8th_Circle_Server
             }// else
         }// wear
 
+        // TODO, can this be made generic inside the mob class? 
+        // so I can avoid forgetting to implement this in the future,
+        // it has already happened several times
+        public override void respawn()
+        {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
+            Equipment mob = new Equipment(this);
+            mChildren.Add(mob);
+            mob.mCurrentArea.addRes(mob);
+            mob.mCurrentRoom.addRes(mob);
+            mob.mWorld.addRes(mob);
+        }// respawn
+
     }// class Equipment
 
 }// namespace _8th_Circle_Server

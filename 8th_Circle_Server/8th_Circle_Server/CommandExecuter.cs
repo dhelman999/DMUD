@@ -81,6 +81,7 @@ namespace _8th_Circle_Server
         COMMAND_LOCK,
         COMMAND_UNLOCK,
         COMMAND_DROP,
+        COMMAND_DROPALL,
         COMMAND_SPAWN,
         COMMAND_DESTROY,
         COMMAND_USE,
@@ -324,8 +325,23 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("getall", "ga", 1, 1, grammarType.VERB, gramVerb, commandName.COMMAND_GETALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("getall", "ga", 1, 3, grammarType.VERB, gramVerbPrepPred, commandName.COMMAND_GETALL,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             pt = new Command("drop", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_DROP,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVENTORY);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("dropall", "da", 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_DROPALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -661,14 +677,30 @@ namespace _8th_Circle_Server
                     {
                         clientString = ((Mob)commandQueue[commandIndex]).get(mob, 
                                        ((Preposition)commandQueue[++commandIndex]).prepType,
-                                       (Mob)commandQueue[++commandIndex]);
+                                       (Container)commandQueue[++commandIndex]);
                     }// else if
                     else
                         clientString = "you can't get like that";
                     break;
 
+                case commandName.COMMAND_GETALL:
+                    if (commandQueue.Count == 1)
+                        clientString = mob.getall();
+                    else if (commandQueue.Count == 3)
+                    {
+                        clientString = mob.getall(((Preposition)commandQueue[++commandIndex]).prepType,
+                                       (Container)commandQueue[++commandIndex]);
+                    }// else if
+                    else
+                        clientString = "you can't getall like that";
+                    break;
+
                 case commandName.COMMAND_DROP:
                     clientString = ((Mob)commandQueue[++commandIndex]).drop(mob);
+                    break;
+
+                case commandName.COMMAND_DROPALL:
+                    clientString = mob.dropall();
                     break;
 
                 case commandName.COMMAND_INVENTORY:
@@ -737,7 +769,7 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_SEARCH:
-                    clientString = "you start searching...";
+                    clientString = "you start searching...\n";
                     mob.mActionTimer = 4;
                     mob.mFlagList.Add(mobFlags.FLAG_SEARCHING);
                     Thread searchThread = new Thread(() => searchTask(mob));
@@ -775,6 +807,8 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_SPAWN:
                     try
                     {
+                        // TODO
+                        // Needs to be made more generic and cleaned up
                         int mobID = Int32.Parse((string)commandQueue[++commandIndex]);
                         ArrayList fma = ((Player)mob).mClientHandler.mWorld.mFullMobList;
                         if (mobID < 0 ||
@@ -792,6 +826,17 @@ namespace _8th_Circle_Server
                                 cont.mCurrentArea.addRes(cont);
                                 cont.mCurrentRoom.addRes(cont);
                                 clientString = "spawning " + cont.mName;
+                            }// if
+                            else if (fma[mobID] is Equipment)
+                            {
+                                Equipment eq = new Equipment();
+                                eq = (Equipment)fma[mobID];
+                                ((Player)mob).mClientHandler.mWorld.addRes(eq);
+                                eq.mCurrentArea = ((Player)mob).mClientHandler.mPlayer.mCurrentArea;
+                                eq.mCurrentRoom = ((Player)mob).mClientHandler.mPlayer.mCurrentRoom;
+                                eq.mCurrentArea.addRes(eq);
+                                eq.mCurrentRoom.addRes(eq);
+                                clientString = "spawning " + eq.mName;
                             }// if
                             else if (fma[mobID] is Npc)
                             {
@@ -1261,7 +1306,7 @@ namespace _8th_Circle_Server
                     Thread.Sleep(4000);
                 }// while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
             }// if
-        }// searchTask
+        }// combatTask
 
     }// Class CommandExecuter
 
