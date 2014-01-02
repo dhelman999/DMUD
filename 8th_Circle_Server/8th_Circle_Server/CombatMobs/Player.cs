@@ -5,18 +5,16 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public class Player : Mob
+    public class Player : CombatMob
     {
         // Member Variables
         public ClientHandler mClientHandler;
-        public CombatStats mStats;
 
         public Player(ClientHandler ch) : base()
         {
             mFlagList.Add(mobFlags.FLAG_COMBATABLE);
             mClientHandler = ch;
             mResType = ResType.PLAYER;
-            mStats = new CombatStats();
         }// Constructor
 
         public Player() : base()
@@ -24,7 +22,6 @@ namespace _8th_Circle_Server
             mFlagList.Add(mobFlags.FLAG_COMBATABLE);
             mClientHandler = null;
             mResType = ResType.PLAYER;
-            mStats = new CombatStats();
         }// Constructor
 
         public override string viewed(Mob viewer, Preposition prep)
@@ -74,6 +71,30 @@ namespace _8th_Circle_Server
             return "\n" + mStats.mCurrentHp + "/" + mStats.mMaxHp + " hp\n";
         }// playerString
 
+        public override string wearall()
+        {
+            string clientString = string.Empty;
+            for (int i = 0; i < mInventory.Count; ++i)
+            {
+                if (mInventory[i] is Equipment)
+                    clientString += ((Equipment)mInventory[i]).wear(this) + "\n";
+                
+            }// for
+
+            return clientString;
+        }// wearall
+
+        public override string removeall()
+        {
+            string clientString = string.Empty;
+            for (int i = 0; i < mEQList.Count; ++i)
+            {
+                if (mEQList[i] is Equipment)
+                    clientString += ((Equipment)mEQList[i]).remove(this) + "\n";
+            }// for
+
+            return clientString;
+        }// wearall
     }// Class Player
 
 }// Namespace _8th_Circle_Server

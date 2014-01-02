@@ -23,6 +23,7 @@ namespace _8th_Circle_Server
         FLAG_STORABLE,
         FLAG_USEABLE,
         FLAG_INSPECTABLE,
+        FLAG_WEARABLE,
         FLAG_IDENTIFYABLE,
         FLAG_STEALABLE,
         FLAG_DUPLICATABLE,
@@ -399,6 +400,26 @@ namespace _8th_Circle_Server
         {
             return "you can't fullheal that";
         }// fullheal
+
+        public virtual string wear(Player mob)
+        {
+            return "you can't wear that";
+        }// wear
+
+        public virtual string wearall()
+        {
+            return "you can't wear that";
+        }// wearall
+
+        public virtual string remove(Player mob)
+        {
+            return "you can't remove that";
+        }// wear
+
+        public virtual string removeall()
+        {
+            return "you can't remove that";
+        }// wearall
 
         public virtual string teleport(Mob target)
         {

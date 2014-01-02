@@ -606,6 +606,9 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
+            Equipment rusty_sword = new Equipment((Equipment)mFullMobList[(int)MOBLIST.BASIC_SWORD]);
+            addMob(rusty_sword, gpg_playerStart, newbieArea);
+
             Npc goblin_runt2 = new Npc((Npc)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_6, newbieArea);
 

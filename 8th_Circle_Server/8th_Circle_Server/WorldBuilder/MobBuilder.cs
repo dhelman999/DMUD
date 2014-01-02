@@ -19,6 +19,8 @@ namespace _8th_Circle_Server
         FIRST_CIRCLE,
         BASIC_CHEST,
         SWITCH,
+        BASIC_SWORD,
+
         // NPCs
         GOBLIN_RUNT,
         MAX,
@@ -132,6 +134,25 @@ namespace _8th_Circle_Server
             basic_switch.mCurrentRespawnTime = 30;
             mFullMobList.Add(basic_switch);
 
+            Equipment basic_sword = new Equipment();
+            basic_sword.mDescription = "A rusty old sword, it is barely passable as a weapon";
+            basic_sword.mFlagList.Add(mobFlags.FLAG_GETTABLE);
+            basic_sword.mFlagList.Add(mobFlags.FLAG_DROPPABLE);
+            basic_sword.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
+            basic_sword.mFlagList.Add(mobFlags.FLAG_STORABLE);
+            basic_sword.mFlagList.Add(mobFlags.FLAG_WEARABLE);
+            basic_sword.mName = "Rusty Sword";
+            basic_sword.mWorld = this;
+            basic_sword.mMobId = (int)MOBLIST.BASIC_SWORD;
+            basic_sword.mStartingRespawnTime = 30;
+            basic_sword.mCurrentRespawnTime = 30;
+            basic_sword.mMinDam = 2;
+            basic_sword.mMaxDam = 11;
+            basic_sword.mHitMod = 10;
+            basic_sword.mType = EQType.SLASHING;
+            basic_sword.mSlot = EQSlot.PRIMARY;
+            mFullMobList.Add(basic_sword);
+
             // NPCs start here
             Npc goblin_runt = new Npc();
             goblin_runt.mDescription = "A runt of the goblin litter, truely a wretched creature.";
@@ -224,11 +245,17 @@ namespace _8th_Circle_Server
             Mob mob2 = null;
             Container cont2 = null;
             Npc npc2 = null;
+            Equipment eq = null;
 
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
+            }// if
+            if (mob is Equipment)
+            {
+                eq = new Equipment((Equipment)mob);
+                mob2 = eq;
             }// if
             else if (mob is Npc)
             {

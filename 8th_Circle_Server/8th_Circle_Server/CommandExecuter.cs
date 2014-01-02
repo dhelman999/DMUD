@@ -36,6 +36,7 @@ namespace _8th_Circle_Server
         VALID_INVENTORY = VALID_START,
         VALID_LOCAL,
         VALID_INVLOCAL,
+        VALID_EQUIP,
         VALID_AREA,
         VALID_GLOBAL,
         VALID_END
@@ -74,7 +75,9 @@ namespace _8th_Circle_Server
         COMMAND_OPEN,
         COMMAND_CLOSE,
         COMMAND_GET,
+        COMMAND_GETALL,
         COMMAND_INVENTORY,
+        COMMAND_EQUIPMENT,
         COMMAND_LOCK,
         COMMAND_UNLOCK,
         COMMAND_DROP,
@@ -86,6 +89,10 @@ namespace _8th_Circle_Server
         COMMAND_WHO,
         COMMAND_FULLHEAL,
         COMMAND_TELEPORT,
+        COMMAND_WEAR,
+        COMMAND_WEARALL,
+        COMMAND_REMOVE,
+        COMMAND_REMOVEALL,
         COMMAND_END
     };// commandName
 
@@ -327,6 +334,11 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("equipment", "eq", 2, 1, grammarType.VERB, gramVerb, commandName.COMMAND_EQUIPMENT,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             pt = new Command("lock", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_LOCK,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
@@ -359,6 +371,26 @@ namespace _8th_Circle_Server
 
             pt = new Command("who", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_WHO,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_GLOBAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("wear", null, 2, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_WEAR,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("wearall", "wa", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_WEARALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("remove", null, 3, 2, grammarType.VERB, gramVerbPred, commandName.COMMAND_REMOVE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_EQUIP);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("removeall", "ra", 5, 1, grammarType.VERB, gramVerb, commandName.COMMAND_REMOVEALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_EQUIP);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -640,9 +672,23 @@ namespace _8th_Circle_Server
                     break;
 
                 case commandName.COMMAND_INVENTORY:
-                    clientString += "Inventory:\n";
+                    clientString += "Inventory:\n\n";
+
                     foreach (Mob mob2 in mob.mInventory)
                         clientString += " " + mob2.mName + "\n";
+                    break;
+
+                case commandName.COMMAND_EQUIPMENT:
+                    clientString += "Equipment:\n\n";
+                    player = (Player)mob;
+
+                    for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
+                    {
+                        if (player.mEQList[(int)slot] == null)
+                            clientString += slot + ":\n";
+                        else
+                            clientString += slot.ToString() + ": " + ((Mob)player.mEQList[(int)slot]).mName + "\n";
+                    }// for
                     break;
 
                 case commandName.COMMAND_LOCK:
@@ -655,6 +701,22 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_USE:
                     clientString = ((Mob)commandQueue[++commandIndex]).use(mob);
+                    break;
+
+                case commandName.COMMAND_WEAR:
+                    clientString = ((Mob)commandQueue[++commandIndex]).wear((Player)mob);
+                    break;
+
+                case commandName.COMMAND_WEARALL:
+                    clientString = mob.wearall();
+                    break;
+
+                case commandName.COMMAND_REMOVE:
+                    clientString = ((Mob)commandQueue[++commandIndex]).remove((Player)mob);
+                    break;
+
+                case commandName.COMMAND_REMOVEALL:
+                    clientString = mob.removeall();
                     break;
 
                 case commandName.COMMAND_ATTACK:
@@ -950,6 +1012,8 @@ namespace _8th_Circle_Server
                             targetList.Add(cont.mInventory);
                     }
                 }// if
+                if (validity == validityType.VALID_EQUIP)
+                    targetList.Add(((CombatMob)target).mEQList);
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -1142,9 +1206,27 @@ namespace _8th_Circle_Server
 
                         if (rand.NextDouble() > .25)
                         {
-                            damage = rand.Next(pl.mStats.mBMinDam, pl.mStats.mBMaxDam) +
-                                pl.mStats.mDamMod;
-                            pl.mClientHandler.safeWrite("you hit the " + npc.mName + " for " + damage + " damage");
+                            if(pl.mEQList[(int)EQSlot.PRIMARY] == null)
+                            {
+                                damage = rand.Next(pl.mStats.mBMinDam, pl.mStats.mBMaxDam) +
+                                    pl.mStats.mDamMod;
+                                pl.mClientHandler.safeWrite("you hit the " + npc.mName + " for " + damage + " damage");
+                            }// if
+                            else
+                            {
+                                string damageString = string.Empty;
+                                Equipment weapon = (Equipment)pl.mEQList[(int)EQSlot.PRIMARY];
+
+                                damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) +
+                                    pl.mStats.mDamMod;
+
+                                if (weapon.mType == EQType.SLASHING)
+                                    damageString += "you slash ";
+                                else
+                                    damageString += "you hit ";
+
+                                pl.mClientHandler.safeWrite(damageString + "the " + npc.mName + " for " + damage + " damage");
+                            }
                             if((npc.mStats.mCurrentHp -= damage) <= 0)
                             {
                                 pl.mClientHandler.safeWrite("you have slain the " + npc.mName);

@@ -6,26 +6,21 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    class Npc : Mob
+    class Npc : CombatMob
     {
         public int mStartingActionCounter;
         public int mCurrentActionCounter;
-        public CombatStats mStats;
 
         public Npc() : base()
         {
             mStartingActionCounter = mCurrentActionCounter = 30;
             mResType = ResType.NPC;
-            mStats = new CombatStats();
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public Npc(string newName) : base(newName)
         {
             mStartingActionCounter = mCurrentActionCounter = 30;
             mResType = ResType.NPC;
-            mStats = new CombatStats();
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public Npc(Npc mob) : base(mob)
@@ -33,7 +28,6 @@ namespace _8th_Circle_Server
             mStartingActionCounter = mob.mStartingActionCounter;
             mCurrentActionCounter = mob.mCurrentActionCounter;
             mResType = ResType.NPC;
-            mStats = new CombatStats(mob.mStats);
         }// Copy Constructor
 
         public override string viewed(Mob viewer, Preposition prep)

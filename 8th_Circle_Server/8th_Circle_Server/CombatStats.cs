@@ -35,7 +35,7 @@ namespace _8th_Circle_Server
             this.mBMinDam = cs.mBMinDam;
             this.mBMaxDam = cs.mBMaxDam;
             this.mDamMod = cs.mDamMod;
-        }
+        }// copy Constructors
 
     }// Class CombatMob
 
