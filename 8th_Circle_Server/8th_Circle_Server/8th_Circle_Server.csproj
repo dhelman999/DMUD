@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{408A1176-EB5E-46FE-8BF0-24164B874389}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -51,7 +51,6 @@
     <Compile Include="Handlers\ClientHandler.cs" />
     <Compile Include="CommandExecuter.cs" />
     <Compile Include="Handlers\CommandHandler.cs" />
-    <Compile Include="Handlers\EquipmentHandler.cs" />
     <Compile Include="Handlers\EventHandler.cs" />
     <Compile Include="Mob.cs" />
     <Compile Include="MUDServer.cs" />
