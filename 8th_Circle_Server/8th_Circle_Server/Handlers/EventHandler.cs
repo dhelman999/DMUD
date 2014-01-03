@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    enum EventFlag
+    public enum EventFlag
     {
         EVENT_START,
         EVENT_TELL_PLAYER = EVENT_START,
@@ -17,7 +17,7 @@ namespace _8th_Circle_Server
         EVENT_END
     };// EventFlag
 
-    struct EventData
+    public struct EventData
     {
         public EventFlag eventFlag;
         public Mob trigger;
@@ -90,7 +90,7 @@ namespace _8th_Circle_Server
             }// while
         }// spinWork
 
-        public void enQueueEvent(Object eventData)
+        public void enQueueEvent(EventData eventData)
         {
             lock (mQueueLock)
             {

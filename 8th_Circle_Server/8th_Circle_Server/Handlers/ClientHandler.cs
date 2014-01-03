@@ -26,7 +26,6 @@ namespace _8th_Circle_Server
         public string mCmdString;
         public World mWorld;
         public CommandHandler mCommandHandler;
-        public EventHandler mEventHandler;
 
         private object PlayerLock = new object();  
 
@@ -35,7 +34,6 @@ namespace _8th_Circle_Server
             mPlayer = new Player(this);
             mTcpListener = tcpListener;
             mCommandHandler = world.mCommandHandler;
-            mEventHandler = world.mEventHandler;
             mWorld = world;      
         }// Constructor
 

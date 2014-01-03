@@ -57,7 +57,7 @@ namespace _8th_Circle_Server
 
         public override string fullheal()
         {
-            mStats.mCurrentHp = mStats.mMaxHp;
+            mStats.mCurrentHp = mStats.mBaseMaxHp;
             return "you fully heal " + mName;
         }// fullheal
 
@@ -68,7 +68,7 @@ namespace _8th_Circle_Server
 
         public string playerString()
         {
-            return "\n" + mStats.mCurrentHp + "/" + mStats.mMaxHp + " hp\n";
+            return "\n" + mStats.mCurrentHp + "/" + mStats.mBaseMaxHp + mStats.mMaxHpMod + " hp\n";
         }// playerString
 
         // TODO

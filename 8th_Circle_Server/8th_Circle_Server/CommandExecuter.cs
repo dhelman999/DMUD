@@ -764,8 +764,7 @@ namespace _8th_Circle_Server
                     mob.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
                     target.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
                     ((Player)mob).mStats.mCombatList.Add((Npc)target);
-                    Thread combatThread = new Thread(() => combatTask(mob));
-                    combatThread.Start();
+                    mob.mWorld.mCombatHandler.enQueueCombat((CombatMob)mob);
                     break;
 
                 case commandName.COMMAND_SEARCH:
@@ -917,7 +916,7 @@ namespace _8th_Circle_Server
                         eventData.eventObject = command.predicate1Value;
                         eventData.eventRoom = command.predicate1Value.mCurrentRoom;
                         eventData.validity = command.validity;
-                        ((Player)mob).mClientHandler.mEventHandler.enQueueEvent(eventData);
+                        ((Player)mob).mWorld.mEventHandler.enQueueEvent(eventData);
                     }// if       
                 }// if
             }// else if
@@ -1240,78 +1239,6 @@ namespace _8th_Circle_Server
                 ((Player)mob).mClientHandler.safeWrite(searchResult);
             mob.mFlagList.Remove(mobFlags.FLAG_SEARCHING);
         }// searchTask
-
-        public static void combatTask(Mob mob)
-        {
-            if (mob is Player)
-            {
-                Player pl = (Player)mob;
-                Random rand = new Random();
-
-                while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
-                {
-                    foreach (Npc npc in pl.mStats.mCombatList)
-                    {
-                        int damage = 0;
-
-                        if (rand.NextDouble() > .25)
-                        {
-                            if(pl.mEQList[(int)EQSlot.PRIMARY] == null)
-                            {
-                                damage = rand.Next(pl.mStats.mBMinDam, pl.mStats.mBMaxDam) +
-                                    pl.mStats.mDamMod;
-                                pl.mClientHandler.safeWrite("you hit the " + npc.mName + " for " + damage + " damage");
-                            }// if
-                            else
-                            {
-                                string damageString = string.Empty;
-                                Equipment weapon = (Equipment)pl.mEQList[(int)EQSlot.PRIMARY];
-
-                                damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) +
-                                    pl.mStats.mDamMod;
-
-                                if (weapon.mType == EQType.SLASHING)
-                                    damageString += "you slash ";
-                                else
-                                    damageString += "you hit ";
-
-                                pl.mClientHandler.safeWrite(damageString + "the " + npc.mName + " for " + damage + " damage");
-                            }
-                            if((npc.mStats.mCurrentHp -= damage) <= 0)
-                            {
-                                pl.mClientHandler.safeWrite("you have slain the " + npc.mName);
-                                pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(npc);
-                                npc.destroy();
-                                break;
-                            }
-                        }
-                        else
-                            pl.mClientHandler.safeWrite("you miss " + npc.mName);
-
-                        if (rand.NextDouble() > .25)
-                        {
-                            damage = rand.Next(npc.mStats.mBMinDam, npc.mStats.mBMaxDam) + 
-                                npc.mStats.mDamMod;
-                            pl.mClientHandler.safeWrite(npc.mName + " hits you" + " for " + damage + " damage");
-                            if ((pl.mStats.mCurrentHp -= damage) <= 0)
-                            {
-                                pl.mClientHandler.safeWrite("you have been slain by the " + npc.mName);
-                                pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                npc.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(npc);
-                                break;
-                            }
-                        }
-                        else
-                            pl.mClientHandler.safeWrite(npc.mName + " misses you");
-                    }// foreach (Npc npc in pl.mStats.mCombatList)
-
-                    pl.mClientHandler.safeWrite(pl.playerString());
-                    Thread.Sleep(4000);
-                }// while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
-            }// if
-        }// combatTask
 
     }// Class CommandExecuter
 

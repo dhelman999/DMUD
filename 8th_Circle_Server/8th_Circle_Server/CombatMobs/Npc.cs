@@ -48,9 +48,9 @@ namespace _8th_Circle_Server
 
                 if (viewer is Player)
                 {
-                    if (mStats.mMaxHp > ((Player)viewer).mStats.mCurrentHp)
+                    if (mStats.mBaseMaxHp > ((Player)viewer).mStats.mCurrentHp)
                         clientString += " you look healthier than " + viewer.mName;
-                    else if (mStats.mMaxHp < ((Player)viewer).mStats.mCurrentHp)
+                    else if (mStats.mBaseMaxHp < ((Player)viewer).mStats.mCurrentHp)
                         clientString += viewer.mName + " looks healthier than you";
                     else
                         clientString += "you both appear to have the same level of health";
@@ -123,7 +123,7 @@ namespace _8th_Circle_Server
         {
             mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
-            mStats.mCurrentHp = mStats.mMaxHp;
+            mStats.mCurrentHp = mStats.mBaseMaxHp;
             Npc mob = new Npc(this);
             mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
@@ -133,7 +133,7 @@ namespace _8th_Circle_Server
 
         public override string fullheal()
         {
-            mStats.mCurrentHp = mStats.mMaxHp;
+            mStats.mCurrentHp = mStats.mBaseMaxHp;
             return "you fully heal " + mName;
         }// fullheal
 

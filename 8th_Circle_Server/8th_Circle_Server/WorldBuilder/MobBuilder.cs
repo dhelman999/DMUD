@@ -162,9 +162,9 @@ namespace _8th_Circle_Server
             goblin_runt.mMobId = (int)MOBLIST.GOBLIN_RUNT;
             goblin_runt.mStartingRespawnTime = 30;
             goblin_runt.mCurrentRespawnTime = 30;
-            goblin_runt.mStats.mBMaxDam = 5;
+            goblin_runt.mStats.mBaseMaxDam = 5;
             goblin_runt.mStats.mCurrentHp = 25;
-            goblin_runt.mStats.mMaxHp = 25;
+            goblin_runt.mStats.mBaseMaxHp = 25;
             mFullMobList.Add(goblin_runt);
 
             Npc max = new Npc();

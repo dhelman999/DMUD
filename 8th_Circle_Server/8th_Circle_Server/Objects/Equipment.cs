@@ -12,22 +12,24 @@ namespace _8th_Circle_Server
         public EQType mType;
         public EQSlot mSlot;
         public Useable mUsedby;
+        public int mBaseDamBonus;
+        public int mMaxHpMod;
         public int mHitMod;
         public int mMinDam;
         public int mMaxDam;
         public int mArmor;
         public int mPhysRes;
-        public int mMaxPhysResBoost;
+        public int mMaxPhysRes;
         public int mFireRes;
-        public int mMaxFireResBoost;
+        public int mMaxFireRes;
         public int mColdRes;
-        public int mMaxColdResBoost;
+        public int mMaxColdRes;
         public int mLightningRes;
-        public int mMaxLightningResBoost;
+        public int mMaxLightningRes;
         public int mAcidRes;
-        public int mMaxAcidResBoost;
+        public int mMaxAcidRes;
         public int mForceRes;
-        public int mMaxForceResBoost;
+        public int mMaxForceRes;
         public ArrayList mEffects;
 
         public Equipment() : base()
@@ -46,18 +48,20 @@ namespace _8th_Circle_Server
             mMinDam = eq.mMinDam;
             mMaxDam = eq.mMaxDam;
             mArmor = eq.mArmor;
+            mBaseDamBonus = eq.mBaseDamBonus;
+            mMaxHpMod = eq.mMaxHpMod;
             mPhysRes = eq.mPhysRes;
-            mMaxPhysResBoost = eq.mMaxPhysResBoost;
+            mMaxPhysRes = eq.mMaxPhysRes;
             mFireRes = eq.mFireRes;
-            mMaxFireResBoost = eq.mMaxFireResBoost;
+            mMaxFireRes = eq.mMaxFireRes;
             mColdRes = eq.mColdRes;
-            mMaxColdResBoost = eq.mMaxColdResBoost;
+            mMaxColdRes = eq.mMaxColdRes;
             mLightningRes = eq.mLightningRes;
-            mMaxLightningResBoost = eq.mMaxLightningResBoost;
+            mMaxLightningRes = eq.mMaxLightningRes;
             mAcidRes = eq.mAcidRes;
-            mMaxAcidResBoost = eq.mMaxAcidResBoost;
+            mMaxAcidRes = eq.mMaxAcidRes;
             mForceRes = eq.mForceRes;
-            mMaxForceResBoost = eq.mMaxForceResBoost;
+            mMaxForceRes = eq.mMaxForceRes;
             mEffects = (ArrayList)eq.mEffects.Clone();
         }// copy constructor
 

@@ -23,7 +23,8 @@ namespace _8th_Circle_Server
         // Member Variables
         public CommandHandler mCommandHandler;
         public EventHandler mEventHandler;
-        public AreaHandler mAreaHandler;  
+        public AreaHandler mAreaHandler;
+        public CombatHandler mCombatHandler;
         public ArrayList mAreaList;
         public ArrayList mRoomList; 
         public ArrayList mFullMobList;
@@ -34,12 +35,14 @@ namespace _8th_Circle_Server
             mCommandHandler = new CommandHandler(this);
             mEventHandler = new EventHandler(this);
             mAreaHandler = new AreaHandler(this);
+            mCombatHandler = new CombatHandler(this);
             mAreaList = new ArrayList();
             mRoomList = new ArrayList();
             mFullMobList = new ArrayList();
             mCommandHandler.start();
             mEventHandler.start();
             mAreaHandler.start();
+            mCombatHandler.start();
 
             Area protoArea = new Area(this);
             protoArea.mName = "Proto Area";
