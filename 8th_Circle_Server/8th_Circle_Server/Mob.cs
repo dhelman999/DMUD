@@ -310,11 +310,15 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
             ArrayList targetList = mCurrentRoom.getRes(ResType.OBJECT);
+            int tmpInvCount = 0;
 
             for (int i = 0; i < targetList.Count; ++i)
             {
+                tmpInvCount = mInventory.Count;
+
                 clientString += ((Mob)targetList[i]).get(this);
-                --i;
+                if (tmpInvCount != mInventory.Count)
+                    --i;
             }
 
             return clientString;
@@ -324,14 +328,18 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
             ArrayList targetList = container.mInventory;
+            int tmpInvCount = 0;
 
             for (int i = 0; i < targetList.Count; ++i)
             {
+                tmpInvCount = mInventory.Count;
+
                 // TODO
                 // is --i the best way to do so?  I am okay if it is,
                 // just reexamine and make sure
                 clientString += ((Mob)targetList[i]).get(this, prepType, container);
-                --i;
+                if (tmpInvCount != mInventory.Count)
+                    --i;
             }
 
             return clientString;
@@ -360,11 +368,15 @@ namespace _8th_Circle_Server
         public virtual string dropall()
         {
             string clientString = string.Empty;
+            int tmpInvCount = 0;
 
             for (int i = 0; i < mInventory.Count; ++i)
             {
+                tmpInvCount = mInventory.Count;
+
                 clientString += ((Mob)mInventory[i]).drop(this);
-                --i;
+                if (tmpInvCount != mInventory.Count)
+                    --i;
             }
 
             return clientString;
