@@ -25,49 +25,38 @@ namespace _8th_Circle_Server
 
         public override string viewed(Mob viewer, Preposition prep)
         {
-            bool foundAtOrIn = false;
-            string ret = string.Empty;
+            string clientString = string.Empty;
 
-            foreach (PrepositionType pType in mPrepList)
-            {
-                if (pType == PrepositionType.PREP_AT ||
-                    pType == PrepositionType.PREP_IN)
-                {
-                    foundAtOrIn = true;
-                    break;
-                }// if
-            }// foreach
-
-            if (foundAtOrIn && prep.prepType == PrepositionType.PREP_AT)
+            if (prep.prepType == PrepositionType.PREP_AT &&
+                mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 if(mIsOpen)
-                   ret += mName + " is open\n";
+                    clientString += mName + " is open\n";
                 else
-                   ret += mName + " is closed\n";
+                    clientString += mName + " is closed\n";
             }// if
-            else if (foundAtOrIn && prep.prepType == PrepositionType.PREP_IN)
+            else if (prep.prepType == PrepositionType.PREP_IN &&
+                mPrepList.Contains(PrepositionType.PREP_IN))
             {
                 if (mIsOpen)
                 {
-                    ret += mName + " contains: \n\n";
+                    clientString += mName + " contains: \n\n";
 
                     if (mInventory.Count == 0)
-                        ret += "Empty\n";
+                        clientString += "Empty\n";
                     else
                     {
                         foreach (Mob mob in mInventory)
-                            ret += mob.mName + "\n";
+                            clientString += mob.mName + "\n";
                     }// else
                 }// if
                 else
-                {
-                    ret += mName + " is closed, you cannot look inside\n";
-                }// else
+                    clientString += mName + " is closed, you cannot look inside\n";
             }// if
             else
-                ret += "You can't look like that";
+                clientString += "You can't look like that\n";
 
-            return ret;
+            return clientString;
         }// viewed
 
         public override string open(Mob mob)
@@ -77,14 +66,14 @@ namespace _8th_Circle_Server
             if(mFlagList.Contains(mobFlags.FLAG_OPENABLE))
             {
                 if(mIsOpen)
-                    ret = mName + " is already open";
+                    ret = mName + " is already open\n";
                 else if (mFlagList.Contains(mobFlags.FLAG_LOCKED))
                 {
-                    return mName + " is locked";
+                    return mName + " is locked\n";
                 }// else
                 else
                 {
-                    ret = "You open the " + mName;
+                    ret = "You open the " + mName + "\n";
                     mIsOpen = true;
 
                     if (mParent != null)
@@ -102,10 +91,10 @@ namespace _8th_Circle_Server
             if (mFlagList.Contains(mobFlags.FLAG_CLOSEABLE))
             {
                 if (!mIsOpen)
-                    ret = mName + " is already closed";
+                    ret = mName + " is already closed\n";
                 else
                 {
-                    ret = "You close the " + mName;
+                    ret = "You close the " + mName + "\n";
                     mIsOpen = false;
 
                     if (mParent != null)
@@ -130,7 +119,7 @@ namespace _8th_Circle_Server
                 if (mFlagList.Contains(mobFlags.FLAG_LOCKABLE))
                 {
                     if (mIsOpen)
-                        return "you cannot lock " + mName + ", it is open!";
+                        return "you cannot lock " + mName + ", it is open!\n";
 
                     if (mFlagList.Contains(mobFlags.FLAG_UNLOCKED))
                     {
@@ -139,16 +128,16 @@ namespace _8th_Circle_Server
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 
-                        return "you lock " + mName;
+                        return "you lock " + mName + "\n";
                     }// if
                     else
-                        return mName + " is not unlocked";
+                        return mName + " is not unlocked\n";
                 }// if
                 else
-                    return "you can't lock " + mName;
+                    return "you can't lock " + mName + "\n";
             }// if
             else
-                return "you don't have the right key to lock " + mName;
+                return "you don't have the right key to lock " + mName + "\n";
         }// lck
 
         public override string unlock(Mob mob)
@@ -163,7 +152,7 @@ namespace _8th_Circle_Server
             if (foundKey)
             {
                 if (mIsOpen)
-                    return "you cannot unlock " + mName + ", it is open!";
+                    return "you cannot unlock " + mName + ", it is open!\n";
 
                 if (mFlagList.Contains(mobFlags.FLAG_UNLOCKABLE))
                 {
@@ -174,16 +163,16 @@ namespace _8th_Circle_Server
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 
-                        return "you unlock " + mName;
+                        return "you unlock " + mName + "\n";
                     }// if
                     else
-                        return mName + " is not locked";
+                        return mName + " is not locked\n";
                 }// if
                 else
-                    return "you can't unlock " + mName;
+                    return "you can't unlock " + mName + "\n";
             }// if
             else
-                return "you don't have the right key to unlock " + mName;
+                return "you don't have the right key to unlock " + mName + "\n";
         }// unlock
 
         public override void respawn()

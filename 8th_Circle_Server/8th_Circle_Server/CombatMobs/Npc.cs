@@ -55,7 +55,7 @@ namespace _8th_Circle_Server
                     else
                         clientString += "you both appear to have the same level of health";
                 }
-                return "\n" + mDescription;
+                return "\n" + mDescription + "\n";
             }
             else
                 return "You can't look like that";
@@ -76,7 +76,7 @@ namespace _8th_Circle_Server
                 {
                     foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
                     {
-                        player.mClientHandler.safeWrite(mName + " purrs softly");
+                        player.mClientHandler.safeWrite(mName + " purrs softly\n");
                     }// foreach
                     ArrayList commandQueue = new ArrayList();
                     Command com = new Command();
@@ -109,7 +109,7 @@ namespace _8th_Circle_Server
                     commandQueue.Add(com);
                     foreach (Player player in mCurrentRoom.getRes(ResType.PLAYER))
                     {
-                        player.mClientHandler.safeWrite(mName + " scampers off");
+                        player.mClientHandler.safeWrite(mName + " scampers off\n");
                     }// foreach
                     mCurrentArea.mCommandExecuter.execute(commandQueue, this);
                 }// if
@@ -134,7 +134,7 @@ namespace _8th_Circle_Server
         public override string fullheal()
         {
             mStats.mCurrentHp = mStats.mBaseMaxHp;
-            return "you fully heal " + mName;
+            return "you fully heal " + mName + "\n";
         }// fullheal
 
         private void addExits(ArrayList commandQueue)

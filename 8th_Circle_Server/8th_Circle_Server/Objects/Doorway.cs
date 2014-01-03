@@ -54,11 +54,11 @@ namespace _8th_Circle_Server
         public override string open(Mob mob)
         {
             if (mIsLocked)
-                return mob.mCurrentRoom.getDoorString(this) + " is locked";
+                return mob.mCurrentRoom.getDoorString(this) + " is locked\n";
             if (mIsOpen)
-                return mob.mCurrentRoom.getDoorString(this) + " is already open";
+                return mob.mCurrentRoom.getDoorString(this) + " is already open\n";
             if (mFlagList.Contains(mobFlags.FLAG_HIDDEN))
-                return "you can't find that";
+                return "you can't find that\n";
 
             else
             {
@@ -67,21 +67,21 @@ namespace _8th_Circle_Server
                 {
                     if (mRoomList[i] != null)
                         foreach (Player pl in mRoomList[i].getRes(ResType.PLAYER))
-                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens");
+                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens\n");
                 }// for
 
-                return "you open " + mob.mCurrentRoom.getDoorString(this);
+                return "you open " + mob.mCurrentRoom.getDoorString(this) + "\n";
             }// else
         }// open
 
         public override string close(Mob mob)
         {
             if (mIsLocked)
-                return mob.mCurrentRoom.getDoorString(this) + " is locked";
+                return mob.mCurrentRoom.getDoorString(this) + " is locked\n";
             if (!mIsOpen)
-                return mob.mCurrentRoom.getDoorString(this) + " is already closed";
+                return mob.mCurrentRoom.getDoorString(this) + " is already closed\n";
             if (mFlagList.Contains(mobFlags.FLAG_HIDDEN))
-                return "you can't find that";
+                return "you can't find that\n";
 
             else
             {
@@ -90,10 +90,10 @@ namespace _8th_Circle_Server
                 {
                     if (mRoomList[i] != null)
                         foreach (Player pl in mRoomList[i].getRes(ResType.PLAYER))
-                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes");
+                            pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes\n");
                 }// for
 
-                return "you close " + mob.mCurrentRoom.getDoorString(this);
+                return "you close " + mob.mCurrentRoom.getDoorString(this) + "\n";
             }// else
         }// close
 
@@ -156,7 +156,7 @@ namespace _8th_Circle_Server
                     break;
 
                 default:
-                    Console.WriteLine("Something went wrong with " + mName);
+                    Console.WriteLine("Something went wrong with " + mName + "\n");
                     break;
             }// switch
 

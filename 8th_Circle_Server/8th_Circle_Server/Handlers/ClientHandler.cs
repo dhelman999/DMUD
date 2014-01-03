@@ -150,7 +150,7 @@ namespace _8th_Circle_Server
 
                     cmdData.command = clientHandler.mCmdString;
                     clientHandler.mCommandHandler.enQueueCommand(cmdData);
-                    clientHandler.safeWrite(clientHandler.mCmdString);
+                    clientHandler.safeWrite(clientHandler.mCmdString + "\n");
                 }// catch
             }// while
         }// ClientResponder

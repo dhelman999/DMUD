@@ -169,9 +169,7 @@ namespace _8th_Circle_Server
 
             // Add new references
             newRoom.addRes(this);
-            mAreaLoc[0] = newRoom.mAreaLoc[0];
-            mAreaLoc[1] = newRoom.mAreaLoc[1];
-            mAreaLoc[2] = newRoom.mAreaLoc[2];
+            mAreaLoc = newRoom.mAreaLoc;
             mCurrentRoom = newRoom;
 
             return mCurrentRoom.exitString();
@@ -184,17 +182,8 @@ namespace _8th_Circle_Server
 
         public virtual string viewed(Mob viewer, Preposition prep)
         {
-            bool foundAt = false;
-            foreach (PrepositionType pType in mPrepList)
-            {
-                if (pType == PrepositionType.PREP_AT)
-                {
-                    foundAt = true;
-                    break;
-                }// if
-            }// foreach
-
-            if (foundAt && prep.prepType == PrepositionType.PREP_AT)
+            if (prep.prepType == PrepositionType.PREP_AT &&
+                mPrepList.Contains(PrepositionType.PREP_AT))
                 return mDescription;
             else
                 return "You can't look like that\n";
@@ -384,22 +373,22 @@ namespace _8th_Circle_Server
 
         public virtual string open(Mob mob)
         {
-            return "You can't open that";
+            return "You can't open that\n";
         }// open
 
         public virtual string close(Mob mob)
         {
-            return "You can't close that";
+            return "You can't close that\n";
         }// close
 
         public virtual string lck(Mob mob)
         {
-            return "You can't lock that";
+            return "You can't lock that\n";
         }// lck
 
         public virtual string unlock(Mob mob)
         {
-            return "You can't unlock that";
+            return "You can't unlock that\n";
         }// unlock
 
         public virtual string use(Mob mob)
@@ -408,9 +397,9 @@ namespace _8th_Circle_Server
             // end of command processing
             if (mFlagList.Contains(mobFlags.FLAG_USEABLE) &&
                 mEventList.Count > 0)
-                return "You use the " + mName;
+                return "You use the " + mName + "\n";
             else
-                return "You can't use that";
+                return "You can't use that\n";
         }// unlock
 
         public virtual string destroy()
@@ -427,7 +416,7 @@ namespace _8th_Circle_Server
                 mParent.mIsRespawning = true;
             }
             
-            return "destroying " + mName;
+            return "destroying " + mName + "\n";
         }// destroy
 
         public virtual void respawn()
@@ -448,37 +437,37 @@ namespace _8th_Circle_Server
 
         public virtual string lck()
         {
-            return "you can't lock that";
+            return "you can't lock that\n";
         }// lck
 
         public virtual string unlock()
         {
-            return "you can't unlock that";
+            return "you can't unlock that\n";
         }// unlock
 
         public virtual string fullheal()
         {
-            return "you can't fullheal that";
+            return "you can't fullheal that\n";
         }// fullheal
 
         public virtual string wear(Player mob)
         {
-            return "you can't wear that";
+            return "you can't wear that\n";
         }// wear
 
         public virtual string wearall()
         {
-            return "you can't wear that";
+            return "you can't wear that\n";
         }// wearall
 
         public virtual string remove(Player mob)
         {
-            return "you can't remove that";
+            return "you can't remove that\n";
         }// wear
 
         public virtual string removeall()
         {
-            return "you can't remove that";
+            return "you can't remove that\n";
         }// wearall
 
         public virtual string teleport(Mob target)
@@ -517,7 +506,7 @@ namespace _8th_Circle_Server
             if (!found)
                 searchString = "you find nothing";
 
-            return searchString;
+            return searchString + "\n";
         }// search
 
         public static Direction DirStrToEnum(string dirStr)

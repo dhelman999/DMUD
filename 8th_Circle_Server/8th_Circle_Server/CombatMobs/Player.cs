@@ -49,26 +49,26 @@ namespace _8th_Circle_Server
                     else
                         clientString += "you both appear to have the same level of health";
                 }// if
-                return clientString + "\n" + mDescription;
+                return clientString + "\n" + mDescription + "\n";
             }// if
             else
-                return "You can't look like that";
+                return "You can't look like that\n";
         }// viewed
 
         public override string fullheal()
         {
             mStats.mCurrentHp = mStats.mBaseMaxHp;
-            return "you fully heal " + mName;
+            return "you fully heal " + mName + "\n";
         }// fullheal
 
         public override string destroy()
         {
-            return "You can't destroy a player!";
+            return "You can't destroy a player!\n";
         }// destroy
 
         public string playerString()
         {
-            return "\n" + mStats.mCurrentHp + "/" + mStats.mBaseMaxHp + mStats.mMaxHpMod + " hp\n";
+            return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp\n";
         }// playerString
 
         // TODO
