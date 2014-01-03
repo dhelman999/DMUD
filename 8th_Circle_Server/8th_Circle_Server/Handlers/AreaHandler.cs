@@ -104,9 +104,7 @@ namespace _8th_Circle_Server
                         {
                             for (int j = 0; j < mob.mChildren.Count; ++j)
                             {
-                                Mob child = (Mob)mob.mChildren[j];
-                                child.destroy();
-                                mob.mChildren.Remove(child);
+                                ((Mob)mob.mChildren[j]).destroy();
                                 --j;
                             }
 
@@ -115,7 +113,6 @@ namespace _8th_Circle_Server
                         }
                     }
                 }// for
-
 
                 if ((area.mCurrentRespawnTimer -= TICKTIME) <= 0)
                 {
