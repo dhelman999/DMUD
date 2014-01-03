@@ -32,30 +32,21 @@ namespace _8th_Circle_Server
 
         public override string viewed(Mob viewer, Preposition prep)
         {
-            bool foundAt = false;
-            foreach (PrepositionType pType in mPrepList)
-            {
-                if (pType == PrepositionType.PREP_AT)
-                {
-                    foundAt = true;
-                    break;
-                }// if
-            }// foreach
-
-            if (foundAt && prep.prepType == PrepositionType.PREP_AT)
+            if (prep.prepType == PrepositionType.PREP_AT &&
+                mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 string clientString = string.Empty;
 
                 if (viewer is Player)
                 {
-                    if (mStats.mBaseMaxHp > ((Player)viewer).mStats.mCurrentHp)
-                        clientString += " you look healthier than " + viewer.mName;
-                    else if (mStats.mBaseMaxHp < ((Player)viewer).mStats.mCurrentHp)
-                        clientString += viewer.mName + " looks healthier than you";
+                    if (mStats.mCurrentHp > ((Player)viewer).mStats.mCurrentHp)
+                        clientString += mName + " looks healthier than you";
+                    else if (mStats.mCurrentHp < ((Player)viewer).mStats.mCurrentHp)
+                        clientString += "you look healthier than " + mName;
                     else
                         clientString += "you both appear to have the same level of health";
                 }
-                return "\n" + mDescription + "\n";
+                return clientString + "\n" + mDescription + "\n";
             }
             else
                 return "You can't look like that";

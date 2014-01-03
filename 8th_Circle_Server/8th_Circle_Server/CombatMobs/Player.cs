@@ -26,33 +26,24 @@ namespace _8th_Circle_Server
 
         public override string viewed(Mob viewer, Preposition prep)
         {
-            bool foundAt = false;
-            foreach (PrepositionType pType in mPrepList)
-            {
-                if (pType == PrepositionType.PREP_AT)
-                {
-                    foundAt = true;
-                    break;
-                }// if
-            }// foreach
-
-            if (foundAt && prep.prepType == PrepositionType.PREP_AT)
+            if (prep.prepType == PrepositionType.PREP_AT &&
+                mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 string clientString = string.Empty;
 
                 if (viewer is Player)
                 {
                     if (mStats.mCurrentHp > ((Player)viewer).mStats.mCurrentHp)
-                        clientString += " you look healthier than " + viewer.mName;
+                        clientString += mName + " looks healthier than you";
                     else if (mStats.mCurrentHp < ((Player)viewer).mStats.mCurrentHp)
-                        clientString += viewer.mName + " looks healthier than you";
+                        clientString += "you look healthier than " + mName;
                     else
                         clientString += "you both appear to have the same level of health";
-                }// if
+                }
                 return clientString + "\n" + mDescription + "\n";
-            }// if
+            }
             else
-                return "You can't look like that\n";
+                return "You can't look like that";
         }// viewed
 
         public override string fullheal()
