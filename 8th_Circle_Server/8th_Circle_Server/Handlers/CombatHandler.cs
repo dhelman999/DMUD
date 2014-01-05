@@ -65,83 +65,186 @@ namespace _8th_Circle_Server
             while (mCombatQueue.Count > 0)
             {
                 CombatMob mob = (CombatMob)mCombatQueue.Dequeue();
-                Thread combatThread = new Thread(() => combatTask(mob));
+                Thread combatThread = new Thread(() => combatTask(this, mob));
                 combatThread.Start();
             }// while
                 
         }// processCombat
 
-        public static void combatTask(CombatMob mob)
+        public static void combatTask(CombatHandler ch, CombatMob attacker)
         {
-            if (mob is Player)
+            ArrayList combatList = attacker.mStats.mCombatList;
+
+            while (combatList.Count > 0)
             {
-                Player pl = (Player)mob;
-                Random rand = new Random();
+                CombatMob target = (CombatMob)combatList[0];
+                ch.attack(attacker, target);
 
-                while (pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
+                if (ch.checkDeath(attacker, target))
                 {
-                    foreach (Npc npc in pl.mStats.mCombatList)
+                    if (combatList.Count == 0)
                     {
-                        int damage = 0;
+                        attacker.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
+                        target.mStats.mCombatList.Clear();
+                        return;
+                    }// if
+                }// if
 
-                        if (rand.NextDouble() > .25)
+                for (int i = 0; i < combatList.Count; ++i)
+                {
+                    target = (CombatMob)combatList[i];
+                    ch.attack(target, attacker);
+
+                    if (ch.checkDeath(target, attacker))
+                    {
+                        for (int j = 0; j < combatList.Count; ++j)
                         {
-                            if (pl.mEQList[(int)EQSlot.PRIMARY] == null)
-                            {
-                                damage = rand.Next(pl.mStats.mBaseMinDam, pl.mStats.mBaseMaxDam) +
-                                    pl.mStats.mBaseDamBonus;
-                                pl.mClientHandler.safeWrite("you hit the " + npc.mName + " for " + damage + " damage");
-                            }// if
-                            else
-                            {
-                                string damageString = string.Empty;
-                                Equipment weapon = (Equipment)pl.mEQList[(int)EQSlot.PRIMARY];
-
-                                damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) +
-                                    pl.mStats.mBaseDamBonus;
-
-                                if (weapon.mType == EQType.SLASHING)
-                                    damageString += "you slash ";
-                                else
-                                    damageString += "you hit ";
-
-                                pl.mClientHandler.safeWrite(damageString + "the " + npc.mName + " for " + damage + " damage");
-                            }
-                            if ((npc.mStats.mCurrentHp -= damage) <= 0)
-                            {
-                                pl.mClientHandler.safeWrite("you have slain the " + npc.mName);
-                                pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(npc);
-                                npc.destroy();
-                                break;
-                            }
+                            target = (CombatMob)combatList[j];
+                            target.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);  
                         }
-                        else
-                            pl.mClientHandler.safeWrite("you miss " + npc.mName);
+                        attacker.mStats.mCombatList.Clear();
+                        attacker.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
+                        if (attacker is Player)
+                            ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
+                        return;
+                    }// if
+                }// for
 
-                        if (rand.NextDouble() > .25)
-                        {
-                            damage = rand.Next(npc.mStats.mBaseMinDam, npc.mStats.mBaseMaxDam) +
-                                npc.mStats.mBaseDamBonus;
-                            pl.mClientHandler.safeWrite(npc.mName + " hits you" + " for " + damage + " damage");
-                            if ((pl.mStats.mCurrentHp -= damage) <= 0)
-                            {
-                                pl.mClientHandler.safeWrite("you have been slain by the " + npc.mName);
-                                pl.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                npc.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
-                                pl.mStats.mCombatList.Remove(npc);
-                                break;
-                            }
-                        }
-                        else
-                            pl.mClientHandler.safeWrite(npc.mName + " misses you");
-                    }// foreach (Npc npc in pl.mStats.mCombatList)
-
-                    pl.mClientHandler.safeWrite(pl.playerString());
-                    Thread.Sleep(4000);
-                }// while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
-            }// if
+                if (attacker is Player)
+                    ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
+                Thread.Sleep(4000);
+            }// while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
         }// combatTask
+
+        public void attack(CombatMob attacker, CombatMob target)
+        {
+            Player pl = null;
+            if (attacker is Player)
+                pl = (Player)attacker;
+            Random rand = new Random();
+            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
+                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            bool isCrit = false;
+            bool isHit = false;
+            double attackRoll = rand.NextDouble();
+
+            if (attackRoll >= .95)
+                isCrit = true;
+            else if (attackRoll >= (1-(hitChance/100)))
+                isHit = true;
+            
+            if (isHit | isCrit)
+            {
+                Equipment weapon = null;
+
+                if ((Equipment)attacker.mEQList[(int)EQSlot.PRIMARY] != null)
+                    weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
+                
+                processHit(attacker, target, weapon, isCrit);
+            }
+            else
+                processMiss(attacker, target);
+        }// attack
+
+        private string damageToString(EQType type)
+        {
+            switch (type)
+            {
+                case EQType.SLASHING:
+                    return "slash";
+
+                case EQType.PIERCING:
+                    return "pierce";
+
+                case EQType.BLUDGEONING:
+                    return "smash";
+
+                default:
+                    return "hit";
+            }// switch
+        }// damageToSring
+
+        private void processHit(CombatMob attacker, CombatMob target, Equipment weapon, bool isCrit)
+        {
+            string damageString = string.Empty;
+            double damage;
+            Random rand = new Random();
+
+            if (weapon != null)
+                damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mDamBonusMod;
+            else
+                damage = rand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam)
+                    + attacker.mStats.mBaseDamBonus;
+
+            if (isCrit)
+                damage *= 1.5;
+
+            if(weapon != null)
+                damage *= (1 - ((double)target.mResistances[(int)weapon.mDamType] / 100));
+            else
+                damage *= (1 - ((double)target.mResistances[(int)DamageType.PHYSICAL] / 100));
+
+            if (damage == 0)
+                damage = 1;
+
+            target.mStats.mCurrentHp -= (int)damage;
+
+            if (attacker is Player)
+            {
+                if (isCrit && weapon != null)
+                    damageString += "your " + damageToString(weapon.mType) + " critically hits the " +
+                       target.mName + " for " + (int)damage + " damage";
+                else if (isCrit && weapon == null)
+                    damageString += "you critically hit the " +
+                       target.mName + " for " + (int)damage + " damage";
+                else if (weapon != null)
+                    damageString += "you " + damageToString(weapon.mType) + " the " + target.mName +
+                        " for " + (int)damage + " damage";
+                else
+                    damageString += "you hit the " + target.mName + " for "
+                        + (int)damage + " damage";
+
+                ((Player)attacker).mClientHandler.safeWrite(damageString);
+            }// if
+            if (target is Player)
+            {
+                damageString = string.Empty;
+                if (isCrit)
+                    damageString += attacker.mName + " critically hits you for " +
+                        (int)damage + " damage";
+                else
+                    damageString += attacker.mName + " hits you for " +
+                        (int)damage + " damage";
+
+                ((Player)target).mClientHandler.safeWrite(damageString);
+            }// if
+        }// processHit
+
+        private void processMiss(CombatMob attacker, CombatMob target)
+        {
+            if (attacker is Player)
+                ((Player)attacker).mClientHandler.safeWrite("you miss the " + target.mName);
+            if (target is Player)
+                ((Player)target).mClientHandler.safeWrite(attacker.mName + " misses you");
+        }// processMiss
+
+        private bool checkDeath(CombatMob attacker, CombatMob target)
+        {
+            if (target.mStats.mCurrentHp <= 0)
+            {
+                attacker.mStats.mCombatList.Remove(target);
+                if (attacker is Player)
+                {
+                    ((Player)attacker).mClientHandler.safeWrite("you have slain the " + target.mName);
+                    target.slain(attacker);
+                }
+                if(target is Player)
+                    ((Player)target).mClientHandler.safeWrite(target.slain(attacker));
+
+                return true;
+            }// if
+            return false;
+        }// checkDeath
 
     }// Class CombatHandler
 

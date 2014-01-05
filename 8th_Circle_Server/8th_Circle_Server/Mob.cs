@@ -470,6 +470,11 @@ namespace _8th_Circle_Server
             return "you can't remove that\n";
         }// wearall
 
+        public virtual string slain(Mob mob)
+        {
+            return destroy();
+        }// slain
+
         public virtual string teleport(Mob target)
         {
             return changeRoom(target.mCurrentRoom);

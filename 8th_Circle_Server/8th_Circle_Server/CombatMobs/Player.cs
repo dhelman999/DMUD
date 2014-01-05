@@ -95,6 +95,12 @@ namespace _8th_Circle_Server
 
             return clientString;
         }// wearall
+
+        public override string slain(Mob mob)
+        {
+            return "you have been slain by " + mob.mName;
+        }// slain
+
     }// Class Player
 
 }// Namespace _8th_Circle_Server

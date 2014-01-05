@@ -10,6 +10,7 @@ namespace _8th_Circle_Server
     {
         public int mLevel;
         public EQType mType;
+        public DamageType mDamType;
         public EQSlot mSlot;
         public Useable mUsedby;
         public int mBaseDamBonus;
@@ -36,6 +37,7 @@ namespace _8th_Circle_Server
         {
             mLevel = 1;
             mEffects = new ArrayList();
+            mDamType = DamageType.PHYSICAL;
         }// constructor
 
         public Equipment(Equipment eq) : base(eq)
@@ -62,6 +64,7 @@ namespace _8th_Circle_Server
             mMaxAcidRes = eq.mMaxAcidRes;
             mForceRes = eq.mForceRes;
             mMaxForceRes = eq.mMaxForceRes;
+            mDamType = DamageType.PHYSICAL;
             mEffects = (ArrayList)eq.mEffects.Clone();
         }// copy constructor
 

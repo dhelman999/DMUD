@@ -8,9 +8,6 @@ namespace _8th_Circle_Server
 {
     public class CombatStats
     {
-        // TODO
-        // Figure all these out, with attributes and fill
-        // in the copy constructor for it.
         public ArrayList mCombatList;
         public int mLevel;
         public int mCurrentHp;
@@ -24,6 +21,8 @@ namespace _8th_Circle_Server
         public int mDamBonusMod;
         public int mBaseHit;
         public int mHitMod;
+        public int mBaseEvade;
+        public int mEvadeMod;
         public int mBaseArmor;
         public int mArmorMod;
         public int mBasePhysRes;
@@ -62,19 +61,57 @@ namespace _8th_Circle_Server
             mCurrentHp = mBaseMaxHp = 50;
             mBaseMinDam = 1;
             mBaseMaxDam = 10;
-            mBaseDamBonus = 1;
+            mBaseHit = 50;
         }// Constructor
 
         public CombatStats(CombatStats cs)
         {
-            this.mCombatList = (ArrayList)cs.mCombatList.Clone();
-            this.mLevel = cs.mLevel;
-            this.mCurrentHp = cs.mCurrentHp;
-            this.mBaseMaxHp = cs.mBaseMaxHp;
-            this.mBaseMinDam = cs.mBaseMinDam;
-            this.mBaseMaxDam = cs.mBaseMaxDam;
-            this.mBaseDamBonus = cs.mBaseDamBonus;
-        }// copy Constructors
+            mCombatList = (ArrayList)cs.mCombatList.Clone();
+            mLevel = cs.mLevel;
+            mCurrentHp = cs.mCurrentHp;
+            mBaseMaxHp = cs.mBaseMaxHp;
+            mMaxHpMod = cs.mMaxHpMod;
+            mBaseMinDam = cs.mBaseMinDam;
+            mMinDamMod = cs.mMinDamMod;
+            mBaseMaxDam = cs.mBaseMaxDam;
+            mMaxDamMod = cs.mMaxDamMod;
+            mBaseDamBonus = cs.mBaseDamBonus;
+            mDamBonusMod = cs.mDamBonusMod;
+            mBaseHit = cs.mBaseHit;
+            mHitMod = cs.mHitMod;
+            mBaseEvade = cs.mBaseEvade;
+            mEvadeMod = cs.mEvadeMod;
+            mBaseArmor = cs.mBaseArmor;
+            mArmorMod = cs.mArmorMod;
+            mBasePhysRes = cs.mBasePhysRes;
+            mPhysResMod = cs.mPhysResMod;
+            mBaseMaxPhysResBoost = cs.mBaseMaxPhysResBoost;
+            mMaxPhysResBoostMod = cs.mMaxPhysResBoostMod;
+            mBaseFireRes = cs.mBaseFireRes;
+            mFireResMod = cs.mFireResMod;
+            mBaseMaxFireResBoost = cs.mBaseMaxFireResBoost;
+            mMaxFireResBoostMod = cs.mMaxFireResBoostMod;
+            mBaseColdRes = cs.mBaseColdRes;
+            mColdResMod = cs.mColdResMod;
+            mBaseMaxColdResBoost = cs.mBaseMaxColdResBoost;
+            mMaxColdResBoostMod = cs.mMaxColdResBoostMod;
+            mBaseLightningRes = cs.mBaseLightningRes;
+            mLightningResMod = cs.mLightningResMod;
+            mBaseMaxLightningResBoost = cs.mBaseMaxLightningResBoost;
+            mMaxLightningResBoostMod = cs.mMaxLightningResBoostMod;
+            mBaseAcidRes = cs.mBaseAcidRes;
+            mAcidResMod = cs.mAcidResMod;
+            mBaseMaxAcidResBoost = cs.mBaseMaxAcidResBoost;
+            mMaxAcidResBoostMod = cs.mMaxAcidResBoostMod;
+            mBaseForceRes = cs.mBaseForceRes;
+            mForceResMod = cs.mForceResMod;
+            mBaseMaxForceResBoost = cs.mBaseMaxForceResBoost;
+            mMaxForceResBoostMod = cs.mMaxForceResBoostMod;
+            mBaseMagicRes = cs.mBaseMagicRes;
+            mMagicResMod = cs.mMagicResMod;
+            mBaseMaxMagicResBoost = cs.mBaseMaxMagicResBoost;
+            mMaxMagicResBoostMod = cs.mMaxMagicResBoostMod;
+        }// Copy Constructor
 
     }// Class CombatMob
 
