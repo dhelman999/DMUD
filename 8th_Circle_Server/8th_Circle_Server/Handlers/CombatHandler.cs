@@ -173,7 +173,7 @@ namespace _8th_Circle_Server
             else if (dam <= .25)
                 return "EVICERATES";
             else if (dam <= .3)
-                return "DISEMBOWLES";
+                return "DISEMBOWELS";
             else if (dam < 1)
                 return "*OBLITERATES*";
             else
