@@ -95,6 +95,39 @@ namespace _8th_Circle_Server
             mResistances[(int)DamageType.MAGICAL] = ((double)mStats.mBaseMagicRes + mStats.mMagicResMod / 10);
             mResistances[(int)DamageType.PURE] = 0;
         }// fillResistances
+
+        public override string viewed(Mob mob, Preposition prep)
+        {
+            CombatMob viewer = null;
+            string clientString = null;
+
+            if (mob is CombatMob)
+                viewer = (CombatMob)mob;
+
+            if (prep.prepType == PrepositionType.PREP_AT &&
+                mPrepList.Contains(PrepositionType.PREP_AT))
+            {
+                if (viewer != null)
+                {
+                    double viewerHp = viewer.mStats.mBaseMaxHp + viewer.mStats.mMaxHpMod;
+                    double targetHp = mStats.mBaseMaxHp + mStats.mMaxHpMod;
+                    double lowEnd = viewerHp - (viewerHp*.1);
+                    double highEnd = viewerHp + (viewerHp*.1);
+
+                    if (targetHp >= highEnd)
+                        clientString += mName + " looks stronger than you";
+                    else if (targetHp <= lowEnd)
+                        clientString += mName + " looks weaker than you";
+                    else
+                        clientString += "you both appear equal in strength";
+                }// if
+
+                return clientString + "\n" + mDescription + "\n";
+            }// if
+            else
+                return "You can't look like that";
+        }// viewed
+
     }// class CombatMob
 
 }// namespace _8th_Circle_Server

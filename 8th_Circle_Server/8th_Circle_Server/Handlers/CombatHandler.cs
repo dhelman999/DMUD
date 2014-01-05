@@ -207,11 +207,13 @@ namespace _8th_Circle_Server
 
             if (attacker is Player)
             {
+                int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+
                 if (!isCrit)
-                    damageString += "your attack " + damageToString(target.mStats.mBaseMaxHp, damage) +
+                    damageString += "your attack " + damageToString(maxHp, damage) +
                         " the " + target.mName + " for " + (int)damage + " damage";
                 else
-                    damageString += "your critical hit " + damageToString(target.mStats.mBaseMaxHp, damage) +
+                    damageString += "your critical hit " + damageToString(maxHp, damage) +
                         " the " + target.mName + " for " + (int)damage + " damage";
 
                 ((Player)attacker).mClientHandler.safeWrite(damageString);
