@@ -595,10 +595,6 @@ namespace _8th_Circle_Server
             Player player;
             string clientString = string.Empty;
 
-            
-            if(mob.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
-                return "you can't do that while in combat!";
-
             // Process the commandList by moving a index through the commandQueue
             // Each command will handle the various predicates given to it
             switch (currentCommand.commandName)
@@ -754,15 +750,15 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_ATTACK:
                     Mob target = (Mob)commandQueue[++commandIndex];
 
-                    if (!target.mFlagList.Contains(mobFlags.FLAG_COMBATABLE) ||
+                    if (!target.mFlagList.Contains(MobFlags.FLAG_COMBATABLE) ||
                         !(target is Npc))
                     {
                         clientString = "you can't attack that";
                         break;
                     }
 
-                    mob.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
-                    target.mFlagList.Add(mobFlags.FLAG_INCOMBAT);
+                    mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                    target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                     ((Player)mob).mStats.mCombatList.Add((Npc)target);
                     mob.mWorld.mCombatHandler.enQueueCombat((CombatMob)mob);
                     break;
@@ -770,7 +766,7 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_SEARCH:
                     clientString = "you start searching...\n";
                     mob.mActionTimer = 4;
-                    mob.mFlagList.Add(mobFlags.FLAG_SEARCHING);
+                    mob.mFlagList.Add(MobFlags.FLAG_SEARCHING);
                     Thread searchThread = new Thread(() => searchTask(mob));
                     searchThread.Start();
                     break;
@@ -1237,7 +1233,7 @@ namespace _8th_Circle_Server
             string searchResult = mob.search();
             if (mob is Player)
                 ((Player)mob).mClientHandler.safeWrite(searchResult);
-            mob.mFlagList.Remove(mobFlags.FLAG_SEARCHING);
+            mob.mFlagList.Remove(MobFlags.FLAG_SEARCHING);
         }// searchTask
 
     }// Class CommandExecuter

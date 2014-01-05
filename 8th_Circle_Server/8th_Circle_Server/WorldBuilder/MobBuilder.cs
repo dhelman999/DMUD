@@ -35,10 +35,10 @@ namespace _8th_Circle_Server
             // This order must be the same as the enum defined above
             Mob key = new Mob();
             key.mDescription = "An old brass key, what does it unlock?";
-            key.mFlagList.Add(mobFlags.FLAG_GETTABLE);
-            key.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
-            key.mFlagList.Add(mobFlags.FLAG_STORABLE);
-            key.mFlagList.Add(mobFlags.FLAG_DROPPABLE);
+            key.mFlagList.Add(MobFlags.FLAG_GETTABLE);
+            key.mFlagList.Add(MobFlags.FLAG_INSPECTABLE);
+            key.mFlagList.Add(MobFlags.FLAG_STORABLE);
+            key.mFlagList.Add(MobFlags.FLAG_DROPPABLE);
             key.mName = "brass key";
             key.mKeyId = (int)MOBLIST.BASIC_KEY;
             key.mInventory.Capacity = 0;
@@ -48,11 +48,11 @@ namespace _8th_Circle_Server
 
             Container chest = new Container();
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            chest.mFlagList.Add(mobFlags.FLAG_OPENABLE);
-            chest.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
-            chest.mFlagList.Add(mobFlags.FLAG_LOCKED);
-            chest.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
-            chest.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
+            chest.mFlagList.Add(MobFlags.FLAG_OPENABLE);
+            chest.mFlagList.Add(MobFlags.FLAG_CLOSEABLE);
+            chest.mFlagList.Add(MobFlags.FLAG_LOCKED);
+            chest.mFlagList.Add(MobFlags.FLAG_LOCKABLE);
+            chest.mFlagList.Add(MobFlags.FLAG_UNLOCKABLE);
             chest.mName = "chest1";
             chest.mInventory.Capacity = 20;
             chest.mWorld = this;
@@ -70,11 +70,11 @@ namespace _8th_Circle_Server
 
             Container chest2 = new Container();
             chest2.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            chest2.mFlagList.Add(mobFlags.FLAG_OPENABLE);
-            chest2.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
-            chest2.mFlagList.Add(mobFlags.FLAG_LOCKED);
-            chest2.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
-            chest2.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
+            chest2.mFlagList.Add(MobFlags.FLAG_OPENABLE);
+            chest2.mFlagList.Add(MobFlags.FLAG_CLOSEABLE);
+            chest2.mFlagList.Add(MobFlags.FLAG_LOCKED);
+            chest2.mFlagList.Add(MobFlags.FLAG_LOCKABLE);
+            chest2.mFlagList.Add(MobFlags.FLAG_UNLOCKABLE);
             chest2.mName = "large wooden chest2";
             chest2.mInventory.Capacity = 20;
             chest2.mWorld = this;
@@ -92,11 +92,11 @@ namespace _8th_Circle_Server
 
             Mob first_circle = new Mob();
             first_circle.mDescription = "The first of eight ancient golden circles";
-            first_circle.mFlagList.Add(mobFlags.FLAG_GETTABLE);
-            first_circle.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
-            first_circle.mFlagList.Add(mobFlags.FLAG_STORABLE);
-            first_circle.mFlagList.Add(mobFlags.FLAG_DUPLICATABLE);
-            first_circle.mFlagList.Add(mobFlags.FLAG_USEABLE);
+            first_circle.mFlagList.Add(MobFlags.FLAG_GETTABLE);
+            first_circle.mFlagList.Add(MobFlags.FLAG_INSPECTABLE);
+            first_circle.mFlagList.Add(MobFlags.FLAG_STORABLE);
+            first_circle.mFlagList.Add(MobFlags.FLAG_DUPLICATABLE);
+            first_circle.mFlagList.Add(MobFlags.FLAG_USEABLE);
             first_circle.mName = "1st Circle";
             eventData = new EventData();
             eventData.eventFlag = EventFlag.EVENT_TELEPORT;
@@ -110,11 +110,11 @@ namespace _8th_Circle_Server
 
             Container no_event_chest = new Container();
             no_event_chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
-            no_event_chest.mFlagList.Add(mobFlags.FLAG_OPENABLE);
-            no_event_chest.mFlagList.Add(mobFlags.FLAG_CLOSEABLE);
-            no_event_chest.mFlagList.Add(mobFlags.FLAG_LOCKED);
-            no_event_chest.mFlagList.Add(mobFlags.FLAG_LOCKABLE);
-            no_event_chest.mFlagList.Add(mobFlags.FLAG_UNLOCKABLE);
+            no_event_chest.mFlagList.Add(MobFlags.FLAG_OPENABLE);
+            no_event_chest.mFlagList.Add(MobFlags.FLAG_CLOSEABLE);
+            no_event_chest.mFlagList.Add(MobFlags.FLAG_LOCKED);
+            no_event_chest.mFlagList.Add(MobFlags.FLAG_LOCKABLE);
+            no_event_chest.mFlagList.Add(MobFlags.FLAG_UNLOCKABLE);
             no_event_chest.mName = "wooden chest";
             no_event_chest.mInventory.Capacity = 20;
             no_event_chest.mWorld = this;
@@ -126,7 +126,7 @@ namespace _8th_Circle_Server
 
             Mob basic_switch = new Mob();
             basic_switch.mDescription = "A switch, it must trigger something...";
-            basic_switch.mFlagList.Add(mobFlags.FLAG_USEABLE);
+            basic_switch.mFlagList.Add(MobFlags.FLAG_USEABLE);
             basic_switch.mName = "switch";
             basic_switch.mWorld = this;
             basic_switch.mMobId = (int)MOBLIST.SWITCH;
@@ -136,11 +136,11 @@ namespace _8th_Circle_Server
 
             Equipment basic_sword = new Equipment();
             basic_sword.mDescription = "A rusty old sword, it is barely passable as a weapon";
-            basic_sword.mFlagList.Add(mobFlags.FLAG_GETTABLE);
-            basic_sword.mFlagList.Add(mobFlags.FLAG_DROPPABLE);
-            basic_sword.mFlagList.Add(mobFlags.FLAG_INSPECTABLE);
-            basic_sword.mFlagList.Add(mobFlags.FLAG_STORABLE);
-            basic_sword.mFlagList.Add(mobFlags.FLAG_WEARABLE);
+            basic_sword.mFlagList.Add(MobFlags.FLAG_GETTABLE);
+            basic_sword.mFlagList.Add(MobFlags.FLAG_DROPPABLE);
+            basic_sword.mFlagList.Add(MobFlags.FLAG_INSPECTABLE);
+            basic_sword.mFlagList.Add(MobFlags.FLAG_STORABLE);
+            basic_sword.mFlagList.Add(MobFlags.FLAG_WEARABLE);
             basic_sword.mName = "Rusty Sword";
             basic_sword.mWorld = this;
             basic_sword.mMobId = (int)MOBLIST.BASIC_SWORD;

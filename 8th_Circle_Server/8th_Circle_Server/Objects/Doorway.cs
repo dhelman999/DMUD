@@ -57,7 +57,7 @@ namespace _8th_Circle_Server
                 return mob.mCurrentRoom.getDoorString(this) + " is locked\n";
             if (mIsOpen)
                 return mob.mCurrentRoom.getDoorString(this) + " is already open\n";
-            if (mFlagList.Contains(mobFlags.FLAG_HIDDEN))
+            if (mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                 return "you can't find that\n";
 
             else
@@ -80,7 +80,7 @@ namespace _8th_Circle_Server
                 return mob.mCurrentRoom.getDoorString(this) + " is locked\n";
             if (!mIsOpen)
                 return mob.mCurrentRoom.getDoorString(this) + " is already closed\n";
-            if (mFlagList.Contains(mobFlags.FLAG_HIDDEN))
+            if (mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                 return "you can't find that\n";
 
             else

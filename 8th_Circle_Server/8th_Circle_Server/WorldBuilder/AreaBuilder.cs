@@ -549,8 +549,8 @@ namespace _8th_Circle_Server
             gpg_76.removeTripleLinks(Direction.WEST);
 
             Doorway newDoor = new Doorway("door");
-            newDoor.mFlagList.Add(mobFlags.FLAG_HIDDEN);
-            newDoor.mStartingFlagList.Add(mobFlags.FLAG_HIDDEN);
+            newDoor.mFlagList.Add(MobFlags.FLAG_HIDDEN);
+            newDoor.mStartingFlagList.Add(MobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((Room)(gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
@@ -578,7 +578,7 @@ namespace _8th_Circle_Server
             addMob(small_metal_cage, gpg_71, newbieArea);
 
             Mob steel_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
-            steel_key.mFlagList.Add(mobFlags.FLAG_HIDDEN);
+            steel_key.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
             steel_key.mStartingRoom = gpg_46;
             steel_key.mStartingArea = newbieArea;

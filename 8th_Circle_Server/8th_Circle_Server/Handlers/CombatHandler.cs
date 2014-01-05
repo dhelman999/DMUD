@@ -84,7 +84,7 @@ namespace _8th_Circle_Server
                 {
                     if (combatList.Count == 0)
                     {
-                        attacker.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
+                        attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
                         target.mStats.mCombatList.Clear();
                         return;
                     }// if
@@ -100,10 +100,10 @@ namespace _8th_Circle_Server
                         for (int j = 0; j < combatList.Count; ++j)
                         {
                             target = (CombatMob)combatList[j];
-                            target.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);  
+                            target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);  
                         }
                         attacker.mStats.mCombatList.Clear();
-                        attacker.mFlagList.Remove(mobFlags.FLAG_INCOMBAT);
+                        attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
                         if (attacker is Player)
                             ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
                         return;
@@ -113,7 +113,7 @@ namespace _8th_Circle_Server
                 if (attacker is Player)
                     ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
                 Thread.Sleep(4000);
-            }// while(pl.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
+            }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
 
         public void attack(CombatMob attacker, CombatMob target)

@@ -69,7 +69,7 @@ namespace _8th_Circle_Server
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
                 mResistances.Add(null);
             fillResistances();         
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
+            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public CombatMob(CombatMob cm) : base(cm)
@@ -85,7 +85,7 @@ namespace _8th_Circle_Server
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
             mStats = new CombatStats();
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
+            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
         }// Constructor
 
         public void fillResistances()

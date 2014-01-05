@@ -95,7 +95,7 @@ namespace _8th_Circle_Server
                     if (mob.mIsRespawning &&
                        (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
                     {
-                        if (mob.mFlagList.Contains(mobFlags.FLAG_INCOMBAT))
+                        if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                         {
                             mob.mIsRespawning = false;
                             mob.mCurrentRespawnTime = mob.mStartingRespawnTime;

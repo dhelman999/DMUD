@@ -12,14 +12,14 @@ namespace _8th_Circle_Server
 
         public Player(ClientHandler ch) : base()
         {
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
+            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mClientHandler = ch;
             mResType = ResType.PLAYER;
         }// Constructor
 
         public Player() : base()
         {
-            mFlagList.Add(mobFlags.FLAG_COMBATABLE);
+            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mClientHandler = null;
             mResType = ResType.PLAYER;
         }// Constructor
