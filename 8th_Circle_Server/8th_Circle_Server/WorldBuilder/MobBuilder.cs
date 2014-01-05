@@ -149,7 +149,7 @@ namespace _8th_Circle_Server
             basic_sword.mMinDam = 2;
             basic_sword.mMaxDam = 11;
             basic_sword.mHitMod = 10;
-            basic_sword.mType = EQType.SLASHING;
+            basic_sword.mType = EQType.WEAPON;
             basic_sword.mSlot = EQSlot.PRIMARY;
             mFullMobList.Add(basic_sword);
 

@@ -38,24 +38,17 @@ namespace _8th_Circle_Server
         EQTYPE_START = LIGHT_ARMOR,
         MEDIUM_ARMOR,
         HEAVY_ARMOR,
-        SLASHING,
-        PIERCING,
-        BLUDGEONING,
         MAGIC,
         ACCESSORY,
+        WEAPON,
         EQTYPE_END
     }// EQType
 
     public enum DamageType
     {
-        PHYSICAL,
-        DAMAGETYPE_START = PHYSICAL,
+        DAMAGETYPE_START,
+        PHYSICAL = DAMAGETYPE_START,
         MAGICAL,
-        FIRE,
-        COLD,
-        LIGHTNING,
-        ACID,
-        FORCE,
         PURE,
         DAMAGETYPE_END
     }// DamageType
@@ -100,11 +93,6 @@ namespace _8th_Circle_Server
             mResistances[(int)DamageType.PHYSICAL] = (((double)mStats.mBaseArmor + mStats.mArmorMod
                 + mStats.mBasePhysRes + mStats.mPhysResMod) / 10);
             mResistances[(int)DamageType.MAGICAL] = ((double)mStats.mBaseMagicRes + mStats.mMagicResMod / 10);
-            mResistances[(int)DamageType.FIRE] = ((double)mStats.mBaseFireRes + mStats.mFireResMod / 10);
-            mResistances[(int)DamageType.COLD] = ((double)mStats.mBaseColdRes + mStats.mColdResMod / 10);
-            mResistances[(int)DamageType.LIGHTNING] = ((double)mStats.mBaseLightningRes + mStats.mLightningResMod / 10);
-            mResistances[(int)DamageType.ACID] = ((double)mStats.mBaseAcidRes + mStats.mAcidResMod / 10);
-            mResistances[(int)DamageType.FORCE] = ((double)mStats.mBaseForceRes + mStats.mForceResMod / 10);
             mResistances[(int)DamageType.PURE] = 0;
         }// fillResistances
     }// class CombatMob

@@ -146,22 +146,38 @@ namespace _8th_Circle_Server
                 processMiss(attacker, target);
         }// attack
 
-        private string damageToString(EQType type)
+        private string damageToString(int maxHp, double damage)
         {
-            switch (type)
-            {
-                case EQType.SLASHING:
-                    return "slash";
+            double dam = damage / maxHp;
 
-                case EQType.PIERCING:
-                    return "pierce";
-
-                case EQType.BLUDGEONING:
-                    return "smash";
-
-                default:
-                    return "hit";
-            }// switch
+            if (dam <= .01)
+                return "barely scratches";
+            else if (dam <= .02)
+                return "scratches";
+            else if (dam <= .03)
+                return "hits";
+            else if (dam <= .04)
+                return "wounds";
+            else if (dam <= .05)
+                return "injures";
+            else if (dam <= .07)
+                return "thrashes";
+            else if (dam <= .08)
+                return "wrecks";
+            else if (dam <= .1)
+                return "maims";
+            else if (dam <= .15)
+                return "DECIMATES";
+            else if (dam <= .2)
+                return "MASSACRES";
+            else if (dam <= .25)
+                return "EVICERATES";
+            else if (dam <= .3)
+                return "DISEMBOWLES";
+            else if (dam < 1)
+                return "*OBLITERATES*";
+            else
+                return "***ANNIHILATES***";
         }// damageToSring
 
         private void processHit(CombatMob attacker, CombatMob target, Equipment weapon, bool isCrit)
@@ -191,18 +207,12 @@ namespace _8th_Circle_Server
 
             if (attacker is Player)
             {
-                if (isCrit && weapon != null)
-                    damageString += "your " + damageToString(weapon.mType) + " critically hits the " +
-                       target.mName + " for " + (int)damage + " damage";
-                else if (isCrit && weapon == null)
-                    damageString += "you critically hit the " +
-                       target.mName + " for " + (int)damage + " damage";
-                else if (weapon != null)
-                    damageString += "you " + damageToString(weapon.mType) + " the " + target.mName +
-                        " for " + (int)damage + " damage";
+                if (!isCrit)
+                    damageString += "your attack " + damageToString(target.mStats.mBaseMaxHp, damage) +
+                        " the " + target.mName + " for " + (int)damage + " damage";
                 else
-                    damageString += "you hit the " + target.mName + " for "
-                        + (int)damage + " damage";
+                    damageString += "your critical hit " + damageToString(target.mStats.mBaseMaxHp, damage) +
+                        " the " + target.mName + " for " + (int)damage + " damage";
 
                 ((Player)attacker).mClientHandler.safeWrite(damageString);
             }// if
