@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
         public StreamReader mStreamReader;
         public StreamWriter mStreamWriter;
         public Thread mResponderThread;
-        public Mob mPlayer;
+        public Player mPlayer;
         public string mCmdString;
         public World mWorld;
         public CommandHandler mCommandHandler;
@@ -59,7 +59,7 @@ namespace _8th_Circle_Server
                             mPlayer.mName = mStreamReader.ReadLine();
                             mPlayer.mWorld = mWorld;
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
-                            Room curRoom = mWorld.getRoom(100 + 1, 
+                            Room curRoom = mWorld.getRoom(100 + 1,
                                 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
                             curRoom.mCurrentArea.addRes(mPlayer);
                             mPlayer.mCurrentArea = curRoom.mCurrentArea;
@@ -67,26 +67,64 @@ namespace _8th_Circle_Server
                             mPlayer.mAreaLoc[1] = 1;
                             mPlayer.mAreaLoc[2] = 1;
                             mPlayer.mCurrentRoom = curRoom;
-                            mWorld.addRes(mPlayer);
-                            curRoom.addRes(mPlayer);
                         }// lock
+
+                        mCmdString = string.Empty;
+                        mResponderThread.Interrupt();
+
+                        while (mCmdString != "warrior" &&
+                               mCmdString != "rogue"   &&
+                               mCmdString != "cleric"  &&
+                               mCmdString != "wizard")
+                        {
+                            mCmdString = string.Empty;
+                            mCmdString = mStreamReader.ReadLine();
+
+                            if (mCmdString != "warrior" &&
+                                mCmdString != "rogue"   &&
+                                mCmdString != "cleric"  &&
+                                mCmdString != "wizard")
+                                safeWrite("please enter a valid class\n");
+                            else
+                            {
+                                switch (mCmdString)
+                                {
+                                    case "warrior":
+                                        mPlayer.mMobType = MobType.WARRIOR;
+                                        break;
+                                    case "rogue":
+                                        mPlayer.mMobType = MobType.ROGUE;
+                                        break;
+                                    case "cleric":
+                                        mPlayer.mMobType = MobType.CLERIC;
+                                        break;
+                                    case "wizard":
+                                        mPlayer.mMobType = MobType.WIZARD;
+                                        break;
+
+                                    default:
+                                        mPlayer.mMobType = MobType.NONHEROIC;
+                                        break;
+                                }// switch
+                            }
+                        }// while
+
+                        mWorld.addRes(mPlayer);
+                        mPlayer.mCurrentRoom.addRes(mPlayer);
 
                         foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
                         {
                             player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
                         }// foreach
 
-                        mResponderThread.Interrupt();
-
                         do
-                        {
-                            mCmdString = mStreamReader.ReadLine();
+                        {     
                             mResponderThread.Interrupt();
+                            mCmdString = mStreamReader.ReadLine();
                         } while (!mCmdString.Equals("exit"));
 
                         if (DEBUG)
-                        {
-                            
+                        {           
                             if(mPlayer != null &&
                                mPlayer.mName != string.Empty)
                                 Console.WriteLine("Player: " + mPlayer.mName + " Client: " + 
@@ -94,8 +132,7 @@ namespace _8th_Circle_Server
                             else
                                 Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
                                 " is now exitting.");
-                        }
-
+                        }// if
 
                         playerLeft();
                     }// if mSocketForClient
@@ -127,6 +164,17 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
+                clientHandler.mCmdString = "\nPlease enter your character class, choose one from the following:\n\n" +
+                    "warrior\nrogue\ncleric\nwizard\n";
+                clientHandler.safeWrite(clientHandler.mCmdString);
+            }// catch
+
+            try
+            {
+                Thread.Sleep(Timeout.Infinite);
+            }// try
+            catch
+            {
                 if (clientHandler.mCmdString.Equals("exit"))
                     return;
 
@@ -135,7 +183,6 @@ namespace _8th_Circle_Server
                    clientHandler.mPlayer.mCurrentRoom != null)
                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString() +
                        ((Player)clientHandler.mPlayer).playerString());
-                
             }// catch
             while (true)
             {

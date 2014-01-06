@@ -53,11 +53,23 @@ namespace _8th_Circle_Server
         DAMAGETYPE_END
     }// DamageType
 
+    public enum MobType
+    {
+        NONHEROIC,
+        MOBTYPE_START = NONHEROIC,
+        WARRIOR,
+        ROGUE,
+        WIZARD,
+        CLERIC,
+        MOBTYPE_END
+    }// MobType
+
     public class CombatMob : Mob
     {
         public ArrayList mEQList;
         public ArrayList mResistances;
         public CombatStats mStats;
+        public MobType mMobType;
 
         public CombatMob() : base()
         {
@@ -82,9 +94,13 @@ namespace _8th_Circle_Server
         public CombatMob(string newName) : base(newName)
         {
             mEQList = new ArrayList();
+            mStats = new CombatStats();
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
-            mStats = new CombatStats();
+            mResistances = new ArrayList();
+            for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
+                mResistances.Add(null);
+            fillResistances();
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
         }// Constructor
 
