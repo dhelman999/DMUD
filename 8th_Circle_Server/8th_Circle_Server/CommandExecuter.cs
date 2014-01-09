@@ -94,6 +94,7 @@ namespace _8th_Circle_Server
         COMMAND_WEARALL,
         COMMAND_REMOVE,
         COMMAND_REMOVEALL,
+        COMMAND_BACKSTAB,
         COMMAND_END
     };// commandName
 
@@ -124,7 +125,7 @@ namespace _8th_Circle_Server
         public string shortName;
         public int matchNumber;
         public int maxTokens;
-        public GrammarType type;
+        public MobType type;
         public GrammarType[] grammar;
         public Preposition prep1Value;
         public Preposition prep2Value;
@@ -137,7 +138,7 @@ namespace _8th_Circle_Server
         public validityType validity;
 
         public Command(string command, string shortName, int matchNumber, 
-                       int maxTokens, GrammarType type, GrammarType[] grammar,
+                       int maxTokens, MobType type, GrammarType[] grammar,
                        commandName commandName, predicateType predicate1,
                        predicateType predicate2, validityType validity)
         {
@@ -205,208 +206,213 @@ namespace _8th_Circle_Server
             gramVerbPredPrepPred[3] = GrammarType.PREDICATE;
 
             // Add Verbs
-            Command pt = new Command("up", "u", 1, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_UP,
+            Command pt = new Command("up", "u", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_UP,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("north", "n", 5, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_NORTH,
+            pt = new Command("north", "n", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTH,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("northeast", "ne", 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_NORTHEAST,
+            pt = new Command("northeast", "ne", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTHEAST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("east", "e", 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_EAST,
+            pt = new Command("east", "e", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EAST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("southeast", "se", 6, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_SOUTHEAST,
+            pt = new Command("southeast", "se", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTHEAST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("down", "d", 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_DOWN,
+            pt = new Command("down", "d", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_DOWN,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("south", "s", 5, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_SOUTH,
+            pt = new Command("south", "s", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTH,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("southwest", "sw", 6, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_SOUTHWEST,
+            pt = new Command("southwest", "sw", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTHWEST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("west", "w", 1, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_WEST,
+            pt = new Command("west", "w", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_WEST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("northwest", "nw", 6, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_NORTHWEST,
+            pt = new Command("northwest", "nw", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTHWEST,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("exit", null, 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_EXIT,
+            pt = new Command("exit", null, 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EXIT,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_LOOK,
+            pt = new Command("look", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_LOOK,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_LOOK,
+            pt = new Command("look", null, 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_LOOK,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("look", null, 1, 3, GrammarType.VERB, gramVerbPrepPred, commandName.COMMAND_LOOK,
+            pt = new Command("look", null, 1, 3, MobType.ALL, gramVerbPrepPred, commandName.COMMAND_LOOK,
                 predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("say", null, 3, 256, GrammarType.VERB, gramVerbPred, commandName.COMMAND_SAY,
+            pt = new Command("say", null, 3, 256, MobType.ALL, gramVerbPred, commandName.COMMAND_SAY,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("yell", null, 2, 256, GrammarType.VERB, gramVerbPred, commandName.COMMAND_YELL,
+            pt = new Command("yell", null, 2, 256, MobType.ALL, gramVerbPred, commandName.COMMAND_YELL,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_AREA);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("tell", null, 1, 256, GrammarType.VERB, gramVerbPredPred, commandName.COMMAND_TELL,
+            pt = new Command("tell", null, 1, 256, MobType.ALL, gramVerbPredPred, commandName.COMMAND_TELL,
                 predicateType.PREDICATE_PLAYER, predicateType.PREDICATE_CUSTOM, validityType.VALID_GLOBAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("open", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_OPEN,
+            pt = new Command("open", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_OPEN,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("fullheal", "fh", 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_FULLHEAL,
+            pt = new Command("fullheal", "fh", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_FULLHEAL,
                 predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("close", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_CLOSE,
+            pt = new Command("close", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_CLOSE,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("destroy", null, 3, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_DESTROY,
+            pt = new Command("destroy", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_DESTROY,
                 predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("spawn", null, 3, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_SPAWN,
+            pt = new Command("spawn", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_SPAWN,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("get", null, 1, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_GET,
+            pt = new Command("get", null, 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_GET,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("get", null, 1, 4, GrammarType.VERB, gramVerbPredPrepPred, commandName.COMMAND_GET,
+            pt = new Command("get", null, 1, 4, MobType.ALL, gramVerbPredPrepPred, commandName.COMMAND_GET,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_OBJECT, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("getall", "ga", 1, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_GETALL,
+            pt = new Command("getall", "ga", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_GETALL,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("getall", "ga", 1, 3, GrammarType.VERB, gramVerbPrepPred, commandName.COMMAND_GETALL,
+            pt = new Command("getall", "ga", 1, 3, MobType.ALL, gramVerbPrepPred, commandName.COMMAND_GETALL,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("drop", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_DROP,
+            pt = new Command("drop", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_DROP,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("dropall", "da", 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_DROPALL,
+            pt = new Command("dropall", "da", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_DROPALL,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("inventory", null, 1, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_INVENTORY,
+            pt = new Command("inventory", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_INVENTORY,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("equipment", "eq", 2, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_EQUIPMENT,
+            pt = new Command("equipment", "eq", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EQUIPMENT,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("lock", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_LOCK,
+            pt = new Command("lock", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_LOCK,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("unlock", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_UNLOCK,
+            pt = new Command("unlock", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_UNLOCK,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("use", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_USE,
+            pt = new Command("use", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_USE,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("attack", "a", 1, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_ATTACK,
+            pt = new Command("attack", "a", 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_ATTACK,
                 predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("teleport", "tp", 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_TELEPORT,
+            pt = new Command("teleport", "tp", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_TELEPORT,
                 predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_GLOBAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("search", null, 3, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_SEARCH,
+            pt = new Command("search", null, 3, 1, MobType.ALL, gramVerb, commandName.COMMAND_SEARCH,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("who", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_WHO,
+            pt = new Command("who", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_WHO,
                 predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_GLOBAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("wear", null, 2, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_WEAR,
+            pt = new Command("wear", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_WEAR,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("wearall", "wa", 5, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_WEARALL,
+            pt = new Command("wearall", "wa", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_WEARALL,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("remove", null, 3, 2, GrammarType.VERB, gramVerbPred, commandName.COMMAND_REMOVE,
+            pt = new Command("remove", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_REMOVE,
                 predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_EQUIP);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
-            pt = new Command("removeall", "ra", 5, 1, GrammarType.VERB, gramVerb, commandName.COMMAND_REMOVEALL,
+            pt = new Command("removeall", "ra", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_REMOVEALL,
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_EQUIP);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
+            pt = new Command("backstab", "bs", 2, 2, MobType.ROGUE, gramVerbPred, commandName.COMMAND_BACKSTAB,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
@@ -663,6 +669,36 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_DESTROY:
                     clientString = ((Mob)commandQueue[++commandIndex]).destroy();
+                    break;
+
+                case commandName.COMMAND_BACKSTAB:
+                    CombatMob cm = (CombatMob)mob;
+
+                    if (cm.mMobType != MobType.ROGUE)
+                        clientString = "you don't know how to backstab\n";
+                    else if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                        clientString = "you can't backstab while in combat\n";
+                    else if (((Equipment)cm.mEQList[(int)EQSlot.PRIMARY]) == null)
+                        clientString = "you can't backstab without a weapon!\n";
+                    else
+                    {
+                        CombatMob backstabTarget = ((CombatMob)commandQueue[++commandIndex]);
+                        cm.mWorld.mCombatHandler.backstab(cm, backstabTarget);
+                        commandQueue.Clear();
+                        // TODO
+                        // Gotta organize the commandqueue so each slot is indexed by the 
+                        // command enum for easier access to commands
+                        foreach (Command com in mCommandList)
+                        {
+                            if (com.commandName == commandName.COMMAND_ATTACK)
+                            {
+                                commandQueue.Add(com);
+                                break;
+                            }
+                        }
+                        commandQueue.Add(backstabTarget);
+                        execute(commandQueue, cm);
+                    }// else
                     break;
 
                 case commandName.COMMAND_GET:

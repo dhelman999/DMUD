@@ -61,6 +61,7 @@ namespace _8th_Circle_Server
         ROGUE,
         WIZARD,
         CLERIC,
+        ALL,
         MOBTYPE_END
     }// MobType
 
