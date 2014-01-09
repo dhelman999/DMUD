@@ -7,9 +7,12 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    struct CombatData
+    public enum Ability
     {
-    }// EventData
+        ABILITY_START,
+        BASH,
+        ABILITY_END
+    }// Ability
 
     public class CombatHandler
     {
@@ -19,16 +22,27 @@ namespace _8th_Circle_Server
         // Member Variables
         public Queue mCombatQueue;
         public World mWorld;
+        public ArrayList mAbilityDamageTypes;
 
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
         public CombatHandler(World world)
         {
+            mAbilityDamageTypes = new ArrayList();
+            for (Ability ability = Ability.ABILITY_START; ability < Ability.ABILITY_END; ++ability)
+                mAbilityDamageTypes.Add(null);
             mCombatQueue = new Queue();
             mQueueLock = new object();
             mWorld = world;
+
+            fillAbilityDamages();
         }// Constructor
+
+        private void fillAbilityDamages()
+        {
+            mAbilityDamageTypes[(int)Ability.BASH] = DamageType.PHYSICAL;
+        }// fillAbilityDamages
 
         public void start()
         {
@@ -80,6 +94,7 @@ namespace _8th_Circle_Server
                 CombatMob target = (CombatMob)combatList[0];
                 ch.attack(attacker, target, false);
 
+                // Make this a generic sequence
                 if (ch.checkDeath(attacker, target))
                 {
                     if (combatList.Count == 0)
@@ -116,11 +131,94 @@ namespace _8th_Circle_Server
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
 
+        public void abilityAttack(CombatMob attacker, CombatMob target, bool evadeable,
+                                  Ability ability)
+        {
+            if (target == null)
+                target = (CombatMob)attacker.mStats.mCombatList[0];
+
+            Random rand = new Random();
+            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
+                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            bool isCrit = false;
+            bool isHit = false;
+            double attackRoll = rand.NextDouble();
+
+            if (attackRoll >= .95)
+                isCrit = true;
+            else if (!evadeable)
+                isHit = true;
+            else if (attackRoll >= (1 - (hitChance / 100)))
+                isHit = true;
+
+            if (!isHit)
+            {
+                processMiss(attacker, target, false);
+                return;
+            }// if
+
+            switch (ability)
+            {
+                case Ability.BASH:
+                    processAbility(attacker, target, ability, isCrit);
+                    break;
+
+                default:
+                    break;
+            }// switch
+        }// abilityAttack
+
+        public void processAbility(CombatMob attacker, CombatMob target, Ability ability, bool isCrit)
+        {
+            DamageType damType = (DamageType)mAbilityDamageTypes[(int)ability];
+            Random rand = new Random();
+            string damageString = string.Empty;
+            string abilityName = string.Empty;
+            int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+            double damage = 0;
+
+            if (ability == Ability.BASH)
+            {
+                int level = attacker.mStats.mLevel;
+                damage = rand.Next(level * 1, level * 6) + (level / 2)+1;
+                abilityName = "bash";
+
+                if (isCrit)
+                    damage *= 1.5;
+
+                damage *= (1 - ((double)target.mResistances[(int)damType] / 100));
+
+                if (damage == 0)
+                    damage = 1;
+
+                target.mStats.mCurrentHp -= (int)damage;
+            }// if
+
+            if (!isCrit)
+                damageString += "your " + abilityName + " " + damageToString(maxHp, damage) +
+                    " the " + target.mName + " for " + (int)damage + " damage";
+            else
+                damageString += "your critical " + abilityName + " " + damageToString(maxHp, damage) +
+                    " the " + target.mName + " for " + (int)damage + " damage";
+
+            ((Player)attacker).mActionTimer += 4;
+
+            if (attacker is Player)
+                ((Player)attacker).mClientHandler.safeWrite(damageString);
+
+            if (checkDeath(attacker, target))
+            {
+                if (attacker.mStats.mCombatList.Count == 0)
+                {
+                    attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                    target.mStats.mCombatList.Clear();
+                    return;
+                }// if
+            }// if
+        }// processAbility
+
         public void attack(CombatMob attacker, CombatMob target, bool isBackstab)
         {
-            Player pl = null;
-            if (attacker is Player)
-                pl = (Player)attacker;
             Random rand = new Random();
             double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                 (target.mStats.mBaseEvade + target.mStats.mEvadeMod));

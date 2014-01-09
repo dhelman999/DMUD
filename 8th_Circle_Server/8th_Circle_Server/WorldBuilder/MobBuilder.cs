@@ -163,8 +163,8 @@ namespace _8th_Circle_Server
             goblin_runt.mStartingRespawnTime = 30;
             goblin_runt.mCurrentRespawnTime = 30;
             goblin_runt.mStats.mBaseMaxDam = 5;
-            goblin_runt.mStats.mCurrentHp = 25;
-            goblin_runt.mStats.mBaseMaxHp = 25;
+            goblin_runt.mStats.mCurrentHp = 50;
+            goblin_runt.mStats.mBaseMaxHp = 50;
             goblin_runt.mStats.mBaseHit = 50;
             goblin_runt.fillResistances();
             mFullMobList.Add(goblin_runt);

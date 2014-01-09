@@ -95,6 +95,7 @@ namespace _8th_Circle_Server
         COMMAND_REMOVE,
         COMMAND_REMOVEALL,
         COMMAND_BACKSTAB,
+        COMMAND_BASH,
         COMMAND_END
     };// commandName
 
@@ -416,6 +417,11 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             mVerbList.Add(pt);
 
+            pt = new Command("bash", "b", 1, 1, MobType.WARRIOR, gramVerb, commandName.COMMAND_BASH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL);
+            mCommandList.Add(pt);
+            mVerbList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -671,8 +677,19 @@ namespace _8th_Circle_Server
                     clientString = ((Mob)commandQueue[++commandIndex]).destroy();
                     break;
 
-                case commandName.COMMAND_BACKSTAB:
+                case commandName.COMMAND_BASH:
                     CombatMob cm = (CombatMob)mob;
+
+                    if (cm.mMobType != MobType.WARRIOR)
+                        clientString = "you don't know how to bash";
+                    else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                        clientString = "you can't bash if you are not in combat\b";
+                    else
+                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, true, Ability.BASH);
+                    break;
+
+                case commandName.COMMAND_BACKSTAB:
+                    cm = (CombatMob)mob;
 
                     if (cm.mMobType != MobType.ROGUE)
                         clientString = "you don't know how to backstab\n";
