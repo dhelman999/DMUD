@@ -221,8 +221,13 @@ namespace _8th_Circle_Server
         public void attack(CombatMob attacker, CombatMob target, bool isBackstab)
         {
             Random rand = new Random();
-            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
-                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
+                    (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            // TODO
+            // Probably need to make this more generic
+            if (isBackstab)
+                hitChance += 10;
+            
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = rand.NextDouble();
@@ -248,6 +253,7 @@ namespace _8th_Circle_Server
         public void backstab(CombatMob attacker, CombatMob target)
         {
             attack(attacker, target, true);
+            attacker.mActionTimer += 4;
         }// backstab
 
         private string damageToString(int maxHp, double damage)
@@ -298,7 +304,10 @@ namespace _8th_Circle_Server
                     + attacker.mStats.mBaseDamBonus;
 
             if (isBackstab)
+            {
                 damage *= 2;
+                damage += rand.Next(1 * attacker.mStats.mLevel + 6 * attacker.mStats.mLevel);
+            }
             if (isCrit)
                 damage *= 1.5;
 

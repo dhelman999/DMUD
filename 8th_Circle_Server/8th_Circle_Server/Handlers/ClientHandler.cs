@@ -89,17 +89,29 @@ namespace _8th_Circle_Server
                             {
                                 switch (mCmdString)
                                 {
+                                    // TODO
+                                    // Make this more generic
                                     case "warrior":
                                         mPlayer.mMobType = MobType.WARRIOR;
+                                        mPlayer.mStats.mBasePhysRes = 250;
+                                        mPlayer.mStats.mBaseMaxHp += 10;
+                                        mPlayer.mStats.mCurrentHp += 10;
                                         break;
                                     case "rogue":
                                         mPlayer.mMobType = MobType.ROGUE;
+                                        mPlayer.mStats.mBaseHit += 5;
+                                        mPlayer.mStats.mBaseEvade += 5;
+                                        mPlayer.mStats.mBaseMaxHp -= 5;
+                                        mPlayer.mStats.mCurrentHp -= 5;
                                         break;
                                     case "cleric":
                                         mPlayer.mMobType = MobType.CLERIC;
                                         break;
                                     case "wizard":
                                         mPlayer.mMobType = MobType.WIZARD;
+                                        mPlayer.mStats.mBaseEvade -= 5;
+                                        mPlayer.mStats.mBaseMaxHp -= 10;
+                                        mPlayer.mStats.mCurrentHp -= 10;
                                         break;
 
                                     default:
