@@ -151,16 +151,17 @@ namespace _8th_Circle_Server
             else if (attackRoll >= (1 - (hitChance / 100)))
                 isHit = true;
 
-            if (!isHit)
-            {
-                processMiss(attacker, target, false);
-                return;
-            }// if
-
             switch (ability)
             {
                 case Ability.BASH:
-                    processAbility(attacker, target, ability, isCrit);
+                    if (!isHit)
+                        processMiss(attacker, target, false);
+                    else
+                        processAbility(attacker, target, ability, isCrit);
+
+                    // TODO 
+                    // doesn't need to be defined here, but in the ability instead
+                    attacker.mActionTimer += 4;
                     break;
 
                 default:
@@ -181,6 +182,8 @@ namespace _8th_Circle_Server
             {
                 int level = attacker.mStats.mLevel;
                 damage = rand.Next(level * 1, level * 6) + (level / 2)+1;
+                // TODO
+                // Again, this needs to be generic and contained within the ability itself
                 abilityName = "bash";
 
                 if (isCrit)
@@ -200,8 +203,6 @@ namespace _8th_Circle_Server
             else
                 damageString += "your critical " + abilityName + " " + damageToString(maxHp, damage) +
                     " the " + target.mName + " for " + (int)damage + " damage";
-
-            ((Player)attacker).mActionTimer += 4;
 
             if (attacker is Player)
                 ((Player)attacker).mClientHandler.safeWrite(damageString);

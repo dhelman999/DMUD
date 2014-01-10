@@ -71,6 +71,11 @@ namespace _8th_Circle_Server
         public ArrayList mResistances;
         public CombatStats mStats;
         public MobType mMobType;
+        // TODO
+        // Need to have a queued command list so that players that
+        // do a command before its cd is ready will automatically
+        // activate when the timer is up so they don't have to keep spamming
+        // the ability to guess when it is up
 
         public CombatMob() : base()
         {

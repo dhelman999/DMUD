@@ -677,6 +677,9 @@ namespace _8th_Circle_Server
                     clientString = ((Mob)commandQueue[++commandIndex]).destroy();
                     break;
 
+                // TODO
+                // Probably need to make an ability struct with damage
+                // combat strings, and cooldown timers
                 case commandName.COMMAND_BASH:
                     CombatMob cm = (CombatMob)mob;
 
