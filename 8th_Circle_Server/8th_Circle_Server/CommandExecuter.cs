@@ -172,7 +172,7 @@ namespace _8th_Circle_Server
         }// Constructor
     }// struct Command
 
-    public class CommandExecuter
+    public partial class CommandExecuter
     {
         // Debug
         internal const bool DEBUG = true;
@@ -662,6 +662,11 @@ namespace _8th_Circle_Server
             CombatMob player;
             string clientString = string.Empty;
 
+            if (currentCommand.comType == CommandType.ABILITY)
+                return executeAbilityCommand(commandQueue, mob);
+            else if (currentCommand.comType == CommandType.SPELL)
+                return executeSpellCommand(commandQueue, mob);
+
             // Process the commandList by moving a index through the commandQueue
             // Each command will handle the various predicates given to it
             switch (currentCommand.commandName)
@@ -731,51 +736,7 @@ namespace _8th_Circle_Server
                 case commandName.COMMAND_DESTROY:
                     clientString = ((Mob)commandQueue[++commandIndex]).destroy();
                     break;
-
-                // TODO
-                // Probably need to make an ability struct with damage
-                // combat strings, and cooldown timers
-                case commandName.COMMAND_BASH:
-                    CombatMob cm = (CombatMob)mob;
-
-                    if (cm.mMobType != MobType.WARRIOR)
-                        clientString = "you don't know how to bash";
-                    else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
-                        clientString = "you can't bash if you are not in combat\b";
-                    else
-                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, true, Ability.BASH);
-                    break;
-
-                case commandName.COMMAND_BACKSTAB:
-                    cm = (CombatMob)mob;
-
-                    if (cm.mMobType != MobType.ROGUE)
-                        clientString = "you don't know how to backstab\n";
-                    else if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
-                        clientString = "you can't backstab while in combat\n";
-                    else if (((Equipment)cm.mEQList[(int)EQSlot.PRIMARY]) == null)
-                        clientString = "you can't backstab without a weapon!\n";
-                    else
-                    {
-                        CombatMob backstabTarget = ((CombatMob)commandQueue[++commandIndex]);
-                        cm.mWorld.mCombatHandler.backstab(cm, backstabTarget);
-                        commandQueue.Clear();
-                        // TODO
-                        // Gotta organize the commandqueue so each slot is indexed by the 
-                        // command enum for easier access to commands
-                        foreach (Command com in mCommandList)
-                        {
-                            if (com.commandName == commandName.COMMAND_ATTACK)
-                            {
-                                commandQueue.Add(com);
-                                break;
-                            }
-                        }
-                        commandQueue.Add(backstabTarget);
-                        execute(commandQueue, cm);
-                    }// else
-                    break;
-
+                    
                 case commandName.COMMAND_GET:
                     ++commandIndex;
                     if (commandQueue.Count == 2)
