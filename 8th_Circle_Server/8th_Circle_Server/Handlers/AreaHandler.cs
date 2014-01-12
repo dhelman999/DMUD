@@ -165,7 +165,7 @@ namespace _8th_Circle_Server
 
                 for (int i = 0; i < npcList.Count; ++i)
                 {
-                    Npc npc = (Npc)npcList[i];
+                    CombatMob npc = (CombatMob)npcList[i];
 
                     if ((npc.mCurrentActionCounter -= TICKTIME) <= 0)
                     {

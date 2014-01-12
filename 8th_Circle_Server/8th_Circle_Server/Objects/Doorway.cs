@@ -66,7 +66,7 @@ namespace _8th_Circle_Server
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
                     if (mRoomList[i] != null)
-                        foreach (Player pl in mRoomList[i].getRes(ResType.PLAYER))
+                        foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens\n");
                 }// for
 
@@ -89,7 +89,7 @@ namespace _8th_Circle_Server
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
                     if (mRoomList[i] != null)
-                        foreach (Player pl in mRoomList[i].getRes(ResType.PLAYER))
+                        foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes\n");
                 }// for
 

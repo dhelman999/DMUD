@@ -68,7 +68,7 @@ namespace _8th_Circle_Server
             mEffects = (ArrayList)eq.mEffects.Clone();
         }// copy constructor
 
-        public override string wear(Player pl)
+        public override string wear(CombatMob pl)
         {
             if (pl.mEQList[(int)mSlot] == null)
             {
@@ -80,7 +80,7 @@ namespace _8th_Circle_Server
                 return "you are already wearing the " + ((Mob)pl.mEQList[(int)mSlot]).mName;
         }// wear
 
-        public override string remove(Player pl)
+        public override string remove(CombatMob pl)
         {
             if (pl.mEQList[(int)mSlot] == null)
                 return "";

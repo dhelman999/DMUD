@@ -339,7 +339,7 @@ namespace _8th_Circle_Server
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
                 if (!((Mob)getRes(ResType.PLAYER)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += ((Player)getRes(ResType.PLAYER)[i]).mName + "\n";
+                    exitStr += ((CombatMob)getRes(ResType.PLAYER)[i]).mName + "\n";
             }// if
 
             exitStr += "\n";

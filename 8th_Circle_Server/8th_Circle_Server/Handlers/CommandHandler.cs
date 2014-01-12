@@ -67,8 +67,8 @@ namespace _8th_Circle_Server
                             commandExecuter.process(comData.command, comData.mob);
                         else if (comData.mob.mFlagList.Contains(MobFlags.FLAG_SEARCHING))
                         {
-                            if (comData.mob is Player)
-                                ((Player)comData.mob).mClientHandler.safeWrite("you can't do that while searching");
+                            if (comData.mob.mResType == ResType.PLAYER)
+                                ((CombatMob)comData.mob).mClientHandler.safeWrite("you can't do that while searching");
                         }
                     }// while
                 }// catch

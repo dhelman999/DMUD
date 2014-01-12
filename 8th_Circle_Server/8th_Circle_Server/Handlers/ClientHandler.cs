@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
         public StreamReader mStreamReader;
         public StreamWriter mStreamWriter;
         public Thread mResponderThread;
-        public Player mPlayer;
+        public CombatMob mPlayer;
         public string mCmdString;
         public World mWorld;
         public CommandHandler mCommandHandler;
@@ -31,7 +31,9 @@ namespace _8th_Circle_Server
 
         public ClientHandler(TcpListener tcpListener, World world)
         {
-            mPlayer = new Player(this);
+            mPlayer = new CombatMob();
+            mPlayer.mClientHandler = this;
+            mPlayer.mResType = ResType.PLAYER;
             mTcpListener = tcpListener;
             mCommandHandler = world.mCommandHandler;
             mWorld = world;      
@@ -92,26 +94,42 @@ namespace _8th_Circle_Server
                                     // TODO
                                     // Make this more generic
                                     case "warrior":
+                                        mPlayer = new Warrior(mPlayer);
                                         mPlayer.mMobType = MobType.WARRIOR;
                                         mPlayer.mStats.mBasePhysRes = 250;
+                                        mPlayer.mStats.mBaseEvade -= 15;
+                                        mPlayer.mStats.mBaseDamBonus = 1;
+                                        mPlayer.mStats.mBaseHit -= 5;
                                         mPlayer.mStats.mBaseMaxHp += 10;
                                         mPlayer.mStats.mCurrentHp += 10;
                                         break;
+
                                     case "rogue":
+                                        mPlayer = new Rogue(mPlayer);
                                         mPlayer.mMobType = MobType.ROGUE;
                                         mPlayer.mStats.mBaseHit += 5;
+                                        mPlayer.mStats.mBaseDamBonus = 1;
                                         mPlayer.mStats.mBaseEvade += 5;
                                         mPlayer.mStats.mBaseMaxHp -= 5;
                                         mPlayer.mStats.mCurrentHp -= 5;
                                         break;
+
                                     case "cleric":
+                                        mPlayer = new Cleric(mPlayer);
                                         mPlayer.mMobType = MobType.CLERIC;
-                                        break;
-                                    case "wizard":
-                                        mPlayer.mMobType = MobType.WIZARD;
+                                        mPlayer.mStats.mBaseMaxMana = 30;
+                                        mPlayer.mStats.mCurrentMana = 30;
                                         mPlayer.mStats.mBaseEvade -= 5;
+                                        break;
+
+                                    case "wizard":
+                                        mPlayer = new Wizard(mPlayer);
+                                        mPlayer.mMobType = MobType.WIZARD;
+                                        mPlayer.mStats.mBaseHit -= 10;
                                         mPlayer.mStats.mBaseMaxHp -= 10;
                                         mPlayer.mStats.mCurrentHp -= 10;
+                                        mPlayer.mStats.mBaseMaxMana = 40;
+                                        mPlayer.mStats.mCurrentMana = 40;
                                         break;
 
                                     default:
@@ -124,7 +142,7 @@ namespace _8th_Circle_Server
                         mWorld.addRes(mPlayer);
                         mPlayer.mCurrentRoom.addRes(mPlayer);
 
-                        foreach (Player player in mPlayer.mWorld.getRes(ResType.PLAYER))
+                        foreach (CombatMob player in mPlayer.mWorld.getRes(ResType.PLAYER))
                         {
                             player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
                         }// foreach
@@ -139,7 +157,7 @@ namespace _8th_Circle_Server
                         {           
                             if(mPlayer != null &&
                                mPlayer.mName != string.Empty)
-                                Console.WriteLine("Player: " + mPlayer.mName + " Client: " + 
+                                Console.WriteLine("CombatMob: " + mPlayer.mName + " Client: " + 
                                     mSocketForClient.RemoteEndPoint + " is now exitting.");
                             else
                                 Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
@@ -194,7 +212,7 @@ namespace _8th_Circle_Server
                 if(clientHandler.mPlayer != null &&
                    clientHandler.mPlayer.mCurrentRoom != null)
                    clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString() +
-                       ((Player)clientHandler.mPlayer).playerString());
+                       ((CombatMob)clientHandler.mPlayer).playerString());
             }// catch
             while (true)
             {
@@ -208,6 +226,7 @@ namespace _8th_Circle_Server
                         break;
 
                     cmdData.command = clientHandler.mCmdString;
+                    cmdData.mob = clientHandler.mPlayer;
                     clientHandler.mCommandHandler.enQueueCommand(cmdData);
                     clientHandler.safeWrite(clientHandler.mCmdString + "\n");
                 }// catch
@@ -238,7 +257,7 @@ namespace _8th_Circle_Server
         {
             if (mWorld.getRes(ResType.PLAYER).Count > 0)
             {
-                foreach (Player player in mWorld.getRes(ResType.PLAYER))
+                foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
                 {
                     player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
                 }// foreach

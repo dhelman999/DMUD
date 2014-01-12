@@ -109,20 +109,20 @@ namespace _8th_Circle_Server
                 switch (eventData.eventFlag)
                 {
                     case EventFlag.EVENT_TELL_PLAYER:
-                        if (eventData.trigger is Player)
+                        if (eventData.trigger.mResType == ResType.PLAYER)
                         {
-                            ((Player)eventData.trigger).mClientHandler.safeWrite((string)eventData.data);
+                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite((string)eventData.data);
                         }// if
                         break;
                         
                     case EventFlag.EVENT_TELEPORT:
-                        if (eventData.trigger is Player)
+                        if (eventData.trigger.mResType == ResType.PLAYER)
                         {
                             RoomID rid = (RoomID)eventData.data;
                             ((Area)mWorld.mAreaList[2]).getRoom(rid).addMobResource(eventData.trigger);
-                            ((Player)eventData.trigger).mClientHandler.safeWrite("You feel a " +
+                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite("You feel a " +
                                "mystical energy whisk you away, only to find yourself...");
-                            ((Player)eventData.trigger).mClientHandler.safeWrite(
+                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite(
                                 eventData.trigger.mCurrentRoom.exitString());
                         }
                         break;
@@ -130,7 +130,7 @@ namespace _8th_Circle_Server
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.data);
 
-                        foreach (Player pl in area.getRes(ResType.PLAYER))
+                        foreach (CombatMob pl in area.getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite("The area shakes and rumbles");
 
                         area.getRoom(RoomID.GPG_ROOM_41).addDualLinks(
@@ -170,7 +170,7 @@ namespace _8th_Circle_Server
                     case EventFlag.EVENT_GPG_WALL_ADD:
                         area = mWorld.getArea((AreaID)eventData.data);
 
-                        foreach (Player pl in area.getRes(ResType.PLAYER))
+                        foreach (CombatMob pl in area.getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite("The area shakes and rumbles");
 
                         area.getRoom(RoomID.GPG_ROOM_41).removeDualLinks(Direction.WEST);

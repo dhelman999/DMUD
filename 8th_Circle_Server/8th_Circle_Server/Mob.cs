@@ -65,6 +65,8 @@ namespace _8th_Circle_Server
         public bool mIsRespawning;
         public int mKeyId;
         public int mActionTimer;
+        public int mStartingActionCounter;
+        public int mCurrentActionCounter;
 
         public Mob()
         {
@@ -83,6 +85,7 @@ namespace _8th_Circle_Server
             mStartingRespawnTime = mCurrentRespawnTime = 25;
             mMobId = mKeyId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
+            mStartingActionCounter = mCurrentActionCounter = 30;
         }// Constructor
 
         public Mob(string name)
@@ -103,6 +106,7 @@ namespace _8th_Circle_Server
             mStartingOwner = mCurrentOwner = null;
             mMobId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
+            mStartingActionCounter = mCurrentActionCounter = 30;
         }// Constructor
 
         public Mob(Mob mob)
@@ -137,6 +141,8 @@ namespace _8th_Circle_Server
             mKeyId = mob.mKeyId;
             mActionTimer = mob.mActionTimer;
             mResType = mob.mResType;
+            mStartingActionCounter = mob.mStartingActionCounter;
+            mCurrentActionCounter = mob.mCurrentActionCounter;
         }// Copy Constructor
         
         public string move(string direction)
@@ -456,7 +462,7 @@ namespace _8th_Circle_Server
             return "you can't fullheal that\n";
         }// fullheal
 
-        public virtual string wear(Player mob)
+        public virtual string wear(CombatMob mob)
         {
             return "you can't wear that\n";
         }// wear
@@ -466,7 +472,7 @@ namespace _8th_Circle_Server
             return "you can't wear that\n";
         }// wearall
 
-        public virtual string remove(Player mob)
+        public virtual string remove(CombatMob mob)
         {
             return "you can't remove that\n";
         }// wear
@@ -475,11 +481,6 @@ namespace _8th_Circle_Server
         {
             return "you can't remove that\n";
         }// wearall
-
-        public virtual string slain(Mob mob)
-        {
-            return destroy();
-        }// slain
 
         public virtual string teleport(Mob target)
         {
@@ -549,6 +550,77 @@ namespace _8th_Circle_Server
                     return Direction.DIRECTION_END;
             }// switch
         }// DirStrToEnum
+
+        // TODO
+        // Needs to be more generic
+        public void randomAction()
+        {
+            if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                return;
+
+            Random rand = new Random();
+            if (rand.NextDouble() < .5)
+            {
+                // Max movement
+                if (mMobId == (int)MOBLIST.MAX)
+                {
+                    foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
+                    {
+                        player.mClientHandler.safeWrite(mName + " purrs softly\n");
+                    }// foreach
+                    ArrayList commandQueue = new ArrayList();
+                    Command com = new Command();
+                    foreach (Command cmd in mCurrentArea.mCommandExecuter.mVerbList)
+                    {
+                        if (cmd.commandName == commandName.COMMAND_TELL)
+                            com = cmd;
+                    }
+
+                    foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
+                    {
+                        commandQueue.Add(com);
+                        commandQueue.Add(pl);
+                        commandQueue.Add("purrr");
+                        mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                        commandQueue.Clear();
+                    }
+                }// if (mMobId == (int)MOBLIST.MAX)
+            }// if
+            else
+            {
+                ArrayList commandQueue = new ArrayList();
+                addExits(commandQueue);
+
+                if (commandQueue.Count > 0)
+                {
+                    int index = (int)(commandQueue.Count * rand.NextDouble());
+                    Command com = (Command)commandQueue[index];
+                    commandQueue.Clear();
+                    commandQueue.Add(com);
+                    foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
+                    {
+                        player.mClientHandler.safeWrite(mName + " scampers off\n");
+                    }// foreach
+                    mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                }// if
+                else
+                { // There must be no exits in the room the CombatMob is trying to leave, so just stay put
+                }
+            }// else
+        }// randomAction
+
+        private void addExits(ArrayList commandQueue)
+        {
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
+                if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
+                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
+                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
+                {
+                    commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[(int)dir]);
+                }// if
+            }// for
+        }// addExits
 
     }// Class Mob
 

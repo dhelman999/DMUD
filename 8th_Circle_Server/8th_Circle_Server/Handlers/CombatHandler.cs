@@ -119,14 +119,14 @@ namespace _8th_Circle_Server
                         }
                         attacker.mStats.mCombatList.Clear();
                         attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
-                        if (attacker is Player)
-                            ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
+                        if (attacker.mResType == ResType.PLAYER)
+                            ((CombatMob)attacker).mClientHandler.safeWrite(((CombatMob)attacker).playerString());
                         return;
                     }// if
                 }// for
 
-                if (attacker is Player)
-                    ((Player)attacker).mClientHandler.safeWrite(((Player)attacker).playerString());
+                if (attacker.mResType == ResType.PLAYER)
+                    ((CombatMob)attacker).mClientHandler.safeWrite(((CombatMob)attacker).playerString());
                 Thread.Sleep(4000);
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
@@ -204,8 +204,8 @@ namespace _8th_Circle_Server
                 damageString += "your critical " + abilityName + " " + damageToString(maxHp, damage) +
                     " the " + target.mName + " for " + (int)damage + " damage";
 
-            if (attacker is Player)
-                ((Player)attacker).mClientHandler.safeWrite(damageString);
+            if (attacker.mResType == ResType.PLAYER)
+                ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
 
             if (checkDeath(attacker, target))
             {
@@ -321,7 +321,7 @@ namespace _8th_Circle_Server
 
             target.mStats.mCurrentHp -= (int)damage;
 
-            if (attacker is Player)
+            if (attacker.mResType == ResType.PLAYER)
             {
                 int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
 
@@ -338,12 +338,12 @@ namespace _8th_Circle_Server
                     damageString += "your critical backstab " + damageToString(maxHp, damage) +
                         " the " + target.mName + " for " + (int)damage + " damage";
 
-                ((Player)attacker).mClientHandler.safeWrite(damageString);
+                ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
 
                 if (isBackstab)
                     Thread.Sleep(1000);
             }// if
-            if (target is Player)
+            if (target.mResType == ResType.PLAYER)
             {
                 damageString = string.Empty;
                 if (isCrit)
@@ -353,22 +353,22 @@ namespace _8th_Circle_Server
                     damageString += attacker.mName + " hits you for " +
                         (int)damage + " damage";
 
-                ((Player)target).mClientHandler.safeWrite(damageString);
+                ((CombatMob)target).mClientHandler.safeWrite(damageString);
             }// if
         }// processHit
 
         private void processMiss(CombatMob attacker, CombatMob target, bool isBackstab)
         {
-            if (attacker is Player)
+            if (attacker.mResType == ResType.PLAYER)
                 if(!isBackstab)
-                    ((Player)attacker).mClientHandler.safeWrite("you miss the " + target.mName);
+                    ((CombatMob)attacker).mClientHandler.safeWrite("you miss the " + target.mName);
                 else
-                    ((Player)attacker).mClientHandler.safeWrite("your backstab misses the " + target.mName);
-            if (target is Player)
+                    ((CombatMob)attacker).mClientHandler.safeWrite("your backstab misses the " + target.mName);
+            if (target.mResType == ResType.PLAYER)
                 if (!isBackstab)
-                    ((Player)target).mClientHandler.safeWrite(attacker.mName + " misses you");
+                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + " misses you");
                 else
-                    ((Player)attacker).mClientHandler.safeWrite(attacker.mName + "'s backstab misses you");
+                    ((CombatMob)attacker).mClientHandler.safeWrite(attacker.mName + "'s backstab misses you");
         }// processMiss
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
@@ -376,13 +376,13 @@ namespace _8th_Circle_Server
             if (target.mStats.mCurrentHp <= 0)
             {
                 attacker.mStats.mCombatList.Remove(target);
-                if (attacker is Player)
+                if (attacker.mResType == ResType.PLAYER)
                 {
-                    ((Player)attacker).mClientHandler.safeWrite("you have slain the " + target.mName);
+                    ((CombatMob)attacker).mClientHandler.safeWrite("you have slain the " + target.mName);
                     target.slain(attacker);
                 }
-                if(target is Player)
-                    ((Player)target).mClientHandler.safeWrite(target.slain(attacker));
+                if(target.mResType == ResType.PLAYER)
+                    ((CombatMob)target).mClientHandler.safeWrite(target.slain(attacker));
 
                 return true;
             }// if

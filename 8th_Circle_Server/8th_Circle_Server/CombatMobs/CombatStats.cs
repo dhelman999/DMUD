@@ -6,9 +6,38 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+    public struct Action
+    {
+        string name;
+        int cooldown;
+        int useTime;
+        ActionType type;
+        int manaCost;
+
+        public Action(string name, int cooldown, int useTime,
+                      ActionType type, int manaCost)
+        {
+            this.name = name;
+            this.cooldown = cooldown;
+            this.useTime = useTime;
+            this.type = type;
+            this.manaCost = manaCost;
+        }// Constructor
+    }// Action
+
+    public enum ActionType
+    {
+        ACTIONTYPE_START,
+        ABILITY,
+        SPELL,
+        ACTIONTYPE_END
+    }// ActionType
+
     public class CombatStats
     {
         public ArrayList mCombatList;
+        public ArrayList mActionList;
+        public ArrayList mQueuedAction;
         public int mLevel;
         public int mCurrentHp;
         public int mBaseMaxHp;
@@ -33,10 +62,15 @@ namespace _8th_Circle_Server
         public int mMagicResMod;
         public int mBaseMaxMagicResBoost;
         public int mMaxMagicResBoostMod;
+        public int mBaseMaxMana;
+        public int mMaxManaMod;
+        public int mCurrentMana;
 
         public CombatStats()
         {
             mCombatList = new ArrayList();
+            mActionList = new ArrayList();
+            mQueuedAction = new ArrayList();
             mLevel = 1;
             mCurrentHp = mBaseMaxHp = 50;
             mBaseMinDam = 1;
@@ -47,6 +81,8 @@ namespace _8th_Circle_Server
         public CombatStats(CombatStats cs)
         {
             mCombatList = (ArrayList)cs.mCombatList.Clone();
+            mActionList = (ArrayList)cs.mActionList.Clone();
+            mQueuedAction = (ArrayList)cs.mQueuedAction.Clone();
             mLevel = cs.mLevel;
             mCurrentHp = cs.mCurrentHp;
             mBaseMaxHp = cs.mBaseMaxHp;

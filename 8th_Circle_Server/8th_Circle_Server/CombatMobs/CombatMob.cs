@@ -71,6 +71,7 @@ namespace _8th_Circle_Server
         public ArrayList mResistances;
         public CombatStats mStats;
         public MobType mMobType;
+        public ClientHandler mClientHandler;
         // TODO
         // Need to have a queued command list so that players that
         // do a command before its cd is ready will automatically
@@ -88,6 +89,7 @@ namespace _8th_Circle_Server
                 mResistances.Add(null);
             fillResistances();         
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
+            mResType = ResType.NPC;
         }// Constructor
 
         public CombatMob(CombatMob cm) : base(cm)
@@ -95,6 +97,8 @@ namespace _8th_Circle_Server
             mEQList = (ArrayList)cm.mEQList.Clone();
             mStats = new CombatStats(cm.mStats);
             mResistances = (ArrayList)cm.mResistances.Clone();
+            mResType = cm.mResType;
+            mClientHandler = cm.mClientHandler;
         }// Copy Constructor
 
         public CombatMob(string newName) : base(newName)
@@ -108,6 +112,7 @@ namespace _8th_Circle_Server
                 mResistances.Add(null);
             fillResistances();
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
+            mResType = ResType.NPC;
         }// Constructor
 
         public void fillResistances()
@@ -149,6 +154,73 @@ namespace _8th_Circle_Server
             else
                 return "You can't look like that";
         }// viewed
+
+        public override void respawn()
+        {
+            mIsRespawning = false;
+            mCurrentRespawnTime = mStartingRespawnTime;
+            mStats.mCurrentHp = mStats.mBaseMaxHp;
+            CombatMob mob = new CombatMob(this);
+            mChildren.Add(mob);
+            mob.mCurrentArea.addRes(mob);
+            mob.mCurrentRoom.addRes(mob);
+            mob.mWorld.addRes(mob);
+        }// respawn
+
+        public override string fullheal()
+        {
+            mStats.mCurrentHp = mStats.mBaseMaxHp;
+            return "you fully heal " + mName + "\n";
+        }// fullheal
+
+        public virtual string playerString()
+        {
+            return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp\n";
+        }// playerString
+
+        // TODO
+        // Clean this up
+        public override string wearall()
+        {
+            string clientString = string.Empty;
+            int tmpInvCount = 0;
+
+            for (int i = 0; i < mInventory.Count; ++i)
+            {
+                tmpInvCount = mInventory.Count;
+
+                if (mInventory[i] is Equipment)
+                {
+                    clientString += ((Equipment)mInventory[i]).wear(this) + "\n";
+                    if (tmpInvCount != mInventory.Count)
+                        --i;
+                }// if
+            }// for
+
+            return clientString;
+        }// wearall
+
+        public override string removeall()
+        {
+            string clientString = string.Empty;
+            for (int i = 0; i < mEQList.Count; ++i)
+            {
+                if (mEQList[i] is Equipment)
+                    clientString += ((Equipment)mEQList[i]).remove(this) + "\n";
+            }// for
+
+            return clientString;
+        }// wearall
+
+        public virtual string slain(Mob mob)
+        {
+            if (mResType == ResType.PLAYER)
+                return "you have been slain by " + mob.mName;
+            else
+                base.destroy();
+
+            return string.Empty;
+        }// slain
 
     }// class CombatMob
 

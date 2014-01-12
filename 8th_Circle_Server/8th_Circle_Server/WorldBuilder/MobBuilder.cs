@@ -154,7 +154,7 @@ namespace _8th_Circle_Server
             mFullMobList.Add(basic_sword);
 
             // NPCs start here
-            Npc goblin_runt = new Npc();
+            CombatMob goblin_runt = new CombatMob();
             goblin_runt.mDescription = "A runt of the goblin litter, truely a wretched creature.";
             goblin_runt.mName = "Goblin Runt";
             goblin_runt.mInventory.Capacity = 0;
@@ -169,7 +169,7 @@ namespace _8th_Circle_Server
             goblin_runt.fillResistances();
             mFullMobList.Add(goblin_runt);
 
-            Npc max = new Npc();
+            CombatMob max = new CombatMob();
             max.mDescription = "A super big fluffy cute black and white kitty cat... you just want to hug him";
             max.mName = "Max the MaineCoon";
             max.mInventory.Capacity = 0;
@@ -184,17 +184,17 @@ namespace _8th_Circle_Server
         {
             Mob mob = null;
             Container cont = null;
-            Npc npc = null;
+            CombatMob CombatMob = null;
 
             if (mFullMobList[(int)mobId] is Container)
             {
                 cont = new Container((Container)mFullMobList[(int)mobId]);
                 mob = cont;
             }// if
-            else if (mFullMobList[(int)mobId] is Npc)
+            else if (mFullMobList[(int)mobId] is CombatMob)
             {
-                npc = new Npc((Npc)mFullMobList[(int)mobId]);
-                mob = npc;
+                CombatMob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
+                mob = CombatMob;
             }// if
             else
                 mob = new Mob((Mob)mFullMobList[(int)mobId]);
@@ -212,16 +212,16 @@ namespace _8th_Circle_Server
 
             Mob mob2 = null;
             Container cont2 = null;
-            Npc npc2 = null;
+            CombatMob npc2 = null;
 
             if (mob is Container)
             {
                 cont2 = new Container((Container)mob);
                 mob2 = cont2;
             }// if
-            else if (mob is Npc)
+            else if (mob is CombatMob)
             {
-                npc2 = new Npc((Npc)mob);
+                npc2 = new CombatMob((CombatMob)mob);
                 mob2 = npc2;
             }// if
             else
@@ -246,7 +246,7 @@ namespace _8th_Circle_Server
 
             Mob mob2 = null;
             Container cont2 = null;
-            Npc npc2 = null;
+            CombatMob npc2 = null;
             Equipment eq = null;
 
             // TODO
@@ -263,9 +263,9 @@ namespace _8th_Circle_Server
                 eq = new Equipment((Equipment)mob);
                 mob2 = eq;
             }// if
-            else if (mob is Npc)
+            else if (mob is CombatMob)
             {
-                npc2 = new Npc((Npc)mob);
+                npc2 = new CombatMob((CombatMob)mob);
                 mob2 = npc2;
             }// if 
             else
