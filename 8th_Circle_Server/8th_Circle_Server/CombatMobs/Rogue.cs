@@ -20,7 +20,7 @@ namespace _8th_Circle_Server
 
         private void addActions()
         {
-            mStats.mActionList.Add(new Action("backstab", 4, 0, ActionType.ABILITY, 0));
+            mStats.mActionList.Add(new Action("backstab", 4, 0, ActionType.ABILITY));
         }// addActions
 
     }// Class Rogue

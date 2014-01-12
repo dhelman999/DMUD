@@ -189,7 +189,12 @@ namespace _8th_Circle_Server
             mPrepList = new ArrayList();
             mCommandList = new ArrayList();
             mGrammarList = new ArrayList();
+            mAbilitySpellList = new ArrayList();
+            for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START;
+                abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
+                mAbilitySpellList.Add(null);
             addCommands();
+            addAbilitySpells();
         }// Constructor
 
         private void addCommands()

@@ -37,6 +37,7 @@ namespace _8th_Circle_Server
     {
         // Debug
         internal const bool DEBUG = false;
+        internal int SEED = 0;
 
         // Member Variables
         public string mName;
@@ -490,7 +491,7 @@ namespace _8th_Circle_Server
         public virtual string search()
         {
             string searchString = string.Empty;
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
             ArrayList targetList = new ArrayList();
             targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
             targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
@@ -558,7 +559,7 @@ namespace _8th_Circle_Server
             if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 return;
 
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
             if (rand.NextDouble() < .5)
             {
                 // Max movement

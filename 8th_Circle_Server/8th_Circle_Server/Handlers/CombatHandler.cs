@@ -18,6 +18,7 @@ namespace _8th_Circle_Server
     {
         // Debug
         internal const bool DEBUG = false;
+        internal int SEED = 0;
 
         // Member Variables
         public Queue mCombatQueue;
@@ -137,7 +138,7 @@ namespace _8th_Circle_Server
             if (target == null)
                 target = (CombatMob)attacker.mStats.mCombatList[0];
 
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
             double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                 (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             bool isCrit = false;
@@ -172,7 +173,7 @@ namespace _8th_Circle_Server
         public void processAbility(CombatMob attacker, CombatMob target, Ability ability, bool isCrit)
         {
             DamageType damType = (DamageType)mAbilityDamageTypes[(int)ability];
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
             string damageString = string.Empty;
             string abilityName = string.Empty;
             int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
@@ -220,7 +221,7 @@ namespace _8th_Circle_Server
 
         public void attack(CombatMob attacker, CombatMob target, bool isBackstab)
         {
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
             double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                     (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             // TODO
@@ -231,6 +232,9 @@ namespace _8th_Circle_Server
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = rand.NextDouble();
+            // TODO
+            // Investigate why random seeds suck so bad
+            Console.WriteLine("attack roll " + attackRoll);
 
             if (attackRoll >= .95)
                 isCrit = true;
@@ -295,7 +299,7 @@ namespace _8th_Circle_Server
         {
             string damageString = string.Empty;
             double damage;
-            Random rand = new Random();
+            Random rand = new Random(++SEED);
 
             if (weapon != null)
                 damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mDamBonusMod;

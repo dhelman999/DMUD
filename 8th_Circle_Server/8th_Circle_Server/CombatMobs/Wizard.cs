@@ -24,7 +24,7 @@ namespace _8th_Circle_Server
 
         private void addActions()
         {
-            mStats.mActionList.Add(new Action("mystic shot", 4, 0, ActionType.SPELL, 5));
+            mStats.mActionList.Add(new Action("mystic shot", 4, 0, ActionType.SPELL));
         }// addActions
 
     }// Class Wizard

@@ -6,33 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public struct Action
-    {
-        string name;
-        int cooldown;
-        int useTime;
-        ActionType type;
-        int manaCost;
-
-        public Action(string name, int cooldown, int useTime,
-                      ActionType type, int manaCost)
-        {
-            this.name = name;
-            this.cooldown = cooldown;
-            this.useTime = useTime;
-            this.type = type;
-            this.manaCost = manaCost;
-        }// Constructor
-    }// Action
-
-    public enum ActionType
-    {
-        ACTIONTYPE_START,
-        ABILITY,
-        SPELL,
-        ACTIONTYPE_END
-    }// ActionType
-
     public class CombatStats
     {
         public ArrayList mCombatList;

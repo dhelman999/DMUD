@@ -5,8 +5,24 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
+    public enum AbilitySpell
+    {
+        ABILITY_SPELL_START,
+
+        // Abilities
+        ABILITY_BACKSTAB,
+        ABILITY_BASH,
+
+        // Spells
+        SPELL_MYSTIC_SHOT,
+
+        ABILITY_SPELL_END
+    }// AbilitySpell
+
     public partial class CommandExecuter
     {
+        public ArrayList mAbilitySpellList;
+
         public string executeAbilityCommand(ArrayList commandQueue, Mob mob)
         {
             Command currentCommand = new Command();
@@ -72,7 +88,7 @@ namespace _8th_Circle_Server
         {
             Command currentCommand = new Command();
             currentCommand = (Command)commandQueue[0];
-            int commandIndex = 0;
+            //int commandIndex = 0;
             Room currentRoom = mob.mCurrentRoom;
             string clientString = string.Empty;
 
@@ -85,6 +101,19 @@ namespace _8th_Circle_Server
 
             return clientString;
         }// executeAbilityCommand
+
+        private void addAbilitySpells()
+        {
+            Action act = new Action("bash", 4, 0, ActionType.ABILITY);
+            act.mHitBonus = 5;
+            act.mEvadable = true;
+            act.mDamScaling = DamageScaling.PERLEVEL;
+            act.mDamageBonus = 1;
+            act.mBaseMinDamage = 1;
+            act.mBaseMaxDamage = 6;
+            act.mAbilitySpell = AbilitySpell.ABILITY_BASH;
+            mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH] = act;
+        }// addAbilitySpells
 
     }// Class CommandHandler
 
