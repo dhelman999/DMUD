@@ -138,7 +138,7 @@ namespace _8th_Circle_Server
                                 }// switch
                             }
                         }// while
-
+                        mPlayer.fillResistances();
                         mWorld.addRes(mPlayer);
                         mPlayer.mCurrentRoom.addRes(mPlayer);
 
@@ -255,16 +255,19 @@ namespace _8th_Circle_Server
 
         private void playerLeft()
         {
-            if (mWorld.getRes(ResType.PLAYER).Count > 0)
+            if (mPlayer != null)
             {
-                foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
+                if (mWorld.getRes(ResType.PLAYER).Count > 0)
                 {
-                    player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
-                }// foreach
+                    foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
+                    {
+                        player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
+                    }// foreach
 
-                mPlayer.mCurrentRoom.removeRes(mPlayer);
-                mPlayer.mCurrentArea.removeRes(mPlayer);
-                mWorld.removeRes(mPlayer);
+                    mPlayer.mCurrentRoom.removeRes(mPlayer);
+                    mPlayer.mCurrentArea.removeRes(mPlayer);
+                    mWorld.removeRes(mPlayer);
+                }// if
             }// if
 
             mStreamReader.Close();

@@ -73,7 +73,8 @@ namespace _8th_Circle_Server
                     else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                         clientString = "you can't bash if you are not in combat\b";
                     else
-                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, true, Ability.BASH);
+                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, 
+                            (Action)mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
                     break;
 
                 default:
@@ -107,6 +108,7 @@ namespace _8th_Circle_Server
             Action act = new Action("bash", 4, 0, ActionType.ABILITY);
             act.mHitBonus = 5;
             act.mEvadable = true;
+            act.mDamType = DamageType.PHYSICAL;
             act.mDamScaling = DamageScaling.PERLEVEL;
             act.mDamageBonus = 1;
             act.mBaseMinDamage = 1;

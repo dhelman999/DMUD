@@ -68,6 +68,7 @@ namespace _8th_Circle_Server
         public int mActionTimer;
         public int mStartingActionCounter;
         public int mCurrentActionCounter;
+        public Random mRand;
 
         public Mob()
         {
@@ -87,6 +88,7 @@ namespace _8th_Circle_Server
             mMobId = mKeyId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
+            mRand = new Random();
         }// Constructor
 
         public Mob(string name)
@@ -108,6 +110,7 @@ namespace _8th_Circle_Server
             mMobId = -1;
             mInstanceId = mKeyId = mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
+            mRand = new Random();
         }// Constructor
 
         public Mob(Mob mob)
@@ -144,6 +147,7 @@ namespace _8th_Circle_Server
             mResType = mob.mResType;
             mStartingActionCounter = mob.mStartingActionCounter;
             mCurrentActionCounter = mob.mCurrentActionCounter;
+            mRand = new Random();
         }// Copy Constructor
         
         public string move(string direction)
@@ -491,7 +495,6 @@ namespace _8th_Circle_Server
         public virtual string search()
         {
             string searchString = string.Empty;
-            Random rand = new Random(++SEED);
             ArrayList targetList = new ArrayList();
             targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
             targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
@@ -506,7 +509,7 @@ namespace _8th_Circle_Server
                     if(mob != null &&
                        mob.mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                     {
-                        if (rand.NextDouble() > .5)
+                        if (mRand.NextDouble() > .5)
                         {
                             searchString += "you discover a " + mob.mName;
                             mob.mFlagList.Remove(MobFlags.FLAG_HIDDEN);
@@ -559,8 +562,7 @@ namespace _8th_Circle_Server
             if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 return;
 
-            Random rand = new Random(++SEED);
-            if (rand.NextDouble() < .5)
+            if (mRand.NextDouble() < .5)
             {
                 // Max movement
                 if (mMobId == (int)MOBLIST.MAX)
@@ -594,7 +596,7 @@ namespace _8th_Circle_Server
 
                 if (commandQueue.Count > 0)
                 {
-                    int index = (int)(commandQueue.Count * rand.NextDouble());
+                    int index = (int)(commandQueue.Count * mRand.NextDouble());
                     Command com = (Command)commandQueue[index];
                     commandQueue.Clear();
                     commandQueue.Add(com);

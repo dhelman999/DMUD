@@ -46,8 +46,8 @@ namespace _8th_Circle_Server
 
     public enum DamageType
     {
-        DAMAGETYPE_START,
-        PHYSICAL = DAMAGETYPE_START,
+        PHYSICAL,
+        DAMAGETYPE_START = PHYSICAL,
         MAGICAL,
         PURE,
         DAMAGETYPE_END

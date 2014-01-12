@@ -7,13 +7,6 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    public enum Ability
-    {
-        ABILITY_START,
-        BASH,
-        ABILITY_END
-    }// Ability
-
     public class CombatHandler
     {
         // Debug
@@ -23,27 +16,17 @@ namespace _8th_Circle_Server
         // Member Variables
         public Queue mCombatQueue;
         public World mWorld;
-        public ArrayList mAbilityDamageTypes;
-
+        public Random mRand;
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
         public CombatHandler(World world)
         {
-            mAbilityDamageTypes = new ArrayList();
-            for (Ability ability = Ability.ABILITY_START; ability < Ability.ABILITY_END; ++ability)
-                mAbilityDamageTypes.Add(null);
             mCombatQueue = new Queue();
             mQueueLock = new object();
             mWorld = world;
-
-            fillAbilityDamages();
+            mRand = new Random();
         }// Constructor
-
-        private void fillAbilityDamages()
-        {
-            mAbilityDamageTypes[(int)Ability.BASH] = DamageType.PHYSICAL;
-        }// fillAbilityDamages
 
         public void start()
         {
@@ -132,37 +115,39 @@ namespace _8th_Circle_Server
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
 
-        public void abilityAttack(CombatMob attacker, CombatMob target, bool evadeable,
-                                  Ability ability)
+        public void abilityAttack(CombatMob attacker, CombatMob target, Action action)
         {
-            if (target == null)
+            if (target == null && attacker.mStats.mCombatList.Count > 0)
                 target = (CombatMob)attacker.mStats.mCombatList[0];
 
-            Random rand = new Random(++SEED);
-            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
+            if (target == null)
+                return;
+
+            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + action.mHitBonus) -
                 (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             bool isCrit = false;
             bool isHit = false;
-            double attackRoll = rand.NextDouble();
+            double attackRoll = mRand.NextDouble();
 
             if (attackRoll >= .95)
                 isCrit = true;
-            else if (!evadeable)
-                isHit = true;
             else if (attackRoll >= (1 - (hitChance / 100)))
                 isHit = true;
 
-            switch (ability)
+            if (!action.mEvadable)
+                isHit = true;
+
+            switch (action.mAbilitySpell)
             {
-                case Ability.BASH:
+                case AbilitySpell.ABILITY_BASH:
                     if (!isHit)
                         processMiss(attacker, target, false);
                     else
-                        processAbility(attacker, target, ability, isCrit);
+                        processAbility(attacker, target, action, isCrit);
 
                     // TODO 
                     // doesn't need to be defined here, but in the ability instead
-                    attacker.mActionTimer += 4;
+                    attacker.mActionTimer += action.mUseTime;
                     break;
 
                 default:
@@ -170,39 +155,34 @@ namespace _8th_Circle_Server
             }// switch
         }// abilityAttack
 
-        public void processAbility(CombatMob attacker, CombatMob target, Ability ability, bool isCrit)
+        public void processAbility(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
-            DamageType damType = (DamageType)mAbilityDamageTypes[(int)ability];
-            Random rand = new Random(++SEED);
             string damageString = string.Empty;
-            string abilityName = string.Empty;
             int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
             double damage = 0;
 
-            if (ability == Ability.BASH)
+            if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
                 int level = attacker.mStats.mLevel;
-                damage = rand.Next(level * 1, level * 6) + (level / 2)+1;
-                // TODO
-                // Again, this needs to be generic and contained within the ability itself
-                abilityName = "bash";
-
-                if (isCrit)
-                    damage *= 1.5;
-
-                damage *= (1 - ((double)target.mResistances[(int)damType] / 100));
-
-                if (damage == 0)
-                    damage = 1;
-
-                target.mStats.mCurrentHp -= (int)damage;
+                damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + 
+                    ability.mDamageBonus;
             }// if
 
+            if (isCrit)
+                damage *= 1.5;
+
+            damage *= (1 - ((double)target.mResistances[(int)ability.mDamType] / 100));
+
+            if (damage == 0)
+                damage = 1;
+
+            target.mStats.mCurrentHp -= (int)damage;
+
             if (!isCrit)
-                damageString += "your " + abilityName + " " + damageToString(maxHp, damage) +
+                damageString += "your " + ability.mName + " " + damageToString(maxHp, damage) +
                     " the " + target.mName + " for " + (int)damage + " damage";
             else
-                damageString += "your critical " + abilityName + " " + damageToString(maxHp, damage) +
+                damageString += "your critical " + ability.mName + " " + damageToString(maxHp, damage) +
                     " the " + target.mName + " for " + (int)damage + " damage";
 
             if (attacker.mResType == ResType.PLAYER)
@@ -221,7 +201,6 @@ namespace _8th_Circle_Server
 
         public void attack(CombatMob attacker, CombatMob target, bool isBackstab)
         {
-            Random rand = new Random(++SEED);
             double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                     (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             // TODO
@@ -231,7 +210,7 @@ namespace _8th_Circle_Server
             
             bool isCrit = false;
             bool isHit = false;
-            double attackRoll = rand.NextDouble();
+            double attackRoll = mRand.NextDouble();
             // TODO
             // Investigate why random seeds suck so bad
             Console.WriteLine("attack roll " + attackRoll);
@@ -299,18 +278,18 @@ namespace _8th_Circle_Server
         {
             string damageString = string.Empty;
             double damage;
-            Random rand = new Random(++SEED);
 
             if (weapon != null)
-                damage = rand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mBaseDamBonus +
+                    attacker.mStats.mDamBonusMod;
             else
-                damage = rand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam)
-                    + attacker.mStats.mBaseDamBonus;
+                damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam)
+                    + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
 
             if (isBackstab)
             {
                 damage *= 2;
-                damage += rand.Next(1 * attacker.mStats.mLevel + 6 * attacker.mStats.mLevel);
+                damage += mRand.Next(1 * attacker.mStats.mLevel + 6 * attacker.mStats.mLevel);
             }
             if (isCrit)
                 damage *= 1.5;
@@ -320,7 +299,7 @@ namespace _8th_Circle_Server
             else
                 damage *= (1 - ((double)target.mResistances[(int)DamageType.PHYSICAL] / 100));
 
-            if (damage == 0)
+            if ((int)damage == 0)
                 damage = 1;
 
             target.mStats.mCurrentHp -= (int)damage;
