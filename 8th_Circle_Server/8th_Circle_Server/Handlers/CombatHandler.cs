@@ -117,36 +117,53 @@ namespace _8th_Circle_Server
 
         public void abilityAttack(CombatMob attacker, CombatMob target, Action action)
         {
+            bool isCrit = false;
+            bool isHit = false;
+            double hitChance = 0;
+            double attackRoll = 0;
+
             if (target == null && attacker.mStats.mCombatList.Count > 0)
                 target = (CombatMob)attacker.mStats.mCombatList[0];
 
             if (target == null)
                 return;
+            if (action.mType == ActionType.ABILITY)
+            {
+                hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + action.mHitBonus) -
+                    (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+                
+                attackRoll = mRand.NextDouble();
 
-            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + action.mHitBonus) -
-                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
-            bool isCrit = false;
-            bool isHit = false;
-            double attackRoll = mRand.NextDouble();
+                if (attackRoll >= .95)
+                    isCrit = true;
+                else if (attackRoll >= (1 - (hitChance / 100)))
+                    isHit = true;
 
-            if (attackRoll >= .95)
-                isCrit = true;
-            else if (attackRoll >= (1 - (hitChance / 100)))
+                if (!action.mEvadable)
+                    isHit = true;
+            }// if
+            else
+            {
+                hitChance = 100;
+                attackRoll = mRand.NextDouble();
+
+                if (attackRoll >= .95)
+                    isCrit = true;
                 isHit = true;
-
-            if (!action.mEvadable)
-                isHit = true;
+                attacker.mStats.mCurrentMana -= action.mManaCost;
+            }// else
 
             switch (action.mAbilitySpell)
             {
                 case AbilitySpell.ABILITY_BASH:
                 case AbilitySpell.ABILITY_BACKSTAB:
+                case AbilitySpell.SPELL_MYSTIC_SHOT:
                     if (!isHit)
                         processMiss(attacker, target, action);
                     else
-                        processAbility(attacker, target, action, isCrit);                   
+                        processAbilityHit(attacker, target, action, isCrit);                   
                     break;
-                
+
                 default:
                     Console.WriteLine("ability spell not found");
                     break;
@@ -155,7 +172,7 @@ namespace _8th_Circle_Server
             attacker.mActionTimer += action.mUseTime;
         }// abilityAttack
 
-        public void processAbility(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
+        public void processAbilityHit(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
             string damageString = string.Empty;
             int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;

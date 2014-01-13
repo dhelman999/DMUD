@@ -61,6 +61,7 @@ namespace _8th_Circle_Server
         ROGUE,
         WIZARD,
         CLERIC,
+        SPELLCASTER,
         ALL,
         MOBTYPE_END
     }// MobType
@@ -169,7 +170,8 @@ namespace _8th_Circle_Server
 
         public override string fullheal()
         {
-            mStats.mCurrentHp = mStats.mBaseMaxHp;
+            mStats.mCurrentHp = mStats.mBaseMaxHp + mStats.mMaxHpMod;
+            mStats.mCurrentMana = mStats.mBaseMaxMana + mStats.mMaxManaMod;
             return "you fully heal " + mName + "\n";
         }// fullheal
 

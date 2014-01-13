@@ -27,6 +27,7 @@ namespace _8th_Circle_Server
         PREDICATE_OBJECT_OR_NPC,
         PREDICATE_ALL,
         PREDICATE_CUSTOM,
+        PREDICATE_SPELL,
         PREDICATE_END
     }// predicateType
 
@@ -96,6 +97,7 @@ namespace _8th_Circle_Server
         COMMAND_REMOVEALL,
         COMMAND_BACKSTAB,
         COMMAND_BASH,
+        COMMAND_CAST,
         COMMAND_END
     };// commandName
 
@@ -438,7 +440,12 @@ namespace _8th_Circle_Server
                 predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
                 CommandType.ABILITY);
             mCommandList.Add(pt);
-            
+
+            pt = new Command("cast", "c", 1, 3, MobType.SPELLCASTER, gramVerbPredPred, commandName.COMMAND_CAST,
+                predicateType.PREDICATE_SPELL, predicateType.PREDICATE_PLAYER_OR_NPC, validityType.VALID_LOCAL,
+                CommandType.SPELL);
+            mCommandList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -1140,6 +1147,10 @@ namespace _8th_Circle_Server
                     targetList.Add(target.mInventory);
                 }// if
             }// if
+
+            if (predType == predicateType.PREDICATE_SPELL)
+                targetList.Add(((CombatMob)target).mStats.mActionList);
+
             // TODO
             // See if we have added the same list multiple times
             foreach(ArrayList ar in targetList)

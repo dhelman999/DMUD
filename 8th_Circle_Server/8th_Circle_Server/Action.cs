@@ -35,7 +35,7 @@ namespace _8th_Circle_Server
         public int mDamageBonus;
         public int mHitBonus;
         public bool mEvadable;
-        public int mResistable;
+        public bool mResistable;
         public ActionType mType;
         public DamageScaling mDamScaling;
         public DamageType mDamType;
