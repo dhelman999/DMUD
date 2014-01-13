@@ -46,11 +46,10 @@ namespace _8th_Circle_Server
                     else
                     {
                         CombatMob backstabTarget = ((CombatMob)commandQueue[++commandIndex]);
-                        cm.mWorld.mCombatHandler.backstab(cm, backstabTarget);
+                        cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget,
+                            (Action)mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
                         commandQueue.Clear();
-                        // TODO
-                        // Gotta organize the commandqueue so each slot is indexed by the 
-                        // command enum for easier access to commands
+
                         foreach (Command com in mCommandList)
                         {
                             if (com.commandName == commandName.COMMAND_ATTACK)
@@ -108,13 +107,24 @@ namespace _8th_Circle_Server
             Action act = new Action("bash", 4, 0, ActionType.ABILITY);
             act.mHitBonus = 5;
             act.mEvadable = true;
-            act.mDamType = DamageType.PHYSICAL;
             act.mDamScaling = DamageScaling.PERLEVEL;
             act.mDamageBonus = 1;
             act.mBaseMinDamage = 1;
             act.mBaseMaxDamage = 6;
             act.mAbilitySpell = AbilitySpell.ABILITY_BASH;
+            act.mWeaponRequired = false;
             mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH] = act;
+
+            act = new Action("backstab", 4, 0, ActionType.ABILITY);
+            act.mHitBonus = 10;
+            act.mEvadable = true;
+            act.mDamScaling = DamageScaling.DAMAGEMULTPERLEVEL;
+            act.mDamageMult = 2;
+            act.mBaseMinDamage = 2;
+            act.mBaseMaxDamage = 5;
+            act.mWeaponRequired = true;
+            act.mAbilitySpell = AbilitySpell.ABILITY_BACKSTAB;
+            mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB] = act;
         }// addAbilitySpells
 
     }// Class CommandHandler

@@ -140,19 +140,19 @@ namespace _8th_Circle_Server
             switch (action.mAbilitySpell)
             {
                 case AbilitySpell.ABILITY_BASH:
+                case AbilitySpell.ABILITY_BACKSTAB:
                     if (!isHit)
-                        processMiss(attacker, target, false);
+                        processMiss(attacker, target, action);
                     else
-                        processAbility(attacker, target, action, isCrit);
-
-                    // TODO 
-                    // doesn't need to be defined here, but in the ability instead
-                    attacker.mActionTimer += action.mUseTime;
+                        processAbility(attacker, target, action, isCrit);                   
                     break;
-
+                
                 default:
+                    Console.WriteLine("ability spell not found");
                     break;
             }// switch
+
+            attacker.mActionTimer += action.mUseTime;
         }// abilityAttack
 
         public void processAbility(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
@@ -167,9 +167,18 @@ namespace _8th_Circle_Server
                 damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + 
                     ability.mDamageBonus;
             }// if
+            else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL &&
+                     ability.mWeaponRequired)
+            {
+                int level = attacker.mStats.mLevel;
+                Equipment weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
+                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) * 2;
+                damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
+                    ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
+            }
 
             if (isCrit)
-                damage *= 1.5;
+                damage *= 1.5 + 1;
 
             damage *= (1 - ((double)target.mResistances[(int)ability.mDamType] / 100));
 
@@ -203,16 +212,10 @@ namespace _8th_Circle_Server
         {
             double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                     (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
-            // TODO
-            // Probably need to make this more generic
-            if (isBackstab)
-                hitChance += 10;
             
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = mRand.NextDouble();
-            // TODO
-            // Investigate why random seeds suck so bad
             Console.WriteLine("attack roll " + attackRoll);
 
             if (attackRoll >= .95)
@@ -230,14 +233,8 @@ namespace _8th_Circle_Server
                 processHit(attacker, target, weapon, isCrit, isBackstab);
             }
             else
-                processMiss(attacker, target, isBackstab);
+                processMiss(attacker, target, null);
         }// attack
-
-        public void backstab(CombatMob attacker, CombatMob target)
-        {
-            attack(attacker, target, true);
-            attacker.mActionTimer += 4;
-        }// backstab
 
         private string damageToString(int maxHp, double damage)
         {
@@ -340,18 +337,18 @@ namespace _8th_Circle_Server
             }// if
         }// processHit
 
-        private void processMiss(CombatMob attacker, CombatMob target, bool isBackstab)
+        private void processMiss(CombatMob attacker, CombatMob target, Action ability)
         {
+            string attackString = "attack";
+            if (ability != null)
+                attackString = ability.mName;
+
             if (attacker.mResType == ResType.PLAYER)
-                if(!isBackstab)
-                    ((CombatMob)attacker).mClientHandler.safeWrite("you miss the " + target.mName);
-                else
-                    ((CombatMob)attacker).mClientHandler.safeWrite("your backstab misses the " + target.mName);
+                    ((CombatMob)attacker).mClientHandler.safeWrite("your " + attackString + " misses the " 
+                        + target.mName);
             if (target.mResType == ResType.PLAYER)
-                if (!isBackstab)
-                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + " misses you");
-                else
-                    ((CombatMob)attacker).mClientHandler.safeWrite(attacker.mName + "'s backstab misses you");
+                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " +
+                        attackString + " misses you");
         }// processMiss
 
         private bool checkDeath(CombatMob attacker, CombatMob target)

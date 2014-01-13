@@ -573,7 +573,7 @@ namespace _8th_Circle_Server
                     }// foreach
                     ArrayList commandQueue = new ArrayList();
                     Command com = new Command();
-                    foreach (Command cmd in mCurrentArea.mCommandExecuter.mVerbList)
+                    foreach (Command cmd in mCurrentArea.mCommandExecuter.mCommandList)
                     {
                         if (cmd.commandName == commandName.COMMAND_TELL)
                             com = cmd;

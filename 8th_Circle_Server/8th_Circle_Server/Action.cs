@@ -18,6 +18,7 @@ namespace _8th_Circle_Server
         DAMAGESCALING_START,
         PERLEVEL,
         DAMAGEMULT,
+        DAMAGEMULTPERLEVEL,
         DAMAGEBONUS,
         DAMAGESCALING_END
     }// DamageScaling
@@ -39,6 +40,7 @@ namespace _8th_Circle_Server
         public DamageScaling mDamScaling;
         public DamageType mDamType;
         public AbilitySpell mAbilitySpell;
+        public bool mWeaponRequired;
 
         public Action(string name, int cooldown, int useTime, ActionType type)
         {
