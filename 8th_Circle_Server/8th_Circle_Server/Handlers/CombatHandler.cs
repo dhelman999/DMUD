@@ -17,6 +17,12 @@ namespace _8th_Circle_Server
         public Queue mCombatQueue;
         public World mWorld;
         public Random mRand;
+
+        // TODO
+        // Is this the best way to not spawn new combat threads
+        // when someone issues another attack command?
+        public static ArrayList sCurrentCombats;
+
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
@@ -26,6 +32,7 @@ namespace _8th_Circle_Server
             mQueueLock = new object();
             mWorld = world;
             mRand = new Random();
+            sCurrentCombats = new ArrayList();
         }// Constructor
 
         public void start()
@@ -48,7 +55,7 @@ namespace _8th_Circle_Server
                 }// catch
             }// while
         }// spinWork
-
+        
         public void enQueueCombat(CombatMob mob)
         {
             lock (mQueueLock)
@@ -63,6 +70,7 @@ namespace _8th_Circle_Server
             while (mCombatQueue.Count > 0)
             {
                 CombatMob mob = (CombatMob)mCombatQueue.Dequeue();
+                sCurrentCombats.Add(mob);
                 Thread combatThread = new Thread(() => combatTask(this, mob));
                 combatThread.Start();
             }// while    
@@ -73,8 +81,10 @@ namespace _8th_Circle_Server
             ArrayList combatList = attacker.mStats.mCombatList;
 
             while (combatList.Count > 0)
-            {
-                CombatMob target = (CombatMob)combatList[0];
+            {     
+                if (attacker.mStats.mPrimaryTarget == null)
+                    attacker.mStats.mPrimaryTarget = (CombatMob)combatList[0];
+                CombatMob target = attacker.mStats.mPrimaryTarget;
                 ch.attack(attacker, target);
                 ch.checkDeath(attacker, target);
 
@@ -121,9 +131,11 @@ namespace _8th_Circle_Server
             bool isCrit = false;
             bool isHit = false;
 
-            if (target == null && attacker.mStats.mCombatList.Count > 0)
+            if (target == null)
+                target = attacker.mStats.mPrimaryTarget;
+            if (attacker.mStats.mPrimaryTarget == null &&
+                attacker.mStats.mCombatList.Count > 0)
                 target = (CombatMob)attacker.mStats.mCombatList[0];
-
             if (target == null)
                 return;
 
@@ -329,11 +341,15 @@ namespace _8th_Circle_Server
                     cm = (CombatMob)target.mStats.mCombatList[i];
                     cm.mStats.mCombatList.Remove(target);
                     if (cm.mStats.mCombatList.Count == 0)
+                    {
                         cm.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                        sCurrentCombats.Remove(cm);
+                    }
                 }
 
                 target.mStats.mCombatList.Clear();
                 target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                sCurrentCombats.Remove(target);
 
                 if (attacker.mResType == ResType.PLAYER)
                 {
@@ -342,6 +358,9 @@ namespace _8th_Circle_Server
                 }
                 if(target.mResType == ResType.PLAYER)
                     ((CombatMob)target).mClientHandler.safeWrite(target.slain(attacker));
+
+                if (attacker.mStats.mPrimaryTarget == target)
+                    attacker.mStats.mPrimaryTarget = null;
 
                 return true;
             }// if

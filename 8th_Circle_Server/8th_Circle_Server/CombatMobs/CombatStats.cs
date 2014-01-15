@@ -9,6 +9,7 @@ namespace _8th_Circle_Server
     public class CombatStats
     {
         public ArrayList mCombatList;
+        public CombatMob mPrimaryTarget;
         public ArrayList mActionList;
         public ArrayList mQueuedAction;
         public int mLevel;

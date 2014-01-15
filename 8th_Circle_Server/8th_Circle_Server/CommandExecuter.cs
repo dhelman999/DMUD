@@ -797,14 +797,31 @@ namespace _8th_Circle_Server
                         clientString = "you can't attack that";
                         break;
                     }
-                    // TODO
-                    // Need to check if we already are in combat with the same mob
-                    // don't add them again to the combat if we are already fighting them
-                    mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                    target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                    ((CombatMob)mob).mStats.mCombatList.Add((CombatMob)target);
-                    ((CombatMob)target).mStats.mCombatList.Add((CombatMob)mob);
-                    mob.mWorld.mCombatHandler.enQueueCombat((CombatMob)mob);
+                    CombatMob cm = (CombatMob)target;
+                    CombatMob attacker = (CombatMob)mob;
+
+                    if (cm.mStats.mCombatList.Count == 0)
+                    {
+                        cm.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                        cm.mStats.mCombatList.Add(attacker);
+                    }
+                    else if(!cm.mStats.mCombatList.Contains(attacker))
+                        cm.mStats.mCombatList.Add(attacker);
+
+                    if (attacker.mStats.mCombatList.Count == 0)
+                    {
+                        attacker.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                        attacker.mStats.mCombatList.Add(cm);
+                        attacker.mStats.mPrimaryTarget = cm;
+                    }
+                    else if (!attacker.mStats.mCombatList.Contains(cm))
+                    {
+                        attacker.mStats.mCombatList.Add(cm);
+                        attacker.mStats.mPrimaryTarget = cm;
+                    }
+
+                    if(!CombatHandler.sCurrentCombats.Contains(attacker))
+                        attacker.mWorld.mCombatHandler.enQueueCombat(attacker);
                     break;
 
                 case commandName.COMMAND_SEARCH:
@@ -1004,7 +1021,8 @@ namespace _8th_Circle_Server
                             break;
                         }// if
 
-                        if (grammarIndex < currentCommand.grammar.Length)
+                        if (grammarIndex < currentCommand.grammar.Length &&
+                            tokens.Length > 1)
                             command = command.Substring(tokens[0].Length + 1);
                     }// if
                     // If the predicate is custom, we simply dump the rest of the command
