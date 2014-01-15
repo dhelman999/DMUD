@@ -104,12 +104,14 @@ namespace _8th_Circle_Server
                     Action act = (Action)mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
                     if(((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
-                    mob.mWorld.mCombatHandler.abilityAttack((CombatMob)mob, target, act);
-                   
-                    // TODO
-                    // Won't start a fight with another mob if in combat with another mob
+
                     if (((CombatMob)mob).mStats.mCombatList.Count == 0)
                     {
+                        mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                        ((CombatMob)mob).mStats.mCombatList.Add(target);
+                        target.mStats.mCombatList.Add(mob);
+                        target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);                       
+
                         commandQueue.Clear();
                         foreach (Command com in mCommandList)
                         {
@@ -119,10 +121,12 @@ namespace _8th_Circle_Server
                                 break;
                             }
                         }
-
+                        mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                         commandQueue.Add(target);
                         execute(commandQueue, mob);
                     }
+                    else
+                        mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                     break;
 
                 default:

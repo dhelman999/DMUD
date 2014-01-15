@@ -65,8 +65,7 @@ namespace _8th_Circle_Server
                 CombatMob mob = (CombatMob)mCombatQueue.Dequeue();
                 Thread combatThread = new Thread(() => combatTask(this, mob));
                 combatThread.Start();
-            }// while
-                
+            }// while    
         }// processCombat
 
         public static void combatTask(CombatHandler ch, CombatMob attacker)
@@ -76,100 +75,77 @@ namespace _8th_Circle_Server
             while (combatList.Count > 0)
             {
                 CombatMob target = (CombatMob)combatList[0];
-                ch.attack(attacker, target, false);
-
-                // Make this a generic sequence
-                if (ch.checkDeath(attacker, target))
-                {
-                    if (combatList.Count == 0)
-                    {
-                        attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
-                        target.mStats.mCombatList.Clear();
-                        return;
-                    }// if
-                }// if
+                ch.attack(attacker, target);
+                ch.checkDeath(attacker, target);
 
                 for (int i = 0; i < combatList.Count; ++i)
                 {
                     target = (CombatMob)combatList[i];
-                    ch.attack(target, attacker, false);
-
-                    if (ch.checkDeath(target, attacker))
-                    {
-                        for (int j = 0; j < combatList.Count; ++j)
-                        {
-                            target = (CombatMob)combatList[j];
-                            target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);  
-                        }
-                        attacker.mStats.mCombatList.Clear();
-                        attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
-                        if (attacker.mResType == ResType.PLAYER)
-                            ((CombatMob)attacker).mClientHandler.safeWrite(((CombatMob)attacker).playerString());
-                        return;
-                    }// if
-                }// for
-
+                    ch.attack(target, attacker);
+                    ch.checkDeath(target, attacker);
+                }
                 if (attacker.mResType == ResType.PLAYER)
                     ((CombatMob)attacker).mClientHandler.safeWrite(((CombatMob)attacker).playerString());
                 Thread.Sleep(4000);
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
 
-        public void abilityAttack(CombatMob attacker, CombatMob target, Action action)
+        public void executeSpell(CombatMob attacker, CombatMob target, Action spell)
         {
             bool isCrit = false;
-            bool isHit = false;
-            double hitChance = 0;
-            double attackRoll = 0;
 
             if (target == null && attacker.mStats.mCombatList.Count > 0)
                 target = (CombatMob)attacker.mStats.mCombatList[0];
 
             if (target == null)
                 return;
-            if (action.mType == ActionType.ABILITY)
-            {
-                hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + action.mHitBonus) -
-                    (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
-                
-                attackRoll = mRand.NextDouble();
 
-                if (attackRoll >= .95)
-                    isCrit = true;
-                else if (attackRoll >= (1 - (hitChance / 100)))
-                    isHit = true;
+            double spellRoll = mRand.NextDouble();
 
-                if (!action.mEvadable)
-                    isHit = true;
-            }// if
+            if (spellRoll >= .95)
+                isCrit = true;
+
+            bool isHit = true;
+            attacker.mStats.mCurrentMana -= spell.mManaCost;
+
+            if (!isHit)
+                processMiss(attacker, target, spell);
             else
-            {
-                hitChance = 100;
-                attackRoll = mRand.NextDouble();
+                processAbilityHit(attacker, target, spell, isCrit);
 
-                if (attackRoll >= .95)
-                    isCrit = true;
+            attacker.mActionTimer += spell.mUseTime;
+        }// executeSpell
+
+        public void abilityAttack(CombatMob attacker, CombatMob target, Action ability)
+        {
+            bool isCrit = false;
+            bool isHit = false;
+
+            if (target == null && attacker.mStats.mCombatList.Count > 0)
+                target = (CombatMob)attacker.mStats.mCombatList[0];
+
+            if (target == null)
+                return;
+
+            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + ability.mHitBonus) -
+                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            
+            double attackRoll = mRand.NextDouble();
+
+            if (attackRoll >= .95)
+                isCrit = true;
+            else if (attackRoll >= (1 - (hitChance / 100)))
                 isHit = true;
-                attacker.mStats.mCurrentMana -= action.mManaCost;
-            }// else
 
-            switch (action.mAbilitySpell)
-            {
-                case AbilitySpell.ABILITY_BASH:
-                case AbilitySpell.ABILITY_BACKSTAB:
-                case AbilitySpell.SPELL_MYSTIC_SHOT:
-                    if (!isHit)
-                        processMiss(attacker, target, action);
-                    else
-                        processAbilityHit(attacker, target, action, isCrit);                   
-                    break;
+            if (!ability.mEvadable)
+                isHit = true;
 
-                default:
-                    Console.WriteLine("ability spell not found");
-                    break;
-            }// switch
+            if (!isHit)
+                processMiss(attacker, target, ability);
+            else
+                processAbilityHit(attacker, target, ability, isCrit);
 
-            attacker.mActionTimer += action.mUseTime;
+            attacker.mActionTimer += ability.mUseTime;
         }// abilityAttack
 
         public void processAbilityHit(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
@@ -192,7 +168,7 @@ namespace _8th_Circle_Server
                 damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
                     ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
-            }
+            }// else if
 
             if (isCrit)
                 damage *= 1.5 + 1;
@@ -214,18 +190,10 @@ namespace _8th_Circle_Server
             if (attacker.mResType == ResType.PLAYER)
                 ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
 
-            if (checkDeath(attacker, target))
-            {
-                if (attacker.mStats.mCombatList.Count == 0)
-                {
-                    attacker.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
-                    target.mStats.mCombatList.Clear();
-                    return;
-                }// if
-            }// if
+            checkDeath(attacker, target);
         }// processAbility
 
-        public void attack(CombatMob attacker, CombatMob target, bool isBackstab)
+        public void attack(CombatMob attacker, CombatMob target)
         {
             double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
                     (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
@@ -236,19 +204,17 @@ namespace _8th_Circle_Server
             Console.WriteLine("attack roll " + attackRoll);
 
             if (attackRoll >= .95)
-                isCrit = true;
-            else if (attackRoll >= (1-(hitChance/100)))
-                isHit = true;
-            
-            if (isHit | isCrit)
             {
-                Equipment weapon = null;
-
-                if ((Equipment)attacker.mEQList[(int)EQSlot.PRIMARY] != null)
-                    weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
-                
-                processHit(attacker, target, weapon, isCrit, isBackstab);
+                isCrit = true;
+                isHit = true;
             }
+            else if (attackRoll >= (1 - (hitChance / 100)))
+                isHit = true;
+
+            Equipment weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
+
+            if (isHit) 
+                processHit(attacker, target, weapon, isCrit);
             else
                 processMiss(attacker, target, null);
         }// attack
@@ -287,11 +253,9 @@ namespace _8th_Circle_Server
                 return "***ANNIHILATES***";
         }// damageToSring
 
-        private void processHit(CombatMob attacker, CombatMob target, Equipment weapon, 
-            bool isCrit, bool isBackstab)
+        private void processHit(CombatMob attacker, CombatMob target, Equipment weapon, bool isCrit)
         {
-            string damageString = string.Empty;
-            double damage;
+            double damage = 0;
 
             if (weapon != null)
                 damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mBaseDamBonus +
@@ -300,11 +264,6 @@ namespace _8th_Circle_Server
                 damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam)
                     + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
 
-            if (isBackstab)
-            {
-                damage *= 2;
-                damage += mRand.Next(1 * attacker.mStats.mLevel + 6 * attacker.mStats.mLevel);
-            }
             if (isCrit)
                 damage *= 1.5;
 
@@ -317,28 +276,20 @@ namespace _8th_Circle_Server
                 damage = 1;
 
             target.mStats.mCurrentHp -= (int)damage;
+            string damageString = string.Empty;
 
             if (attacker.mResType == ResType.PLAYER)
             {
                 int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
 
-                if (!isCrit && !isBackstab)
+                if (!isCrit)
                     damageString += "your attack " + damageToString(maxHp, damage) +
                         " the " + target.mName + " for " + (int)damage + " damage";
-                else if (!isCrit && isBackstab)
-                    damageString += "your backstab " + damageToString(maxHp, damage) +
-                        " the " + target.mName + " for " + (int)damage + " damage";
-                else if (isCrit && !isBackstab)
-                    damageString += "your critical hit " + damageToString(maxHp, damage) +
-                        " the " + target.mName + " for " + (int)damage + " damage";
                 else
-                    damageString += "your critical backstab " + damageToString(maxHp, damage) +
+                    damageString += "your critical hit " + damageToString(maxHp, damage) +
                         " the " + target.mName + " for " + (int)damage + " damage";
 
                 ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
-
-                if (isBackstab)
-                    Thread.Sleep(1000);
             }// if
             if (target.mResType == ResType.PLAYER)
             {
@@ -372,7 +323,18 @@ namespace _8th_Circle_Server
         {
             if (target.mStats.mCurrentHp <= 0)
             {
-                attacker.mStats.mCombatList.Remove(target);
+                CombatMob cm = null;
+                for (int i = 0; i < target.mStats.mCombatList.Count; ++i)
+                {
+                    cm = (CombatMob)target.mStats.mCombatList[i];
+                    cm.mStats.mCombatList.Remove(target);
+                    if (cm.mStats.mCombatList.Count == 0)
+                        cm.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                }
+
+                target.mStats.mCombatList.Clear();
+                target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+
                 if (attacker.mResType == ResType.PLAYER)
                 {
                     ((CombatMob)attacker).mClientHandler.safeWrite("you have slain the " + target.mName);

@@ -797,10 +797,13 @@ namespace _8th_Circle_Server
                         clientString = "you can't attack that";
                         break;
                     }
-
+                    // TODO
+                    // Need to check if we already are in combat with the same mob
+                    // don't add them again to the combat if we are already fighting them
                     mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                     target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                     ((CombatMob)mob).mStats.mCombatList.Add((CombatMob)target);
+                    ((CombatMob)target).mStats.mCombatList.Add((CombatMob)mob);
                     mob.mWorld.mCombatHandler.enQueueCombat((CombatMob)mob);
                     break;
 
