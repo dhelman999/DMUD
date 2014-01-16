@@ -15,6 +15,7 @@ namespace _8th_Circle_Server
 
         // Spells
         SPELL_MYSTIC_SHOT,
+        SPELL_CURE,
 
         ABILITY_SPELL_END
     }// AbilitySpell
@@ -129,6 +130,19 @@ namespace _8th_Circle_Server
                         mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                     break;
 
+                case "cure":
+                    if (commandQueue.Count != 3 ||
+                        ((Mob)commandQueue[++commandIndex] != null &&
+                        !((Mob)commandQueue[commandIndex] is CombatMob)))
+                        return "you can't cast cure like that";
+                    target = (CombatMob)commandQueue[commandIndex];
+                    act = (Action)mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
+                    if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
+                        return "you don't have enough mana for that";
+
+                    mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
+                    break;
+
                 default:
                     clientString = "you don't know that spell\n";
                     break;
@@ -171,6 +185,17 @@ namespace _8th_Circle_Server
             act.mWeaponRequired = false;
             act.mManaCost = 5;
             mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT] = act;
+
+            act = new Action("cure", 4, 4, ActionType.SPELL);
+            act.mDamType = DamageType.HEALING;
+            act.mResistable = false;
+            act.mDamScaling = DamageScaling.PERLEVEL;
+            act.mBaseMinDamage = 3;
+            act.mBaseMaxDamage = 5;
+            act.mAbilitySpell = AbilitySpell.SPELL_CURE;
+            act.mWeaponRequired = false;
+            act.mManaCost = 5;
+            mAbilitySpellList[(int)AbilitySpell.SPELL_CURE] = act;
         }// addAbilitySpells
 
     }// Class CommandHandler

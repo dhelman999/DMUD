@@ -50,6 +50,7 @@ namespace _8th_Circle_Server
         DAMAGETYPE_START = PHYSICAL,
         MAGICAL,
         PURE,
+        HEALING,
         DAMAGETYPE_END
     }// DamageType
 
@@ -179,8 +180,6 @@ namespace _8th_Circle_Server
             return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp\n";
         }// playerString
 
-        // TODO
-        // Clean this up
         public override string wearall()
         {
             string clientString = string.Empty;

@@ -10,11 +10,23 @@ namespace _8th_Circle_Server
     {
         public Wizard() : base()
         {
+            mMobType = MobType.WIZARD;
+            mStats.mBaseHit -= 10;
+            mStats.mBaseMaxHp -= 10;
+            mStats.mCurrentHp -= 10;
+            mStats.mBaseMaxMana = 40;
+            mStats.mCurrentMana = 40;
             addActions();
         }// Constructor
 
         public Wizard(CombatMob cm) : base(cm)
         {
+            mMobType = MobType.WIZARD;
+            mStats.mBaseHit -= 10;
+            mStats.mBaseMaxHp -= 10;
+            mStats.mCurrentHp -= 10;
+            mStats.mBaseMaxMana = 40;
+            mStats.mCurrentMana = 40;
             addActions();
         }// Constructor
 

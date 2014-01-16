@@ -120,6 +120,8 @@ namespace _8th_Circle_Server
 
             if (!isHit)
                 processMiss(attacker, target, spell);
+            else if (spell.mDamType == DamageType.HEALING)
+                processHeal(attacker, target, spell, isCrit);
             else
                 processAbilityHit(attacker, target, spell, isCrit);
 
@@ -203,7 +205,38 @@ namespace _8th_Circle_Server
                 ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
 
             checkDeath(attacker, target);
-        }// processAbility
+        }// processAbilityHit
+
+        public void processHeal(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
+        {
+            string healString = string.Empty;
+            int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+            double healAmount = 0;
+
+            if (ability.mDamScaling == DamageScaling.PERLEVEL)
+            {
+                int level = attacker.mStats.mLevel;
+                healAmount = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
+                    ability.mDamageBonus;
+            }// if
+
+            if (isCrit)
+                healAmount *= 1.5 + 1;
+
+            target.mStats.mCurrentHp += (int)healAmount;
+            if (target.mStats.mCurrentHp > (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod))
+                target.mStats.mCurrentHp = (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod);
+
+            if (!isCrit)
+                healString += "your " + ability.mName + " heals " + target.mName +
+                    " for " + (int)healAmount + " hp";
+            else
+                healString += "your " + ability.mName + "critically heals " + target.mName +
+                    " for " + (int)healAmount + " hp";
+
+            if (attacker.mResType == ResType.PLAYER)
+                ((CombatMob)attacker).mClientHandler.safeWrite(healString);
+        }// processHeal
 
         public void attack(CombatMob attacker, CombatMob target)
         {

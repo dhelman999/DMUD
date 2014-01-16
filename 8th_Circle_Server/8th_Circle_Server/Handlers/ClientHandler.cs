@@ -91,45 +91,20 @@ namespace _8th_Circle_Server
                             {
                                 switch (mCmdString)
                                 {
-                                    // TODO
-                                    // Make this more generic
                                     case "warrior":
-                                        mPlayer = new Warrior(mPlayer);
-                                        mPlayer.mMobType = MobType.WARRIOR;
-                                        mPlayer.mStats.mBasePhysRes = 250;
-                                        mPlayer.mStats.mBaseEvade -= 15;
-                                        mPlayer.mStats.mBaseDamBonus = 1;
-                                        mPlayer.mStats.mBaseHit -= 5;
-                                        mPlayer.mStats.mBaseMaxHp += 10;
-                                        mPlayer.mStats.mCurrentHp += 10;
+                                        mPlayer = new Warrior(mPlayer); 
                                         break;
 
                                     case "rogue":
-                                        mPlayer = new Rogue(mPlayer);
-                                        mPlayer.mMobType = MobType.ROGUE;
-                                        mPlayer.mStats.mBaseHit += 5;
-                                        mPlayer.mStats.mBaseDamBonus = 1;
-                                        mPlayer.mStats.mBaseEvade += 5;
-                                        mPlayer.mStats.mBaseMaxHp -= 5;
-                                        mPlayer.mStats.mCurrentHp -= 5;
+                                        mPlayer = new Rogue(mPlayer);  
                                         break;
 
                                     case "cleric":
-                                        mPlayer = new Cleric(mPlayer);
-                                        mPlayer.mMobType = MobType.CLERIC;
-                                        mPlayer.mStats.mBaseMaxMana = 30;
-                                        mPlayer.mStats.mCurrentMana = 30;
-                                        mPlayer.mStats.mBaseEvade -= 5;
+                                        mPlayer = new Cleric(mPlayer);  
                                         break;
 
                                     case "wizard":
-                                        mPlayer = new Wizard(mPlayer);
-                                        mPlayer.mMobType = MobType.WIZARD;
-                                        mPlayer.mStats.mBaseHit -= 10;
-                                        mPlayer.mStats.mBaseMaxHp -= 10;
-                                        mPlayer.mStats.mCurrentHp -= 10;
-                                        mPlayer.mStats.mBaseMaxMana = 40;
-                                        mPlayer.mStats.mCurrentMana = 40;
+                                        mPlayer = new Wizard(mPlayer);                                       
                                         break;
 
                                     default:

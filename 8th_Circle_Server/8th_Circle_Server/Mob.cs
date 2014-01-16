@@ -346,7 +346,7 @@ namespace _8th_Circle_Server
                 clientString += ((Mob)targetList[i]).get(this, prepType, container);
                 if (tmpInvCount != mInventory.Count)
                     --i;
-            }
+            }// if
 
             return clientString;
         }// getall

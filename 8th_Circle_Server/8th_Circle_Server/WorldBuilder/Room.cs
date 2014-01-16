@@ -358,7 +358,7 @@ namespace _8th_Circle_Server
                     mob.mCurrentArea.removeRes(mob);
                     mob.mCurrentRoom.removeRes(mob);
                 }
-            }// if
+            }
             
             // Add new references
             mob.mCurrentArea = mCurrentArea;
