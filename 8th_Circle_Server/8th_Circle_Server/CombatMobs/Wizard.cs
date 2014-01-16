@@ -37,7 +37,7 @@ namespace _8th_Circle_Server
         }// playerString
 
         private void addActions()
-        {
+        {   
             mStats.mActionList.Add(new Mob("mystic shot"));
         }// addActions
 

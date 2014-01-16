@@ -233,9 +233,13 @@ namespace _8th_Circle_Server
             else
                 healString += "your " + ability.mName + "critically heals " + target.mName +
                     " for " + (int)healAmount + " hp";
-
+            
             if (attacker.mResType == ResType.PLAYER)
                 ((CombatMob)attacker).mClientHandler.safeWrite(healString);
+
+            if (attacker != target && target.mResType == ResType.PLAYER)
+                ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + ability.mName +
+                    " heals you for " + (int)healAmount + " hp");
         }// processHeal
 
         public void attack(CombatMob attacker, CombatMob target)
