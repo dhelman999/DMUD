@@ -242,188 +242,159 @@ namespace _8th_Circle_Server
             Area newbieArea = new Area(this);
             newbieArea.mName = "Goblin Prooving Grounds";
             newbieArea.mDescription = "This area is the leftover pits where unworthy goblins were abandoned " +
-             "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
-             "and were cast out until they prooved themselves";
+               "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
+               "and were cast out until they prooved themselves";
             newbieArea.mAreaID = AreaID.AID_NEWBIEAREA;
 
             string common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
-                "a little further, the walls to the north rise as high as you can see.\n" +
-                "The plains still span in other directions.  All around, you can hear\n" +
-                "goblins lurking about and you can see dark mud splattered about.\n";
+               "a little further, the walls to the north rise as high as you can see.\n" +
+               "The plains still span in other directions.  All around, you can hear\n" +
+               "goblins lurking about and you can see dark mud splattered about.\n";
 
             string common_gpg_south_field = "The plains end to the south along a rock wall.  There is some light\n" +
-                "a little further, the walls to the south rise as high as you can see.\n" +
-                "The plains still span in other directions.  All around, you can hear\n" +
-                "goblins lurking about and you can see dark mud splattered about.\n";
+               "a little further, the walls to the south rise as high as you can see.\n" +
+               "The plains still span in other directions.  All around, you can hear\n" +
+               "goblins lurking about and you can see dark mud splattered about.\n";
 
             string common_gpg_east_field = "The plains end to the east along a rock wall.  There is some light\n" +
-                "a little further, the walls to the east rise as high as you can see.\n" +
-                "The plains still span in other directions.  All around, you can hear\n" +
-                "goblins lurking about and you can see dark mud splattered about.\n";
+               "a little further, the walls to the east rise as high as you can see.\n" +
+               "The plains still span in other directions.  All around, you can hear\n" +
+               "goblins lurking about and you can see dark mud splattered about.\n";
 
             string common_gpg_open_field = "The plains continue on in every direction.  All around, you\n" +
-                "can hear goblins lurking about and you can see dark mud splattered about.\n";
+               "can hear goblins lurking about and you can see dark mud splattered about.\n";
 
             Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in\n" +
-                "every direction, although you see some walls to your west.  You hear grunting.\n" +
-                "It smells like... goblins.\n",
-                BAO, BAO, BAO, RoomID.GPG_PLAYER_START, newbieArea);
-            gpg_playerStart.mCurrentArea = newbieArea;
+               "every direction, although you see some walls to your west.  You hear grunting.\n" +
+               "It smells like... goblins.\n", BAO, BAO, BAO, RoomID.GPG_PLAYER_START, newbieArea);
+
             Room gpg_1 = new Room("GPG 1",
-                BAO-1, BAO+3, BAO, RoomID.GPG_ROOM_1, newbieArea);
-            Room gpg_2 = new Room(common_gpg_north_field,
-                BAO, BAO+3, BAO, RoomID.GPG_ROOM_2, newbieArea);
-            Room gpg_3 = new Room(common_gpg_north_field,
-                BAO+1, BAO+3, BAO, RoomID.GPG_ROOM_3, newbieArea);
-            Room gpg_4 = new Room(common_gpg_north_field,
-                BAO+2, BAO+3, BAO, RoomID.GPG_ROOM_4, newbieArea);
-            Room gpg_5 = new Room(common_gpg_north_field,
-                BAO+3, BAO+3, BAO, RoomID.GPG_ROOM_5, newbieArea);
-            Room gpg_6 = new Room(common_gpg_east_field,
-                BAO+4, BAO+3, BAO, RoomID.GPG_ROOM_6, newbieArea);
+               BAO-1, BAO+3, BAO, RoomID.GPG_ROOM_1, newbieArea);
+            Room gpg_2 = new Room(common_gpg_north_field, BAO, BAO+3, BAO, RoomID.GPG_ROOM_2, newbieArea);
+            Room gpg_3 = new Room(common_gpg_north_field, BAO+1, BAO+3, BAO, RoomID.GPG_ROOM_3, newbieArea);
+            Room gpg_4 = new Room(common_gpg_north_field, BAO+2, BAO+3, BAO, RoomID.GPG_ROOM_4, newbieArea);
+            Room gpg_5 = new Room(common_gpg_north_field, BAO+3, BAO+3, BAO, RoomID.GPG_ROOM_5, newbieArea);
+            Room gpg_6 = new Room(common_gpg_east_field,  BAO+4, BAO+3, BAO, RoomID.GPG_ROOM_6, newbieArea);
             Room gpg_7 = new Room("GPG 7",
-                BAO-1, BAO+2, BAO, RoomID.GPG_ROOM_7, newbieArea);
-            Room gpg_8 = new Room(common_gpg_open_field,
-                BAO, BAO+2, BAO, RoomID.GPG_ROOM_8, newbieArea);
-            Room gpg_9 = new Room(common_gpg_open_field,
-                BAO+1, BAO+2, BAO, RoomID.GPG_ROOM_9, newbieArea);
-            Room gpg_10 = new Room(common_gpg_open_field,
-                BAO+2, BAO+2, BAO, RoomID.GPG_ROOM_10, newbieArea);
-            Room gpg_11 = new Room(common_gpg_open_field,
-                BAO+3, BAO+2, BAO, RoomID.GPG_ROOM_11, newbieArea);
-            Room gpg_12 = new Room(common_gpg_east_field,
-                BAO+4, BAO+2, BAO, RoomID.GPG_ROOM_12, newbieArea);
+               BAO-1, BAO+2, BAO, RoomID.GPG_ROOM_7, newbieArea);
+            Room gpg_8 = new Room(common_gpg_open_field, BAO, BAO+2, BAO, RoomID.GPG_ROOM_8, newbieArea);
+            Room gpg_9 = new Room(common_gpg_open_field, BAO+1, BAO+2, BAO, RoomID.GPG_ROOM_9, newbieArea);
+            Room gpg_10 = new Room(common_gpg_open_field, BAO+2, BAO+2, BAO, RoomID.GPG_ROOM_10, newbieArea);
+            Room gpg_11 = new Room(common_gpg_open_field, BAO+3, BAO+2, BAO, RoomID.GPG_ROOM_11, newbieArea);
+            Room gpg_12 = new Room(common_gpg_east_field, BAO+4, BAO+2, BAO, RoomID.GPG_ROOM_12, newbieArea);
             Room gpg_13 = new Room("GPG 13",
-                BAO-1, BAO+1, BAO, RoomID.GPG_ROOM_13, newbieArea);
-            Room gpg_14 = new Room(common_gpg_open_field,
-                BAO, BAO+1, BAO, RoomID.GPG_ROOM_14, newbieArea);
-            Room gpg_15 = new Room(common_gpg_open_field,
-                BAO+1, BAO+1, BAO, RoomID.GPG_ROOM_15, newbieArea);
-            Room gpg_16 = new Room(common_gpg_open_field,
-                BAO+2, BAO+1, BAO, RoomID.GPG_ROOM_16, newbieArea);
-            Room gpg_17 = new Room(common_gpg_open_field,
-                BAO+3, BAO+1, BAO, RoomID.GPG_ROOM_17, newbieArea);
-            Room gpg_18 = new Room(common_gpg_east_field,
-                BAO+4, BAO+1, BAO, RoomID.GPG_ROOM_18, newbieArea);
+               BAO-1, BAO+1, BAO, RoomID.GPG_ROOM_13, newbieArea);
+            Room gpg_14 = new Room(common_gpg_open_field, BAO, BAO+1, BAO, RoomID.GPG_ROOM_14, newbieArea);
+            Room gpg_15 = new Room(common_gpg_open_field, BAO+1, BAO+1, BAO, RoomID.GPG_ROOM_15, newbieArea);
+            Room gpg_16 = new Room(common_gpg_open_field, BAO+2, BAO+1, BAO, RoomID.GPG_ROOM_16, newbieArea);
+            Room gpg_17 = new Room(common_gpg_open_field, BAO+3, BAO+1, BAO, RoomID.GPG_ROOM_17, newbieArea);
+            Room gpg_18 = new Room(common_gpg_east_field, BAO+4, BAO+1, BAO, RoomID.GPG_ROOM_18, newbieArea);
             Room gpg_19 = new Room("GPG 19",
-                BAO-1, BAO, BAO, RoomID.GPG_ROOM_19, newbieArea);
-            Room gpg_21 = new Room(common_gpg_open_field,
-                BAO+1, BAO, BAO, RoomID.GPG_ROOM_21, newbieArea);
-            Room gpg_22 = new Room(common_gpg_open_field,
-                BAO+2, BAO, BAO, RoomID.GPG_ROOM_22, newbieArea);
-            Room gpg_23 = new Room(common_gpg_open_field,
-                BAO+3, BAO, BAO, RoomID.GPG_ROOM_23, newbieArea);
-            Room gpg_24 = new Room(common_gpg_east_field,
-                BAO+4, BAO, BAO, RoomID.GPG_ROOM_24, newbieArea);
+               BAO-1, BAO, BAO, RoomID.GPG_ROOM_19, newbieArea);
+            Room gpg_21 = new Room(common_gpg_open_field, BAO+1, BAO, BAO, RoomID.GPG_ROOM_21, newbieArea);
+            Room gpg_22 = new Room(common_gpg_open_field, BAO+2, BAO, BAO, RoomID.GPG_ROOM_22, newbieArea);
+            Room gpg_23 = new Room(common_gpg_open_field, BAO+3, BAO, BAO, RoomID.GPG_ROOM_23, newbieArea);
+            Room gpg_24 = new Room(common_gpg_east_field, BAO+4, BAO, BAO, RoomID.GPG_ROOM_24, newbieArea);
             Room gpg_25 = new Room("GPG 25",
-                BAO-1, BAO-1, BAO, RoomID.GPG_ROOM_25, newbieArea);
-            Room gpg_26 = new Room(common_gpg_open_field,
-                BAO, BAO-1, BAO, RoomID.GPG_ROOM_26, newbieArea);
-            Room gpg_27 = new Room(common_gpg_open_field,
-                BAO+1, BAO-1, BAO, RoomID.GPG_ROOM_27, newbieArea);
-            Room gpg_28 = new Room(common_gpg_open_field,
-                BAO+2, BAO-1, BAO, RoomID.GPG_ROOM_28, newbieArea);
+               BAO-1, BAO-1, BAO, RoomID.GPG_ROOM_25, newbieArea);
+            Room gpg_26 = new Room(common_gpg_open_field, BAO, BAO-1, BAO, RoomID.GPG_ROOM_26, newbieArea);
+            Room gpg_27 = new Room(common_gpg_open_field, BAO+1, BAO-1, BAO, RoomID.GPG_ROOM_27, newbieArea);
+            Room gpg_28 = new Room(common_gpg_open_field, BAO+2, BAO-1, BAO, RoomID.GPG_ROOM_28, newbieArea);
             Room gpg_29 = new Room(common_gpg_open_field + "there is a small switch built into the side of a rock.\n" +
-                "You can't help but wonder what would happen if you used it...\n",
-                BAO+3, BAO-1, BAO, RoomID.GPG_ROOM_29, newbieArea);
-            Room gpg_30 = new Room(common_gpg_east_field,
-                BAO+4, BAO-1, BAO, RoomID.GPG_ROOM_30, newbieArea);
+               "You can't help but wonder what would happen if you used it...\n",
+               BAO+3, BAO-1, BAO, RoomID.GPG_ROOM_29, newbieArea);
+            Room gpg_30 = new Room(common_gpg_east_field, BAO+4, BAO-1, BAO, RoomID.GPG_ROOM_30, newbieArea);
             Room gpg_31 = new Room("GPG 31",
-                BAO-1, BAO-2, BAO, RoomID.GPG_ROOM_31, newbieArea);
-            Room gpg_32 = new Room(common_gpg_south_field,
-                BAO, BAO-2, BAO, RoomID.GPG_ROOM_32, newbieArea);
-            Room gpg_33 = new Room(common_gpg_south_field,
-                BAO+1, BAO-2, BAO, RoomID.GPG_ROOM_33, newbieArea);
-            Room gpg_34 = new Room(common_gpg_south_field,
-                BAO+2, BAO-2, BAO, RoomID.GPG_ROOM_34, newbieArea);
-            Room gpg_35 = new Room(common_gpg_south_field,
-                BAO+3, BAO-2, BAO, RoomID.GPG_ROOM_35, newbieArea);
-            Room gpg_36 = new Room(common_gpg_east_field,
-                BAO+4, BAO-2, BAO, RoomID.GPG_ROOM_36, newbieArea);
+               BAO-1, BAO-2, BAO, RoomID.GPG_ROOM_31, newbieArea);
+            Room gpg_32 = new Room(common_gpg_south_field, BAO, BAO-2, BAO, RoomID.GPG_ROOM_32, newbieArea);
+            Room gpg_33 = new Room(common_gpg_south_field, BAO+1, BAO-2, BAO, RoomID.GPG_ROOM_33, newbieArea);
+            Room gpg_34 = new Room(common_gpg_south_field, BAO+2, BAO-2, BAO, RoomID.GPG_ROOM_34, newbieArea);
+            Room gpg_35 = new Room(common_gpg_south_field, BAO+3, BAO-2, BAO, RoomID.GPG_ROOM_35, newbieArea);
+            Room gpg_36 = new Room(common_gpg_east_field,  BAO+4, BAO-2, BAO, RoomID.GPG_ROOM_36, newbieArea);
             Room gpg_37 = new Room("GPG 37",
-                BAO - 8, BAO + 3, BAO, RoomID.GPG_ROOM_37, newbieArea);
+               BAO - 8, BAO + 3, BAO, RoomID.GPG_ROOM_37, newbieArea);
             Room gpg_38 = new Room("GPG 38",
-                BAO-7, BAO + 3, BAO, RoomID.GPG_ROOM_38, newbieArea);
+               BAO-7, BAO + 3, BAO, RoomID.GPG_ROOM_38, newbieArea);
             Room gpg_39 = new Room("GPG 39",
-                BAO - 6, BAO + 3, BAO, RoomID.GPG_ROOM_39, newbieArea);
+               BAO - 6, BAO + 3, BAO, RoomID.GPG_ROOM_39, newbieArea);
             Room gpg_40 = new Room("GPG 40",
-                BAO - 5, BAO + 3, BAO, RoomID.GPG_ROOM_40, newbieArea);
+               BAO - 5, BAO + 3, BAO, RoomID.GPG_ROOM_40, newbieArea);
             Room gpg_41 = new Room("GPG 41",
-                BAO - 4, BAO + 3, BAO, RoomID.GPG_ROOM_41, newbieArea);
+               BAO - 4, BAO + 3, BAO, RoomID.GPG_ROOM_41, newbieArea);
             Room gpg_42 = new Room("GPG 42",
-                BAO - 3, BAO + 3, BAO, RoomID.GPG_ROOM_42, newbieArea);
+               BAO - 3, BAO + 3, BAO, RoomID.GPG_ROOM_42, newbieArea);
             Room gpg_43 = new Room("GPG 43",
-                BAO - 2, BAO + 3, BAO, RoomID.GPG_ROOM_43, newbieArea);
+               BAO - 2, BAO + 3, BAO, RoomID.GPG_ROOM_43, newbieArea);
             Room gpg_44 = new Room("GPG 44",
-                BAO - 8, BAO + 2, BAO, RoomID.GPG_ROOM_44, newbieArea);
+               BAO - 8, BAO + 2, BAO, RoomID.GPG_ROOM_44, newbieArea);
             Room gpg_45 = new Room("GPG 45",
-                BAO - 7, BAO + 2, BAO, RoomID.GPG_ROOM_45, newbieArea);
+               BAO - 7, BAO + 2, BAO, RoomID.GPG_ROOM_45, newbieArea);
             Room gpg_46 = new Room("GPG 46",
-                BAO - 6, BAO + 2, BAO, RoomID.GPG_ROOM_46, newbieArea);
+               BAO - 6, BAO + 2, BAO, RoomID.GPG_ROOM_46, newbieArea);
             Room gpg_47 = new Room("GPG 47",
-                BAO -5, BAO + 2, BAO, RoomID.GPG_ROOM_47, newbieArea);
+               BAO -5, BAO + 2, BAO, RoomID.GPG_ROOM_47, newbieArea);
             Room gpg_48 = new Room("GPG 48",
-                BAO - 4, BAO + 2, BAO, RoomID.GPG_ROOM_48, newbieArea);
+               BAO - 4, BAO + 2, BAO, RoomID.GPG_ROOM_48, newbieArea);
             Room gpg_49 = new Room("GPG 49",
-                BAO - 3, BAO + 2, BAO, RoomID.GPG_ROOM_49, newbieArea);
+               BAO - 3, BAO + 2, BAO, RoomID.GPG_ROOM_49, newbieArea);
             Room gpg_50 = new Room("GPG 50",
-                BAO - 2, BAO + 2, BAO, RoomID.GPG_ROOM_50, newbieArea);
+               BAO - 2, BAO + 2, BAO, RoomID.GPG_ROOM_50, newbieArea);
             Room gpg_51 = new Room("GPG 51",
-                BAO - 8, BAO + 1, BAO, RoomID.GPG_ROOM_51, newbieArea);
+               BAO - 8, BAO + 1, BAO, RoomID.GPG_ROOM_51, newbieArea);
             Room gpg_52 = new Room("GPG 52",
-                BAO - 7, BAO + 1, BAO, RoomID.GPG_ROOM_52, newbieArea);
+               BAO - 7, BAO + 1, BAO, RoomID.GPG_ROOM_52, newbieArea);
             Room gpg_53 = new Room("GPG 53",
-                BAO - 6, BAO + 1, BAO, RoomID.GPG_ROOM_53, newbieArea);
+               BAO - 6, BAO + 1, BAO, RoomID.GPG_ROOM_53, newbieArea);
             Room gpg_54 = new Room("GPG 54",
-                BAO - 5, BAO + 1, BAO, RoomID.GPG_ROOM_54, newbieArea);
+               BAO - 5, BAO + 1, BAO, RoomID.GPG_ROOM_54, newbieArea);
             Room gpg_55 = new Room("GPG 55",
-                BAO - 4, BAO+1, BAO, RoomID.GPG_ROOM_55, newbieArea);
+               BAO - 4, BAO+1, BAO, RoomID.GPG_ROOM_55, newbieArea);
             Room gpg_56 = new Room("GPG 56",
-                BAO - 3, BAO+1, BAO, RoomID.GPG_ROOM_56, newbieArea);
+               BAO - 3, BAO+1, BAO, RoomID.GPG_ROOM_56, newbieArea);
             Room gpg_57 = new Room("GPG 57",
-                BAO - 2, BAO+1, BAO, RoomID.GPG_ROOM_57, newbieArea);
+               BAO - 2, BAO+1, BAO, RoomID.GPG_ROOM_57, newbieArea);
             Room gpg_58 = new Room("GPG 58",
-                BAO -8, BAO, BAO, RoomID.GPG_ROOM_58, newbieArea);
+               BAO -8, BAO, BAO, RoomID.GPG_ROOM_58, newbieArea);
             Room gpg_59 = new Room("GPG 59",
-                BAO -7, BAO, BAO, RoomID.GPG_ROOM_59, newbieArea);
+               BAO -7, BAO, BAO, RoomID.GPG_ROOM_59, newbieArea);
             Room gpg_60 = new Room("GPG 60",
-                BAO - 6, BAO, BAO, RoomID.GPG_ROOM_60, newbieArea);
+               BAO - 6, BAO, BAO, RoomID.GPG_ROOM_60, newbieArea);
             Room gpg_61 = new Room("GPG 61",
-                BAO-5, BAO, BAO, RoomID.GPG_ROOM_61, newbieArea);
+               BAO-5, BAO, BAO, RoomID.GPG_ROOM_61, newbieArea);
             Room gpg_62 = new Room("GPG 62",
-                BAO-4, BAO, BAO, RoomID.GPG_ROOM_62, newbieArea);
+               BAO-4, BAO, BAO, RoomID.GPG_ROOM_62, newbieArea);
             Room gpg_63 = new Room("GPG 63",
-                BAO -3, BAO, BAO, RoomID.GPG_ROOM_63, newbieArea);
+               BAO -3, BAO, BAO, RoomID.GPG_ROOM_63, newbieArea);
             Room gpg_64 = new Room("GPG 64",
-                BAO -2, BAO, BAO, RoomID.GPG_ROOM_64, newbieArea);
+               BAO -2, BAO, BAO, RoomID.GPG_ROOM_64, newbieArea);
             Room gpg_65 = new Room("GPG 65",
-                BAO -8, BAO-1, BAO, RoomID.GPG_ROOM_65, newbieArea);
+               BAO -8, BAO-1, BAO, RoomID.GPG_ROOM_65, newbieArea);
             Room gpg_66 = new Room("GPG 66",
-                BAO - 7, BAO - 1, BAO, RoomID.GPG_ROOM_66, newbieArea);
+               BAO - 7, BAO - 1, BAO, RoomID.GPG_ROOM_66, newbieArea);
             Room gpg_67 = new Room("GPG 67",
-                BAO-6, BAO - 1, BAO, RoomID.GPG_ROOM_67, newbieArea);
+               BAO-6, BAO - 1, BAO, RoomID.GPG_ROOM_67, newbieArea);
             Room gpg_68 = new Room("GPG 68",
-                BAO -5, BAO - 1, BAO, RoomID.GPG_ROOM_68, newbieArea);
+               BAO -5, BAO - 1, BAO, RoomID.GPG_ROOM_68, newbieArea);
             Room gpg_69 = new Room("GPG 69",
-                BAO -4, BAO - 1, BAO, RoomID.GPG_ROOM_69, newbieArea);
+               BAO -4, BAO - 1, BAO, RoomID.GPG_ROOM_69, newbieArea);
             Room gpg_70 = new Room("GPG 70",
-                BAO -3, BAO - 1, BAO, RoomID.GPG_ROOM_70, newbieArea);
+               BAO -3, BAO - 1, BAO, RoomID.GPG_ROOM_70, newbieArea);
             Room gpg_71 = new Room("GPG 71",
-                BAO -2, BAO - 1, BAO, RoomID.GPG_ROOM_71, newbieArea);
+               BAO -2, BAO - 1, BAO, RoomID.GPG_ROOM_71, newbieArea);
             Room gpg_72 = new Room("GPG 72",
-                BAO - 8, BAO - 2, BAO, RoomID.GPG_ROOM_72, newbieArea);
+               BAO - 8, BAO - 2, BAO, RoomID.GPG_ROOM_72, newbieArea);
             Room gpg_73 = new Room("GPG 73",
-                BAO - 7, BAO - 2, BAO, RoomID.GPG_ROOM_73, newbieArea);
+               BAO - 7, BAO - 2, BAO, RoomID.GPG_ROOM_73, newbieArea);
             Room gpg_74 = new Room("GPG 74",
-                BAO - 6, BAO - 2, BAO, RoomID.GPG_ROOM_74, newbieArea);
+               BAO - 6, BAO - 2, BAO, RoomID.GPG_ROOM_74, newbieArea);
             Room gpg_75 = new Room("GPG 75",
-                BAO - 5, BAO - 2, BAO, RoomID.GPG_ROOM_75, newbieArea);
+               BAO - 5, BAO - 2, BAO, RoomID.GPG_ROOM_75, newbieArea);
             Room gpg_76 = new Room("GPG 76",
-                BAO - 4, BAO - 2, BAO, RoomID.GPG_ROOM_76, newbieArea);
+               BAO - 4, BAO - 2, BAO, RoomID.GPG_ROOM_76, newbieArea);
             Room gpg_77 = new Room("GPG 77",
-                BAO - 3, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
+               BAO - 3, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
             Room gpg_78 = new Room("GPG 78",
-                BAO - 2, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
+               BAO - 2, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
 
             mAreaList.Add(newbieArea);
 

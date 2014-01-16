@@ -95,6 +95,7 @@ namespace _8th_Circle_Server
         COMMAND_WEARALL,
         COMMAND_REMOVE,
         COMMAND_REMOVEALL,
+        COMMAND_REST,
         COMMAND_BACKSTAB,
         COMMAND_BASH,
         COMMAND_CAST,
@@ -446,6 +447,11 @@ namespace _8th_Circle_Server
                 CommandType.SPELL);
             mCommandList.Add(pt);
 
+            pt = new Command("rest", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_REST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
+                CommandType.GENERAL);
+            mCommandList.Add(pt);
+
             // Add prepositions
             mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
             mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
@@ -631,10 +637,14 @@ namespace _8th_Circle_Server
             CombatMob player;
             string clientString = string.Empty;
 
+            if (!(currentCommand.commandName == commandName.COMMAND_REST ||
+                currentCommand.commandName == commandName.COMMAND_LOOK))
+                mob.mFlagList.Remove(MobFlags.FLAG_RESTING);
+
             if (currentCommand.comType == CommandType.ABILITY)
                 return executeAbilityCommand(commandQueue, mob);
             else if (currentCommand.comType == CommandType.SPELL)
-                return executeSpellCommand(commandQueue, mob);
+                return executeSpellCommand(commandQueue, mob);       
 
             // Process the commandList by moving a index through the commandQueue
             // Each command will handle the various predicates given to it
@@ -830,6 +840,20 @@ namespace _8th_Circle_Server
                     mob.mFlagList.Add(MobFlags.FLAG_SEARCHING);
                     Thread searchThread = new Thread(() => searchTask(mob));
                     searchThread.Start();
+                    break;
+
+                case commandName.COMMAND_REST:
+                    if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                        clientString = "you can't rest while in combat!\n";
+                    else if (!mob.mFlagList.Contains(MobFlags.FLAG_RESTING))
+                    {
+                        clientString = "you sit down and rest...\n";
+                        mob.mFlagList.Add(MobFlags.FLAG_RESTING);
+                        Thread restThread = new Thread(() => restTask(((CombatMob)mob)));
+                        restThread.Start();
+                    }
+                    else
+                        clientString = "you are already resting\n";
                     break;
 
                 case commandName.COMMAND_FULLHEAL:
@@ -1300,6 +1324,27 @@ namespace _8th_Circle_Server
             if (mob.mResType == ResType.PLAYER)
                 ((CombatMob)mob).mClientHandler.safeWrite(searchResult);
             mob.mFlagList.Remove(MobFlags.FLAG_SEARCHING);
+        }// searchTask
+
+        public static void restTask(CombatMob mob)
+        {
+            int maxHp = mob.mStats.mBaseMaxHp + mob.mStats.mMaxHpMod;
+            int maxMana = mob.mStats.mBaseMaxMana + mob.mStats.mMaxManaMod;
+            double hpRegen = (maxHp / 20) + 1;
+            double manaRegen = (maxMana / 20) + 1;
+            Thread.Sleep(4000);
+            while (mob.mFlagList.Contains(MobFlags.FLAG_RESTING))
+            {
+                mob.mStats.mCurrentHp += (int)hpRegen;
+                mob.mStats.mCurrentMana += (int)manaRegen;
+                if (mob.mStats.mCurrentHp > (maxHp))
+                    mob.mStats.mCurrentHp = maxHp;
+                if (mob.mStats.mCurrentMana > (maxMana))
+                    mob.mStats.mCurrentMana = maxMana;
+                if (mob.mResType == ResType.PLAYER)
+                    mob.mClientHandler.safeWrite(mob.playerString());
+                Thread.Sleep(4000);
+            }// while
         }// searchTask
 
     }// Class CommandExecuter

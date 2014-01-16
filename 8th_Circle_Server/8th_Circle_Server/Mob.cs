@@ -30,6 +30,7 @@ namespace _8th_Circle_Server
         FLAG_SEARCHING,
         FLAG_COMBATABLE,
         FLAG_INCOMBAT,
+        FLAG_RESTING,
         FLAG_END
     };// flags
 
