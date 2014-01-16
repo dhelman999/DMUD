@@ -12,9 +12,9 @@ namespace _8th_Circle_Server
     public struct commandData
     {
         public string command;
-        public Mob mob;
+        public CombatMob mob;
 
-        public commandData(string command, Mob mob)
+        public commandData(string command, CombatMob mob)
         {
             this.command = command;
             this.mob = mob;
@@ -63,13 +63,15 @@ namespace _8th_Circle_Server
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
                         comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
-                        if(comData.mob.mActionTimer <= 0)
+                        if (comData.mob.mActionTimer <= 0)
                             commandExecuter.process(comData.command, comData.mob);
                         else if (comData.mob.mFlagList.Contains(MobFlags.FLAG_SEARCHING))
                         {
                             if (comData.mob.mResType == ResType.PLAYER)
                                 ((CombatMob)comData.mob).mClientHandler.safeWrite("you can't do that while searching");
                         }
+                        else
+                            comData.mob.mQueuedCommand = comData.command;
                     }// while
                 }// catch
             }// while

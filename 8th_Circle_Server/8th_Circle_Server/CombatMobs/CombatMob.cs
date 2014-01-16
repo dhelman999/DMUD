@@ -73,16 +73,13 @@ namespace _8th_Circle_Server
         public CombatStats mStats;
         public MobType mMobType;
         public ClientHandler mClientHandler;
-        // TODO
-        // Need to have a queued command list so that players that
-        // do a command before its cd is ready will automatically
-        // activate when the timer is up so they don't have to keep spamming
-        // the ability to guess when it is up
+        public string mQueuedCommand;
 
         public CombatMob() : base()
         {
             mEQList = new ArrayList();
             mStats = new CombatStats();
+            mQueuedCommand = string.Empty;
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
             mResistances = new ArrayList();
@@ -97,6 +94,7 @@ namespace _8th_Circle_Server
         {
             mEQList = (ArrayList)cm.mEQList.Clone();
             mStats = new CombatStats(cm.mStats);
+            mQueuedCommand = string.Empty;
             mResistances = (ArrayList)cm.mResistances.Clone();
             mResType = cm.mResType;
             mClientHandler = cm.mClientHandler;
@@ -106,6 +104,7 @@ namespace _8th_Circle_Server
         {
             mEQList = new ArrayList();
             mStats = new CombatStats();
+            mQueuedCommand = string.Empty;
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
             mResistances = new ArrayList();

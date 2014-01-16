@@ -82,6 +82,13 @@ namespace _8th_Circle_Server
                 {
                     if (mob.mActionTimer > 0)
                         --(mob.mActionTimer);
+                    if(mob is CombatMob &&
+                       ((CombatMob)mob).mQueuedCommand != string.Empty)
+                    {
+                        commandData cd = new commandData(((CombatMob)mob).mQueuedCommand, (CombatMob)mob);
+                        mWorld.mCommandHandler.enQueueCommand(cd);
+                        ((CombatMob)mob).mQueuedCommand = string.Empty;
+                    }
                 }// foreach
             }// foreach
 
