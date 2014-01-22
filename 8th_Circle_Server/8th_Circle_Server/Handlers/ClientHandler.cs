@@ -53,7 +53,7 @@ namespace _8th_Circle_Server
                         mNetworkStream = new NetworkStream(mSocketForClient);
                         mStreamReader = new StreamReader(mNetworkStream);
                         mStreamWriter = new StreamWriter(mNetworkStream);
-                        mResponderThread = new Thread(() => ClientResponder(this));
+                        mResponderThread = new Thread(ClientResponder);
                         mResponderThread.Start();
 
                         lock (PlayerLock)
@@ -156,12 +156,12 @@ namespace _8th_Circle_Server
             }// while
         }// ClientListener
 
-        static void ClientResponder(ClientHandler clientHandler)
+        void ClientResponder()
         {
             commandData cmdData = new commandData();
-            cmdData.mob = clientHandler.mPlayer;
-            clientHandler.mCmdString = "Please enter your player's name.";
-            clientHandler.safeWrite(clientHandler.mCmdString);
+            cmdData.mob = mPlayer;
+            mCmdString = "Please enter your player's name.";
+            safeWrite(mCmdString);
 
             try
             {
@@ -169,9 +169,9 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
-                clientHandler.mCmdString = "\nPlease enter your character class, choose one from the following:\n\n" +
+                mCmdString = "\nPlease enter your character class, choose one from the following:\n\n" +
                     "warrior\nrogue\ncleric\nwizard\n";
-                clientHandler.safeWrite(clientHandler.mCmdString);
+                safeWrite(mCmdString);
             }// catch
 
             try
@@ -180,14 +180,14 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
-                if (clientHandler.mCmdString.Equals("exit"))
+                if (mCmdString.Equals("exit"))
                     return;
 
-                clientHandler.safeWrite("Welcome to the 8th Circle!");
-                if(clientHandler.mPlayer != null &&
-                   clientHandler.mPlayer.mCurrentRoom != null)
-                   clientHandler.safeWrite(clientHandler.mPlayer.mCurrentRoom.exitString() +
-                       ((CombatMob)clientHandler.mPlayer).playerString());
+                safeWrite("Welcome to the 8th Circle!");
+                if(mPlayer != null &&
+                   mPlayer.mCurrentRoom != null)
+                   safeWrite(mPlayer.mCurrentRoom.exitString() +
+                       mPlayer.playerString());
             }// catch
             while (true)
             {
@@ -197,13 +197,13 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    if (clientHandler.mCmdString.Equals("exit"))
+                    if (mCmdString.Equals("exit"))
                         break;
 
-                    cmdData.command = clientHandler.mCmdString;
-                    cmdData.mob = clientHandler.mPlayer;
-                    clientHandler.mCommandHandler.enQueueCommand(cmdData);
-                    clientHandler.safeWrite(clientHandler.mCmdString + "\n");
+                    cmdData.command = mCmdString;
+                    cmdData.mob = mPlayer;
+                    mCommandHandler.enQueueCommand(cmdData);
+                    safeWrite(mCmdString + "\n");
                 }// catch
             }// while
         }// ClientResponder
