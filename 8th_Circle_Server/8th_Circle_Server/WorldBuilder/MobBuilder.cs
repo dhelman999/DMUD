@@ -227,7 +227,7 @@ namespace _8th_Circle_Server
             else
                 mob2 = new Mob(mob);
 
-			startingRoom.addMobResource(mob2);
+	    startingRoom.addMobResource(mob2);
             mob2.mWorld.addRes(mob2);
         }// addNewMob
 
