@@ -183,18 +183,14 @@ namespace _8th_Circle_Server
         private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea)
         {
             Mob mob = null;
-            Container cont = null;
-            CombatMob CombatMob = null;
 
             if (mFullMobList[(int)mobId] is Container)
             {
-                cont = new Container((Container)mFullMobList[(int)mobId]);
-                mob = cont;
+                mob = new Container((Container)mFullMobList[(int)mobId]);
             }// if
             else if (mFullMobList[(int)mobId] is CombatMob)
             {
-                CombatMob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
-                mob = CombatMob;
+                mob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
             }// if
             else
                 mob = new Mob((Mob)mFullMobList[(int)mobId]);
@@ -211,18 +207,18 @@ namespace _8th_Circle_Server
             startingArea.mFullMobList.Add(mob);
 
             Mob mob2 = null;
-            Container cont2 = null;
-            CombatMob npc2 = null;
+            Container cont = null;
+            CombatMob npc = null;
 
             if (mob is Container)
             {
-                cont2 = new Container((Container)mob);
-                mob2 = cont2;
+                cont = new Container((Container)mob);
+                mob2 = cont;
             }// if
             else if (mob is CombatMob)
             {
-                npc2 = new CombatMob((CombatMob)mob);
-                mob2 = npc2;
+                npc = new CombatMob((CombatMob)mob);
+                mob2 = npc;
             }// if
             else
                 mob2 = new Mob(mob);
@@ -245,9 +241,6 @@ namespace _8th_Circle_Server
             startingArea.mFullMobList.Add(mob);
 
             Mob mob2 = null;
-            Container cont2 = null;
-            CombatMob npc2 = null;
-            Equipment eq = null;
 
             // TODO
             // Probably need to make these things from a list
@@ -255,18 +248,15 @@ namespace _8th_Circle_Server
             // a new class is made
             if (mob is Container)
             {
-                cont2 = new Container((Container)mob);
-                mob2 = cont2;
+                mob2 = new Container((Container)mob);
             }// if
             else if (mob is Equipment)
             {
-                eq = new Equipment((Equipment)mob);
-                mob2 = eq;
+                mob2 = new Equipment((Equipment)mob);
             }// if
             else if (mob is CombatMob)
             {
-                npc2 = new CombatMob((CombatMob)mob);
-                mob2 = npc2;
+                mob2 = new CombatMob((CombatMob)mob);
             }// if 
             else
                 mob2 = new Mob(mob);
