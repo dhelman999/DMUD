@@ -29,27 +29,46 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public bool mIsOpen;
-        public bool mStartingOpenState;
         public bool mIsLocked;
-        public bool mStartingLockedState;
         public Room [] mRoomList;
         public ArrayList mStartingFlagList;
+        public Memento mMemento;
 
         public Doorway() : base()
         {
-            mIsOpen = mStartingOpenState = false;
-            mIsLocked = mStartingLockedState = false;
+            mIsOpen = false;
+            mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
             mStartingFlagList = new ArrayList();
+            mMemento = new Memento(this);
         }// Constructor
 
         public Doorway(string name) : base(name)
         {
-            mIsOpen = mStartingOpenState = false;
-            mIsLocked = mStartingLockedState = false;
+            mIsOpen = false;
+            mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
             mStartingFlagList = new ArrayList();
+            mMemento = new Memento(this);
         }// Constructor
+
+        public Doorway(Doorway doorway)
+        {
+            mIsOpen = doorway.mIsOpen;
+            mIsLocked = doorway.mIsLocked;
+            mRoomList = (Room [])doorway.mRoomList.Clone();
+            mStartingFlagList = (ArrayList)doorway.mStartingFlagList.Clone();
+            mMemento = doorway.mMemento;
+        }// Copy Constructor
+
+        public void reset()
+        {
+            Doorway memento = (Doorway)(mMemento.getMemento(MementoType.DOORWAY));
+            mIsOpen = memento.mIsOpen;
+            mIsLocked = memento.mIsLocked;
+            mRoomList = memento.mRoomList;
+            mFlagList = (ArrayList)mStartingFlagList.Clone();
+        }
 
         public override string open(Mob mob)
         {

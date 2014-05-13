@@ -369,6 +369,7 @@ namespace _8th_Circle_Server
 
         public void addDoor(Doorway door, Direction dir)
         {
+            door.mMemento.registerMemento(door);
             getRes(ResType.DOORWAY)[(int)dir] = door;
             door.mRoomList[(int)dir] = this;
         }// addDorr
@@ -382,10 +383,7 @@ namespace _8th_Circle_Server
                 Doorway dw = (Doorway)doorways[i];
                 if (dw != null)
                 {
-                    dw.mIsLocked = dw.mStartingLockedState;
-                    dw.mIsOpen = dw.mStartingOpenState;
-                    dw.mFlagList.Clear();
-                    dw.mFlagList = (ArrayList)dw.mStartingFlagList.Clone();
+                    dw.reset();
                 }// if
             }// for
         }// respawnDoorways
