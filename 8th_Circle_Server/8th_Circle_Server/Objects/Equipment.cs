@@ -31,12 +31,10 @@ namespace _8th_Circle_Server
         public int mMaxAcidRes;
         public int mForceRes;
         public int mMaxForceRes;
-        public ArrayList mEffects;
 
         public Equipment() : base()
         {
             mLevel = 1;
-            mEffects = new ArrayList();
             mDamType = DamageType.PHYSICAL;
         }// constructor
 
@@ -65,7 +63,6 @@ namespace _8th_Circle_Server
             mForceRes = eq.mForceRes;
             mMaxForceRes = eq.mMaxForceRes;
             mDamType = DamageType.PHYSICAL;
-            mEffects = (ArrayList)eq.mEffects.Clone();
         }// copy constructor
 
         public override string wear(CombatMob pl)
@@ -77,7 +74,7 @@ namespace _8th_Circle_Server
                 return "you equip the " + mName;
             }// if
             else
-                return "you are already wearing the " + ((Mob)pl.mEQList[(int)mSlot]).mName;
+                return "you are already wearing the " + (pl.mEQList[(int)mSlot]).mName;
         }// wear
 
         public override string remove(CombatMob pl)

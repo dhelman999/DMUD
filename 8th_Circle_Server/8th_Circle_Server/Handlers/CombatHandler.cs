@@ -14,25 +14,25 @@ namespace _8th_Circle_Server
         internal int SEED = 0;
 
         // Member Variables
-        public Queue mCombatQueue;
+        public Queue<CombatMob> mCombatQueue;
         public World mWorld;
         public Random mRand;
 
         // TODO
         // Is this the best way to not spawn new combat threads
         // when someone issues another attack command?
-        public static ArrayList sCurrentCombats;
+        public static List<CombatMob> sCurrentCombats;
 
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
         public CombatHandler(World world)
         {
-            mCombatQueue = new Queue();
+            mCombatQueue = new Queue<CombatMob>();
             mQueueLock = new object();
             mWorld = world;
             mRand = new Random();
-            sCurrentCombats = new ArrayList();
+            sCurrentCombats = new List<CombatMob>();
         }// Constructor
 
         public void start()
@@ -69,7 +69,7 @@ namespace _8th_Circle_Server
         {
             while (mCombatQueue.Count > 0)
             {
-                CombatMob mob = (CombatMob)mCombatQueue.Dequeue();
+                CombatMob mob = mCombatQueue.Dequeue();
                 sCurrentCombats.Add(mob);
                 Thread combatThread = new Thread(() => combatTask(this, mob));
                 combatThread.Start();
@@ -78,24 +78,24 @@ namespace _8th_Circle_Server
 
         public static void combatTask(CombatHandler ch, CombatMob attacker)
         {
-            ArrayList combatList = attacker.mStats.mCombatList;
+            List<CombatMob> combatList = attacker.mStats.mCombatList;
 
             while (combatList.Count > 0)
             {     
                 if (attacker.mStats.mPrimaryTarget == null)
-                    attacker.mStats.mPrimaryTarget = (CombatMob)combatList[0];
+                    attacker.mStats.mPrimaryTarget = combatList[0];
                 CombatMob target = attacker.mStats.mPrimaryTarget;
                 ch.attack(attacker, target);
                 ch.checkDeath(attacker, target);
 
                 for (int i = 0; i < combatList.Count; ++i)
                 {
-                    target = (CombatMob)combatList[i];
+                    target = combatList[i];
                     ch.attack(target, attacker);
                     ch.checkDeath(target, attacker);
                 }
                 if (attacker.mResType == ResType.PLAYER)
-                    ((CombatMob)attacker).mClientHandler.safeWrite(((CombatMob)attacker).playerString());
+                    attacker.mClientHandler.safeWrite((attacker).playerString());
                 Thread.Sleep(4000);
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
@@ -105,7 +105,7 @@ namespace _8th_Circle_Server
             bool isCrit = false;
 
             if (target == null && attacker.mStats.mCombatList.Count > 0)
-                target = (CombatMob)attacker.mStats.mCombatList[0];
+                target = attacker.mStats.mCombatList[0];
 
             if (target == null)
                 return;
@@ -137,7 +137,7 @@ namespace _8th_Circle_Server
                 target = attacker.mStats.mPrimaryTarget;
             if (attacker.mStats.mPrimaryTarget == null &&
                 attacker.mStats.mCombatList.Count > 0)
-                target = (CombatMob)attacker.mStats.mCombatList[0];
+                target = attacker.mStats.mCombatList[0];
             if (target == null)
                 return;
 
@@ -178,7 +178,7 @@ namespace _8th_Circle_Server
                      ability.mWeaponRequired)
             {
                 int level = attacker.mStats.mLevel;
-                Equipment weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
+                Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
                 damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
                     ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
@@ -187,7 +187,7 @@ namespace _8th_Circle_Server
             if (isCrit)
                 damage *= 1.5 + 1;
 
-            damage *= (1 - ((double)target.mResistances[(int)ability.mDamType] / 100));
+            damage *= (1 - (target.mResistances[(int)ability.mDamType] / 100));
 
             if (damage == 0)
                 damage = 1;
@@ -260,7 +260,7 @@ namespace _8th_Circle_Server
             else if (attackRoll >= (1 - (hitChance / 100)))
                 isHit = true;
 
-            Equipment weapon = (Equipment)attacker.mEQList[(int)EQSlot.PRIMARY];
+            Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
 
             if (isHit) 
                 processHit(attacker, target, weapon, isCrit);
@@ -317,9 +317,9 @@ namespace _8th_Circle_Server
                 damage *= 1.5;
 
             if(weapon != null)
-                damage *= (1 - ((double)target.mResistances[(int)weapon.mDamType] / 100));
+                damage *= (1 - (target.mResistances[(int)weapon.mDamType] / 100));
             else
-                damage *= (1 - ((double)target.mResistances[(int)DamageType.PHYSICAL] / 100));
+                damage *= (1 - (target.mResistances[(int)DamageType.PHYSICAL] / 100));
 
             if ((int)damage == 0)
                 damage = 1;
@@ -375,7 +375,7 @@ namespace _8th_Circle_Server
                 CombatMob cm = null;
                 for (int i = 0; i < target.mStats.mCombatList.Count; ++i)
                 {
-                    cm = (CombatMob)target.mStats.mCombatList[i];
+                    cm = target.mStats.mCombatList[i];
                     cm.mStats.mCombatList.Remove(target);
                     if (cm.mStats.mCombatList.Count == 0)
                     {

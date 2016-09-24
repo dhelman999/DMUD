@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{D345C170-25CC-40DD-B3B5-C8C72BCF6E59}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>8th_Circle_Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>_8th_Circle_Server</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="8th_Circle_Server\Action.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\Cleric.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\CombatMob.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\CombatStats.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\Rogue.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\Warrior.cs" />
+    <Compile Include="8th_Circle_Server\CombatMobs\Wizard.cs" />
+    <Compile Include="8th_Circle_Server\CommandExecuter.cs" />
+    <Compile Include="8th_Circle_Server\CommandExecuterHelper.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\AreaHandler.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\ClientHandler.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\CombatHandler.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\CommandHandler.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\EventHandler.cs" />
+    <Compile Include="8th_Circle_Server\Handlers\ResourceHandler.cs" />
+    <Compile Include="8th_Circle_Server\Memento\Memento.cs" />
+    <Compile Include="8th_Circle_Server\Mob.cs" />
+    <Compile Include="8th_Circle_Server\MUDServer.cs" />
+    <Compile Include="8th_Circle_Server\Objects\Container.cs" />
+    <Compile Include="8th_Circle_Server\Objects\Doorway.cs" />
+    <Compile Include="8th_Circle_Server\Objects\Equipment.cs" />
+    <Compile Include="8th_Circle_Server\Properties\AssemblyInfo.cs" />
+    <Compile Include="8th_Circle_Server\WorldBuilder\Area.cs" />
+    <Compile Include="8th_Circle_Server\WorldBuilder\AreaBuilder.cs" />
+    <Compile Include="8th_Circle_Server\WorldBuilder\MobBuilder.cs" />
+    <Compile Include="8th_Circle_Server\WorldBuilder\Room.cs" />
+    <Compile Include="8th_Circle_Server\WorldBuilder\World.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

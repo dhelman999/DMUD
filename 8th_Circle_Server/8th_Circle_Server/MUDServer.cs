@@ -19,15 +19,15 @@ namespace _8th_Circle_Server
 
         // Static Variables
         static TcpListener sTcpListener;
-        static ArrayList sListenerThreadList;
-        static ArrayList clientHandlerList;
+        static List<Thread> sListenerThreadList;
+        static List<ClientHandler> clientHandlerList;
         static World sWorld;
 
         static void Main(string[] args)
         {
             sWorld = new World();
-            sListenerThreadList  = new ArrayList();
-            clientHandlerList = new ArrayList();     
+            sListenerThreadList  = new List<Thread>();
+            clientHandlerList = new List<ClientHandler>();     
 
             try
             {

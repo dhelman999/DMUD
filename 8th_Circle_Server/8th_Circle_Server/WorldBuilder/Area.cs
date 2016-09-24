@@ -22,22 +22,22 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public int mAreaOffset;
-        public ArrayList mRoomList;
-        public ArrayList mFullMobList;
+        public List<Room> mRoomList;
+        public List<Mob> mFullMobList;
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
         public World mWorld;
         public CommandExecuter mCommandExecuter;
         public AreaID mAreaID;
-        public ArrayList mRevertList;
+        public List<EventData> mRevertList;
 
         public Area(World world) : base()
         {
             mAreaOffset = 0;
-            mStartingRespawnTimer = mCurrentRespawnTimer = 30;
-            mRoomList = new ArrayList();
-            mFullMobList = new ArrayList();
-            mRevertList = new ArrayList();
+            mStartingRespawnTimer = mCurrentRespawnTimer = 300;
+            mRoomList = new List<Room>();
+            mFullMobList = new List<Mob>();
+            mRevertList = new List<EventData>();
             mWorld = world;
             mCommandExecuter = new CommandExecuter();
             mAreaID = 0;

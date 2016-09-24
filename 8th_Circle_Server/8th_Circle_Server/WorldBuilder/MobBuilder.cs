@@ -193,7 +193,7 @@ namespace _8th_Circle_Server
                 mob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
             }// if
             else
-                mob = new Mob((Mob)mFullMobList[(int)mobId]);
+                mob = new Mob(mFullMobList[(int)mobId]);
 
             int instanceCount = 1;
             foreach (Mob target in startingArea.mFullMobList)

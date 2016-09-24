@@ -20,28 +20,29 @@ namespace _8th_Circle_Server
     {
         public string mName;
         public string mDescription;
-        public ArrayList mResources;
+        public List<List<Mob>> mResources;
 
         public ResourceHandler()
         {
-            mResources = new ArrayList();
-            for (int i = (int)ResType.RESOURCE_START; i < (int)ResType.RESOURCE_END; ++i)
-                mResources.Add(new ArrayList());
+            mResources = new List<List<Mob>>();
+
+            for (ResType i = ResType.RESOURCE_START; i < ResType.RESOURCE_END; ++i)
+                mResources.Add(new List<Mob>());
         }// ResourceHandler
 
-        public ArrayList getRes(ResType resType)
+        public List<Mob> getRes(ResType resType)
         {
-            return (ArrayList)mResources[(int)resType];
+            return mResources[(int)resType];
         }// getRes
 
         public void addRes(Mob mob)
         {
-            ((ArrayList)mResources[(int)mob.mResType]).Add(mob);
+            (mResources[(int)mob.mResType]).Add(mob);
         }// addRes
 
         public void removeRes(Mob mob)
         {
-            ((ArrayList)mResources[(int)mob.mResType]).Remove(mob);
+            (mResources[(int)mob.mResType]).Remove(mob);
         }// removeRes  
 
     }// class ResourceHandler

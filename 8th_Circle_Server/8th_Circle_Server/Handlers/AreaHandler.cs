@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         internal const int TICKTIME = 1;
 
         // Member Variables
-        public ArrayList mAreaList;
+        public List<Area> mAreaList;
         public World mWorld;
 
         private object mQueueLock;
@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
 
         public AreaHandler(World world)
         {
-            mAreaList = new ArrayList();
+            mAreaList = new List<Area>();
             mWorld = world;
             mQueueLock = new object();
         }// Constructor
@@ -71,12 +71,12 @@ namespace _8th_Circle_Server
 
         private void processAreas()
         {
-            ArrayList targetList = new ArrayList();
+            List<List<Mob>> targetList = new List<List<Mob>>();
             targetList.Add(mWorld.getRes(ResType.NPC));
             targetList.Add(mWorld.getRes(ResType.PLAYER));
 
             // Decrement the action timers for all mobs in the game
-            foreach (ArrayList ar in targetList)
+            foreach (List<Mob> ar in targetList)
             {
                 foreach (Mob mob in ar)
                 {
@@ -97,7 +97,7 @@ namespace _8th_Circle_Server
             {
                 for (int i = 0; i < area.mFullMobList.Count; ++i)
                 {
-                    Mob mob = (Mob)area.mFullMobList[i];
+                    Mob mob = area.mFullMobList[i];
 
                     if (mob.mIsRespawning &&
                        (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
@@ -111,8 +111,7 @@ namespace _8th_Circle_Server
                         {
                             for (int j = 0; j < mob.mChildren.Count; ++j)
                             {
-                                ((Mob)mob.mChildren[j]).destroy();
-                                --j;
+                                mob.mChildren[j--].destroy();
                             }
 
                             Console.WriteLine("respawning " + mob.mName);
@@ -128,7 +127,7 @@ namespace _8th_Circle_Server
                     targetList.Add(area.getRes(ResType.NPC));
 
                     // Loop through all Mob arrays
-                    foreach (ArrayList ar in targetList)
+                    foreach (List<Mob> ar in targetList)
                     {
                         // Check to despawn mobs from other areas
                         for (int i = 0; i < ar.Count; ++i)
@@ -147,7 +146,7 @@ namespace _8th_Circle_Server
                     // Revert events
                     for (int i = 0; i < area.mRevertList.Count; ++i)
                     {
-                        EventData ed = (EventData)area.mRevertList[i];
+                        EventData ed = area.mRevertList[i];
                         mWorld.mEventHandler.enQueueEvent(ed);
                     }// for
 
@@ -168,7 +167,7 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
-                ArrayList npcList = area.getRes(ResType.NPC);
+                List<Mob> npcList = area.getRes(ResType.NPC);
 
                 for (int i = 0; i < npcList.Count; ++i)
                 {

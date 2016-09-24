@@ -154,12 +154,12 @@ namespace _8th_Circle_Server
         public RoomID mRoomID;
         public int []mAreaLoc;
         public Area mCurrentArea;
-        public ArrayList mRoomLinks;
+        public List<Room> mRoomLinks;
 
         public Room() : base()
         {
             mAreaLoc = new int[3];
-            mRoomLinks = new ArrayList();
+            mRoomLinks = new List<Room>();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
@@ -171,7 +171,7 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mRoomLinks = new ArrayList();
+            mRoomLinks = new List<Room>();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
@@ -184,7 +184,7 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mRoomLinks = new ArrayList();
+            mRoomLinks = new List<Room>();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
@@ -200,7 +200,7 @@ namespace _8th_Circle_Server
         {
             mDescription = desc;
             mAreaLoc = new int[3];
-            mRoomLinks = new ArrayList();
+            mRoomLinks = new List<Room>();
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
@@ -227,7 +227,7 @@ namespace _8th_Circle_Server
 
             if (mRoomLinks[(int)dir] != null)
             {
-                remoteRoom = (Room)mRoomLinks[(int)dir];
+                remoteRoom = mRoomLinks[(int)dir];
                 validRoom = true;
             }
 
@@ -311,10 +311,10 @@ namespace _8th_Circle_Server
             // multiple times
             for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.OBJECT)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                if (!(getRes(ResType.OBJECT)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                 {
                     ++visibleObjects;
-                    tmp += ((Mob)getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
+                    tmp += (getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
                 }// if
             }// for
 
@@ -331,15 +331,15 @@ namespace _8th_Circle_Server
 
             for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.NPC)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += ((Mob)getRes(ResType.NPC)[i]).mName + "\n";
+                if (!(getRes(ResType.NPC)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                    exitStr += (getRes(ResType.NPC)[i]).mName + "\n";
             }// if
 
             exitStr += "Players: ";
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
-                if (!((Mob)getRes(ResType.PLAYER)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += ((CombatMob)getRes(ResType.PLAYER)[i]).mName + "\n";
+                if (!(getRes(ResType.PLAYER)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                    exitStr += (getRes(ResType.PLAYER)[i]).mName + "\n";
             }// if
 
             exitStr += "\n";
@@ -376,7 +376,7 @@ namespace _8th_Circle_Server
 
         public void respawnDoorways()
         {
-            ArrayList doorways = getRes(ResType.DOORWAY);
+            List<Mob> doorways = getRes(ResType.DOORWAY);
 
             for (int i = 0; i < doorways.Count; ++i)
             {
@@ -407,7 +407,7 @@ namespace _8th_Circle_Server
             if(mRoomLinks[(int)dir] != null)
             {
                 Direction oppositeDir = (Direction)(((int)dir + 5) % 10);
-                Room linkedRoom = (Room)mRoomLinks[(int)dir];
+                Room linkedRoom = mRoomLinks[(int)dir];
                 if (linkedRoom != null && 
                     linkedRoom.mRoomLinks[(int)oppositeDir] != null)
                     linkedRoom.mRoomLinks[(int)oppositeDir] = null;

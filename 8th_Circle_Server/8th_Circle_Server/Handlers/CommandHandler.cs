@@ -27,7 +27,7 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = true;     
 
         // Member Variables
-        public Queue mCommandQueue;
+        public Queue<commandData> mCommandQueue;
         public CommandExecuter mCommandExecuter;
         public World mWorld;
 
@@ -36,7 +36,7 @@ namespace _8th_Circle_Server
   
         public CommandHandler(World world)
         {  
-            mCommandQueue = new Queue();
+            mCommandQueue = new Queue<commandData>();
             mCommandExecuter = new CommandExecuter();
             mWorld = world;
             mQueueLock = new object();
@@ -62,7 +62,7 @@ namespace _8th_Circle_Server
                 {
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
-                        comData = ((commandData)commandHandler.mCommandQueue.Dequeue());
+                        comData = (commandHandler.mCommandQueue.Dequeue());
                         if (comData.mob.mActionTimer <= 0)
                             commandExecuter.process(comData.command, comData.mob);
                         else if (comData.mob.mFlagList.Contains(MobFlags.FLAG_SEARCHING))

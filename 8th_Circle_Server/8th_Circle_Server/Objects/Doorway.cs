@@ -31,7 +31,7 @@ namespace _8th_Circle_Server
         public bool mIsOpen;
         public bool mIsLocked;
         public Room [] mRoomList;
-        public ArrayList mStartingFlagList;
+        public List<MobFlags> mStartingFlagList;
         public Memento mMemento;
 
         public Doorway() : base()
@@ -39,7 +39,7 @@ namespace _8th_Circle_Server
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mStartingFlagList = new ArrayList();
+            mStartingFlagList = new List<MobFlags>();
             mMemento = new Memento(this);
         }// Constructor
 
@@ -48,7 +48,7 @@ namespace _8th_Circle_Server
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mStartingFlagList = new ArrayList();
+            mStartingFlagList = new List<MobFlags>();
             mMemento = new Memento(this);
         }// Constructor
 
@@ -57,7 +57,7 @@ namespace _8th_Circle_Server
             mIsOpen = doorway.mIsOpen;
             mIsLocked = doorway.mIsLocked;
             mRoomList = (Room [])doorway.mRoomList.Clone();
-            mStartingFlagList = (ArrayList)doorway.mStartingFlagList.Clone();
+            mStartingFlagList = new List<MobFlags>(doorway.mStartingFlagList);
             mMemento = doorway.mMemento;
         }// Copy Constructor
 
@@ -67,7 +67,7 @@ namespace _8th_Circle_Server
             mIsOpen = memento.mIsOpen;
             mIsLocked = memento.mIsLocked;
             mRoomList = memento.mRoomList;
-            mFlagList = (ArrayList)mStartingFlagList.Clone();
+            mFlagList = new List<MobFlags>(mStartingFlagList);
         }
 
         public override string open(Mob mob)

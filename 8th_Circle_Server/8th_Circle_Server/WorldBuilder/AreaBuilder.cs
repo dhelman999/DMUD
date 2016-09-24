@@ -543,7 +543,7 @@ namespace _8th_Circle_Server
             newDoor.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             newDoor.mStartingFlagList.Add(MobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
-            ((Room)(gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
+            ((gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
             Container wooden_chest = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
             wooden_chest.mKeyId = 4;
@@ -552,7 +552,7 @@ namespace _8th_Circle_Server
             wooden_chest.mName = "wooden chest";         
             addMob(wooden_chest, gpg_56, newbieArea);
 
-            Mob basic_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob basic_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
             basic_key.mKeyId = 4;
             basic_key.mName = "brass key";
             basic_key.mStartingRoom = gpg_70;
@@ -568,7 +568,7 @@ namespace _8th_Circle_Server
             small_metal_cage.mInventory.Add(basic_key);
             addMob(small_metal_cage, gpg_71, newbieArea);
 
-            Mob steel_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob steel_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
             steel_key.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
             steel_key.mStartingRoom = gpg_46;
@@ -577,7 +577,7 @@ namespace _8th_Circle_Server
             steel_key.mDescription = "a small steel key, I wonder what it opens?";
             addMob(steel_key, gpg_46, newbieArea);
 
-            Mob basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
+            Mob basic_switch = new Mob(mFullMobList[(int)MOBLIST.SWITCH]);
             basic_switch.mStartingRoom = gpg_29;
             basic_switch.mStartingArea = newbieArea;
             EventData ed = new EventData();
@@ -587,7 +587,7 @@ namespace _8th_Circle_Server
             basic_switch.mEventList.Add(ed);
             addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
 
-            basic_switch = new Mob((Mob)mFullMobList[(int)MOBLIST.SWITCH]);
+            basic_switch = new Mob(mFullMobList[(int)MOBLIST.SWITCH]);
             basic_switch.mStartingRoom = gpg_37;
             basic_switch.mStartingArea = newbieArea;
             ed = new EventData();

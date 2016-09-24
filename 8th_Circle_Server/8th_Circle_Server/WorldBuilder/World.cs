@@ -25,9 +25,8 @@ namespace _8th_Circle_Server
         public EventHandler mEventHandler;
         public AreaHandler mAreaHandler;
         public CombatHandler mCombatHandler;
-        public ArrayList mAreaList;
-        public ArrayList mRoomList; 
-        public ArrayList mFullMobList;
+        public List<Area> mAreaList; 
+        public List<Mob> mFullMobList;
         private Room[, ,] mWorldGrid;
 
         public World() : base()
@@ -36,9 +35,8 @@ namespace _8th_Circle_Server
             mEventHandler = new EventHandler(this);
             mAreaHandler = new AreaHandler(this);
             mCombatHandler = new CombatHandler(this);
-            mAreaList = new ArrayList();
-            mRoomList = new ArrayList();
-            mFullMobList = new ArrayList();
+            mAreaList = new List<Area>();
+            mFullMobList = new List<Mob>();
             mCommandHandler.start();
             mEventHandler.start();
             mAreaHandler.start();
@@ -96,7 +94,7 @@ namespace _8th_Circle_Server
             event_chest1.mName = "proto chest";
             addMob(event_chest1, pa14, protoArea);
 
-            Mob basic_key = new Mob((Mob)mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob basic_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
             basic_key.mKeyId = 3;
             basic_key.mStartingRoom = pa27;
             basic_key.mStartingArea = protoArea;

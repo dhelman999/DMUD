@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -16,11 +17,11 @@ namespace _8th_Circle_Server
 
     public class Memento
     {
-        private ArrayList mMementos;
+        private List<Mob> mMementos;
 
         public Memento(Mob mob)
         {
-            mMementos = new ArrayList();
+            mMementos = new List<Mob>();
 
             for (MementoType i = MementoType.MTYPE_START; i < MementoType.MTYPE_END; ++i)
             {
@@ -32,7 +33,7 @@ namespace _8th_Circle_Server
 
         public Mob getMemento(MementoType type)
         {
-            return (Mob)mMementos[(int)type];
+            return mMementos[(int)type];
         }// getMemento
 
         public void registerMemento(Mob mob)

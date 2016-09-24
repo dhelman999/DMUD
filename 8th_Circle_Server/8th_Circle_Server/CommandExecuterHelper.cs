@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace _8th_Circle_Server
 
     public partial class CommandExecuter
     {
-        public ArrayList mAbilitySpellList;
+        public List<Action> mAbilitySpellList;
 
         public string executeAbilityCommand(ArrayList commandQueue, Mob mob)
         {
@@ -42,13 +43,12 @@ namespace _8th_Circle_Server
                         clientString = "you don't know how to backstab\n";
                     else if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                         clientString = "you can't backstab while in combat\n";
-                    else if (((Equipment)cm.mEQList[(int)EQSlot.PRIMARY]) == null)
+                    else if ((cm.mEQList[(int)EQSlot.PRIMARY]) == null)
                         clientString = "you can't backstab without a weapon!\n";
                     else
                     {
                         CombatMob backstabTarget = ((CombatMob)commandQueue[++commandIndex]);
-                        cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget,
-                            (Action)mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
+                        cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget, mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
                         commandQueue.Clear();
 
                         foreach (Command com in mCommandList)
@@ -73,8 +73,7 @@ namespace _8th_Circle_Server
                     else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                         clientString = "you can't bash if you are not in combat\b";
                     else
-                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, 
-                            (Action)mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
+                        cm.mWorld.mCombatHandler.abilityAttack(cm, null, mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
                     break;
 
                 default:
@@ -104,7 +103,8 @@ namespace _8th_Circle_Server
                         !((Mob)commandQueue[commandIndex] is CombatMob)))
                         return "you can't cast mystic shot like that";
                     target = (CombatMob)commandQueue[commandIndex];
-                    Action act = (Action)mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
+                    Action act = mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
+
                     if(((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
 
@@ -112,7 +112,7 @@ namespace _8th_Circle_Server
                     {
                         mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                         ((CombatMob)mob).mStats.mCombatList.Add(target);
-                        target.mStats.mCombatList.Add(mob);
+                        target.mStats.mCombatList.Add((CombatMob)mob);
                         target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);                       
 
                         commandQueue.Clear();
@@ -138,7 +138,8 @@ namespace _8th_Circle_Server
                         !((Mob)commandQueue[commandIndex] is CombatMob)))
                         return "you can't cast cure like that";
                     target = (CombatMob)commandQueue[commandIndex];
-                    act = (Action)mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
+                    act = mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
+
                     if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
 

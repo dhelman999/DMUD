@@ -69,8 +69,8 @@ namespace _8th_Circle_Server
 
     public class CombatMob : Mob
     {
-        public ArrayList mEQList;
-        public ArrayList mResistances;
+        public List<Mob> mEQList;
+        public List<double> mResistances;
         public CombatStats mStats;
         public MobType mMobType;
         public ClientHandler mClientHandler;
@@ -78,14 +78,14 @@ namespace _8th_Circle_Server
 
         public CombatMob() : base()
         {
-            mEQList = new ArrayList();
+            mEQList = new List<Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
-            mResistances = new ArrayList();
+            mResistances = new List<double>();
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
-                mResistances.Add(null);
+                mResistances.Add(0);
             fillResistances();         
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
@@ -93,24 +93,24 @@ namespace _8th_Circle_Server
 
         public CombatMob(CombatMob cm) : base(cm)
         {
-            mEQList = (ArrayList)cm.mEQList.Clone();
+            mEQList = new List<Mob>(cm.mEQList);
             mStats = new CombatStats(cm.mStats);
             mQueuedCommand = string.Empty;
-            mResistances = (ArrayList)cm.mResistances.Clone();
+            mResistances = new List<double>(cm.mResistances);
             mResType = cm.mResType;
             mClientHandler = cm.mClientHandler;
         }// Copy Constructor
 
         public CombatMob(string newName) : base(newName)
         {
-            mEQList = new ArrayList();
+            mEQList = new List<Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
-            mResistances = new ArrayList();
+            mResistances = new List<double>();
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
-                mResistances.Add(null);
+                mResistances.Add(0);
             fillResistances();
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
@@ -205,8 +205,7 @@ namespace _8th_Circle_Server
             string clientString = string.Empty;
             for (int i = 0; i < mEQList.Count; ++i)
             {
-                if (mEQList[i] is Equipment)
-                    clientString += ((Equipment)mEQList[i]).remove(this) + "\n";
+                clientString += mEQList[i].remove(this) + "\n";
             }// for
 
             return clientString;

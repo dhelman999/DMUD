@@ -8,10 +8,10 @@ namespace _8th_Circle_Server
 {
     public class CombatStats
     {
-        public ArrayList mCombatList;
+        public List<CombatMob> mCombatList;
         public CombatMob mPrimaryTarget;
         public ArrayList mActionList;
-        public ArrayList mQueuedAction;
+        public List<Action> mQueuedAction;
         public int mLevel;
         public int mCurrentHp;
         public int mBaseMaxHp;
@@ -42,9 +42,9 @@ namespace _8th_Circle_Server
 
         public CombatStats()
         {
-            mCombatList = new ArrayList();
+            mCombatList = new List<CombatMob>();
             mActionList = new ArrayList();
-            mQueuedAction = new ArrayList();
+            mQueuedAction = new List<Action>();
             mLevel = 1;
             mCurrentHp = mBaseMaxHp = 50;
             mBaseMinDam = 1;
@@ -54,9 +54,9 @@ namespace _8th_Circle_Server
 
         public CombatStats(CombatStats cs)
         {
-            mCombatList = (ArrayList)cs.mCombatList.Clone();
-            mActionList = (ArrayList)cs.mActionList.Clone();
-            mQueuedAction = (ArrayList)cs.mQueuedAction.Clone();
+            mCombatList = new List<CombatMob>(cs.mCombatList);
+            mActionList = new ArrayList(cs.mActionList);
+            mQueuedAction = new List<Action>(cs.mQueuedAction);
             mLevel = cs.mLevel;
             mCurrentHp = cs.mCurrentHp;
             mBaseMaxHp = cs.mBaseMaxHp;

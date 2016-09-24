@@ -119,7 +119,7 @@ namespace _8th_Circle_Server
                         if (eventData.trigger.mResType == ResType.PLAYER)
                         {
                             RoomID rid = (RoomID)eventData.data;
-                            ((Area)mWorld.mAreaList[2]).getRoom(rid).addMobResource(eventData.trigger);
+                            (mWorld.mAreaList[2]).getRoom(rid).addMobResource(eventData.trigger);
                             ((CombatMob)eventData.trigger).mClientHandler.safeWrite("You feel a " +
                                "mystical energy whisk you away, only to find yourself...");
                             ((CombatMob)eventData.trigger).mClientHandler.safeWrite(

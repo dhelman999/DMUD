@@ -181,19 +181,18 @@ namespace _8th_Circle_Server
         internal const bool DEBUG = true;
 
         // Member Variables
-        public ArrayList mPrepList;
-        public ArrayList mCommandList;
-        public ArrayList mGrammarList;
+        public List<Preposition> mPrepList;
+        public List<Command> mCommandList;
 
         public CommandExecuter()
         {
-            mPrepList = new ArrayList();
-            mCommandList = new ArrayList();
-            mGrammarList = new ArrayList();
-            mAbilitySpellList = new ArrayList();
-            for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START;
-                abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
+            mPrepList = new List<Preposition>();
+            mCommandList = new List<Command>();
+            mAbilitySpellList = new List<Action>();
+
+            for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START; abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
                 mAbilitySpellList.Add(null);
+
             addCommands();
             addAbilitySpells();
         }// Constructor
@@ -398,7 +397,7 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             
             pt = new Command("teleport", "tp", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_TELEPORT,
-                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
+                predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
                 CommandType.GENERAL);
             mCommandList.Add(pt);
             
@@ -766,7 +765,7 @@ namespace _8th_Circle_Server
                         if (player.mEQList[(int)slot] == null)
                             clientString += slot + ":\n";
                         else
-                            clientString += slot.ToString() + ": " + ((Mob)player.mEQList[(int)slot]).mName + "\n";
+                            clientString += slot.ToString() + ": " + (player.mEQList[(int)slot]).mName + "\n";
                     }// for
                     break;
 
@@ -890,7 +889,7 @@ namespace _8th_Circle_Server
                         // TODO
                         // Needs to be made more generic and cleaned up
                         int mobID = Int32.Parse((string)commandQueue[++commandIndex]);
-                        ArrayList fma = ((CombatMob)mob).mClientHandler.mWorld.mFullMobList;
+                        List<Mob> fma = ((CombatMob)mob).mClientHandler.mWorld.mFullMobList;
                         if (mobID < 0 ||
                             mobID > fma.Count)
                             clientString = "MobID is outside the valid range";
@@ -986,7 +985,7 @@ namespace _8th_Circle_Server
             {
                 if ( command.predicate1Value.mEventList.Count > 0)
                 {
-                    EventData eventData = (EventData)command.predicate1Value.mEventList[0];
+                    EventData eventData = command.predicate1Value.mEventList[0];
 
                     // TODO
                     // This doesn't look like it supports predicate2 triggered events
@@ -1198,7 +1197,7 @@ namespace _8th_Circle_Server
 
             // TODO
             // See if we have added the same list multiple times
-            foreach(ArrayList ar in targetList)
+            foreach(List<Mob> ar in targetList)
             {
                 if (ar.Count > 0)
                 {

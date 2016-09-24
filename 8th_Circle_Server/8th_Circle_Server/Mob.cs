@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    enum MobFlags
+    public enum MobFlags
     {
         FLAG_START,
         FLAG_OPENABLE = FLAG_START,
@@ -54,11 +54,11 @@ namespace _8th_Circle_Server
         public Area mCurrentArea;
         public Mob mStartingOwner;
         public Mob mCurrentOwner;
-        public ArrayList mPrepList;
-        public ArrayList mFlagList;
-        public ArrayList mInventory;
-        public ArrayList mEventList;
-        public ArrayList mChildren;
+        public List<PrepositionType> mPrepList;
+        public List<MobFlags> mFlagList;
+        public List<Mob> mInventory;
+        public List<EventData> mEventList;
+        public List<Mob> mChildren;
         public Mob mParent;
         public int mMobId;
         public int mInstanceId;
@@ -75,12 +75,12 @@ namespace _8th_Circle_Server
         {
             mName = mDescription = mShortDescription = mExitStr = string.Empty;
             mAreaLoc = new int[3];
-            mInventory = new ArrayList();
-            mPrepList = new ArrayList();
+            mInventory = new List<Mob>();
+            mPrepList = new List<PrepositionType>();
             mPrepList.Add(PrepositionType.PREP_AT);
-            mFlagList = new ArrayList();
-            mEventList = new ArrayList();
-            mChildren = new ArrayList();
+            mFlagList = new List<MobFlags>();
+            mEventList = new List<EventData>();
+            mChildren = new List<Mob>();
             mInventory.Capacity = 20;
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
@@ -97,12 +97,12 @@ namespace _8th_Circle_Server
             mName = mExitStr = name;
             mDescription = mShortDescription = string.Empty;
             mAreaLoc = new int[3];
-            mInventory = new ArrayList();
-            mPrepList = new ArrayList();
+            mInventory = new List<Mob>();
+            mPrepList = new List<PrepositionType>();
             mPrepList.Add(PrepositionType.PREP_AT);
-            mFlagList = new ArrayList();
-            mEventList = new ArrayList();
-            mChildren = new ArrayList();
+            mFlagList = new List<MobFlags>();
+            mEventList = new List<EventData>();
+            mChildren = new List<Mob>();
             mInventory.Capacity = 20;
             mStartingRespawnTime = mCurrentRespawnTime = 15;
             mStartingRoom = mCurrentRoom = null;
@@ -122,15 +122,12 @@ namespace _8th_Circle_Server
             mShortDescription = mob.mShortDescription;
             mWorld = mob.mWorld;
             mAreaLoc = mob.mAreaLoc;
-            mInventory = new ArrayList();
-            mInventory = (ArrayList)mob.mInventory.Clone();
-            mPrepList = new ArrayList();
-            mPrepList = (ArrayList)mob.mPrepList.Clone();
-            mFlagList = new ArrayList();
-            mFlagList = (ArrayList)mob.mFlagList.Clone();
-            mEventList = new ArrayList();
-            mEventList = (ArrayList)mob.mEventList.Clone();
-            mChildren = (ArrayList)mob.mChildren.Clone();
+            mInventory = new List<Mob>(mob.mInventory);
+            mPrepList = new List<PrepositionType>(mob.mPrepList);
+            mFlagList = new List<MobFlags>(mob.mFlagList);
+            mEventList = new List<EventData>();
+            mEventList = new List<EventData>(mob.mEventList);
+            mChildren = new List<Mob>(mob.mChildren);
             mParent = mob;
             mInventory.Capacity = mob.mInventory.Capacity;
             mStartingRespawnTime = mob.mStartingRespawnTime;
@@ -163,7 +160,7 @@ namespace _8th_Circle_Server
             if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
-               clientString = changeRoom((Room)mCurrentRoom.mRoomLinks[(int)dir]);
+               clientString = changeRoom(mCurrentRoom.mRoomLinks[(int)dir]);
             else
                 return "you can't move that way\n";
 
@@ -316,7 +313,7 @@ namespace _8th_Circle_Server
         public virtual string getall()
         {
             string clientString = string.Empty;
-            ArrayList targetList = mCurrentRoom.getRes(ResType.OBJECT);
+            List<Mob> targetList = mCurrentRoom.getRes(ResType.OBJECT);
             int tmpInvCount = 0;
 
             for (int i = 0; i < targetList.Count; ++i)
@@ -334,7 +331,7 @@ namespace _8th_Circle_Server
         public virtual string getall(PrepositionType prepType, Container container)
         {
             string clientString = string.Empty;
-            ArrayList targetList = container.mInventory;
+            List<Mob> targetList = container.mInventory;
             int tmpInvCount = 0;
 
             for (int i = 0; i < targetList.Count; ++i)
@@ -496,14 +493,14 @@ namespace _8th_Circle_Server
         public virtual string search()
         {
             string searchString = string.Empty;
-            ArrayList targetList = new ArrayList();
+            List<List<Mob>> targetList = new List<List<Mob>>();
             targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
             targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
             targetList.Add(mCurrentRoom.getRes(ResType.NPC));
             targetList.Add(mCurrentRoom.getRes(ResType.DOORWAY));
             bool found = false;
 
-            foreach (ArrayList ar in targetList)
+            foreach (List<Mob> ar in targetList)
             {
                 foreach (Mob mob in ar)
                 {
