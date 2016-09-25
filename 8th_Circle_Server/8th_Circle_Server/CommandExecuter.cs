@@ -182,12 +182,14 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public List<Preposition> mPrepList;
-        public List<Command> mCommandList;
+        public ArrayList mCommandList;
+        public ArrayList mGrammarList;
 
         public CommandExecuter()
         {
             mPrepList = new List<Preposition>();
-            mCommandList = new List<Command>();
+            mCommandList = new ArrayList();
+            mGrammarList = new ArrayList();
             mAbilitySpellList = new List<Action>();
 
             for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START; abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
@@ -397,7 +399,7 @@ namespace _8th_Circle_Server
             mCommandList.Add(pt);
             
             pt = new Command("teleport", "tp", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_TELEPORT,
-                predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
                 CommandType.GENERAL);
             mCommandList.Add(pt);
             
@@ -482,10 +484,10 @@ namespace _8th_Circle_Server
                     currentCommand = com;
                     commandList.Add(com);
                 }// if
+
                 if (tokens[0].Length < com.matchNumber || tokens[0].Length > com.command.Length)
-                {
                     continue;
-                }// if
+
                 if(com.command.Contains(tokens[0]))
                 {
                     foundMatch = true;
@@ -499,6 +501,7 @@ namespace _8th_Circle_Server
             {
                 if(mob.mResType == ResType.PLAYER)
                     ((CombatMob)mob).mClientHandler.safeWrite(tokens[0] + " is not a valid command");
+
                 return;
             }// if
 
@@ -551,17 +554,14 @@ namespace _8th_Circle_Server
             // verbs, then something went wrong, bail out.
             if (!foundMatch || commandList.Count != 1)
             {
-                if (currentCommand.commandName != commandName.COMMAND_END)
-                {
-                    if (mob.mResType == ResType.PLAYER)
-                        ((CombatMob)mob).mClientHandler.safeWrite("You can't " +
-                           currentCommand.command + " like that");
-                }
-                else
-                {
-                    if(mob.mResType == ResType.PLAYER)
+                if (mob.mResType == ResType.PLAYER)
+                { 
+                    if (currentCommand.commandName != commandName.COMMAND_END)
+                        ((CombatMob)mob).mClientHandler.safeWrite("You can't " + currentCommand.command + " like that");
+                    else
                         ((CombatMob)mob).mClientHandler.safeWrite(tokens[0] + " is not a valid command");
                 }
+
                 return;
             }// if
 
@@ -572,11 +572,13 @@ namespace _8th_Circle_Server
                 mob.mActionTimer == 0)
             {
                 clientString = execute(commandList, mob);
+
                 if (mob.mResType == ResType.PLAYER)
                 {
                     clientString += ((CombatMob)mob).playerString();
                     ((CombatMob)mob).mClientHandler.safeWrite(clientString);
                 }
+
                 return;
             }// if
             else if((tokens.Length > 1 && currentCommand.grammar.Length == 1) ||
@@ -584,17 +586,17 @@ namespace _8th_Circle_Server
                     tokens.Length > currentCommand.maxTokens)
             {
                 if(mob.mResType == ResType.PLAYER)
-                    ((CombatMob)mob).mClientHandler.safeWrite("You can't use the " + currentCommand.command + 
-                        " command that way");
+                    ((CombatMob)mob).mClientHandler.safeWrite("You can't use the " + currentCommand.command + " command that way");
+
                 return;
             }// else if
             
             errorCode error = errorCode.E_OK;
+
             // In this case, the player must have sent us a verb that has multiple arguements.
             // This means we have to parse the grammar of the verb and add back the appropriate
             // predicates to the command list if they even exist.
-            error = populateCommandList(currentCommand, command.Substring(tokens[0].Length+1), 
-                                        commandList, mob);
+            error = populateCommandList(currentCommand, command.Substring(tokens[0].Length+1), commandList, mob);
 
             if (error == errorCode.E_OK)
             {
@@ -602,6 +604,7 @@ namespace _8th_Circle_Server
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
                 clientString = execute(commandList, mob);
+
                 if (mob.mResType == ResType.PLAYER)
                 {
                     clientString += ((CombatMob)mob).playerString();
@@ -611,11 +614,11 @@ namespace _8th_Circle_Server
             else if (error == errorCode.E_INVALID_COMMAND_USAGE)
             {
                 if (mob.mResType == ResType.PLAYER)
-                    ((CombatMob)mob).mClientHandler.safeWrite("you can't use the " + currentCommand.command +
-                        " command like that");
+                    ((CombatMob)mob).mClientHandler.safeWrite("you can't use the " + currentCommand.command + " command like that");
             }
             else if (error == errorCode.E_INVALID_SYNTAX)
-            { } // do nothing it has been handled earlier
+            {
+            } // do nothing it has been handled earlier
             else
             {
                 if (mob.mResType == ResType.PLAYER)
@@ -638,7 +641,9 @@ namespace _8th_Circle_Server
 
             if (!(currentCommand.commandName == commandName.COMMAND_REST ||
                 currentCommand.commandName == commandName.COMMAND_LOOK))
+            {
                 mob.mFlagList.Remove(MobFlags.FLAG_RESTING);
+            }
 
             if (currentCommand.comType == CommandType.ABILITY)
                 return executeAbilityCommand(commandQueue, mob);
@@ -652,6 +657,7 @@ namespace _8th_Circle_Server
                 // Says something to all players in the current room
                 case commandName.COMMAND_SAY:
                     ++commandIndex;
+
                     foreach (CombatMob currentPlayer in currentRoom.getRes(ResType.PLAYER))
                     {
                         if (currentPlayer.Equals(mob))
@@ -661,20 +667,22 @@ namespace _8th_Circle_Server
 
                         currentPlayer.mClientHandler.safeWrite(clientString);
                     }// foreach
+
                     return "";
 
                 case commandName.COMMAND_TELL:
                     ++commandIndex;
                     player = (CombatMob)commandQueue[commandIndex++];
+
                     if(mob.mResType == ResType.PLAYER)
-                        ((CombatMob)mob).mClientHandler.safeWrite("You tell " + player.mName + " \"" + 
-                            commandQueue[commandIndex] + "\"");
-                    player.mClientHandler.safeWrite(mob.mName + " tells you \"" + 
-                        commandQueue[commandIndex] + "\"");
+                        ((CombatMob)mob).mClientHandler.safeWrite("You tell " + player.mName + " \"" + commandQueue[commandIndex] + "\"");
+
+                    player.mClientHandler.safeWrite(mob.mName + " tells you \"" + commandQueue[commandIndex] + "\"");
                     break;
 
                 case commandName.COMMAND_YELL:
                     ++commandIndex;
+
                     foreach (CombatMob currentPlayer in mob.mCurrentArea.getRes(ResType.PLAYER))
                     {
                         if (currentPlayer.Equals(mob))
@@ -684,6 +692,7 @@ namespace _8th_Circle_Server
 
                         currentPlayer.mClientHandler.safeWrite(clientString);
                     }// foreach
+
                     return "";
 
                 case commandName.COMMAND_EXIT:
@@ -717,6 +726,7 @@ namespace _8th_Circle_Server
                     
                 case commandName.COMMAND_GET:
                     ++commandIndex;
+
                     if (commandQueue.Count == 2)
                         clientString = ((Mob)commandQueue[commandIndex]).get(mob);
                     else if (commandQueue.Count == 4)
@@ -754,6 +764,7 @@ namespace _8th_Circle_Server
 
                     foreach (Mob mob2 in mob.mInventory)
                         clientString += " " + mob2.mName + "\n";
+
                     break;
 
                 case commandName.COMMAND_EQUIPMENT:
@@ -767,6 +778,7 @@ namespace _8th_Circle_Server
                         else
                             clientString += slot.ToString() + ": " + (player.mEQList[(int)slot]).mName + "\n";
                     }// for
+
                     break;
 
                 case commandName.COMMAND_LOCK:
@@ -806,6 +818,7 @@ namespace _8th_Circle_Server
                         clientString = "you can't attack that";
                         break;
                     }
+
                     CombatMob cm = (CombatMob)target;
                     CombatMob attacker = (CombatMob)mob;
 
@@ -853,6 +866,7 @@ namespace _8th_Circle_Server
                     }
                     else
                         clientString = "you are already resting\n";
+
                     break;
 
                 case commandName.COMMAND_FULLHEAL:
@@ -866,15 +880,18 @@ namespace _8th_Circle_Server
 
                 case commandName.COMMAND_WHO:
                     ++commandIndex;
+
                     if (((string)commandQueue[commandIndex]).Equals("all"))
                     {
                         clientString = "\nPlayer\t\tArea\n\n";
+
                         foreach (CombatMob pl in mob.mWorld.getRes(ResType.PLAYER))
                             clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
                     }// if
                     else if (((string)commandQueue[commandIndex]).Equals("area"))
                     {
                         clientString = "\nPlayer\t\tArea\n\n";
+
                         foreach (CombatMob pl in mob.mCurrentArea.getRes(ResType.PLAYER))
                             clientString += pl.mName + "\t\t" + pl.mCurrentArea.mName + "\n";
                     }// else if
@@ -890,8 +907,8 @@ namespace _8th_Circle_Server
                         // Needs to be made more generic and cleaned up
                         int mobID = Int32.Parse((string)commandQueue[++commandIndex]);
                         List<Mob> fma = ((CombatMob)mob).mClientHandler.mWorld.mFullMobList;
-                        if (mobID < 0 ||
-                            mobID > fma.Count)
+
+                        if (mobID < 0 || mobID > fma.Count)
                             clientString = "MobID is outside the valid range";
                         else
                         {
@@ -974,8 +991,7 @@ namespace _8th_Circle_Server
 
         private void checkEvent(ArrayList commandQueue, Mob mob)
         {
-            // Populate the event args with the triggers and room in which
-            // the event was triggered.
+            // Populate the event args with the triggers and room in which the event was triggered.
             fillEventArgs(commandQueue, mob);
 
             Command command = (Command)commandQueue[0];
@@ -1002,8 +1018,7 @@ namespace _8th_Circle_Server
             }// else if
         }// checkEvent
 
-        private errorCode populateCommandList(Command currentCommand, string command,
-                              ArrayList commandList, Mob mob)
+        private errorCode populateCommandList(Command currentCommand, string command, ArrayList commandList, Mob mob)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             predicateType targetPredicate;
@@ -1012,8 +1027,7 @@ namespace _8th_Circle_Server
             int predicateCount = 0;
             string errorString = currentCommand.command;
 
-            // Loop until we have gone through all grammar specified by the commands
-            // acceptable grammar set
+            // Loop until we have gone through all grammar specified by the commands acceptable grammar set
             while (grammarIndex < currentCommand.grammar.Length)
             {
                 // We need to know which predicate we need to examine
@@ -1026,26 +1040,22 @@ namespace _8th_Circle_Server
 
                     // If the predicate is a player, we only accept the very next token to
                     // search for a valid playername
-                    if (targetPredicate != predicateType.PREDICATE_END &&
-                        targetPredicate != predicateType.PREDICATE_CUSTOM)
+                    if (targetPredicate != predicateType.PREDICATE_END && targetPredicate != predicateType.PREDICATE_CUSTOM)
                     {
                         tokens = command.Split(' ');
                         errorString += " " + tokens[0];
-                        ret = doesPredicateExist(tokens[0], 
-                                                 targetPredicate, 
-                                                 currentCommand.validity, 
-                                                 commandList,
-                                                 mob);
+
+                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList, mob);
 
                         if (ret != errorCode.E_OK)
                         {
                             if(mob.mResType == ResType.PLAYER)
                                ((CombatMob)mob).mClientHandler.safeWrite("Can't find " + tokens[0]);
+
                             break;
                         }// if
 
-                        if (grammarIndex < currentCommand.grammar.Length &&
-                            tokens.Length > 1)
+                        if (grammarIndex < currentCommand.grammar.Length && tokens.Length > 1)
                             command = command.Substring(tokens[0].Length + 1);
                     }// if
                     // If the predicate is custom, we simply dump the rest of the command
@@ -1060,6 +1070,7 @@ namespace _8th_Circle_Server
                     {
                         if(mob.mResType == ResType.PLAYER)
                            ((CombatMob)mob).mClientHandler.safeWrite("You can't " + errorString);
+
                         break;
                     }// if
                 }// if (currentCommand.grammar[grammarIndex++] == GrammarType.PREDICATE)
@@ -1068,6 +1079,7 @@ namespace _8th_Circle_Server
                     ret = errorCode.E_INVALID_SYNTAX;
                     tokens = command.Split(' ');
                     errorString += " " + tokens[0];
+
                     foreach (Preposition prep in mPrepList)
                     {
                         if (prep.name.Equals(tokens[0]))
@@ -1090,6 +1102,7 @@ namespace _8th_Circle_Server
                     {
                         if(mob.mResType == ResType.PLAYER)
                             ((CombatMob)mob).mClientHandler.safeWrite("You are not able to " + errorString);
+
                         break;
                     }// if
                 }// else if
@@ -1101,11 +1114,8 @@ namespace _8th_Circle_Server
             return ret;
         }// populateCommandList
 
-        private errorCode doesPredicateExist(string name, 
-                                             predicateType predType,
-                                             validityType validity, 
-                                             ArrayList commandQueue,
-                                             Mob target)
+        private errorCode doesPredicateExist(string name, predicateType predType, validityType validity, 
+                                             ArrayList commandQueue, Mob target)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             ArrayList targetList = new ArrayList();
@@ -1136,6 +1146,7 @@ namespace _8th_Circle_Server
                 {
                     targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
                     targetList.Add(target.mInventory);
+
                     foreach(Mob cont in target.mCurrentRoom.getRes(ResType.OBJECT))
                     {
                         if (cont is Container)
@@ -1203,9 +1214,7 @@ namespace _8th_Circle_Server
                 {
                     foreach (Mob mob in ar)
                     {
-                        if (mob != null &&
-                            validatePredicate(tokens[0].ToLower(),
-                                              mob.exitString(target.mCurrentRoom).ToLower()))
+                        if (mob != null && validatePredicate(tokens[0].ToLower(), mob.exitString(target.mCurrentRoom).ToLower()))
                         {
                             ret = errorCode.E_OK;
                             targetPredicates.Add(mob);
@@ -1229,13 +1238,13 @@ namespace _8th_Circle_Server
                     {
                         int index = Int32.Parse(tokens[1])-1;
 
-                        if (index <= targetPredicates.Count &&
-                            index > 0)
+                        if (index <= targetPredicates.Count && index > 0)
                         {
                             commandQueue.Add(targetPredicates[index]);
                             ret = errorCode.E_OK;
                         }// if
                     }// try
+
                     catch
                     {  // silently fail, the return code will correctly error
                     }
@@ -1264,6 +1273,7 @@ namespace _8th_Circle_Server
                     found = false;
                     index = subString.IndexOf(c);
                     int len = subString.Length;
+
                     if (index >= 0)
                     {
                         if (index < len)
@@ -1284,7 +1294,7 @@ namespace _8th_Circle_Server
         private void fillEventArgs(ArrayList commandQueue, Mob mob)
         {
             Command command = (Command)commandQueue[0];
-            GrammarType []grammar = command.grammar;
+            GrammarType[] grammar = command.grammar;
             int predicateCount = 0;
             int prepCount = 0;
 
@@ -1297,12 +1307,10 @@ namespace _8th_Circle_Server
             {
                 if (grammar[i] == GrammarType.PREDICATE)
                 {
-                    if (++predicateCount == 1)
-                       if(!(commandQueue[i] is string))
-                            command.predicate1Value = (Mob)commandQueue[i];
-                    else
-                       if (!(commandQueue[i] is string))
-                          command.predicate2Value = (Mob)commandQueue[i];
+                    if ((++predicateCount == 1) && !(commandQueue[i] is string))
+                        command.predicate1Value = (Mob)commandQueue[i];
+                    else if (!(commandQueue[i] is string))
+                        command.predicate2Value = (Mob)commandQueue[i];
                 }// if
                 else if (grammar[i] == GrammarType.PREP)
                 {
@@ -1320,8 +1328,10 @@ namespace _8th_Circle_Server
         {
             Thread.Sleep(4000);
             string searchResult = mob.search();
+
             if (mob.mResType == ResType.PLAYER)
                 ((CombatMob)mob).mClientHandler.safeWrite(searchResult);
+
             mob.mFlagList.Remove(MobFlags.FLAG_SEARCHING);
         }// searchTask
 
@@ -1332,16 +1342,19 @@ namespace _8th_Circle_Server
             double hpRegen = (maxHp / 20) + 1;
             double manaRegen = (maxMana / 20) + 1;
             Thread.Sleep(4000);
+
             while (mob.mFlagList.Contains(MobFlags.FLAG_RESTING))
             {
                 mob.mStats.mCurrentHp += (int)hpRegen;
                 mob.mStats.mCurrentMana += (int)manaRegen;
+
                 if (mob.mStats.mCurrentHp > (maxHp))
                     mob.mStats.mCurrentHp = maxHp;
                 if (mob.mStats.mCurrentMana > (maxMana))
                     mob.mStats.mCurrentMana = maxMana;
                 if (mob.mResType == ResType.PLAYER)
                     mob.mClientHandler.safeWrite(mob.playerString());
+
                 Thread.Sleep(4000);
             }// while
         }// searchTask

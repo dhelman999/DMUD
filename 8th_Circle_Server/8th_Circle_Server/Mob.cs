@@ -147,25 +147,26 @@ namespace _8th_Circle_Server
             mCurrentActionCounter = mob.mCurrentActionCounter;
             mRand = new Random();
         }// Copy Constructor
-        
+
         public string move(string direction)
         {
             string clientString = string.Empty;
 
             if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 return "you can't move while in combat\n";
-    
+
             Direction dir = DirStrToEnum(direction);
 
             if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
-               clientString = changeRoom(mCurrentRoom.mRoomLinks[(int)dir]);
+            { 
+                clientString = changeRoom(mCurrentRoom.mRoomLinks[(int)dir]);
+            }
             else
                 return "you can't move that way\n";
 
             return clientString;
-
         }// move
 
         public string changeRoom(Room newRoom)
@@ -175,6 +176,7 @@ namespace _8th_Circle_Server
 
             // Remove old references
             mCurrentRoom.removeRes(this);
+
             if (mCurrentArea != newRoom.mCurrentArea)
             {
                 mCurrentArea.removeRes(this);
@@ -199,7 +201,9 @@ namespace _8th_Circle_Server
         {
             if (prep.prepType == PrepositionType.PREP_AT &&
                 mPrepList.Contains(PrepositionType.PREP_AT))
+            {
                 return mDescription;
+            }
             else
                 return "You can't look like that\n";
         }// viewed
@@ -231,6 +235,7 @@ namespace _8th_Circle_Server
                             mob.mWorld.removeRes(this);
                             mCurrentOwner = mob;
                             mob.mInventory.Add(this);
+
                             if (mParent != null)
                             {
                                 mParent.mChildren.Remove(this);
@@ -285,6 +290,7 @@ namespace _8th_Circle_Server
                                 container.mInventory.Remove(this);
                                 mCurrentOwner = mob;
                                 mob.mInventory.Add(this);
+
                                 if (mParent != null)
                                 {
                                     mParent.mChildren.Remove(this);
@@ -320,7 +326,8 @@ namespace _8th_Circle_Server
             {
                 tmpInvCount = mInventory.Count;
 
-                clientString += ((Mob)targetList[i]).get(this);
+                clientString += targetList[i].get(this);
+
                 if (tmpInvCount != mInventory.Count)
                     --i;
             }
@@ -341,7 +348,8 @@ namespace _8th_Circle_Server
                 // TODO
                 // is --i the best way to do so?  I am okay if it is,
                 // just reexamine and make sure
-                clientString += ((Mob)targetList[i]).get(this, prepType, container);
+                clientString += targetList[i].get(this, prepType, container);
+
                 if (tmpInvCount != mInventory.Count)
                     --i;
             }// if
@@ -357,6 +365,7 @@ namespace _8th_Circle_Server
                 mCurrentRoom = mob.mCurrentRoom;
                 mCurrentOwner = null;
                 mCurrentRoom.addMobResource(this);
+
                 if (mParent != null)
                 {
                     mParent.mChildren.Add(this);
@@ -377,8 +386,8 @@ namespace _8th_Circle_Server
             for (int i = 0; i < mInventory.Count; ++i)
             {
                 tmpInvCount = mInventory.Count;
+                clientString += mInventory[i].drop(this);
 
-                clientString += ((Mob)mInventory[i]).drop(this);
                 if (tmpInvCount != mInventory.Count)
                     --i;
             }
@@ -412,7 +421,9 @@ namespace _8th_Circle_Server
             // end of command processing
             if (mFlagList.Contains(MobFlags.FLAG_USEABLE) &&
                 mEventList.Count > 0)
+            {
                 return "You use the " + mName + "\n";
+            }
             else
                 return "You can't use that\n";
         }// unlock
@@ -425,6 +436,7 @@ namespace _8th_Circle_Server
             mEventList.Clear();
             mCurrentRoom.removeRes(this);   
             mWorld.removeRes(this);
+
             if (mParent != null)
             {
                 mParent.mChildren.Remove(this);
@@ -566,11 +578,11 @@ namespace _8th_Circle_Server
                 if (mMobId == (int)MOBLIST.MAX)
                 {
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                    {
                         player.mClientHandler.safeWrite(mName + " purrs softly\n");
-                    }// foreach
+
                     ArrayList commandQueue = new ArrayList();
                     Command com = new Command();
+
                     foreach (Command cmd in mCurrentArea.mCommandExecuter.mCommandList)
                     {
                         if (cmd.commandName == commandName.COMMAND_TELL)
@@ -598,10 +610,10 @@ namespace _8th_Circle_Server
                     Command com = (Command)commandQueue[index];
                     commandQueue.Clear();
                     commandQueue.Add(com);
+
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                    {
                         player.mClientHandler.safeWrite(mName + " scampers off\n");
-                    }// foreach
+
                     mCurrentArea.mCommandExecuter.execute(commandQueue, this);
                 }// if
                 else
@@ -615,8 +627,8 @@ namespace _8th_Circle_Server
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
-                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
+                   (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
+                   ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                 {
                     commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[(int)dir]);
                 }// if

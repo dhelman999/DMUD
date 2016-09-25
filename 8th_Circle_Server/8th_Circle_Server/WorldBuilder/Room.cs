@@ -160,6 +160,7 @@ namespace _8th_Circle_Server
         {
             mAreaLoc = new int[3];
             mRoomLinks = new List<Room>();
+
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
@@ -172,11 +173,13 @@ namespace _8th_Circle_Server
             mDescription = desc;
             mAreaLoc = new int[3];
             mRoomLinks = new List<Room>();
+
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
+
             mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
         }// Constructor
 
@@ -185,11 +188,13 @@ namespace _8th_Circle_Server
             mDescription = desc;
             mAreaLoc = new int[3];
             mRoomLinks = new List<Room>();
+
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
+
             mAreaLoc[0] = xCoord;
             mAreaLoc[1] = yCoord;
             mAreaLoc[2] = zCoord;
@@ -201,11 +206,13 @@ namespace _8th_Circle_Server
             mDescription = desc;
             mAreaLoc = new int[3];
             mRoomLinks = new List<Room>();
+
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 getRes(ResType.DOORWAY).Add(null);
                 mRoomLinks.Add(null);
             }      
+
             mAreaLoc[0] = xCoord;
             mAreaLoc[1] = yCoord;
             mAreaLoc[2] = zCoord;
@@ -324,8 +331,8 @@ namespace _8th_Circle_Server
                 exitStr += tmp;
 
             tmp = string.Empty;
-
             exitStr += "Npcs: ";
+
             if (getRes(ResType.NPC).Count == 0)
                 exitStr += "\n";
 
@@ -336,6 +343,7 @@ namespace _8th_Circle_Server
             }// if
 
             exitStr += "Players: ";
+
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
                 if (!(getRes(ResType.PLAYER)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
@@ -381,10 +389,9 @@ namespace _8th_Circle_Server
             for (int i = 0; i < doorways.Count; ++i)
             {
                 Doorway dw = (Doorway)doorways[i];
+
                 if (dw != null)
-                {
                     dw.reset();
-                }// if
             }// for
         }// respawnDoorways
 
@@ -394,8 +401,7 @@ namespace _8th_Circle_Server
 
             for (dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                if(getRes(ResType.DOORWAY)[(int)dir] != null &&
-                   getRes(ResType.DOORWAY)[(int)dir].Equals(door))
+                if(getRes(ResType.DOORWAY)[(int)dir] != null && getRes(ResType.DOORWAY)[(int)dir].Equals(door))
                    break;
             }// for
 
@@ -408,9 +414,10 @@ namespace _8th_Circle_Server
             {
                 Direction oppositeDir = (Direction)(((int)dir + 5) % 10);
                 Room linkedRoom = mRoomLinks[(int)dir];
-                if (linkedRoom != null && 
-                    linkedRoom.mRoomLinks[(int)oppositeDir] != null)
+
+                if (linkedRoom != null && linkedRoom.mRoomLinks[(int)oppositeDir] != null)
                     linkedRoom.mRoomLinks[(int)oppositeDir] = null;
+
                 mRoomLinks[(int)dir] = null;
             }// if
         }// removeDualLinks

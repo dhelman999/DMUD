@@ -62,6 +62,7 @@ namespace _8th_Circle_Server
             {
                 mCombatQueue.Enqueue(mob);
             }// lock
+
             mSpinWorkThread.Interrupt();
         }// enQueueEvent
 
@@ -84,6 +85,7 @@ namespace _8th_Circle_Server
             {     
                 if (attacker.mStats.mPrimaryTarget == null)
                     attacker.mStats.mPrimaryTarget = combatList[0];
+
                 CombatMob target = attacker.mStats.mPrimaryTarget;
                 ch.attack(attacker, target);
                 ch.checkDeath(attacker, target);
@@ -94,8 +96,10 @@ namespace _8th_Circle_Server
                     ch.attack(target, attacker);
                     ch.checkDeath(target, attacker);
                 }
+
                 if (attacker.mResType == ResType.PLAYER)
                     attacker.mClientHandler.safeWrite((attacker).playerString());
+
                 Thread.Sleep(4000);
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
         }// combatTask
@@ -135,14 +139,13 @@ namespace _8th_Circle_Server
 
             if (target == null)
                 target = attacker.mStats.mPrimaryTarget;
-            if (attacker.mStats.mPrimaryTarget == null &&
-                attacker.mStats.mCombatList.Count > 0)
+            if (attacker.mStats.mPrimaryTarget == null && attacker.mStats.mCombatList.Count > 0)
                 target = attacker.mStats.mCombatList[0];
             if (target == null)
                 return;
 
             double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + ability.mHitBonus) -
-                (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+                               (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             
             double attackRoll = mRand.NextDouble();
 
@@ -171,17 +174,15 @@ namespace _8th_Circle_Server
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
                 int level = attacker.mStats.mLevel;
-                damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + 
-                    ability.mDamageBonus;
+                damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
-            else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL &&
-                     ability.mWeaponRequired)
+            else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL && ability.mWeaponRequired)
             {
                 int level = attacker.mStats.mLevel;
                 Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
                 damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
-                    ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
+                          ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
             }// else if
 
             if (isCrit)
@@ -196,10 +197,10 @@ namespace _8th_Circle_Server
 
             if (!isCrit)
                 damageString += "your " + ability.mName + " " + damageToString(maxHp, damage) +
-                    " the " + target.mName + " for " + (int)damage + " damage";
+                                " the " + target.mName + " for " + (int)damage + " damage";
             else
                 damageString += "your critical " + ability.mName + " " + damageToString(maxHp, damage) +
-                    " the " + target.mName + " for " + (int)damage + " damage";
+                                " the " + target.mName + " for " + (int)damage + " damage";
 
             if (attacker.mResType == ResType.PLAYER)
                 ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
@@ -216,37 +217,32 @@ namespace _8th_Circle_Server
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
                 int level = attacker.mStats.mLevel;
-                healAmount = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
-                    ability.mDamageBonus;
+                healAmount = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
 
             if (isCrit)
                 healAmount *= 1.5 + 1;
 
             target.mStats.mCurrentHp += (int)healAmount;
+
             if (target.mStats.mCurrentHp > (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod))
                 target.mStats.mCurrentHp = (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod);
 
             if (!isCrit)
-                healString += "your " + ability.mName + " heals " + target.mName +
-                    " for " + (int)healAmount + " hp";
+                healString += "your " + ability.mName + " heals " + target.mName + " for " + (int)healAmount + " hp";
             else
-                healString += "your " + ability.mName + "critically heals " + target.mName +
-                    " for " + (int)healAmount + " hp";
+                healString += "your " + ability.mName + "critically heals " + target.mName + " for " + (int)healAmount + " hp";
             
             if (attacker.mResType == ResType.PLAYER)
                 ((CombatMob)attacker).mClientHandler.safeWrite(healString);
 
             if (attacker != target && target.mResType == ResType.PLAYER)
-                ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + ability.mName +
-                    " heals you for " + (int)healAmount + " hp");
+                ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + ability.mName + " heals you for " + (int)healAmount + " hp");
         }// processHeal
 
         public void attack(CombatMob attacker, CombatMob target)
         {
-            double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) -
-                    (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
-            
+            double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) - (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = mRand.NextDouble();
@@ -307,11 +303,9 @@ namespace _8th_Circle_Server
             double damage = 0;
 
             if (weapon != null)
-                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mBaseDamBonus +
-                    attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
             else
-                damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam)
-                    + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
 
             if (isCrit)
                 damage *= 1.5;
@@ -332,23 +326,20 @@ namespace _8th_Circle_Server
                 int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
 
                 if (!isCrit)
-                    damageString += "your attack " + damageToString(maxHp, damage) +
-                        " the " + target.mName + " for " + (int)damage + " damage";
+                    damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
                 else
-                    damageString += "your critical hit " + damageToString(maxHp, damage) +
-                        " the " + target.mName + " for " + (int)damage + " damage";
+                    damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
 
                 ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
             }// if
             if (target.mResType == ResType.PLAYER)
             {
                 damageString = string.Empty;
+
                 if (isCrit)
-                    damageString += attacker.mName + " critically hits you for " +
-                        (int)damage + " damage";
+                    damageString += attacker.mName + " critically hits you for " + (int)damage + " damage";
                 else
-                    damageString += attacker.mName + " hits you for " +
-                        (int)damage + " damage";
+                    damageString += attacker.mName + " hits you for " + (int)damage + " damage";
 
                 ((CombatMob)target).mClientHandler.safeWrite(damageString);
             }// if
@@ -357,15 +348,14 @@ namespace _8th_Circle_Server
         private void processMiss(CombatMob attacker, CombatMob target, Action ability)
         {
             string attackString = "attack";
+
             if (ability != null)
                 attackString = ability.mName;
 
             if (attacker.mResType == ResType.PLAYER)
-                    ((CombatMob)attacker).mClientHandler.safeWrite("your " + attackString + " misses the " 
-                        + target.mName);
+                    ((CombatMob)attacker).mClientHandler.safeWrite("your " + attackString + " misses the " + target.mName);
             if (target.mResType == ResType.PLAYER)
-                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " +
-                        attackString + " misses you");
+                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + attackString + " misses you");
         }// processMiss
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
@@ -373,10 +363,12 @@ namespace _8th_Circle_Server
             if (target.mStats.mCurrentHp <= 0)
             {
                 CombatMob cm = null;
+
                 for (int i = 0; i < target.mStats.mCombatList.Count; ++i)
                 {
                     cm = target.mStats.mCombatList[i];
                     cm.mStats.mCombatList.Remove(target);
+
                     if (cm.mStats.mCombatList.Count == 0)
                     {
                         cm.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
@@ -401,7 +393,9 @@ namespace _8th_Circle_Server
 
                 return true;
             }// if
+
             return false;
+
         }// checkDeath
 
     }// Class CombatHandler

@@ -101,7 +101,10 @@ namespace _8th_Circle_Server
                     if (commandQueue.Count != 3 ||
                         ((Mob)commandQueue[++commandIndex] != null &&
                         !((Mob)commandQueue[commandIndex] is CombatMob)))
+                    {
                         return "you can't cast mystic shot like that";
+                    }
+
                     target = (CombatMob)commandQueue[commandIndex];
                     Action act = mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
 
@@ -114,8 +117,8 @@ namespace _8th_Circle_Server
                         ((CombatMob)mob).mStats.mCombatList.Add(target);
                         target.mStats.mCombatList.Add((CombatMob)mob);
                         target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);                       
-
                         commandQueue.Clear();
+
                         foreach (Command com in mCommandList)
                         {
                             if (com.commandName == commandName.COMMAND_ATTACK)
@@ -124,6 +127,7 @@ namespace _8th_Circle_Server
                                 break;
                             }
                         }
+
                         mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                         commandQueue.Add(target);
                         execute(commandQueue, mob);
@@ -136,7 +140,10 @@ namespace _8th_Circle_Server
                     if (commandQueue.Count != 3 ||
                         ((Mob)commandQueue[++commandIndex] != null &&
                         !((Mob)commandQueue[commandIndex] is CombatMob)))
+                    {
                         return "you can't cast cure like that";
+                    }
+
                     target = (CombatMob)commandQueue[commandIndex];
                     act = mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
 

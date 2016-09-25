@@ -82,11 +82,14 @@ namespace _8th_Circle_Server
             else
             {
                 mIsOpen = true;
+
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
                     if (mRoomList[i] != null)
+                    {
                         foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " opens\n");
+                    }
                 }// for
 
                 return "you open " + mob.mCurrentRoom.getDoorString(this) + "\n";
@@ -101,15 +104,17 @@ namespace _8th_Circle_Server
                 return mob.mCurrentRoom.getDoorString(this) + " is already closed\n";
             if (mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                 return "you can't find that\n";
-
             else
             {
                 mIsOpen = false;
+
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
                     if (mRoomList[i] != null)
+                    {
                         foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite(mRoomList[i].getDoorString(this) + " closes\n");
+                    }
                 }// for
 
                 return "you close " + mob.mCurrentRoom.getDoorString(this) + "\n";
@@ -119,13 +124,11 @@ namespace _8th_Circle_Server
         public override string exitString(Room currentRoom)
         {
             string ret = string.Empty;
-
             Direction direction = Direction.DIRECTION_END;
 
             for (int i = 0; i < currentRoom.getRes(ResType.DOORWAY).Count; ++i)
             {
-                if (currentRoom.getRes(ResType.DOORWAY)[i] != null &&
-                    currentRoom.getRes(ResType.DOORWAY)[i].Equals(this))
+                if (currentRoom.getRes(ResType.DOORWAY)[i] != null && currentRoom.getRes(ResType.DOORWAY)[i].Equals(this))
                 {
                     direction = (Direction)(i);
                     break;

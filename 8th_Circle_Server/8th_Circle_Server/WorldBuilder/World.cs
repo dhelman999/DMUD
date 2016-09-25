@@ -130,7 +130,6 @@ namespace _8th_Circle_Server
             }
 
             return null;
-
         }// getRoom
 
         public Room getRoom(int x, int y, int z, AreaID areaID)
@@ -142,7 +141,9 @@ namespace _8th_Circle_Server
                 if (room.mAreaLoc[0] == x &&
                     room.mAreaLoc[1] == y &&
                     room.mAreaLoc[2] == z)
+                {
                     return room;
+                }
             }
 
             return null;
@@ -163,26 +164,16 @@ namespace _8th_Circle_Server
         {
             foreach (Room room in getArea(AreaID.AID_PROTOAREA).mRoomList)
             {
-                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1],
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1],
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1,
-                    room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
-                    room.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
-                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1],
-                    room.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
+                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
+                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
 
                 if (nwRoom != null)
                 {

@@ -51,13 +51,13 @@ namespace _8th_Circle_Server
 
                 //Console.WriteLine("The 8th Circle has been started on " + ipAddr + 
                 //    "::" + MUD_SERVER_PORT);
-                Console.WriteLine("The 8th Circle has been started on 127.0.0.1" +
-                    "::" + MUD_SERVER_PORT);
+                Console.WriteLine("The 8th Circle has been started on 127.0.0.1" + "::" + MUD_SERVER_PORT);
             }// try
             catch
             {
                 if (DEBUG)
                     Console.WriteLine("Error starting the Server");
+
                 sTcpListener.Stop();
             }// catch
         }// Main

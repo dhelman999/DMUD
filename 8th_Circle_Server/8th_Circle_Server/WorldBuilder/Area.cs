@@ -22,14 +22,14 @@ namespace _8th_Circle_Server
 
         // Member Variables
         public int mAreaOffset;
-        public List<Room> mRoomList;
-        public List<Mob> mFullMobList;
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
+        public List<Room> mRoomList;
+        public List<Mob> mFullMobList;
+        public List<EventData> mRevertList;
         public World mWorld;
         public CommandExecuter mCommandExecuter;
         public AreaID mAreaID;
-        public List<EventData> mRevertList;
 
         public Area(World world) : base()
         {

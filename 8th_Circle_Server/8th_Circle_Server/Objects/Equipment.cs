@@ -71,6 +71,7 @@ namespace _8th_Circle_Server
             {
                 pl.mEQList[(int)mSlot] = this;
                 pl.mInventory.Remove(this);
+
                 return "you equip the " + mName;
             }// if
             else
@@ -85,6 +86,7 @@ namespace _8th_Circle_Server
             {
                 pl.mEQList[(int)mSlot] = null;
                 pl.mInventory.Add(this);
+
                 return "you remove the " + mName;
             }// else
         }// wear

@@ -27,16 +27,14 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
-            if (prep.prepType == PrepositionType.PREP_AT &&
-                mPrepList.Contains(PrepositionType.PREP_AT))
+            if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 if(mIsOpen)
                     clientString += mName + " is open\n";
                 else
                     clientString += mName + " is closed\n";
             }// if
-            else if (prep.prepType == PrepositionType.PREP_IN &&
-                mPrepList.Contains(PrepositionType.PREP_IN))
+            else if (prep.prepType == PrepositionType.PREP_IN && mPrepList.Contains(PrepositionType.PREP_IN))
             {
                 if (mIsOpen)
                 {
@@ -68,9 +66,7 @@ namespace _8th_Circle_Server
                 if(mIsOpen)
                     ret = mName + " is already open\n";
                 else if (mFlagList.Contains(MobFlags.FLAG_LOCKED))
-                {
                     return mName + " is locked\n";
-                }// else
                 else
                 {
                     ret = "You open the " + mName + "\n";
@@ -108,6 +104,7 @@ namespace _8th_Circle_Server
         public override string lck(Mob mob)
         {
             bool foundKey = false;
+
             foreach(Mob key in mob.mInventory)
             {
                if(key.mKeyId == mKeyId)
@@ -125,6 +122,7 @@ namespace _8th_Circle_Server
                     {
                         mFlagList.Add(MobFlags.FLAG_LOCKED);
                         mFlagList.Remove(MobFlags.FLAG_UNLOCKED);
+
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 
@@ -143,6 +141,7 @@ namespace _8th_Circle_Server
         public override string unlock(Mob mob)
         {
             bool foundKey = false;
+
             foreach (Mob key in mob.mInventory)
             {
                 if (key.mKeyId == mKeyId)
@@ -160,6 +159,7 @@ namespace _8th_Circle_Server
                     {
                         mFlagList.Add(MobFlags.FLAG_UNLOCKED);
                         mFlagList.Remove(MobFlags.FLAG_LOCKED);
+
                         if (mParent != null)
                             mParent.mIsRespawning = true;
 

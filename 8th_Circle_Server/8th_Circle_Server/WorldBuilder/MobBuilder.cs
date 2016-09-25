@@ -185,22 +185,20 @@ namespace _8th_Circle_Server
             Mob mob = null;
 
             if (mFullMobList[(int)mobId] is Container)
-            {
                 mob = new Container((Container)mFullMobList[(int)mobId]);
-            }// if
             else if (mFullMobList[(int)mobId] is CombatMob)
-            {
                 mob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
-            }// if
             else
                 mob = new Mob(mFullMobList[(int)mobId]);
 
             int instanceCount = 1;
+
             foreach (Mob target in startingArea.mFullMobList)
             {
                 if ((int)mobId == target.mMobId)
                     ++instanceCount;
             }
+
             mob.mInstanceId = instanceCount;
             mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
             mob.mStartingArea = mob.mCurrentArea = startingArea;
@@ -223,18 +221,20 @@ namespace _8th_Circle_Server
             else
                 mob2 = new Mob(mob);
 
-	    startingRoom.addMobResource(mob2);
+	        startingRoom.addMobResource(mob2);
             mob2.mWorld.addRes(mob2);
         }// addNewMob
 
         public void addMob(Mob mob, Room startingRoom, Area startingArea)
         {
             int instanceCount = 1;
+
             foreach (Mob target in startingArea.mFullMobList)
             {
                 if ((int)mob.mMobId == target.mMobId)
                     ++instanceCount;
             }
+
             mob.mInstanceId = instanceCount;
             mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
             mob.mStartingArea = mob.mCurrentArea = startingArea;
@@ -247,17 +247,11 @@ namespace _8th_Circle_Server
             // so we don't have to remember to add them whenever
             // a new class is made
             if (mob is Container)
-            {
                 mob2 = new Container((Container)mob);
-            }// if
             else if (mob is Equipment)
-            {
                 mob2 = new Equipment((Equipment)mob);
-            }// if
             else if (mob is CombatMob)
-            {
-                mob2 = new CombatMob((CombatMob)mob);
-            }// if 
+                mob2 = new CombatMob((CombatMob)mob); 
             else
                 mob2 = new Mob(mob);
 

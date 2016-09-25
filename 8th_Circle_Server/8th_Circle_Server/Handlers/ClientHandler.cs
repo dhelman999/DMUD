@@ -46,10 +46,10 @@ namespace _8th_Circle_Server
                 try
                 {
                     mSocketForClient = mTcpListener.AcceptSocket();
+
                     if(mSocketForClient.Connected)
                     {
-                        Console.WriteLine("Client:" + mSocketForClient.RemoteEndPoint +
-                            " now connected to server.");
+                        Console.WriteLine("Client:" + mSocketForClient.RemoteEndPoint + " now connected to server.");
                         mNetworkStream = new NetworkStream(mSocketForClient);
                         mStreamReader = new StreamReader(mNetworkStream);
                         mStreamWriter = new StreamWriter(mNetworkStream);
@@ -61,8 +61,7 @@ namespace _8th_Circle_Server
                             mPlayer.mName = mStreamReader.ReadLine();
                             mPlayer.mWorld = mWorld;
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
-                            Room curRoom = mWorld.getRoom(100 + 1,
-                                100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
+                            Room curRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
                             curRoom.mCurrentArea.addRes(mPlayer);
                             mPlayer.mCurrentArea = curRoom.mCurrentArea;
                             mPlayer.mAreaLoc[0] = 1;
@@ -86,25 +85,27 @@ namespace _8th_Circle_Server
                                 mCmdString != "rogue"   &&
                                 mCmdString != "cleric"  &&
                                 mCmdString != "wizard")
+                            {
                                 safeWrite("please enter a valid class\n");
+                            }
                             else
                             {
                                 switch (mCmdString)
                                 {
                                     case "warrior":
-                                        mPlayer = new Warrior(mPlayer); 
+                                        mPlayer = new Warrior(mPlayer);
                                         break;
 
                                     case "rogue":
-                                        mPlayer = new Rogue(mPlayer);  
+                                        mPlayer = new Rogue(mPlayer);
                                         break;
 
                                     case "cleric":
-                                        mPlayer = new Cleric(mPlayer);  
+                                        mPlayer = new Cleric(mPlayer);
                                         break;
 
                                     case "wizard":
-                                        mPlayer = new Wizard(mPlayer);                                       
+                                        mPlayer = new Wizard(mPlayer);
                                         break;
 
                                     default:
@@ -113,30 +114,27 @@ namespace _8th_Circle_Server
                                 }// switch
                             }
                         }// while
+
                         mPlayer.fillResistances();
                         mWorld.addRes(mPlayer);
                         mPlayer.mCurrentRoom.addRes(mPlayer);
 
                         foreach (CombatMob player in mPlayer.mWorld.getRes(ResType.PLAYER))
-                        {
                             player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
-                        }// foreach
 
                         do
                         {     
                             mResponderThread.Interrupt();
                             mCmdString = mStreamReader.ReadLine();
-                        } while (!mCmdString.Equals("exit"));
+                        }
+                        while (!mCmdString.Equals("exit"));
 
                         if (DEBUG)
                         {           
-                            if(mPlayer != null &&
-                               mPlayer.mName != string.Empty)
-                                Console.WriteLine("CombatMob: " + mPlayer.mName + " Client: " + 
-                                    mSocketForClient.RemoteEndPoint + " is now exitting.");
+                            if(mPlayer != null && mPlayer.mName != string.Empty)
+                                Console.WriteLine("CombatMob: " + mPlayer.mName + " Client: " + mSocketForClient.RemoteEndPoint + " is now exitting.");
                             else
-                                Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint +
-                                " is now exitting.");
+                                Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint + " is now exitting.");
                         }// if
 
                         playerLeft();
@@ -145,8 +143,9 @@ namespace _8th_Circle_Server
                 catch
                 {
                     Console.WriteLine("Exception caught while listening to " + mSocketForClient.RemoteEndPoint);
-                    if (mStreamReader != null &&
-                        mStreamWriter != null &&
+
+                    if (mStreamReader != null  &&
+                        mStreamWriter != null  &&
                         mNetworkStream != null &&
                         mResponderThread != null)
                     {
@@ -169,8 +168,7 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
-                mCmdString = "\nPlease enter your character class, choose one from the following:\n\n" +
-                    "warrior\nrogue\ncleric\nwizard\n";
+                mCmdString = "\nPlease enter your character class, choose one from the following:\n\n" + "warrior\nrogue\ncleric\nwizard\n";
                 safeWrite(mCmdString);
             }// catch
 
@@ -184,10 +182,9 @@ namespace _8th_Circle_Server
                     return;
 
                 safeWrite("Welcome to the 8th Circle!");
-                if(mPlayer != null &&
-                   mPlayer.mCurrentRoom != null)
-                   safeWrite(mPlayer.mCurrentRoom.exitString() +
-                       mPlayer.playerString());
+
+                if(mPlayer != null && mPlayer.mCurrentRoom != null)
+                   safeWrite(mPlayer.mCurrentRoom.exitString() + mPlayer.playerString());
             }// catch
             while (true)
             {
@@ -235,9 +232,7 @@ namespace _8th_Circle_Server
                 if (mWorld.getRes(ResType.PLAYER).Count > 0)
                 {
                     foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
-                    {
                         player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
-                    }// foreach
 
                     mPlayer.mCurrentRoom.removeRes(mPlayer);
                     mPlayer.mCurrentArea.removeRes(mPlayer);

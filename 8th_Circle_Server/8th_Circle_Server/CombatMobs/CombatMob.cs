@@ -81,11 +81,15 @@ namespace _8th_Circle_Server
             mEQList = new List<Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
+
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
+
             mResistances = new List<double>();
+
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
                 mResistances.Add(0);
+
             fillResistances();         
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
@@ -106,11 +110,15 @@ namespace _8th_Circle_Server
             mEQList = new List<Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
+
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(null);
+
             mResistances = new List<double>();
+
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
                 mResistances.Add(0);
+
             fillResistances();
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
@@ -118,10 +126,10 @@ namespace _8th_Circle_Server
 
         public void fillResistances()
         {
-            mResistances[(int)DamageType.PHYSICAL] = (((double)mStats.mBaseArmor + mStats.mArmorMod
-                + mStats.mBasePhysRes + mStats.mPhysResMod) / 10);
             mResistances[(int)DamageType.MAGICAL] = ((double)mStats.mBaseMagicRes + mStats.mMagicResMod / 10);
             mResistances[(int)DamageType.PURE] = 0;
+            mResistances[(int)DamageType.PHYSICAL] = (((double)mStats.mBaseArmor + mStats.mArmorMod + 
+                                                     mStats.mBasePhysRes + mStats.mPhysResMod) / 10); 
         }// fillResistances
 
         public override string viewed(Mob mob, Preposition prep)
@@ -132,8 +140,7 @@ namespace _8th_Circle_Server
             if (mob is CombatMob)
                 viewer = (CombatMob)mob;
 
-            if (prep.prepType == PrepositionType.PREP_AT &&
-                mPrepList.Contains(PrepositionType.PREP_AT))
+            if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 if (viewer != null)
                 {
@@ -172,6 +179,7 @@ namespace _8th_Circle_Server
         {
             mStats.mCurrentHp = mStats.mBaseMaxHp + mStats.mMaxHpMod;
             mStats.mCurrentMana = mStats.mBaseMaxMana + mStats.mMaxManaMod;
+
             return "you fully heal " + mName + "\n";
         }// fullheal
 
@@ -192,6 +200,7 @@ namespace _8th_Circle_Server
                 if (mInventory[i] is Equipment)
                 {
                     clientString += ((Equipment)mInventory[i]).wear(this) + "\n";
+
                     if (tmpInvCount != mInventory.Count)
                         --i;
                 }// if
@@ -203,10 +212,9 @@ namespace _8th_Circle_Server
         public override string removeall()
         {
             string clientString = string.Empty;
+
             for (int i = 0; i < mEQList.Count; ++i)
-            {
                 clientString += mEQList[i].remove(this) + "\n";
-            }// for
 
             return clientString;
         }// wearall

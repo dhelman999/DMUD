@@ -63,6 +63,7 @@ namespace _8th_Circle_Server
                     while (commandHandler.mCommandQueue.Count > 0)
                     {
                         comData = (commandHandler.mCommandQueue.Dequeue());
+
                         if (comData.mob.mActionTimer <= 0)
                             commandExecuter.process(comData.command, comData.mob);
                         else if (comData.mob.mFlagList.Contains(MobFlags.FLAG_SEARCHING))
@@ -83,6 +84,7 @@ namespace _8th_Circle_Server
             {
                 mCommandQueue.Enqueue(cd);
             }// lock
+
             mSpinWorkThread.Interrupt();
         }// enQueueCommand
 

@@ -11,7 +11,6 @@ namespace _8th_Circle_Server
     {
         // Debug
         internal const bool DEBUG = false;
-
         internal const int TICKTIME = 1;
 
         // Member Variables
@@ -36,7 +35,7 @@ namespace _8th_Circle_Server
 
         public static void spinWork(AreaHandler areaHandler)
         {
-            bool processed;
+            bool processed = false;
 
             while (true)
             {
@@ -82,8 +81,8 @@ namespace _8th_Circle_Server
                 {
                     if (mob.mActionTimer > 0)
                         --(mob.mActionTimer);
-                    if(mob is CombatMob &&
-                       ((CombatMob)mob).mQueuedCommand != string.Empty)
+
+                    if(mob is CombatMob && ((CombatMob)mob).mQueuedCommand != string.Empty)
                     {
                         commandData cd = new commandData(((CombatMob)mob).mQueuedCommand, (CombatMob)mob);
                         mWorld.mCommandHandler.enQueueCommand(cd);
@@ -99,8 +98,7 @@ namespace _8th_Circle_Server
                 {
                     Mob mob = area.mFullMobList[i];
 
-                    if (mob.mIsRespawning &&
-                       (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
+                    if (mob.mIsRespawning && (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
                     {
                         if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                         {
@@ -110,9 +108,7 @@ namespace _8th_Circle_Server
                         else
                         {
                             for (int j = 0; j < mob.mChildren.Count; ++j)
-                            {
                                 mob.mChildren[j--].destroy();
-                            }
 
                             Console.WriteLine("respawning " + mob.mName);
                             mob.respawn();
@@ -132,9 +128,9 @@ namespace _8th_Circle_Server
                         // Check to despawn mobs from other areas
                         for (int i = 0; i < ar.Count; ++i)
                         {
-                            Mob mob = (Mob)ar[i];
-                            if (mob != null &&
-                                mob.mStartingArea != area)
+                            Mob mob = ar[i];
+
+                            if (mob != null && mob.mStartingArea != area)
                             {
                                 Console.WriteLine("despawning " + mob.mName + " from other area");
                                 mob.destroy();
@@ -178,8 +174,11 @@ namespace _8th_Circle_Server
                         npc.mCurrentActionCounter = npc.mStartingActionCounter;
                         npc.randomAction();
                     }// if
+
                 }// for
+
             }// foreach
+
         }// processNpcs
 
     }// Class AreaHandler
