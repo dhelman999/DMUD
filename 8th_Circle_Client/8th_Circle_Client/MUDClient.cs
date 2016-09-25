@@ -44,7 +44,6 @@ namespace _8th_Circle_Client
 
             networkStream = socketForServer.GetStream();
             Console.WriteLine("Connected to " + ipAddr + "::" + 8888 + "\n");
-
             streamReader = new System.IO.StreamReader(networkStream);
             streamWriter = new System.IO.StreamWriter(networkStream);
             Thread readerThread = new Thread(new ThreadStart(ServerListener));
@@ -63,10 +62,10 @@ namespace _8th_Circle_Client
                 {
                     Thread.Sleep(10);
                     outputString = streamReader.ReadLine();
+
                     if (outputString.Contains("say") || outputString.Contains("says"))
-                    {
                         Console.ForegroundColor = ConsoleColor.Red;
-                    }
+
                     Console.WriteLine(outputString);
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }// while
@@ -75,6 +74,7 @@ namespace _8th_Circle_Client
             {
                 if(DEBUG)
                     Console.WriteLine("Exception reading from Server");
+
                 streamReader.Close();
                 streamWriter.Close();
                 networkStream.Close();
@@ -85,6 +85,7 @@ namespace _8th_Circle_Client
         static void ServerWriter()
         {
             string str = string.Empty;
+
             try
             {
                 do
@@ -92,7 +93,8 @@ namespace _8th_Circle_Client
                     str = Console.ReadLine();
                     streamWriter.WriteLine(str);
                     streamWriter.Flush();
-                }while(!str.Equals("exit"));
+                }
+                while (!str.Equals("exit"));
 
                 goto Cleanup;
             }// try
@@ -100,6 +102,7 @@ namespace _8th_Circle_Client
             {
                 if(DEBUG)
                     Console.WriteLine("Exception reading from Server");
+
                 goto Cleanup;
             }// catch
 
@@ -109,5 +112,7 @@ namespace _8th_Circle_Client
                 networkStream.Close();
                 socketForServer.Close();
         }// ServerWriter
+
     }// Class MUDClient
+
 }// namespace _8th_Circle_Client
