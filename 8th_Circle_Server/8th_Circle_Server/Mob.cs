@@ -581,20 +581,19 @@ namespace _8th_Circle_Server
                         player.mClientHandler.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
-                    Command com = new Command();
+                    CommandClass com = null;
 
-                    foreach (Command cmd in mCurrentArea.mCommandExecuter.mCommandList)
+                    foreach (CommandClass cc in mCurrentArea.mCommandExecuter.mCCList)
                     {
-                        if (cmd.commandName == commandName.COMMAND_TELL)
-                            com = cmd;
+                        if (cc.commandName == commandName.COMMAND_TELL)
+                            com = cc;
                     }
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
-                        commandQueue.Add(com);
                         commandQueue.Add(pl);
                         commandQueue.Add("purrr");
-                        mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                        mCurrentArea.mCommandExecuter.execute(com, commandQueue, this);
                         commandQueue.Clear();
                     }
                 }// if (mMobId == (int)MOBLIST.MAX)
@@ -607,14 +606,12 @@ namespace _8th_Circle_Server
                 if (commandQueue.Count > 0)
                 {
                     int index = (int)(commandQueue.Count * mRand.NextDouble());
-                    Command com = (Command)commandQueue[index];
-                    commandQueue.Clear();
-                    commandQueue.Add(com);
+                    CommandClass com = (CommandClass)commandQueue[index];
 
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
                         player.mClientHandler.safeWrite(mName + " scampers off\n");
 
-                    mCurrentArea.mCommandExecuter.execute(commandQueue, this);
+                    mCurrentArea.mCommandExecuter.execute(com, commandQueue, this);
                 }// if
                 else
                 { // There must be no exits in the room the CombatMob is trying to leave, so just stay put
@@ -630,7 +627,7 @@ namespace _8th_Circle_Server
                    (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                    ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                 {
-                    commandQueue.Add(mCurrentArea.mCommandExecuter.mCommandList[(int)dir]);
+                    commandQueue.Add(mCurrentArea.mCommandExecuter.mCCList[(int)dir]);
                 }// if
             }// for
         }// addExits

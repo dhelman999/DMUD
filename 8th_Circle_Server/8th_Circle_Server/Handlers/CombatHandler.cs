@@ -231,7 +231,7 @@ namespace _8th_Circle_Server
             if (!isCrit)
                 healString += "your " + ability.mName + " heals " + target.mName + " for " + (int)healAmount + " hp";
             else
-                healString += "your " + ability.mName + "critically heals " + target.mName + " for " + (int)healAmount + " hp";
+                healString += "your " + ability.mName + " critically heals " + target.mName + " for " + (int)healAmount + " hp";
             
             if (attacker.mResType == ResType.PLAYER)
                 ((CombatMob)attacker).mClientHandler.safeWrite(healString);

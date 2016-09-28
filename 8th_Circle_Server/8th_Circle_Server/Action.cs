@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
         DAMAGESCALING_END
     }// DamageScaling
 
-    public class Action
+    public class Action : Mob
     {
         public string mName;
         public int mCooldown;
@@ -42,7 +42,7 @@ namespace _8th_Circle_Server
         public AbilitySpell mAbilitySpell;
         public bool mWeaponRequired;
 
-        public Action(string name, int cooldown, int useTime, ActionType type)
+        public Action(string name, int cooldown, int useTime, ActionType type) : base()
         {
             mName = name;
             mCooldown = cooldown;

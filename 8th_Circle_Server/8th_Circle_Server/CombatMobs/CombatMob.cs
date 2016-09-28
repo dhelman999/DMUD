@@ -214,7 +214,10 @@ namespace _8th_Circle_Server
             string clientString = string.Empty;
 
             for (int i = 0; i < mEQList.Count; ++i)
-                clientString += mEQList[i].remove(this) + "\n";
+            { 
+                if(mEQList[i] != null)
+                    clientString += mEQList[i].remove(this) + "\n";
+            }
 
             return clientString;
         }// wearall
