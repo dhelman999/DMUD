@@ -428,6 +428,9 @@ namespace _8th_Circle_Server
                 return "You can't use that\n";
         }// unlock
 
+        // TODO:
+        // Destory does not check if you are in combat and remove the combat flags and stop the attacking events
+        // This needs to be done or else it can create dangling references to mobs in combat that never ends.
         public virtual string destroy()
         {
             mCurrentArea.removeRes(this);
@@ -519,12 +522,9 @@ namespace _8th_Circle_Server
                     if(mob != null &&
                        mob.mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                     {
-                        if (mRand.NextDouble() > .5)
-                        {
-                            searchString += "you discover a " + mob.mName;
-                            mob.mFlagList.Remove(MobFlags.FLAG_HIDDEN);
-                            found = true;
-                        }// if
+                        searchString += "you discover a " + mob.mName;
+                        mob.mFlagList.Remove(MobFlags.FLAG_HIDDEN);
+                        found = true;
                     }// if
                 }// foreach
             }// foreach
@@ -591,6 +591,7 @@ namespace _8th_Circle_Server
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
+                        commandQueue.Add(com);
                         commandQueue.Add(pl);
                         commandQueue.Add("purrr");
                         mCurrentArea.mCommandExecuter.execute(com, commandQueue, this);

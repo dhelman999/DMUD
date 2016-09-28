@@ -24,7 +24,7 @@ namespace _8th_Circle_Server
                 clientString = ((Mob)commandQueue[++commandIndex]).get(mob);
             else if (commandQueue.Count == 4)
             {
-                clientString = ((Mob)commandQueue[commandIndex]).get(mob,
+                clientString = ((Mob)commandQueue[++commandIndex]).get(mob,
                                ((Preposition)commandQueue[++commandIndex]).prepType,
                                (Container)commandQueue[++commandIndex]);
             }// else if

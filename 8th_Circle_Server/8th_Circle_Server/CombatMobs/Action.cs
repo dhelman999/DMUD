@@ -25,7 +25,6 @@ namespace _8th_Circle_Server
 
     public class Action : Mob
     {
-        public string mName;
         public int mCooldown;
         public int mUseTime;
         public int mManaCost;
