@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             CombatMob cm = (CombatMob)mob;
             string clientString = "";
@@ -25,7 +25,7 @@ namespace _8th_Circle_Server
             else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't bash if you are not in combat\b";
             else
-                cm.mWorld.mCombatHandler.abilityAttack(cm, null, ce.mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
+                cm.mWorld.mCombatHandler.abilityAttack(cm, null, commandExecutioner.mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
 
             return clientString;
         }// execute

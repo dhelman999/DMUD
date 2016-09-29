@@ -15,9 +15,9 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
-            return ((Mob)commandQueue[0]).drop(mob);
+            return ((Mob)commandQueue[1]).drop(mob);
         }// execute
 
     }// class ComDrop

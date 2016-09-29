@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             CombatMob player = (CombatMob)commandQueue[1];
 

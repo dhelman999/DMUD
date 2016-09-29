@@ -107,22 +107,22 @@ namespace _8th_Circle_Server
 
             houseBaseSumpRoom.mCurrentArea = geraldineArea;
             house2ndHallway.mCurrentArea = geraldineArea;
-            house1stentranceway.mRoomLinks[(int)Direction.WEST] = house1stHallway;
-            house1stentranceway.mRoomLinks[(int)Direction.SOUTH] = house1stLivingRoom;
-            house1stHallway.mRoomLinks[(int)Direction.EAST] = house1stentranceway;
-            house1stHallway.mRoomLinks[(int)Direction.SOUTH] = house1stBathroom;
-            house1stHallway.mRoomLinks[(int)Direction.WEST] = house1stKitchen;
-            house1stKitchen.mRoomLinks[(int)Direction.EAST] = house1stHallway;
-            house1stKitchen.mRoomLinks[(int)Direction.SOUTH] = house1stDiningRoom;
-            house1stDiningRoom.mRoomLinks[(int)Direction.NORTH] = house1stKitchen;
-            house1stDiningRoom.mRoomLinks[(int)Direction.EAST] = house1stLivingRoom;
-            house1stLivingRoom.mRoomLinks[(int)Direction.WEST] = house1stDiningRoom;
-            house1stLivingRoom.mRoomLinks[(int)Direction.NORTH] = house1stentranceway;
-            house1stBathroom.mRoomLinks[(int)Direction.NORTH] = house1stHallway;
+            house1stentranceway.mRoomLinks[(int)Direction.NORTH] = house1stHallway;
+            house1stentranceway.mRoomLinks[(int)Direction.WEST] = house1stLivingRoom;
+            house1stHallway.mRoomLinks[(int)Direction.SOUTH] = house1stentranceway;
+            house1stHallway.mRoomLinks[(int)Direction.WEST] = house1stBathroom;
+            house1stHallway.mRoomLinks[(int)Direction.NORTH] = house1stKitchen;
+            house1stKitchen.mRoomLinks[(int)Direction.WEST] = house1stDiningRoom;
+            house1stKitchen.mRoomLinks[(int)Direction.SOUTH] = house1stHallway;
+            house1stDiningRoom.mRoomLinks[(int)Direction.EAST] = house1stKitchen;
+            house1stDiningRoom.mRoomLinks[(int)Direction.SOUTH] = house1stLivingRoom;
+            house1stLivingRoom.mRoomLinks[(int)Direction.EAST] = house1stentranceway;
+            house1stLivingRoom.mRoomLinks[(int)Direction.NORTH] = house1stDiningRoom;
+            house1stBathroom.mRoomLinks[(int)Direction.EAST] = house1stHallway;
 
             Doorway newDoor = new Doorway("door");
-            house1stBathroom.addDoor(newDoor, Direction.NORTH);
-            house1stHallway.addDoor(newDoor, Direction.SOUTH);
+            house1stBathroom.addDoor(newDoor, Direction.EAST);
+            house1stHallway.addDoor(newDoor, Direction.WEST);
 
             newDoor = new Doorway("door");
             house1stKitchen.addDoor(newDoor, Direction.DOWN);

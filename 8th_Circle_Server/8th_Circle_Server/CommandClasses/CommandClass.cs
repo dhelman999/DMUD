@@ -46,7 +46,7 @@ namespace _8th_Circle_Server
             this.comType = comType;
         }// Constructor
 
-        public virtual string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public virtual string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             return "huh?";
         }

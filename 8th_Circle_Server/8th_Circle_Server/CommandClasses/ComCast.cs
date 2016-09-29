@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             CommandClass currentCommand = (CommandClass)commandQueue[0];
             int commandIndex = 0;
@@ -36,7 +36,7 @@ namespace _8th_Circle_Server
                     }
 
                     target = (CombatMob)commandQueue[commandIndex];
-                    Action act = ce.mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
+                    Action act = commandExecutioner.mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
 
                     if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
@@ -50,7 +50,7 @@ namespace _8th_Circle_Server
                         CommandClass attackCommand = null;
                         ArrayList attackQueue = new ArrayList();
 
-                        foreach (CommandClass com in ce.mCCList)
+                        foreach (CommandClass com in commandExecutioner.mCCList)
                         {
                             if (com.commandName == commandName.COMMAND_ATTACK)
                             {
@@ -62,7 +62,7 @@ namespace _8th_Circle_Server
 
                         mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                         attackQueue.Add(target);
-                        attackCommand.execute(attackQueue, target, ce);
+                        attackCommand.execute(attackQueue, target, commandExecutioner);
                     }
                     else
                         mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
@@ -77,7 +77,7 @@ namespace _8th_Circle_Server
                     }
 
                     target = (CombatMob)commandQueue[commandIndex];
-                    act = ce.mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
+                    act = commandExecutioner.mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
 
                     if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";

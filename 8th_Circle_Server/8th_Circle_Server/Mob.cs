@@ -583,10 +583,10 @@ namespace _8th_Circle_Server
                     ArrayList commandQueue = new ArrayList();
                     CommandClass com = null;
 
-                    foreach (CommandClass cc in mCurrentArea.mCommandExecuter.mCCList)
+                    foreach (CommandClass commandClass in mCurrentArea.mCommandExecuter.mCCList)
                     {
-                        if (cc.commandName == commandName.COMMAND_TELL)
-                            com = cc;
+                        if (commandClass.commandName == commandName.COMMAND_TELL)
+                            com = commandClass;
                     }
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))

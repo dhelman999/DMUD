@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter ce)
+        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             CombatMob cm = (CombatMob)mob;
             string clientString = "";
@@ -30,10 +30,10 @@ namespace _8th_Circle_Server
             {
                 CommandClass targetCommand = null;
                 CombatMob backstabTarget = ((CombatMob)commandQueue[1]);
-                cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget, ce.mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
+                cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget, commandExecutioner.mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
                 commandQueue.Clear();
 
-                foreach (CommandClass com in ce.mCCList)
+                foreach (CommandClass com in commandExecutioner.mCCList)
                 {
                     if (com.commandName == commandName.COMMAND_ATTACK)
                     {
@@ -44,7 +44,7 @@ namespace _8th_Circle_Server
                 }
 
                 commandQueue.Add(backstabTarget);
-                ce.execute(targetCommand, commandQueue, mob);
+                commandExecutioner.execute(targetCommand, commandQueue, mob);
             }// else
 
             return clientString;
