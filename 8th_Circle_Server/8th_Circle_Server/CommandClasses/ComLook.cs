@@ -20,13 +20,13 @@ namespace _8th_Circle_Server
             Room currentRoom = mob.mCurrentRoom;
             string clientString = "";
 
-            if (commandQueue.Count == 0)
+            if (commandQueue.Count == 1)
                 clientString = currentRoom.viewed();
             // The player looked in a direction, print out that connected rooms
             // location
-            else if (commandQueue.Count == 1)
-                clientString = mob.mCurrentRoom.viewed((string)commandQueue[1]);
             else if (commandQueue.Count == 2)
+                clientString = mob.mCurrentRoom.viewed((string)commandQueue[1]);
+            else if (commandQueue.Count == 3)
                 clientString = ((Mob)commandQueue[2]).viewed(mob, (Preposition)commandQueue[1]);
             else
                 clientString = ((Mob)commandQueue[2]).viewed(mob, (Preposition)commandQueue[1]);

@@ -19,13 +19,10 @@ namespace _8th_Circle_Server
         {
             string clientString = "";
 
-            if (commandQueue.Count == 0)
+            if (commandQueue.Count == 1)
                 clientString = mob.getall();
-            else if (commandQueue.Count == 2)
-            {
-                clientString = mob.getall(((Preposition)commandQueue[0]).prepType,
-                               (Container)commandQueue[1]);
-            }// else if
+            else if (commandQueue.Count == 3)
+                clientString = mob.getall(((Preposition)commandQueue[1]).prepType, (Container)commandQueue[2]);
             else
                 clientString = "you can't getall like that";
 

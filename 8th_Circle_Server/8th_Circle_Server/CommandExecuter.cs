@@ -487,7 +487,6 @@ namespace _8th_Circle_Server
         public void process(string command, Mob mob)
         {
             string[] tokens = command.Split(' ');
-            ArrayList commandList = new ArrayList();
             ArrayList ccList = new ArrayList();
             bool foundMatch = false;
             string clientString = string.Empty;
@@ -577,7 +576,7 @@ namespace _8th_Circle_Server
                     currentCC.grammar.Length == 1 &&
                     mob.mActionTimer == 0)
                 {
-                    clientString = execute(currentCC, commandList, mob);
+                    clientString = execute(currentCC, ccList, mob);
 
                     if (mob.mResType == ResType.PLAYER)
                     {
