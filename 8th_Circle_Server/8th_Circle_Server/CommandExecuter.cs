@@ -22,9 +22,6 @@ namespace _8th_Circle_Server
             mCCDict = new Dictionary<Tuple<commandName, int>, CommandClass>();
             mGrammarDict = new Dictionary<GrammarType, Grammar[]>();
 
-            for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START; abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
-                mAbilitySpellList.Add(null);
-
             addGrammar();
             addCommands();
             addPrepositions();
@@ -260,6 +257,7 @@ namespace _8th_Circle_Server
 
         private void addAbilitySpells()
         {
+            // Order matters, no change change, if you do, update the ActionType enums
             Action act = new Action("bash", 4, 4, ActionType.ABILITY);
             act.mHitBonus = 5;
             act.mEvadable = true;
@@ -269,7 +267,7 @@ namespace _8th_Circle_Server
             act.mBaseMaxDamage = 6;
             act.mAbilitySpell = AbilitySpell.ABILITY_BASH;
             act.mWeaponRequired = false;
-            mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH] = act;
+            mAbilitySpellList.Add(act);
 
             act = new Action("backstab", 4, 4, ActionType.ABILITY);
             act.mHitBonus = 10;
@@ -280,7 +278,7 @@ namespace _8th_Circle_Server
             act.mBaseMaxDamage = 5;
             act.mWeaponRequired = true;
             act.mAbilitySpell = AbilitySpell.ABILITY_BACKSTAB;
-            mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB] = act;
+            mAbilitySpellList.Add(act);
 
             act = new Action("mystic shot", 4, 4, ActionType.SPELL);
             act.mDamType = DamageType.MAGICAL;
@@ -291,7 +289,7 @@ namespace _8th_Circle_Server
             act.mAbilitySpell = AbilitySpell.SPELL_MYSTIC_SHOT;
             act.mWeaponRequired = false;
             act.mManaCost = 5;
-            mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT] = act;
+            mAbilitySpellList.Add(act);
 
             act = new Action("cure", 4, 4, ActionType.SPELL);
             act.mDamType = DamageType.HEALING;
@@ -302,20 +300,58 @@ namespace _8th_Circle_Server
             act.mAbilitySpell = AbilitySpell.SPELL_CURE;
             act.mWeaponRequired = false;
             act.mManaCost = 5;
-            mAbilitySpellList[(int)AbilitySpell.SPELL_CURE] = act;
+            mAbilitySpellList.Add(act);
         }// addAbilitySpells
 
         public void process(string command, Mob mob)
         {
             string[] tokens = command.Split(' ');
             ArrayList ccList = new ArrayList();
-            bool foundMatch = false;
+            CommandClass currentCC = null;
             string clientString = string.Empty;
 
             if (command.Equals(string.Empty))
                 return;
 
-            CommandClass currentCC = null;
+            // First see if the shortname matches, if so we are done, otherwise match any substring
+            errorCode eCode = initialMatching(tokens, ccList);
+
+            if (eCode == errorCode.E_OK)
+            {
+                // Check to see if we have multiple verbs that could match
+                currentCC = resolveMultipleVerbs(ccList, eCode, tokens);
+
+                // In this case, the player must have sent us a verb that has multiple arguements.
+                // This means we have to parse the grammar of the verb and add back the appropriate
+                // predicates to the command list if they even exist.
+                eCode = populateCommandList(command, tokens, currentCC, ccList, mob);
+
+                // All predicates must have checked out, the commandList will be correctly
+                // populated with all correct predicates in the right order according to
+                // the verbs description.  Go ahead and execute the command
+                if (eCode == errorCode.E_OK)
+                    clientString = execute(currentCC, ccList, mob);
+                else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
+                        clientString = "you can't use the " + currentCC.command + " command like that";
+                else if (eCode == errorCode.E_INVALID_SYNTAX)
+                {
+                } // do nothing it has been handled earlier
+                else
+                    clientString += "You can't do that\n";
+            }// if (eCode == errorCode.E_OK)
+            else
+                clientString = tokens[0] + " is not a valid command";
+
+            if (mob.mResType == ResType.PLAYER)
+            {
+                clientString += ((CombatMob)mob).playerString();
+                ((CombatMob)mob).mClientHandler.safeWrite(clientString);
+            }
+        }// process
+
+        private errorCode initialMatching(string[] tokens, ArrayList ccList)
+        {
+            errorCode foundMatch = errorCode.E_INVALID_COMMAND_USAGE;
 
             foreach (KeyValuePair<Tuple<commandName, int>, CommandClass> commands in mCCDict)
             {
@@ -323,9 +359,9 @@ namespace _8th_Circle_Server
 
                 if (tokens[0].Equals(commands.Value.shortName))
                 {
-                    foundMatch = true;
-                    currentCC = com;
+                    foundMatch = errorCode.E_OK;
                     ccList.Add(com);
+                    continue;
                 }// if
 
                 if (tokens[0].Length < com.matchNumber || tokens[0].Length > com.command.Length)
@@ -333,124 +369,179 @@ namespace _8th_Circle_Server
 
                 if (com.command.Contains(tokens[0]))
                 {
-                    foundMatch = true;
-                    currentCC = com;
+                    foundMatch = errorCode.E_OK;
                     ccList.Add(com);
                 }// if
             }// foreach
 
-            if(foundMatch)
+            return foundMatch;
+        }// matchShortName
+
+        private CommandClass resolveMultipleVerbs(ArrayList ccList, errorCode eCode, string[] tokens)
+        {
+            CommandClass currentCC = null;
+
+            // If we have more than 1 verb with the same name, we have to identify the 
+            // correct one we should use based on how many maximum tokens it allows
+            if (ccList.Count > 1)
             {
-                // If the player's first token was not a verb, then it was not a valid command
-                if (!foundMatch)
-                {
-                    if (mob.mResType == ResType.PLAYER)
-                        ((CombatMob)mob).mClientHandler.safeWrite(tokens[0] + " is not a valid command");
+                eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-                    return;
+                // If our command has the exact same number of tokens as the players
+                // tokenized command string, then we are done, this is the one.
+                foreach (CommandClass com in ccList)
+                {
+                    if (tokens.Length == com.maxTokens)
+                    {
+                        currentCC = com;
+                        eCode = errorCode.E_OK;
+                        break;
+                    }// if
+                }// foreach
+
+                // Remove all other commands and add the one we found
+                if (eCode == errorCode.E_OK)
+                {
+                    ccList.Clear();
+                    ccList.Add(currentCC);
                 }// if
-
-                // If we have more than 1 verb with the same name, we have to identify the 
-                // correct one we should use based on how many maximum tokens it allows
-                if (ccList.Count > 1)
+                 // In this case, they have a variable number of tokens in their 
+                 // command that sits in between two commands maximum allowable
+                 // tokens, we need to find which command to use
+                else
                 {
-                    foundMatch = false;
+                    eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-                    // If our command has the exact same number of tokens as the players
-                    // tokenized command string, then we are done, this is the one.
                     foreach (CommandClass com in ccList)
                     {
-                        if (tokens.Length == com.maxTokens)
+                        if (!(tokens.Length > com.maxTokens))
                         {
                             currentCC = com;
-                            foundMatch = true;
+                            eCode = errorCode.E_OK;
+                            ccList.Clear();
+                            ccList.Add(com);
+                            break;
+                        }// if
+                    }// foreach
+                }// else
+            }// (commandList.Count > 1)
+            else
+                currentCC = (CommandClass)ccList[0];
+
+            return currentCC;
+        }// resolveMultipleVerbs
+
+        private errorCode populateCommandList(string command, string[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob)
+        {
+            errorCode ret = errorCode.E_INVALID_SYNTAX;
+            predicateType targetPredicate;
+            int grammarIndex = 0;
+            int predicateCount = 0;
+            string errorString = currentCC.command;
+            string subCommand = String.Empty;
+
+            // If we have a valid verb with a grammar of 1, we are done, execute it
+            if (tokens.Length == 1 &&
+                currentCC.grammar.Length == 1 &&
+                mob.mActionTimer == 0)
+            {
+                return errorCode.E_OK;
+            }
+
+            // TODO
+            // what happens if there is only 1 token, and the grammer was 1 but the mob action timer wasnt?
+            // Start processing from after the first verb
+            if (tokens.Length > 1)
+                subCommand = command.Substring((tokens[0].Length + 1));
+
+            // Loop until we have gone through all grammar specified by the commands acceptable grammar set
+            while (grammarIndex < currentCC.grammar.Length)
+            {
+                // We need to know which predicate we need to examine
+                if (currentCC.grammar[grammarIndex++] == Grammar.PREDICATE)
+                {
+                    if (predicateCount++ == 0)
+                        targetPredicate = currentCC.predicate1;
+                    else
+                        targetPredicate = currentCC.predicate2;
+
+                    // If the predicate is a player, we only accept the very next token to
+                    // search for a valid playername
+                    if (targetPredicate != predicateType.PREDICATE_END && targetPredicate != predicateType.PREDICATE_CUSTOM)
+                    {
+                        tokens = subCommand.Split(' ');
+                        errorString += " " + tokens[0];
+
+                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCC.validity, commandList, mob);
+
+                        if (ret != errorCode.E_OK)
+                        {
+                            if (mob.mResType == ResType.PLAYER)
+                                ((CombatMob)mob).mClientHandler.safeWrite("Can't find " + tokens[0]);
+
+                            break;
+                        }// if
+
+                        if (grammarIndex < currentCC.grammar.Length && tokens.Length > 1)
+                            subCommand = subCommand.Substring(tokens[0].Length + 1);
+                    }// if
+                    // If the predicate is custom, we simply dump the rest of the command
+                    // back and let processing continue
+                    else if (targetPredicate == predicateType.PREDICATE_CUSTOM)
+                    {
+                        commandList.Add(subCommand);
+                        ret = errorCode.E_OK;
+                    }// else if
+
+                    if (ret != errorCode.E_OK)
+                    {
+                        if (mob.mResType == ResType.PLAYER)
+                            ((CombatMob)mob).mClientHandler.safeWrite("You can't " + errorString);
+
+                        break;
+                    }// if
+                }// if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
+                else if (currentCC.grammar[grammarIndex - 1] == Grammar.PREP)
+                {
+                    ret = errorCode.E_INVALID_SYNTAX;
+                    tokens = subCommand.Split(' ');
+                    errorString += " " + tokens[0];
+                    string prepName = tokens[0];
+
+
+                    foreach (KeyValuePair<PrepositionType, Preposition> prepPair in mPrepDict)
+                    {
+                        if (prepPair.Value.name.Equals(tokens[0]))
+                        {
+                            commandList.Add(prepPair.Value);
+                            ret = errorCode.E_OK;
+
+                            if ((grammarIndex < currentCC.grammar.Length))
+                            {
+                                if (command.Length > tokens[0].Length)
+                                    subCommand = subCommand.Substring(tokens[0].Length + 1);
+                                else
+                                    return errorCode.E_INVALID_COMMAND_USAGE;
+                            }// if
                             break;
                         }// if
                     }// foreach
 
-                    // Remove all other commands and add the one we found
-                    if (foundMatch)
+                    if (ret == errorCode.E_INVALID_SYNTAX)
                     {
-                        ccList.Clear();
-                        ccList.Add(currentCC);
+                        if (mob.mResType == ResType.PLAYER)
+                            ((CombatMob)mob).mClientHandler.safeWrite("You are not able to " + errorString);
+
+                        break;
                     }// if
-                     // In this case, they have a variable number of tokens in their 
-                     // command that sits in between two commands maximum allowable
-                     // tokens, we need to find which command to use
-                    else
-                    {
-                        foundMatch = false;
+                }// else if
+            }// while (grammarIndex < currentCommand.grammar.Length)
 
-                        foreach (CommandClass com in ccList)
-                        {
-                            if (!(tokens.Length > com.maxTokens))
-                            {
-                                currentCC = com;
-                                foundMatch = true;
-                                ccList.Clear();
-                                ccList.Add(com);
-                                break;
-                            }// if
-                        }// foreach
-                    }// else
-                }// (commandList.Count > 1)
+            if (grammarIndex != currentCC.grammar.Length)
+                return errorCode.E_INVALID_COMMAND_USAGE;
 
-                if (tokens.Length == 1 &&
-                    currentCC.grammar.Length == 1 &&
-                    mob.mActionTimer == 0)
-                {
-                    clientString = execute(currentCC, ccList, mob);
-
-                    if (mob.mResType == ResType.PLAYER)
-                    {
-                        clientString += ((CombatMob)mob).playerString();
-                        ((CombatMob)mob).mClientHandler.safeWrite(clientString);
-                    }
-
-                    return;
-                }// if
-
-                errorCode error = errorCode.E_OK;
-
-                // In this case, the player must have sent us a verb that has multiple arguements.
-                // This means we have to parse the grammar of the verb and add back the appropriate
-                // predicates to the command list if they even exist.
-                error = populateCommandList(currentCC, command.Substring(tokens[0].Length + 1), ccList, mob);
-
-                if (error == errorCode.E_OK)
-                {
-                    // All predicates must have checked out, the commandList will be correctly
-                    // populated with all correct predicates in the right order according to
-                    // the verbs description.  Go ahead and execute the command
-                    clientString = execute(currentCC, ccList, mob);
-
-                    if (mob.mResType == ResType.PLAYER)
-                    {
-                        clientString += ((CombatMob)mob).playerString();
-                        ((CombatMob)mob).mClientHandler.safeWrite(clientString);
-                    }
-                }
-                else if (error == errorCode.E_INVALID_COMMAND_USAGE)
-                {
-                    if (mob.mResType == ResType.PLAYER)
-                        ((CombatMob)mob).mClientHandler.safeWrite("you can't use the " + currentCC.command + " command like that");
-                }
-                else if (error == errorCode.E_INVALID_SYNTAX)
-                {
-                } // do nothing it has been handled earlier
-                else
-                {
-                    if (mob.mResType == ResType.PLAYER)
-                    {
-                        clientString += "You can't do that\n";
-                        clientString += ((CombatMob)mob).playerString();
-                        ((CombatMob)mob).mClientHandler.safeWrite(clientString);
-                    }
-                }
-
-                return;
-            }// if(foundMatch)
-        }// process
+            return ret;
+        }// populateCommandList
 
         public string execute(CommandClass commandClass, ArrayList commandQueue, Mob mob)
         {
@@ -494,104 +585,6 @@ namespace _8th_Circle_Server
                 }// if
             }// else if
         }// checkEvent
-
-        private errorCode populateCommandList(CommandClass currentCommand, string command, ArrayList commandList, Mob mob)
-        {
-            errorCode ret = errorCode.E_INVALID_SYNTAX;
-            predicateType targetPredicate;
-            int grammarIndex = 0;
-            string[] tokens;
-            int predicateCount = 0;
-            string errorString = currentCommand.command;
-
-            // Loop until we have gone through all grammar specified by the commands acceptable grammar set
-            while (grammarIndex < currentCommand.grammar.Length)
-            {
-                // We need to know which predicate we need to examine
-                if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
-                {
-                    if (predicateCount++ == 0)
-                        targetPredicate = currentCommand.predicate1;
-                    else
-                        targetPredicate = currentCommand.predicate2;
-
-                    // If the predicate is a player, we only accept the very next token to
-                    // search for a valid playername
-                    if (targetPredicate != predicateType.PREDICATE_END && targetPredicate != predicateType.PREDICATE_CUSTOM)
-                    {
-                        tokens = command.Split(' ');
-                        errorString += " " + tokens[0];
-
-                        ret = doesPredicateExist(tokens[0], targetPredicate, currentCommand.validity, commandList, mob);
-
-                        if (ret != errorCode.E_OK)
-                        {
-                            if (mob.mResType == ResType.PLAYER)
-                                ((CombatMob)mob).mClientHandler.safeWrite("Can't find " + tokens[0]);
-
-                            break;
-                        }// if
-
-                        if (grammarIndex < currentCommand.grammar.Length && tokens.Length > 1)
-                            command = command.Substring(tokens[0].Length + 1);
-                    }// if
-                    // If the predicate is custom, we simply dump the rest of the command
-                    // back and let processing continue
-                    else if (targetPredicate == predicateType.PREDICATE_CUSTOM)
-                    {
-                        commandList.Add(command);
-                        ret = errorCode.E_OK;
-                    }// else if
-
-                    if (ret != errorCode.E_OK)
-                    {
-                        if (mob.mResType == ResType.PLAYER)
-                            ((CombatMob)mob).mClientHandler.safeWrite("You can't " + errorString);
-
-                        break;
-                    }// if
-                }// if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
-                else if (currentCommand.grammar[grammarIndex - 1] == Grammar.PREP)
-                {
-                    ret = errorCode.E_INVALID_SYNTAX;
-                    tokens = command.Split(' ');
-                    errorString += " " + tokens[0];
-                    string prepName = tokens[0];
-
-
-                    foreach (KeyValuePair<PrepositionType, Preposition> prepPair in mPrepDict)
-                    {
-                        if (prepPair.Value.name.Equals(tokens[0]))
-                        {
-                            commandList.Add(prepPair.Value);
-                            ret = errorCode.E_OK;
-
-                            if ((grammarIndex < currentCommand.grammar.Length))
-                            {
-                                if (command.Length > tokens[0].Length)
-                                    command = command.Substring(tokens[0].Length + 1);
-                                else
-                                    return errorCode.E_INVALID_COMMAND_USAGE;
-                            }// if
-                            break;
-                        }// if
-                    }// foreach
-
-                    if (ret == errorCode.E_INVALID_SYNTAX)
-                    {
-                        if (mob.mResType == ResType.PLAYER)
-                            ((CombatMob)mob).mClientHandler.safeWrite("You are not able to " + errorString);
-
-                        break;
-                    }// if
-                }// else if
-            }// while (grammarIndex < currentCommand.grammar.Length)
-
-            if (grammarIndex != currentCommand.grammar.Length)
-                return errorCode.E_INVALID_COMMAND_USAGE;
-
-            return ret;
-        }// populateCommandList2
 
         private errorCode doesPredicateExist(string name, predicateType predType, validityType validity, 
                                              ArrayList commandQueue, Mob target)

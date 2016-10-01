@@ -313,6 +313,12 @@ namespace _8th_Circle_Server
             List<Mob> targetList = container.mInventory;
             int tmpInvCount = 0;
 
+            // TODO
+            // There is a flaw in this inheritance logic, this checks the inventory before
+            // it checks the prep list.  This means a chest could be empty and then
+            // a get or getall command with the prep 'in' would return a blank string
+            // because it never made it in this loop to call get on the container which
+            // checks the prep list.
             for (int i = 0; i < targetList.Count; ++i)
             {
                 tmpInvCount = mInventory.Count;

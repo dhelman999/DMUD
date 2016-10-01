@@ -25,6 +25,10 @@ namespace _8th_Circle_Server
         public validityType validity;
         public CommandType comType;
 
+        public CommandClass()
+        {
+        }// dummy Constructor
+
         public CommandClass(string command, string shortName, int matchNumber, int maxTokens, MobType type, 
                             Grammar[] grammar, commandName commandName, predicateType predicate1, 
                             predicateType predicate2, validityType validity, CommandType comType)

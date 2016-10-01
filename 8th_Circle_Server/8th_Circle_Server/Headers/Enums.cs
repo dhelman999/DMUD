@@ -296,8 +296,8 @@
         ABILITY_SPELL_START,
 
         // Abilities
+        ABILITY_BASH = ABILITY_SPELL_START,
         ABILITY_BACKSTAB,
-        ABILITY_BASH,
 
         // Spells
         SPELL_MYSTIC_SHOT,
