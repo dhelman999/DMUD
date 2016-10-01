@@ -7,295 +7,259 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    public partial class CommandExecuter
+    public class CommandExecuter
     {
-        // Debug
-        internal const bool DEBUG = true;
-
         // Member Variables
-        public List<Preposition> mPrepList;
+        public Dictionary<PrepositionType, Preposition> mPrepDict;
         public List<Action> mAbilitySpellList;
         public ArrayList mCCList;
-        public ArrayList mGrammarList;
+        public Dictionary<GrammarType, Grammar[]> mGrammarDict;
 
         public CommandExecuter()
         {
-            mPrepList = new List<Preposition>();
+            mPrepDict = new Dictionary<PrepositionType, Preposition>();
             mAbilitySpellList = new List<Action>();
             mCCList = new ArrayList();
-            mGrammarList = new ArrayList();
             mAbilitySpellList = new List<Action>();
+            mGrammarDict = new Dictionary<GrammarType, Grammar[]>();
 
             for (AbilitySpell abilitySpell = AbilitySpell.ABILITY_SPELL_START; abilitySpell < AbilitySpell.ABILITY_SPELL_END; ++abilitySpell)
                 mAbilitySpellList.Add(null);
 
+            addGrammar();
             addCommands();
+            addPrepositions();
             addAbilitySpells();
         }// Constructor
 
-        private void addCommands()
+        private void addGrammar()
         {
             // Add Grammars
-            GrammarType[] gramVerb = new GrammarType[1];
-            gramVerb[0] = GrammarType.VERB;
+            Grammar[] gramVerb = new Grammar[1];
+            gramVerb[0] = Grammar.VERB;
+            mGrammarDict.Add(GrammarType.GRAMMAR_VERB, gramVerb);
 
-            GrammarType[] gramVerbPred = new GrammarType[2];
-            gramVerbPred[0] = GrammarType.VERB;
-            gramVerbPred[1] = GrammarType.PREDICATE;
+            Grammar[] gramVerbPred = new Grammar[2];
+            gramVerbPred[0] = Grammar.VERB;
+            gramVerbPred[1] = Grammar.PREDICATE;
+            mGrammarDict.Add(GrammarType.GRAMMAR_VERB_PRED, gramVerbPred);
 
-            GrammarType[] gramVerbPredPred = new GrammarType[3];
-            gramVerbPredPred[0] = GrammarType.VERB;
-            gramVerbPredPred[1] = GrammarType.PREDICATE;
-            gramVerbPredPred[2] = GrammarType.PREDICATE;
+            Grammar[] gramVerbPredPred = new Grammar[3];
+            gramVerbPredPred[0] = Grammar.VERB;
+            gramVerbPredPred[1] = Grammar.PREDICATE;
+            gramVerbPredPred[2] = Grammar.PREDICATE;
+            mGrammarDict.Add(GrammarType.GRAMMAR_VERB_PRED_PRED, gramVerbPredPred);
 
-            GrammarType[] gramVerbPrepPred = new GrammarType[3];
-            gramVerbPrepPred[0] = GrammarType.VERB;
-            gramVerbPrepPred[1] = GrammarType.PREP;
-            gramVerbPrepPred[2] = GrammarType.PREDICATE;
+            Grammar[] gramVerbPrepPred = new Grammar[3];
+            gramVerbPrepPred[0] = Grammar.VERB;
+            gramVerbPrepPred[1] = Grammar.PREP;
+            gramVerbPrepPred[2] = Grammar.PREDICATE;
+            mGrammarDict.Add(GrammarType.GRAMMAR_VERB_PREP_PRED, gramVerbPrepPred);
 
-            GrammarType[] gramVerbPredPrepPred = new GrammarType[4];
-            gramVerbPredPrepPred[0] = GrammarType.VERB;
-            gramVerbPredPrepPred[1] = GrammarType.PREDICATE;
-            gramVerbPredPrepPred[2] = GrammarType.PREP;
-            gramVerbPredPrepPred[3] = GrammarType.PREDICATE;
+            Grammar[] gramVerbPredPrepPred = new Grammar[4];
+            gramVerbPredPrepPred[0] = Grammar.VERB;
+            gramVerbPredPrepPred[1] = Grammar.PREDICATE;
+            gramVerbPredPrepPred[2] = Grammar.PREP;
+            gramVerbPredPrepPred[3] = Grammar.PREDICATE;
+            mGrammarDict.Add(GrammarType.GRAMMAR_VERB_PRED_PREP_PRED, gramVerbPredPrepPred);
+        }// addGrammar
 
+        private void addCommands()
+        {
             // TODO
             // Find a way to make this indexable for easier access
             // Add Verbs
-            CommandClass commandClass = new ComUp("up", "u", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_UP,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            CommandClass commandClass = new ComUp("up", "u", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_UP,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComNorth("north", "n", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTH,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComNorth("north", "n", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_NORTH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComNorthEast("northeast", "ne", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTHEAST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComNorthEast("northeast", "ne", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_NORTHEAST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComEast("east", "e", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EAST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComEast("east", "e", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_EAST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSouthEast("southeast", "se", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTHEAST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComSouthEast("southeast", "se", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_SOUTHEAST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComDown("down", "d", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_DOWN,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComDown("down", "d", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_DOWN,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSouth("south", "s", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTH,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComSouth("south", "s", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_SOUTH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSouthWest("southwest", "sw", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_SOUTHWEST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComSouthWest("southwest", "sw", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_SOUTHWEST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComWest("west", "w", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_WEST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComWest("west", "w", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_WEST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComNorthWest("northwest", "nw", 6, 1, MobType.ALL, gramVerb, commandName.COMMAND_NORTHWEST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComNorthWest("northwest", "nw", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_NORTHWEST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComExit("exit", null, 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EXIT,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComExit("exit", null, 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_EXIT,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComLook("look", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComLook("look", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_LOOK,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComLook("look", null, 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComLook("look", null, 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_LOOK,
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComLook("look", null, 1, 3, MobType.ALL, gramVerbPrepPred, commandName.COMMAND_LOOK,
-                predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComLook("look", null, 1, 3, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PREP_PRED], commandName.COMMAND_LOOK,
+                predicateType.PREDICATE_ALL, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSay("say", null, 3, 256, MobType.ALL, gramVerbPred, commandName.COMMAND_SAY,
-               predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-               CommandType.GENERAL);
+            commandClass = new ComSay("say", null, 3, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_SAY,
+               predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComYell("yell", null, 2, 256, MobType.ALL, gramVerbPred, commandName.COMMAND_YELL,
-                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_AREA,
-                CommandType.GENERAL);
+            commandClass = new ComYell("yell", null, 2, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_YELL,
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_AREA, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComTell("tell", null, 1, 256, MobType.ALL, gramVerbPredPred, commandName.COMMAND_TELL,
-                predicateType.PREDICATE_PLAYER, predicateType.PREDICATE_CUSTOM, validityType.VALID_GLOBAL,
-                CommandType.GENERAL);
+            commandClass = new ComTell("tell", null, 1, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED_PRED], commandName.COMMAND_TELL,
+                predicateType.PREDICATE_PLAYER, predicateType.PREDICATE_CUSTOM, validityType.VALID_GLOBAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComOpen("open", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_OPEN,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComOpen("open", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_OPEN,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComFullHeal("fullheal", "fh", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_FULLHEAL,
-                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComFullHeal("fullheal", "fh", 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_FULLHEAL,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComClose("close", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_CLOSE,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComClose("close", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_CLOSE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComDestroy("destroy", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_DESTROY,
-                predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComDestroy("destroy", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_DESTROY,
+                predicateType.PREDICATE_OBJECT_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSpawn("spawn", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_SPAWN,
-                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComSpawn("spawn", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_SPAWN,
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComGet("get", null, 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_GET,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComGet("get", null, 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_GET,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComGet("get", null, 1, 4, MobType.ALL, gramVerbPredPrepPred, commandName.COMMAND_GET,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_OBJECT, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComGet("get", null, 1, 4, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PREP_PRED], commandName.COMMAND_GET,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_OBJECT, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComGetAll("getall", "ga", 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_GETALL,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComGetAll("getall", "ga", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_GETALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComGetAll("getall", "ga", 1, 3, MobType.ALL, gramVerbPrepPred, commandName.COMMAND_GETALL,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComGetAll("getall", "ga", 1, 3, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PREP_PRED], commandName.COMMAND_GETALL,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComDrop("drop", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_DROP,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVENTORY,
-                CommandType.GENERAL);
+            commandClass = new ComDrop("drop", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_DROP,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVENTORY, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComDropAll("dropall", "da", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_DROPALL,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY,
-                CommandType.GENERAL);
+            commandClass = new ComDropAll("dropall", "da", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_DROPALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComInventory("inventory", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_INVENTORY,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComInventory("inventory", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_INVENTORY,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComEquipment("equipment", "eq", 2, 1, MobType.ALL, gramVerb, commandName.COMMAND_EQUIPMENT,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComEquipment("equipment", "eq", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_EQUIPMENT,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComLock("lock", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_LOCK,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComLock("lock", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_LOCK,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComUnlock("unlock", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_UNLOCK,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComUnlock("unlock", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_UNLOCK,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComUse("use", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_USE,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComUse("use", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_USE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_CUSTOM, validityType.VALID_INVLOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComWear("wear", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_WEAR,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVENTORY,
-                CommandType.GENERAL);
+            commandClass = new ComWear("wear", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_WEAR,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_INVENTORY, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComWearAll("wearall", "wa", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_WEARALL,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY,
-                CommandType.GENERAL);
+            commandClass = new ComWearAll("wearall", "wa", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_WEARALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_INVENTORY, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComRemove("remove", null, 3, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_REMOVE,
-                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_EQUIP,
-                CommandType.GENERAL);
+            commandClass = new ComRemove("remove", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_REMOVE,
+                predicateType.PREDICATE_OBJECT, predicateType.PREDICATE_END, validityType.VALID_EQUIP, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComRemoveAll("removeall", "ra", 5, 1, MobType.ALL, gramVerb, commandName.COMMAND_REMOVEALL,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_EQUIP,
-                CommandType.GENERAL);
+            commandClass = new ComRemoveAll("removeall", "ra", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_REMOVEALL,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_EQUIP, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComAttack("attack", "a", 1, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_ATTACK,
-                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComAttack("attack", "a", 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_ATTACK,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComTeleport("teleport", "tp", 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_TELEPORT,
-                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
-                CommandType.GENERAL);
+            commandClass = new ComTeleport("teleport", "tp", 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_TELEPORT,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_GLOBAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComSearch("search", null, 3, 1, MobType.ALL, gramVerb, commandName.COMMAND_SEARCH,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComSearch("search", null, 3, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_SEARCH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComWho("who", null, 2, 2, MobType.ALL, gramVerbPred, commandName.COMMAND_WHO,
-                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_GLOBAL,
-                CommandType.GENERAL);
+            commandClass = new ComWho("who", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_WHO,
+                predicateType.PREDICATE_CUSTOM, predicateType.PREDICATE_END, validityType.VALID_GLOBAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComRest("rest", null, 1, 1, MobType.ALL, gramVerb, commandName.COMMAND_REST,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.GENERAL);
+            commandClass = new ComRest("rest", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_REST,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.GENERAL);
             mCCList.Add(commandClass);
 
-            commandClass = new ComBackstab("backstab", "bs", 2, 2, MobType.ROGUE, gramVerbPred, commandName.COMMAND_BACKSTAB,
-                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.ABILITY);
+            commandClass = new ComBackstab("backstab", "bs", 2, 2, MobType.ROGUE, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], commandName.COMMAND_BACKSTAB,
+                predicateType.PREDICATE_PLAYER_OR_NPC, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.ABILITY);
             mCCList.Add(commandClass);
 
-            commandClass = new ComBash("bash", "b", 1, 1, MobType.WARRIOR, gramVerb, commandName.COMMAND_BASH,
-                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL,
-                CommandType.ABILITY);
+            commandClass = new ComBash("bash", "b", 1, 1, MobType.WARRIOR, mGrammarDict[GrammarType.GRAMMAR_VERB], commandName.COMMAND_BASH,
+                predicateType.PREDICATE_END, predicateType.PREDICATE_END, validityType.VALID_LOCAL, CommandType.ABILITY);
             mCCList.Add(commandClass);
 
-            commandClass = new ComCast("cast", "c", 1, 3, MobType.SPELLCASTER, gramVerbPredPred, commandName.COMMAND_CAST,
-                predicateType.PREDICATE_SPELL, predicateType.PREDICATE_PLAYER_OR_NPC, validityType.VALID_LOCAL,
-                CommandType.SPELL);
+            commandClass = new ComCast("cast", "c", 1, 3, MobType.SPELLCASTER, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED_PRED], commandName.COMMAND_CAST,
+                predicateType.PREDICATE_SPELL, predicateType.PREDICATE_PLAYER_OR_NPC, validityType.VALID_LOCAL, CommandType.SPELL);
             mCCList.Add(commandClass);
-
-            // Add prepositions
-            mPrepList.Add(new Preposition("in", PrepositionType.PREP_IN));
-            mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
-            mPrepList.Add(new Preposition("with", PrepositionType.PREP_WITH));
-            mPrepList.Add(new Preposition("at", PrepositionType.PREP_AT));
-            mPrepList.Add(new Preposition("from", PrepositionType.PREP_FROM));
-            mPrepList.Add(new Preposition("off", PrepositionType.PREP_OFF));
-            mPrepList.Add(new Preposition("on", PrepositionType.PREP_ON));
         }// addCommands;
+
+        private void addPrepositions()
+        {
+            // Add prepositions
+            mPrepDict.Add(PrepositionType.PREP_IN, new Preposition("in", PrepositionType.PREP_IN));
+            mPrepDict.Add(PrepositionType.PREP_ON, new Preposition("on", PrepositionType.PREP_ON));
+            mPrepDict.Add(PrepositionType.PREP_WITH, new Preposition("with", PrepositionType.PREP_WITH));
+            mPrepDict.Add(PrepositionType.PREP_AT, new Preposition("at", PrepositionType.PREP_AT));
+            mPrepDict.Add(PrepositionType.PREP_FROM, new Preposition("from", PrepositionType.PREP_FROM));
+            mPrepDict.Add(PrepositionType.PREP_OFF, new Preposition("off", PrepositionType.PREP_OFF));
+        }// addPrepositions
 
         private void addAbilitySpells()
         {
@@ -545,7 +509,7 @@ namespace _8th_Circle_Server
             while (grammarIndex < currentCommand.grammar.Length)
             {
                 // We need to know which predicate we need to examine
-                if (currentCommand.grammar[grammarIndex++] == GrammarType.PREDICATE)
+                if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
                 {
                     if (predicateCount++ == 0)
                         targetPredicate = currentCommand.predicate1;
@@ -587,18 +551,20 @@ namespace _8th_Circle_Server
 
                         break;
                     }// if
-                }// if (currentCommand.grammar[grammarIndex++] == GrammarType.PREDICATE)
-                else if (currentCommand.grammar[grammarIndex - 1] == GrammarType.PREP)
+                }// if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
+                else if (currentCommand.grammar[grammarIndex - 1] == Grammar.PREP)
                 {
                     ret = errorCode.E_INVALID_SYNTAX;
                     tokens = command.Split(' ');
                     errorString += " " + tokens[0];
+                    string prepName = tokens[0];
 
-                    foreach (Preposition prep in mPrepList)
+
+                    foreach (KeyValuePair<PrepositionType, Preposition> prepPair in mPrepDict)
                     {
-                        if (prep.name.Equals(tokens[0]))
+                        if (prepPair.Value.name.Equals(tokens[0]))
                         {
-                            commandList.Add(prep);
+                            commandList.Add(prepPair.Value);
                             ret = errorCode.E_OK;
 
                             if ((grammarIndex < currentCommand.grammar.Length))
@@ -807,7 +773,7 @@ namespace _8th_Circle_Server
 
         private void fillEventArgs(CommandClass commandClass, ArrayList commandQueue, Mob mob)
         {
-            GrammarType[] grammar = commandClass.grammar;
+            Grammar[] grammar = commandClass.grammar;
             int predicateCount = 0;
             int prepCount = 0;
 
@@ -818,14 +784,14 @@ namespace _8th_Circle_Server
 
             for (int i = 1; i < grammar.Length; ++i)
             {
-                if (grammar[i] == GrammarType.PREDICATE)
+                if (grammar[i] == Grammar.PREDICATE)
                 {
                     if ((++predicateCount == 1) && !(commandQueue[i] is string))
                         commandClass.predicate1Value = (Mob)commandQueue[i];
                     else if (!(commandQueue[i] is string))
                         commandClass.predicate2Value = (Mob)commandQueue[i];
                 }// if
-                else if (grammar[i] == GrammarType.PREP)
+                else if (grammar[i] == Grammar.PREP)
                 {
                     if (++prepCount == 1)
                         commandClass.prep1Value = (Preposition)commandQueue[i];

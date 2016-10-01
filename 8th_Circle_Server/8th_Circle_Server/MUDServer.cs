@@ -11,9 +11,6 @@ namespace _8th_Circle_Server
 {
     class MUDServer
     {
-        // Debug
-        internal const bool DEBUG = true;
-
         // Constants
         internal const int MUD_SERVER_PORT = 8888;
 
@@ -55,9 +52,7 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
-                if (DEBUG)
-                    Console.WriteLine("Error starting the Server");
-
+                Console.WriteLine("Error starting the Server");
                 sTcpListener.Stop();
             }// catch
         }// Main

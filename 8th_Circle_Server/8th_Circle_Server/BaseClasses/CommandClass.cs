@@ -13,7 +13,7 @@ namespace _8th_Circle_Server
         public int matchNumber;
         public int maxTokens;
         public MobType usableBy;
-        public GrammarType[] grammar;
+        public Grammar[] grammar;
         public Preposition prep1Value;
         public Preposition prep2Value;
         public commandName commandName;
@@ -26,7 +26,7 @@ namespace _8th_Circle_Server
         public CommandType comType;
 
         public CommandClass(string command, string shortName, int matchNumber, int maxTokens, MobType type, 
-                            GrammarType[] grammar, commandName commandName, predicateType predicate1, 
+                            Grammar[] grammar, commandName commandName, predicateType predicate1, 
                             predicateType predicate2, validityType validity, CommandType comType)
         {
             this.command = command;
