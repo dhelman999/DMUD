@@ -324,7 +324,7 @@ namespace _8th_Circle_Server
                 // In this case, the player must have sent us a verb that has multiple arguements.
                 // This means we have to parse the grammar of the verb and add back the appropriate
                 // predicates to the command list if they even exist.
-                eCode = populateCommandList(command, tokens, currentCC, ccList, mob);
+                eCode = populateCommandList(command, tokens, currentCC, ccList, mob, clientString);
 
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
@@ -332,10 +332,9 @@ namespace _8th_Circle_Server
                 if (eCode == errorCode.E_OK)
                     clientString = execute(currentCC, ccList, mob);
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
-                        clientString = "you can't use the " + currentCC.command + " command like that";
-                else if (eCode == errorCode.E_INVALID_SYNTAX)
-                {
-                } // do nothing it has been handled earlier
+                    clientString = "you can't use the " + currentCC.command + " command like that";
+                else if (eCode == errorCode.E_INVALID_SYNTAX && clientString != String.Empty)
+                    clientString = "You are not able to do that\n";
                 else
                     clientString += "You can't do that\n";
             }// if (eCode == errorCode.E_OK)
@@ -375,7 +374,7 @@ namespace _8th_Circle_Server
             }// foreach
 
             return foundMatch;
-        }// matchShortName
+        }// initialMatching
 
         private CommandClass resolveMultipleVerbs(ArrayList ccList, errorCode eCode, string[] tokens)
         {
@@ -431,7 +430,7 @@ namespace _8th_Circle_Server
             return currentCC;
         }// resolveMultipleVerbs
 
-        private errorCode populateCommandList(string command, string[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob)
+        private errorCode populateCommandList(string command, string[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob, string clientString)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             predicateType targetPredicate;
@@ -476,9 +475,7 @@ namespace _8th_Circle_Server
 
                         if (ret != errorCode.E_OK)
                         {
-                            if (mob.mResType == ResType.PLAYER)
-                                ((CombatMob)mob).mClientHandler.safeWrite("Can't find " + tokens[0]);
-
+                            clientString = "Can't find " + tokens[0];
                             break;
                         }// if
 
@@ -495,9 +492,7 @@ namespace _8th_Circle_Server
 
                     if (ret != errorCode.E_OK)
                     {
-                        if (mob.mResType == ResType.PLAYER)
-                            ((CombatMob)mob).mClientHandler.safeWrite("You can't " + errorString);
-
+                        clientString = "You can't " + errorString;
                         break;
                     }// if
                 }// if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
@@ -507,7 +502,6 @@ namespace _8th_Circle_Server
                     tokens = subCommand.Split(' ');
                     errorString += " " + tokens[0];
                     string prepName = tokens[0];
-
 
                     foreach (KeyValuePair<PrepositionType, Preposition> prepPair in mPrepDict)
                     {
@@ -523,15 +517,14 @@ namespace _8th_Circle_Server
                                 else
                                     return errorCode.E_INVALID_COMMAND_USAGE;
                             }// if
+
                             break;
                         }// if
                     }// foreach
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
                     {
-                        if (mob.mResType == ResType.PLAYER)
-                            ((CombatMob)mob).mClientHandler.safeWrite("You are not able to " + errorString);
-
+                        clientString = "You are not able to " + errorString;
                         break;
                     }// if
                 }// else if
@@ -573,6 +566,9 @@ namespace _8th_Circle_Server
 
                     // TODO
                     // This doesn't look like it supports predicate2 triggered events
+                    // Also, this triggers regardless if the action was a success, for example
+                    // if you look in a closed chest, and the event is trigger on the look in command,
+                    // it will happen either way, need a way to check for success.
                     if(eventData.commandName == commandClass.commandName &&
                        eventData.prepType == commandClass.prep1Value.prepType)
                     {
