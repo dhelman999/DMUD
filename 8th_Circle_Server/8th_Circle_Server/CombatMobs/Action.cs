@@ -5,24 +5,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum ActionType
-    {
-        ACTIONTYPE_START,
-        ABILITY,
-        SPELL,
-        ACTIONTYPE_END
-    }// ActionType
-
-    public enum DamageScaling
-    {
-        DAMAGESCALING_START,
-        PERLEVEL,
-        DAMAGEMULT,
-        DAMAGEMULTPERLEVEL,
-        DAMAGEBONUS,
-        DAMAGESCALING_END
-    }// DamageScaling
-
     public class Action : Mob
     {
         public int mCooldown;

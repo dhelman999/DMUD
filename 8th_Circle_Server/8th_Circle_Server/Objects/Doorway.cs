@@ -6,22 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum Direction
-    {
-        UP,
-        DIRECTION_START = UP,
-        NORTH,
-        NORTHEAST,
-        EAST,
-        SOUTHEAST,
-        DOWN,
-        SOUTH,
-        SOUTHWEST,
-        WEST,
-        NORTHWEST,
-        DIRECTION_END = NORTHWEST
-    }// Direction
-
     public class Doorway : Mob
     {
         // Constants

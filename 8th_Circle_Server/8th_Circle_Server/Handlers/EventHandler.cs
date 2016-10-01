@@ -7,16 +7,6 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
-    public enum EventFlag
-    {
-        EVENT_START,
-        EVENT_TELL_PLAYER = EVENT_START,
-        EVENT_TELEPORT,
-        EVENT_GPG_WALL_REMOVE,
-        EVENT_GPG_WALL_ADD,
-        EVENT_END
-    };// EventFlag
-
     public struct EventData
     {
         public EventFlag eventFlag;

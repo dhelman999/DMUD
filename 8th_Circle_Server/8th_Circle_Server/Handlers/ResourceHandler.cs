@@ -6,16 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum ResType
-    {
-        OBJECT,
-        RESOURCE_START = OBJECT,
-        NPC,
-        PLAYER,
-        DOORWAY,
-        RESOURCE_END
-    }// ResType
-
     public class ResourceHandler
     {
         public string mName;

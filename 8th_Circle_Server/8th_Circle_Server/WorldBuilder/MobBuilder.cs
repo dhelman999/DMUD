@@ -6,28 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    enum MOBLIST
-    {
-        MOB_START = -1,
-        // Reserved for players
-        PLAYER = MOB_START,
-
-        // Objects
-        BASIC_KEY,
-        EVENT_CHEST1,
-        EVENT_CHEST2,
-        FIRST_CIRCLE,
-        BASIC_CHEST,
-        SWITCH,
-        BASIC_SWORD,
-
-        // NPCs
-        GOBLIN_RUNT,
-        MAX,
-
-        MOB_END
-    }// MOBLIST
-
     partial class World
     {
         private void addMobs()

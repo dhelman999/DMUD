@@ -6,67 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum EQSlot
-    {
-        EQSLOT_START,
-        HEAD = EQSLOT_START,
-        NECK,
-        BACK,
-        CHEST,
-        ARMS,
-        HANDS,
-        WAIST,
-        LEGS,
-        FEET,
-        RING1,
-        RING2,
-        PRIMARY,
-        SECONDARY,
-        EQSLOT_END
-    }// EQSlot
-
-    public enum Useable
-    {
-        ALL,
-        USEABLE_START = ALL,
-        USEABLE_END
-    }// Useable
-
-    public enum EQType
-    {
-        LIGHT_ARMOR,
-        EQTYPE_START = LIGHT_ARMOR,
-        MEDIUM_ARMOR,
-        HEAVY_ARMOR,
-        MAGIC,
-        ACCESSORY,
-        WEAPON,
-        EQTYPE_END
-    }// EQType
-
-    public enum DamageType
-    {
-        PHYSICAL,
-        DAMAGETYPE_START = PHYSICAL,
-        MAGICAL,
-        PURE,
-        HEALING,
-        DAMAGETYPE_END
-    }// DamageType
-
-    public enum MobType
-    {
-        NONHEROIC,
-        MOBTYPE_START = NONHEROIC,
-        WARRIOR,
-        ROGUE,
-        WIZARD,
-        CLERIC,
-        SPELLCASTER,
-        ALL,
-        MOBTYPE_END
-    }// MobType
-
     public class CombatMob : Mob
     {
         public List<Mob> mEQList;

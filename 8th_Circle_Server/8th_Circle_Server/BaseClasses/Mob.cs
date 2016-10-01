@@ -6,34 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum MobFlags
-    {
-        FLAG_START,
-        FLAG_OPENABLE = FLAG_START,
-        FLAG_CLOSEABLE,
-        FLAG_LOCKED,
-        FLAG_LOCKABLE,
-        FLAG_UNLOCKED,
-        FLAG_UNLOCKABLE,
-        FLAG_HIDDEN,
-        FLAG_INVISIBLE,
-        FLAG_GETTABLE,
-        FLAG_DROPPABLE,
-        FLAG_PUSHABLE,
-        FLAG_STORABLE,
-        FLAG_USEABLE,
-        FLAG_INSPECTABLE,
-        FLAG_WEARABLE,
-        FLAG_IDENTIFYABLE,
-        FLAG_STEALABLE,
-        FLAG_DUPLICATABLE,
-        FLAG_SEARCHING,
-        FLAG_COMBATABLE,
-        FLAG_INCOMBAT,
-        FLAG_RESTING,
-        FLAG_END
-    };// flags
-
     public class Mob
     {
         // Debug

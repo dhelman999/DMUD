@@ -6,14 +6,7 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum AreaID
-    {
-        AID_PROTOAREA,
-        AID_START = AID_PROTOAREA,
-        AID_GERALDINEMANOR,
-        AID_NEWBIEAREA,
-        AID_END
-    }// AreaID
+    
 
     public class Area : ResourceHandler
     {

@@ -6,15 +6,6 @@ using System.Text;
 
 namespace _8th_Circle_Server
 {
-    public enum MementoType
-    {
-        CONTAINER,
-        MTYPE_START = CONTAINER,
-        DOORWAY,
-        EQUIPMENT,
-        MTYPE_END = EQUIPMENT 
-    }// Direction
-
     public class Memento
     {
         private List<Mob> mMementos;

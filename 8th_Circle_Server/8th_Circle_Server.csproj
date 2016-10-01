@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="8th_Circle_Server\CombatMobs\Action.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\Cleric.cs" />
-    <Compile Include="8th_Circle_Server\CombatMobs\CombatMob.cs" />
+    <Compile Include="8th_Circle_Server\BaseClasses\CombatMob.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\CombatStats.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\Rogue.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\Warrior.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="8th_Circle_Server\CommandClasses\ComYell.cs" />
     <Compile Include="8th_Circle_Server\CommandClasses\ComSay.cs" />
     <Compile Include="8th_Circle_Server\CommandClasses\ComLook.cs" />
-    <Compile Include="8th_Circle_Server\CommandClasses\CommandClass.cs" />
+    <Compile Include="8th_Circle_Server\BaseClasses\CommandClass.cs" />
     <Compile Include="8th_Circle_Server\CommandClasses\ComNorthEast.cs" />
     <Compile Include="8th_Circle_Server\CommandClasses\ComEast.cs" />
     <Compile Include="8th_Circle_Server\CommandClasses\ComExit.cs" />
@@ -99,8 +99,10 @@
     <Compile Include="8th_Circle_Server\Handlers\CommandHandler.cs" />
     <Compile Include="8th_Circle_Server\Handlers\EventHandler.cs" />
     <Compile Include="8th_Circle_Server\Handlers\ResourceHandler.cs" />
-    <Compile Include="8th_Circle_Server\Memento\Memento.cs" />
-    <Compile Include="8th_Circle_Server\Mob.cs" />
+    <Compile Include="8th_Circle_Server\Headers\Enums.cs" />
+    <Compile Include="8th_Circle_Server\Headers\Strucs.cs" />
+    <Compile Include="8th_Circle_Server\BaseClasses\Memento.cs" />
+    <Compile Include="8th_Circle_Server\BaseClasses\Mob.cs" />
     <Compile Include="8th_Circle_Server\MUDServer.cs" />
     <Compile Include="8th_Circle_Server\Objects\Container.cs" />
     <Compile Include="8th_Circle_Server\Objects\Doorway.cs" />
