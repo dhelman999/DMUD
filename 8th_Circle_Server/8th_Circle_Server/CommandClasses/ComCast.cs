@@ -47,18 +47,9 @@ namespace _8th_Circle_Server
                         ((CombatMob)mob).mStats.mCombatList.Add(target);
                         target.mStats.mCombatList.Add((CombatMob)mob);
                         target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                        CommandClass attackCommand = null;
                         ArrayList attackQueue = new ArrayList();
-
-                        foreach (CommandClass com in commandExecutioner.mCCList)
-                        {
-                            if (com.commandName == commandName.COMMAND_ATTACK)
-                            {
-                                attackQueue.Add(com);
-                                attackCommand = com;
-                                break;
-                            }
-                        }
+                        CommandClass attackCommand = commandExecutioner.mCCDict[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                        attackQueue.Add(attackCommand);
 
                         mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
                         attackQueue.Add(target);

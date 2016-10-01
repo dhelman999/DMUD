@@ -28,20 +28,12 @@ namespace _8th_Circle_Server
                 clientString = "you can't backstab without a weapon!\n";
             else
             {
-                CommandClass targetCommand = null;
                 CombatMob backstabTarget = ((CombatMob)commandQueue[1]);
                 cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget, commandExecutioner.mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
                 commandQueue.Clear();
 
-                foreach (CommandClass com in commandExecutioner.mCCList)
-                {
-                    if (com.commandName == commandName.COMMAND_ATTACK)
-                    {
-                        commandQueue.Add(com);
-                        targetCommand = com;
-                        break;
-                    }
-                }
+                CommandClass targetCommand = commandExecutioner.mCCDict[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                commandQueue.Add(targetCommand);
 
                 commandQueue.Add(backstabTarget);
                 commandExecutioner.execute(targetCommand, commandQueue, mob);

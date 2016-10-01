@@ -553,13 +553,7 @@ namespace _8th_Circle_Server
                         player.mClientHandler.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
-                    CommandClass com = null;
-
-                    foreach (CommandClass commandClass in mCurrentArea.mCommandExecuter.mCCList)
-                    {
-                        if (commandClass.commandName == commandName.COMMAND_TELL)
-                            com = commandClass;
-                    }
+                    CommandClass com = mCurrentArea.mCommandExecuter.mCCDict[Utils.createTuple(commandName.COMMAND_TELL, 256)];
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
@@ -594,13 +588,26 @@ namespace _8th_Circle_Server
 
         private void addExits(ArrayList commandQueue)
         {
+            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.mCommandExecuter.mCCDict;
+            Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
+            directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
+            directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(commandName.COMMAND_NORTH, 1)]);
+            directionalCommands.Add(Direction.NORTHEAST, commandDict[Utils.createTuple(commandName.COMMAND_NORTHEAST, 1)]);
+            directionalCommands.Add(Direction.EAST, commandDict[Utils.createTuple(commandName.COMMAND_EAST, 1)]);
+            directionalCommands.Add(Direction.SOUTHEAST, commandDict[Utils.createTuple(commandName.COMMAND_SOUTHEAST, 1)]);
+            directionalCommands.Add(Direction.DOWN, commandDict[Utils.createTuple(commandName.COMMAND_DOWN, 1)]);
+            directionalCommands.Add(Direction.SOUTH, commandDict[Utils.createTuple(commandName.COMMAND_SOUTH, 1)]);
+            directionalCommands.Add(Direction.SOUTHWEST, commandDict[Utils.createTuple(commandName.COMMAND_SOUTHWEST, 1)]);
+            directionalCommands.Add(Direction.WEST, commandDict[Utils.createTuple(commandName.COMMAND_WEST, 1)]);
+            directionalCommands.Add(Direction.NORTHWEST, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
+
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
                 if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
                    (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                    ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                 {
-                    commandQueue.Add(mCurrentArea.mCommandExecuter.mCCList[(int)dir]);
+                    commandQueue.Add(directionalCommands[dir]);
                 }// if
             }// for
         }// addExits

@@ -103,6 +103,7 @@
     <Compile Include="8th_Circle_Server\Headers\Strucs.cs" />
     <Compile Include="8th_Circle_Server\BaseClasses\Memento.cs" />
     <Compile Include="8th_Circle_Server\BaseClasses\Mob.cs" />
+    <Compile Include="8th_Circle_Server\Headers\Utils.cs" />
     <Compile Include="8th_Circle_Server\MUDServer.cs" />
     <Compile Include="8th_Circle_Server\Objects\Container.cs" />
     <Compile Include="8th_Circle_Server\Objects\Doorway.cs" />
