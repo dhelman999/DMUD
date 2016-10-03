@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace _8th_Circle_Server
 {
     public class Action : Mob
