@@ -59,6 +59,16 @@ namespace _8th_Circle_Server
             mResType = ResType.NPC;
         }// Constructor
 
+        public override Mob Clone()
+        {
+            return new CombatMob(this);
+        }
+
+        public override Mob Clone(string name)
+        {
+            return new CombatMob(name);
+        }
+
         public void fillResistances()
         {
             mResistances[(int)DamageType.MAGICAL] = ((double)mStats.mBaseMagicRes + mStats.mMagicResMod / 10);

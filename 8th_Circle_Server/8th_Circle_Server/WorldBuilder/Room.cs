@@ -8,9 +8,6 @@ namespace _8th_Circle_Server
 {
     public class Room : ResourceHandler
     {
-        // Debug
-        internal const bool DEBUG = false;
-
         // Member Variables
         public RoomID mRoomID;
         public int []mAreaLoc;
@@ -216,24 +213,29 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
-        public void addMobResource(Mob mob)
+        public void addMobResource(Mob newMob)
         {
             // Remove old references
-            if (mob.mCurrentRoom != null && mob.mCurrentArea != null)
+            if (newMob.mCurrentRoom != null && newMob.mCurrentArea != null)
             {
                 // Allow duplicates to be dropped in the same room
-                if(!(getRes(mob.mResType).Contains(mob)))
+                if(!(getRes(newMob.mResType).Contains(newMob)))
                 {
-                    mob.mCurrentArea.removeRes(mob);
-                    mob.mCurrentRoom.removeRes(mob);
+                    newMob.mCurrentArea.removeRes(newMob);
+                    newMob.mCurrentRoom.removeRes(newMob);
                 }
             }
-            
+
             // Add new references
-            mob.mCurrentArea = mCurrentArea;
-            mob.mCurrentRoom = this;
-            mob.mCurrentArea.addRes(mob);
-            addRes(mob);
+            newMob.mStartingArea = mCurrentArea;
+            newMob.mCurrentArea = mCurrentArea;
+            newMob.mStartingRoom = this;
+            newMob.mCurrentRoom = this;
+            newMob.mCurrentArea.addRes(newMob);
+
+            // Add resources
+            newMob.mWorld.addRes(newMob);
+            addRes(newMob);
         }// addMobResource
 
         public void addDoor(Doorway door, Direction dir)

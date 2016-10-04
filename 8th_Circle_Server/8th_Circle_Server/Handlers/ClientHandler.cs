@@ -7,9 +7,6 @@ namespace _8th_Circle_Server
 {
     public class ClientHandler
     {
-        // Debug
-        internal const bool DEBUG = true;
-
         // Member Variables
         public TcpListener mTcpListener;
         public Socket mSocketForClient;
@@ -123,14 +120,6 @@ namespace _8th_Circle_Server
                             mCmdString = mStreamReader.ReadLine();
                         }
                         while (!mCmdString.Equals("exit"));
-
-                        if (DEBUG)
-                        {           
-                            if(mPlayer != null && mPlayer.mName != string.Empty)
-                                Console.WriteLine("CombatMob: " + mPlayer.mName + " Client: " + mSocketForClient.RemoteEndPoint + " is now exitting.");
-                            else
-                                Console.WriteLine("Client: " + mSocketForClient.RemoteEndPoint + " is now exitting.");
-                        }// if
 
                         playerLeft();
                     }// if mSocketForClient

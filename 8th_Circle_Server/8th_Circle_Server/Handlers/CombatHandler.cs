@@ -6,10 +6,6 @@ namespace _8th_Circle_Server
 {
     public class CombatHandler
     {
-        // Debug
-        internal const bool DEBUG = false;
-        internal int SEED = 0;
-
         // Member Variables
         public Queue<CombatMob> mCombatQueue;
         public World mWorld;

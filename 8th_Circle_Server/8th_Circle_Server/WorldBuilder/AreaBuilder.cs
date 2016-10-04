@@ -588,6 +588,8 @@ namespace _8th_Circle_Server
             goblin_runt2 = new CombatMob((CombatMob)mFullMobList[(int)MOBLIST.GOBLIN_RUNT]);
             addMob(goblin_runt2, gpg_58, newbieArea);
 
+            Mob newMob = mProtoMgr.cloneMob(MOBLIST.GOBLIN_RUNT, gpg_playerStart, "testgoblin");
+
             ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_ADD;

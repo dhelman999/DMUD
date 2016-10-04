@@ -315,7 +315,7 @@
         AID_END
     }// AreaID
 
-    enum MOBLIST
+    public enum MOBLIST
     {
         MOB_START = -1,
         // Reserved for players
@@ -335,7 +335,7 @@
         MAX,
 
         MOB_END
-    }// MOBLIST1
+    }// MOBLIST
 
     public enum MementoType
     {

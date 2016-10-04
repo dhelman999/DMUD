@@ -6,8 +6,6 @@ namespace _8th_Circle_Server
 {
     public class Mob
     {
-        // Debug
-        internal const bool DEBUG = false;
         internal int SEED = 0;
 
         // Member Variables
@@ -31,7 +29,6 @@ namespace _8th_Circle_Server
         public List<Mob> mChildren;
         public Mob mParent;
         public int mMobId;
-        public int mInstanceId;
         public int mStartingRespawnTime;
         public int mCurrentRespawnTime;
         public bool mIsRespawning;
@@ -57,7 +54,7 @@ namespace _8th_Circle_Server
             mStartingOwner = mCurrentOwner = null;
             mStartingRespawnTime = mCurrentRespawnTime = 25;
             mMobId = mKeyId = -1;
-            mInstanceId = mKeyId = mActionTimer = 0;
+            mKeyId = mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
         }// Constructor
@@ -79,7 +76,7 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mMobId = -1;
-            mInstanceId = mKeyId = mActionTimer = 0;
+            mKeyId = mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
         }// Constructor
@@ -109,7 +106,6 @@ namespace _8th_Circle_Server
             mStartingOwner = mob.mStartingOwner;
             mCurrentOwner = mob.mCurrentOwner;
             mMobId = mob.mMobId;
-            mInstanceId = mob.mInstanceId;
             mKeyId = mob.mKeyId;
             mActionTimer = mob.mActionTimer;
             mResType = mob.mResType;
@@ -117,6 +113,16 @@ namespace _8th_Circle_Server
             mCurrentActionCounter = mob.mCurrentActionCounter;
             mRand = new Random();
         }// Copy Constructor
+
+        public virtual Mob Clone()
+        {
+            return new Mob(this);
+        }
+
+        public virtual Mob Clone(string name)
+        {
+            return new Mob(name);
+        }
 
         public string move(string direction)
         {

@@ -4,10 +4,7 @@ using System.Threading;
 namespace _8th_Circle_Server
 {
     public class CommandHandler
-    {
-        // Debug
-        internal const bool DEBUG = true;     
-
+    {   
         // Member Variables
         public Queue<commandData> mCommandQueue;
         public CommandExecuter mCommandExecuter;

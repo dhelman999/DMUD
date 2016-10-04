@@ -1,4 +1,5 @@
-﻿
+﻿using _8th_Circle_Server;
+
 namespace _8th_Circle_Server
 {
     partial class World
@@ -141,6 +142,7 @@ namespace _8th_Circle_Server
             goblin_runt.mStats.mBaseHit = 50;
             goblin_runt.fillResistances();
             mFullMobList.Add(goblin_runt);
+            mProtoMgr.registerMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
 
             CombatMob max = new CombatMob();
             max.mDescription = "A super big fluffy cute black and white kitty cat... you just want to hug him";
@@ -172,7 +174,6 @@ namespace _8th_Circle_Server
                     ++instanceCount;
             }
 
-            mob.mInstanceId = instanceCount;
             mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
             mob.mStartingArea = mob.mCurrentArea = startingArea;
             startingArea.mFullMobList.Add(mob);
@@ -208,7 +209,6 @@ namespace _8th_Circle_Server
                     ++instanceCount;
             }
 
-            mob.mInstanceId = instanceCount;
             mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
             mob.mStartingArea = mob.mCurrentArea = startingArea;
             startingArea.mFullMobList.Add(mob);

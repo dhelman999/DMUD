@@ -4,9 +4,6 @@ namespace _8th_Circle_Server
 {
     public partial class World : ResourceHandler
     {
-        // Debug
-        internal const bool DEBUG = false;
-
         internal const int HOUSE_OFFSET = 10000;
         internal const int BAO = 1000;
         internal const int PROTO_OFFSET = 100;
@@ -24,6 +21,7 @@ namespace _8th_Circle_Server
         public List<Area> mAreaList; 
         public List<Mob> mFullMobList;
         private Room[, ,] mWorldGrid;
+        private PrototypeManager mProtoMgr;
 
         public World() : base()
         {
@@ -33,6 +31,8 @@ namespace _8th_Circle_Server
             mCombatHandler = new CombatHandler(this);
             mAreaList = new List<Area>();
             mFullMobList = new List<Mob>();
+            mProtoMgr = new PrototypeManager();
+
             mCommandHandler.start();
             mEventHandler.start();
             mAreaHandler.start();
@@ -222,9 +222,9 @@ namespace _8th_Circle_Server
                     dRoom.mRoomLinks[(int)Direction.UP] = room;
                 }
             }// foreach
+
         }// createLinks
 
-        
     }// Class World
 
 }// Namespace _8th_Circle_Server

@@ -37,9 +37,6 @@ namespace _8th_Circle_Server
 
     public class EventHandler
     {
-        // Debug
-        internal const bool DEBUG = false;
-
         // Member Variables
         public ArrayList mEventCache;
         public Queue mEventQueue;

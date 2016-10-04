@@ -43,6 +43,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="8th_Circle_Server\BaseClasses\PrototypeManager.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\Action.cs" />
     <Compile Include="8th_Circle_Server\CombatMobs\Cleric.cs" />
     <Compile Include="8th_Circle_Server\BaseClasses\CombatMob.cs" />

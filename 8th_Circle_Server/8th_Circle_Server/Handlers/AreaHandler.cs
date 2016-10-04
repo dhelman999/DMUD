@@ -6,8 +6,6 @@ namespace _8th_Circle_Server
 {
     public class AreaHandler
     {
-        // Debug
-        internal const bool DEBUG = false;
         internal const int TICKTIME = 1;
 
         // Member Variables
