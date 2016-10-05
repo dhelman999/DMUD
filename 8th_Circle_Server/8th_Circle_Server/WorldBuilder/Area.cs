@@ -16,8 +16,9 @@ namespace _8th_Circle_Server
         public AreaID mAreaID;
         public PrototypeManager mProtoManager;
 
-        public Area(World world) : base()
+        public Area(World world, string name, AreaID areaID) : base()
         {
+            mName = name;
             mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new List<Room>();
@@ -26,7 +27,7 @@ namespace _8th_Circle_Server
             mWorld = world;
             mCommandExecuter = new CommandExecuter();
             mProtoManager = new PrototypeManager();
-            mAreaID = 0;
+            mAreaID = areaID;
         }// Constructor
 
         // TODO
@@ -47,9 +48,9 @@ namespace _8th_Circle_Server
             return mProtoManager.GetPrototypeMobList();
         }// GetPrototypeMobList
 
-        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "")
+        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
-            return mProtoManager.cloneMob(mobID, startingRoom, name);
+            return mProtoManager.cloneMob(mobID, startingRoom, name, prototype);
         }// cloneMob
 
     }// Class Area

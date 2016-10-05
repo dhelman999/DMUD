@@ -41,10 +41,12 @@ namespace _8th_Circle_Server
             return ret;
         }// registerFullGameMob
 
-        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "")
+        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
             // Create clone from prototype
-            Mob prototype = PrototypeManager.getFullGameRegisteredMob(mobID);
+            if(prototype == null)
+                prototype = PrototypeManager.getFullGameRegisteredMob(mobID);
+
             Mob parent = prototype.Clone();
             Mob child = prototype.Clone();
             mPrototypeMobList.Add(parent);

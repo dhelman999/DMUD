@@ -18,7 +18,6 @@ namespace _8th_Circle_Server
             key.mInventory.Capacity = 0;
             key.mWorld = this;
             key.mMobId = (int)MOBLIST.BASIC_KEY;
-            mFullMobList.Add(key);
             PrototypeManager.registerFullGameMob(MOBLIST.BASIC_KEY, key);
 
             Container chest = new Container();
@@ -41,7 +40,6 @@ namespace _8th_Circle_Server
             chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest.mStartingRespawnTime = 30;
             chest.mCurrentRespawnTime = 30;
-            mFullMobList.Add(chest);
             PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST1, chest);
 
             Container chest2 = new Container();
@@ -64,7 +62,6 @@ namespace _8th_Circle_Server
             chest2.mKeyId = (int)MOBLIST.BASIC_KEY;
             chest2.mStartingRespawnTime = 30;
             chest2.mCurrentRespawnTime = 30;
-            mFullMobList.Add(chest2);
             PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST2, chest2);
 
             Mob first_circle = new Mob();
@@ -83,7 +80,6 @@ namespace _8th_Circle_Server
             first_circle.mInventory.Capacity = 0;
             first_circle.mWorld = this;
             first_circle.mMobId = (int)MOBLIST.FIRST_CIRCLE;
-            mFullMobList.Add(first_circle);
             PrototypeManager.registerFullGameMob(MOBLIST.FIRST_CIRCLE, first_circle);
 
             Container no_event_chest = new Container();
@@ -100,7 +96,6 @@ namespace _8th_Circle_Server
             no_event_chest.mKeyId = (int)MOBLIST.BASIC_KEY;
             no_event_chest.mStartingRespawnTime = 30;
             no_event_chest.mCurrentRespawnTime = 30;
-            mFullMobList.Add(no_event_chest);
             PrototypeManager.registerFullGameMob(MOBLIST.BASIC_CHEST, no_event_chest);
 
             Mob basic_switch = new Mob();
@@ -111,7 +106,6 @@ namespace _8th_Circle_Server
             basic_switch.mMobId = (int)MOBLIST.SWITCH;
             basic_switch.mStartingRespawnTime = 30;
             basic_switch.mCurrentRespawnTime = 30;
-            mFullMobList.Add(basic_switch);
             PrototypeManager.registerFullGameMob(MOBLIST.SWITCH, basic_switch);
 
             Equipment basic_sword = new Equipment();
@@ -131,7 +125,6 @@ namespace _8th_Circle_Server
             basic_sword.mHitMod = 10;
             basic_sword.mType = EQType.WEAPON;
             basic_sword.mSlot = EQSlot.PRIMARY;
-            mFullMobList.Add(basic_sword);
             PrototypeManager.registerFullGameMob(MOBLIST.BASIC_SWORD, basic_sword);
 
             // NPCs start here
@@ -148,7 +141,6 @@ namespace _8th_Circle_Server
             goblin_runt.mStats.mBaseMaxHp = 50;
             goblin_runt.mStats.mBaseHit = 50;
             goblin_runt.fillResistances();
-            mFullMobList.Add(goblin_runt);
             PrototypeManager.registerFullGameMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
 
             CombatMob max = new CombatMob();
@@ -159,88 +151,8 @@ namespace _8th_Circle_Server
             max.mMobId = (int)MOBLIST.MAX;
             max.mStartingRespawnTime = 10;
             max.mCurrentRespawnTime = 10;
-            mFullMobList.Add(max);
             PrototypeManager.registerFullGameMob(MOBLIST.MAX, max);
         }// addMobs
-
-        private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea)
-        {
-            Mob mob = null;
-
-            if (mFullMobList[(int)mobId] is Container)
-                mob = new Container((Container)mFullMobList[(int)mobId]);
-            else if (mFullMobList[(int)mobId] is CombatMob)
-                mob = new CombatMob((CombatMob)mFullMobList[(int)mobId]);
-            else
-                mob = new Mob(mFullMobList[(int)mobId]);
-
-            int instanceCount = 1;
-
-            foreach (Mob target in startingArea.mFullMobList)
-            {
-                if ((int)mobId == target.mMobId)
-                    ++instanceCount;
-            }
-
-            mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
-            mob.mStartingArea = mob.mCurrentArea = startingArea;
-            startingArea.mFullMobList.Add(mob);
-
-            Mob mob2 = null;
-            Container cont = null;
-            CombatMob npc = null;
-
-            if (mob is Container)
-            {
-                cont = new Container((Container)mob);
-                mob2 = cont;
-            }// if
-            else if (mob is CombatMob)
-            {
-                npc = new CombatMob((CombatMob)mob);
-                mob2 = npc;
-            }// if
-            else
-                mob2 = new Mob(mob);
-
-	        startingRoom.addMobResource(mob2);
-            mob2.mWorld.addRes(mob2);
-        }// addNewMob
-
-        public void addMob(Mob mob, Room startingRoom, Area startingArea)
-        {
-            int instanceCount = 1;
-
-            foreach (Mob target in startingArea.mFullMobList)
-            {
-                if ((int)mob.mMobId == target.mMobId)
-                    ++instanceCount;
-            }
-
-            mob.mStartingRoom = mob.mCurrentRoom = startingRoom;
-            mob.mStartingArea = mob.mCurrentArea = startingArea;
-            startingArea.mFullMobList.Add(mob);
-
-            Mob mob2 = null;
-
-            // TODO
-            // Probably need to make these things from a list
-            // so we don't have to remember to add them whenever
-            // a new class is made
-            if (mob is Container)
-                mob2 = new Container((Container)mob);
-            else if (mob is Equipment)
-                mob2 = new Equipment((Equipment)mob);
-            else if (mob is CombatMob)
-                mob2 = new CombatMob((CombatMob)mob); 
-            else
-                mob2 = new Mob(mob);
-
-            mob2.mParent = mob;
-            startingRoom.addMobResource(mob2);
-            mob.mChildren.Add(mob2);
-            mob.mWorld.addRes(mob2);
-        }// addMob
 
     }// class World
 

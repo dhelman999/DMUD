@@ -33,8 +33,11 @@ namespace _8th_Circle_Server
             mDamType = DamageType.PHYSICAL;
         }// constructor
 
-        public Equipment(Equipment eq) : base(eq)
+        public Equipment(Equipment eq, string name = "") : base(eq)
         {
+            if (name != "")
+                mName = name;
+
             mLevel = eq.mLevel;
             mType = eq.mType;
             mSlot = eq.mSlot;
@@ -59,6 +62,16 @@ namespace _8th_Circle_Server
             mMaxForceRes = eq.mMaxForceRes;
             mDamType = DamageType.PHYSICAL;
         }// copy constructor
+
+        public override Mob Clone()
+        {
+            return new Equipment(this);
+        }
+
+        public override Mob Clone(string name)
+        {
+            return new Equipment(this, name);
+        }
 
         public override string wear(CombatMob pl)
         {

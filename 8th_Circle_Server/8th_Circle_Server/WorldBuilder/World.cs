@@ -36,10 +36,8 @@ namespace _8th_Circle_Server
             mAreaHandler.start();
             mCombatHandler.start();
 
-            Area protoArea = new Area(this);
-            protoArea.mName = "Proto Area";
+            Area protoArea = new Area(this, "Proto Area", AreaID.AID_PROTOAREA);
             protoArea.mDescription = "The testing area for the 8th Circle";
-            protoArea.mAreaID = AreaID.AID_PROTOAREA;
             protoArea.mAreaOffset = PROTO_OFFSET;
 
             mWorldGrid = new Room[MAXXSIZE, MAXYSIZE, MAXZSIZE];
@@ -81,19 +79,17 @@ namespace _8th_Circle_Server
             addMobs();
 
             // Add specific mobs
-            Container event_chest1 = new Container((Container)mFullMobList[(int)MOBLIST.EVENT_CHEST1]);
+            Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MOBLIST.EVENT_CHEST1);
             event_chest1.mKeyId = 3;
             event_chest1.mStartingRoom = pa14;
             event_chest1.mStartingArea = protoArea;
-            event_chest1.mName = "proto chest";
-            addMob(event_chest1, pa14, protoArea);
+            protoArea.cloneMob(MOBLIST.EVENT_CHEST1, pa14, "protochest", event_chest1);
 
-            Mob basic_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
             basic_key.mKeyId = 3;
             basic_key.mStartingRoom = pa27;
             basic_key.mStartingArea = protoArea;
-            basic_key.mName = "proto key";
-            addMob(basic_key, pa27, protoArea);
+            protoArea.cloneMob(MOBLIST.BASIC_KEY, pa27, "proto key", basic_key);
 
             // Add all global areas
             addAreas();

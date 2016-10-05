@@ -6,8 +6,11 @@ namespace _8th_Circle_Server
         // Member Variables
         public bool mIsOpen;
 
-        public Container() : base()
+        public Container(string name = "") : base()
         {
+            if (name != "")
+                mName = name;
+
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
             mIsOpen = false;
@@ -17,6 +20,16 @@ namespace _8th_Circle_Server
         {
             mIsOpen = mob.mIsOpen;
         }// Copy Constructor
+
+        public override Mob Clone()
+        {
+            return new Container(this);
+        }
+
+        public override Mob Clone(string name)
+        {
+            return new Container(name);
+        }
 
         public override string viewed(Mob viewer, Preposition prep)
         {

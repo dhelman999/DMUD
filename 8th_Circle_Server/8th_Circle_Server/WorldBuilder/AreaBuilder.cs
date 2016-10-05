@@ -11,12 +11,10 @@ namespace _8th_Circle_Server
 
         private void addGeraldineArea()
         {
-            Area geraldineArea = new Area(this);
-            geraldineArea.mName = "Geraldine Estate";
+            Area geraldineArea = new Area(this, "Geraldine Estate", AreaID.AID_GERALDINEMANOR);
             geraldineArea.mDescription = "The residence of the esteemed Renee and David";
 
-            Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " +
-                "leading up.",
+            Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " + "leading up.",
                 HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT, geraldineArea);
             house1stentranceway.mCurrentArea = geraldineArea;
             Room house1stHallway = new Room("The west hallway is empty besides a few pictures",
@@ -30,12 +28,10 @@ namespace _8th_Circle_Server
                 "particularly interesting, featuring a type of chicken",
                 HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_DININGROOM, geraldineArea);
             house1stDiningRoom.mCurrentArea = geraldineArea;
-            Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " +
-                "the north wall",
+            Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " + "the north wall",
                 HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM, geraldineArea);
             house1stLivingRoom.mCurrentArea = geraldineArea;
-            Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " +
-                "a sink and toilet",
+            Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " + "a sink and toilet",
                 HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
             house1stBathroom.mCurrentArea = geraldineArea;
 
@@ -57,8 +53,7 @@ namespace _8th_Circle_Server
                 "windows on the north and northwest sides",
                 HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BEDROOM, geraldineArea);
             house2ndBedroom.mCurrentArea = geraldineArea;
-            Room house2ndBlueroom = new Room("The blueroom has a large bookshelf, a sliding door closet and " +
-                "a loveseat",
+            Room house2ndBlueroom = new Room("The blueroom has a large bookshelf, a sliding door closet and " + "a loveseat",
                 HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BLUEROOM, geraldineArea);
             house2ndBlueroom.mCurrentArea = geraldineArea;
 
@@ -97,8 +92,7 @@ namespace _8th_Circle_Server
                 "with various pieces of hardware and tools",
                 HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_LAUNDRYROOM, geraldineArea);
             houseBaseLaundryRoom.mCurrentArea = geraldineArea;
-            Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " +
-                "for storage",
+            Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " + "for storage",
                 HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM, geraldineArea);
 
             houseBaseSumpRoom.mCurrentArea = geraldineArea;
@@ -221,26 +215,24 @@ namespace _8th_Circle_Server
             geraldineArea.mAreaOffset = HOUSE_OFFSET;
             mAreaList.Add(geraldineArea);
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
-            getRoom(protoArea.mAreaOffset, protoArea.mAreaOffset, 
-                protoArea.mAreaOffset, AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
+            getRoom(protoArea.mAreaOffset, protoArea.mAreaOffset, protoArea.mAreaOffset, AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
 
             mAreaHandler.registerArea(geraldineArea);
         }// geraldineArea
 
         public void addGeraldineNpcs(Area area)
         {
-            addNewMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM), area);
-            addNewMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4), area);
+            area.cloneMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM));
+            area.cloneMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4));
         }// addGeraldineNpcs
-
+        
         public void addNewbieArea()
         {
-            Area newbieArea = new Area(this);
-            newbieArea.mName = "Goblin Prooving Grounds";
+            Area newbieArea = new Area(this, "Goblin Prooving Grounds", AreaID.AID_NEWBIEAREA);
+
             newbieArea.mDescription = "This area is the leftover pits where unworthy goblins were abandoned " +
                "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
                "and were cast out until they prooved themselves";
-            newbieArea.mAreaID = AreaID.AID_NEWBIEAREA;
 
             string common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
                "a little further, the walls to the north rise as high as you can see.\n" +
@@ -474,7 +466,7 @@ namespace _8th_Circle_Server
             gpg_78.removeDualLinks(Direction.NORTHWEST);
             gpg_78.removeDualLinks(Direction.NORTHEAST);
             gpg_78.removeDualLinks(Direction.EAST);
-            gpg_70 = null;
+            // gpg_70 = null;
             gpg_41.removeTripleLinks(Direction.WEST);
             gpg_48.removeTripleLinks(Direction.WEST);
             gpg_55.removeTripleLinks(Direction.WEST);
@@ -488,57 +480,42 @@ namespace _8th_Circle_Server
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
-            Container wooden_chest = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
+            Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST);
             wooden_chest.mKeyId = 4;
-            wooden_chest.mStartingRoom = gpg_56;
-            wooden_chest.mStartingArea = newbieArea;
-            wooden_chest.mName = "wooden chest";         
-            addMob(wooden_chest, gpg_56, newbieArea);
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_56, "wooden chest", wooden_chest);
 
-            Mob basic_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
             basic_key.mKeyId = 4;
-            basic_key.mName = "brass key";
-            basic_key.mStartingRoom = gpg_70;
-            basic_key.mStartingArea = newbieArea;
-            basic_key.mStartingArea = basic_key.mCurrentArea = null;
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_70, "brass key", basic_key);
+            gpg_70 = null; // is this hidden?
 
-            Container small_metal_cage = new Container((Container)mFullMobList[(int)MOBLIST.BASIC_CHEST]);
-            small_metal_cage.mName = "small metal cage";
+            Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST);
             small_metal_cage.mDescription = "a small metal cage, I wonder what is inside?";
             small_metal_cage.mKeyId = 5;
-            small_metal_cage.mStartingRoom = gpg_71;
-            small_metal_cage.mStartingArea = newbieArea;
             small_metal_cage.mInventory.Add(basic_key);
-            addMob(small_metal_cage, gpg_71, newbieArea);
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_71, "small metal cage", small_metal_cage);
 
-            Mob steel_key = new Mob(mFullMobList[(int)MOBLIST.BASIC_KEY]);
+            Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
             steel_key.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
-            steel_key.mStartingRoom = gpg_46;
-            steel_key.mStartingArea = newbieArea;
-            steel_key.mName = "small steel key";
             steel_key.mDescription = "a small steel key, I wonder what it opens?";
-            addMob(steel_key, gpg_46, newbieArea);
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_46, "small steel key", steel_key);
 
-            Mob basic_switch = new Mob(mFullMobList[(int)MOBLIST.SWITCH]);
-            basic_switch.mStartingRoom = gpg_29;
-            basic_switch.mStartingArea = newbieArea;
+            Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH);
             EventData ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
             ed.commandName = commandName.COMMAND_USE;
             basic_switch.mEventList.Add(ed);
-            addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_29, "", basic_switch);
 
-            basic_switch = new Mob(mFullMobList[(int)MOBLIST.SWITCH]);
-            basic_switch.mStartingRoom = gpg_37;
-            basic_switch.mStartingArea = newbieArea;
+            basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH);
             ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
             ed.commandName = commandName.COMMAND_USE;
             basic_switch.mEventList.Add(ed);
-            addMob(basic_switch, basic_switch.mStartingRoom, basic_switch.mStartingArea);
+            newbieArea.cloneMob(MOBLIST.SWITCH, gpg_37, "", basic_switch);
 
             newbieArea.cloneMob(MOBLIST.BASIC_SWORD, gpg_playerStart);
             newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, gpg_6);
