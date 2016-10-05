@@ -243,7 +243,7 @@ namespace _8th_Circle_Server
             door.mMemento.registerMemento(door);
             getRes(ResType.DOORWAY)[(int)dir] = door;
             door.mRoomList[(int)dir] = this;
-        }// addDorr
+        }// addDoor
 
         public void respawnDoorways()
         {

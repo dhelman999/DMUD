@@ -89,28 +89,6 @@ namespace _8th_Circle_Server
             // Process each area
             foreach (Area area in mAreaList)
             {
-                for (int i = 0; i < area.mFullMobList.Count; ++i)
-                {
-                    Mob mob = area.mFullMobList[i];
-
-                    if (mob.mIsRespawning && (mob.mCurrentRespawnTime -= TICKTIME) <= 0)
-                    {
-                        if (mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
-                        {
-                            mob.mIsRespawning = false;
-                            mob.mCurrentRespawnTime = mob.mStartingRespawnTime;
-                        }
-                        else
-                        {
-                            for (int j = 0; j < mob.mChildren.Count; ++j)
-                                mob.mChildren[j--].destroy();
-
-                            Console.WriteLine("respawning " + mob.mName);
-                            mob.respawn();
-                        }
-                    }
-                }// for
-
                 foreach(Mob parent in area.GetPrototypeMobList())
                 {
                     if (parent.mIsRespawning && (parent.mCurrentRespawnTime -= TICKTIME) <= 0)

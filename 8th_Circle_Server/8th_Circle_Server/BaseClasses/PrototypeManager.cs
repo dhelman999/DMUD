@@ -75,7 +75,8 @@ namespace _8th_Circle_Server
         public List<Mob> GetPrototypeMobList()
         {
             return mPrototypeMobList;
-        }
+        }// GetPrototypeMobList
+
     }// class PrototypeManager
 
 }// namespace _8th_Circle_Server

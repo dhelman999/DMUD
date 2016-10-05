@@ -110,11 +110,9 @@
     <Compile Include="8th_Circle_Server\Objects\Doorway.cs" />
     <Compile Include="8th_Circle_Server\Objects\Equipment.cs" />
     <Compile Include="8th_Circle_Server\Properties\AssemblyInfo.cs" />
-    <Compile Include="8th_Circle_Server\WorldBuilder\Area.cs" />
-    <Compile Include="8th_Circle_Server\WorldBuilder\AreaBuilder.cs" />
-    <Compile Include="8th_Circle_Server\WorldBuilder\MobBuilder.cs" />
-    <Compile Include="8th_Circle_Server\WorldBuilder\Room.cs" />
-    <Compile Include="8th_Circle_Server\WorldBuilder\World.cs" />
+    <Compile Include="8th_Circle_Server\GameWorld\Area.cs" />
+    <Compile Include="8th_Circle_Server\GameWorld\Room.cs" />
+    <Compile Include="8th_Circle_Server\GameWorld\World.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>

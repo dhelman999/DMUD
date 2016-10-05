@@ -9,7 +9,6 @@ namespace _8th_Circle_Server
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
         public List<Room> mRoomList;
-        public List<Mob> mFullMobList;
         public List<EventData> mRevertList;
         public World mWorld;
         public CommandExecuter mCommandExecuter;
@@ -22,9 +21,9 @@ namespace _8th_Circle_Server
             mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new List<Room>();
-            mFullMobList = new List<Mob>();
             mRevertList = new List<EventData>();
             mWorld = world;
+            mWorld.mAreaList.Add(this);
             mCommandExecuter = new CommandExecuter();
             mProtoManager = new PrototypeManager();
             mAreaID = areaID;
