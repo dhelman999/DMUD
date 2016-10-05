@@ -140,8 +140,12 @@ namespace _8th_Circle_Server
                     }// for
 
                     // Revert Doorway's initial state
-                    foreach (Room room in area.mRoomList)
-                        room.respawnDoorways();
+                    foreach (KeyValuePair<RoomID, Room> keyValPair in area.GetRooms())
+                    {
+                        Room currentRoom = keyValPair.Value;
+                        currentRoom.respawnDoorways();
+                    }
+                        
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
 
                 // Reset Area respawn timer

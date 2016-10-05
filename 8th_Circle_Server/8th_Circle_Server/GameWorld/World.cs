@@ -236,68 +236,70 @@ namespace _8th_Circle_Server
             Room pa27 = new Room("Room 2,2,2", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_27, protoArea);
 
             // Add links
-            foreach (Room room in protoArea.mRoomList)
+            foreach (KeyValuePair<RoomID, Room> keyValPair in protoArea.GetRooms())
             {
-                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
-                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
+                Room currentRoom = keyValPair.Value;
+
+                Room nwRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room nRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room neRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room wRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room eRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room swRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room sRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room seRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
+                Room uRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
+                Room dRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
 
                 if (nwRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
-                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = currentRoom;
                 }
                 if (nRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTH] = nRoom;
-                    nRoom.mRoomLinks[(int)Direction.SOUTH] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTH] = nRoom;
+                    nRoom.mRoomLinks[(int)Direction.SOUTH] = currentRoom;
                 }
                 if (neRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
-                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = currentRoom;
                 }
                 if (wRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.WEST] = wRoom;
-                    wRoom.mRoomLinks[(int)Direction.EAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.WEST] = wRoom;
+                    wRoom.mRoomLinks[(int)Direction.EAST] = currentRoom;
                 }
                 if (eRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.EAST] = eRoom;
-                    eRoom.mRoomLinks[(int)Direction.WEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.EAST] = eRoom;
+                    eRoom.mRoomLinks[(int)Direction.WEST] = currentRoom;
                 }
                 if (swRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
-                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = currentRoom;
                 }
                 if (sRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTH] = sRoom;
-                    sRoom.mRoomLinks[(int)Direction.NORTH] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTH] = sRoom;
+                    sRoom.mRoomLinks[(int)Direction.NORTH] = currentRoom;
                 }
                 if (seRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
-                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = currentRoom;
                 }
                 if (uRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.UP] = uRoom;
-                    uRoom.mRoomLinks[(int)Direction.DOWN] = room;
+                    currentRoom.mRoomLinks[(int)Direction.UP] = uRoom;
+                    uRoom.mRoomLinks[(int)Direction.DOWN] = currentRoom;
                 }
                 if (dRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.DOWN] = dRoom;
-                    dRoom.mRoomLinks[(int)Direction.UP] = room;
+                    currentRoom.mRoomLinks[(int)Direction.DOWN] = dRoom;
+                    dRoom.mRoomLinks[(int)Direction.UP] = currentRoom;
                 }
             }// foreach
 
@@ -307,13 +309,13 @@ namespace _8th_Circle_Server
 
         private void addProtoMobs(Area protoArea)
         {
-            Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MOBLIST.EVENT_CHEST1);
+            Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MOBLIST.EVENT_CHEST1).Clone();
             event_chest1.mKeyId = 3;
-            protoArea.cloneMob(MOBLIST.EVENT_CHEST1, protoArea.getRoom(RoomID.PROTO_14), "protochest", event_chest1);
+            protoArea.cloneMob(MOBLIST.EVENT_CHEST1, protoArea[RoomID.PROTO_14], "protochest", event_chest1);
 
-            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
             basic_key.mKeyId = 3;
-            protoArea.cloneMob(MOBLIST.BASIC_KEY, protoArea.getRoom(RoomID.PROTO_27), "proto key", basic_key);
+            protoArea.cloneMob(MOBLIST.BASIC_KEY, protoArea[RoomID.PROTO_27], "proto key", basic_key);
         }
 
         private void addGeraldineArea()
@@ -340,7 +342,7 @@ namespace _8th_Circle_Server
                 HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM, geraldineArea);
 
             Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " + "a sink and toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
+                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_BATHROOM, geraldineArea);
 
             Room house2ndHallway = new Room("The hallway to the 2nd floor.  This is a long corridor\n with " +
                 "many rooms attached to it with stairs leading down at the base.",
@@ -492,28 +494,6 @@ namespace _8th_Circle_Server
             houseBaseBathroom.addDoor(newDoor, Direction.SOUTH);
             houseBasepart5.addDoor(newDoor, Direction.NORTH);
 
-            geraldineArea.mRoomList.Add(house1stentranceway);
-            geraldineArea.mRoomList.Add(house1stHallway);
-            geraldineArea.mRoomList.Add(house1stKitchen);
-            geraldineArea.mRoomList.Add(house1stDiningRoom);
-            geraldineArea.mRoomList.Add(house1stLivingRoom);
-            geraldineArea.mRoomList.Add(house1stBathroom);
-            geraldineArea.mRoomList.Add(house2ndHallway);
-            geraldineArea.mRoomList.Add(house2ndBathroom);
-            geraldineArea.mRoomList.Add(house2ndBedroom);
-            geraldineArea.mRoomList.Add(house2ndBlueroom);
-            geraldineArea.mRoomList.Add(house2ndKittyCloset);
-            geraldineArea.mRoomList.Add(house2ndKittyroom);
-            geraldineArea.mRoomList.Add(houseBaseBathroom);
-            geraldineArea.mRoomList.Add(houseBaseCloset);
-            geraldineArea.mRoomList.Add(houseBaseentrance);
-            geraldineArea.mRoomList.Add(houseBaseLaundryRoom);
-            geraldineArea.mRoomList.Add(houseBasepart2);
-            geraldineArea.mRoomList.Add(houseBasepart3);
-            geraldineArea.mRoomList.Add(houseBasepart4);
-            geraldineArea.mRoomList.Add(houseBasepart5);
-            geraldineArea.mRoomList.Add(houseBaseSumpRoom);
-
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
             getRoom(protoArea.mAreaOffset, protoArea.mAreaOffset, protoArea.mAreaOffset, AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
 
@@ -523,8 +503,8 @@ namespace _8th_Circle_Server
 
         public void addGeraldineNpcs(Area area)
         {
-            area.cloneMob(MOBLIST.MAX, area.getRoom(RoomID.GERALD_1ST_LIVINGROOM));
-            area.cloneMob(MOBLIST.FIRST_CIRCLE, area.getRoom(RoomID.GERALD_BASE_PART4));
+            area.cloneMob(MOBLIST.MAX, area[RoomID.GERALD_1ST_LIVINGROOM]);
+            area.cloneMob(MOBLIST.FIRST_CIRCLE, area[RoomID.GERALD_BASE_PART4]);
         }// addGeraldineNpcs
 
         public void addNewbieArea()
@@ -634,70 +614,72 @@ namespace _8th_Circle_Server
             Room gpg_75 = new Room("GPG 75", BAO - 5, BAO - 2, BAO, RoomID.GPG_ROOM_75, newbieArea);
             Room gpg_76 = new Room("GPG 76", BAO - 4, BAO - 2, BAO, RoomID.GPG_ROOM_76, newbieArea);
             Room gpg_77 = new Room("GPG 77", BAO - 3, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
-            Room gpg_78 = new Room("GPG 78", BAO - 2, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
+            Room gpg_78 = new Room("GPG 78", BAO - 2, BAO - 2, BAO, RoomID.GPG_ROOM_78, newbieArea);
 
-            foreach (Room room in newbieArea.mRoomList)
+            foreach (KeyValuePair<RoomID, Room> keyValPair in newbieArea.GetRooms())
             {
-                Room nwRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room nRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room neRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] + 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room wRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room eRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1], room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room swRoom = getRoom(room.mAreaLoc[0] - 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room sRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room seRoom = getRoom(room.mAreaLoc[0] + 1, room.mAreaLoc[1] - 1, room.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room uRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] + 1, AreaID.AID_NEWBIEAREA);
-                Room dRoom = getRoom(room.mAreaLoc[0], room.mAreaLoc[1], room.mAreaLoc[2] - 1, AreaID.AID_NEWBIEAREA);
+                Room currentRoom = keyValPair.Value;
+
+                Room nwRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room nRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room neRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room wRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room eRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room swRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room sRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room seRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
+                Room uRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] + 1, AreaID.AID_NEWBIEAREA);
+                Room dRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] - 1, AreaID.AID_NEWBIEAREA);
 
                 if (nwRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
-                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = currentRoom;
                 }
                 if (nRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTH] = nRoom;
-                    nRoom.mRoomLinks[(int)Direction.SOUTH] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTH] = nRoom;
+                    nRoom.mRoomLinks[(int)Direction.SOUTH] = currentRoom;
                 }
                 if (neRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
-                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = currentRoom;
                 }
                 if (wRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.WEST] = wRoom;
-                    wRoom.mRoomLinks[(int)Direction.EAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.WEST] = wRoom;
+                    wRoom.mRoomLinks[(int)Direction.EAST] = currentRoom;
                 }
                 if (eRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.EAST] = eRoom;
-                    eRoom.mRoomLinks[(int)Direction.WEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.EAST] = eRoom;
+                    eRoom.mRoomLinks[(int)Direction.WEST] = currentRoom;
                 }
                 if (swRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
-                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = currentRoom;
                 }
                 if (sRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTH] = sRoom;
-                    sRoom.mRoomLinks[(int)Direction.NORTH] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTH] = sRoom;
+                    sRoom.mRoomLinks[(int)Direction.NORTH] = currentRoom;
                 }
                 if (seRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
-                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = room;
+                    currentRoom.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = currentRoom;
                 }
                 if (uRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.UP] = uRoom;
-                    uRoom.mRoomLinks[(int)Direction.DOWN] = room;
+                    currentRoom.mRoomLinks[(int)Direction.UP] = uRoom;
+                    uRoom.mRoomLinks[(int)Direction.DOWN] = currentRoom;
                 }
                 if (dRoom != null)
                 {
-                    room.mRoomLinks[(int)Direction.DOWN] = dRoom;
-                    dRoom.mRoomLinks[(int)Direction.UP] = room;
+                    currentRoom.mRoomLinks[(int)Direction.DOWN] = dRoom;
+                    dRoom.mRoomLinks[(int)Direction.UP] = currentRoom;
                 }
             }// foreach
 
@@ -784,58 +766,58 @@ namespace _8th_Circle_Server
 
         private void addNewbieAreaMobs(Area newbieArea)
         {
-            Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST);
+            Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST).Clone();
             wooden_chest.mKeyId = 4;
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_56), "wooden chest", wooden_chest);
+            newbieArea.cloneMob(MOBLIST.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
 
-            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
             basic_key.mKeyId = 4;
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_70), "brass key", basic_key);
+            newbieArea.cloneMob(MOBLIST.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", basic_key);
 
-            Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST);
+            Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST).Clone();
             small_metal_cage.mDescription = "a small metal cage, I wonder what is inside?";
             small_metal_cage.mKeyId = 5;
             small_metal_cage.mInventory.Add(basic_key);
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_71), "small metal cage", small_metal_cage);
+            newbieArea.cloneMob(MOBLIST.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
 
-            Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY);
+            Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
             steel_key.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             steel_key.mKeyId = 5;
             steel_key.mDescription = "a small steel key, I wonder what it opens?";
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_46), "small steel key", steel_key);
+            newbieArea.cloneMob(MOBLIST.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
 
-            Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH);
+            Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
             EventData ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
             ed.commandName = commandName.COMMAND_USE;
             basic_switch.mEventList.Add(ed);
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_29), "", basic_switch);
+            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
 
-            basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH);
+            basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
             ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
             ed.commandName = commandName.COMMAND_USE;
             basic_switch.mEventList.Add(ed);
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea.getRoom(RoomID.GPG_ROOM_37), "", basic_switch);
+            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
 
-            newbieArea.cloneMob(MOBLIST.BASIC_SWORD, newbieArea.getRoom(RoomID.GPG_PLAYER_START));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_6));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_10));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_17));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_21));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_25));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_29));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_32));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_42));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_47));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_62));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_77));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_60));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_37));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_46));
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea.getRoom(RoomID.GPG_ROOM_58));
+            newbieArea.cloneMob(MOBLIST.BASIC_SWORD, newbieArea[RoomID.GPG_PLAYER_START]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_6]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_10]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_17]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_21]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_25]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_29]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_32]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_42]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_47]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_62]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_77]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_60]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_37]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_46]);
+            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_58]);
         }
 
         public Area getArea(AreaID areaID)
@@ -849,30 +831,19 @@ namespace _8th_Circle_Server
             return null;
         }// getArea
 
-        public Room getRoom(RoomID roomID, AreaID areaID)
-        {
-            Area area = getArea(areaID);
-
-            foreach (Room room in area.mRoomList)
-            {
-                if (room.mRoomID == roomID)
-                    return room;
-            }
-
-            return null;
-        }// getRoom
-
         public Room getRoom(int x, int y, int z, AreaID areaID)
         {
             Area area = getArea(areaID);
 
-            foreach (Room room in area.mRoomList)
+            foreach (KeyValuePair<RoomID, Room> keyValPair in area.GetRooms())
             {
-                if (room.mAreaLoc[0] == x &&
-                    room.mAreaLoc[1] == y &&
-                    room.mAreaLoc[2] == z)
+                Room currentRoom = keyValPair.Value;
+
+                if (currentRoom.mAreaLoc[0] == x &&
+                    currentRoom.mAreaLoc[1] == y &&
+                    currentRoom.mAreaLoc[2] == z)
                 {
-                    return room;
+                    return currentRoom;
                 }
             }
 

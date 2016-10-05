@@ -8,19 +8,19 @@ namespace _8th_Circle_Server
         public int mAreaOffset;
         public int mStartingRespawnTimer;
         public int mCurrentRespawnTimer;
-        public List<Room> mRoomList;
         public List<EventData> mRevertList;
         public World mWorld;
         public CommandExecuter mCommandExecuter;
         public AreaID mAreaID;
         public PrototypeManager mProtoManager;
+        private Dictionary<RoomID, Room> mRoomList;
 
         public Area(World world, string name, AreaID areaID) : base()
         {
             mName = name;
             mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
-            mRoomList = new List<Room>();
+            mRoomList = new Dictionary<RoomID, Room>();
             mRevertList = new List<EventData>();
             mWorld = world;
             mWorld.mAreaList.Add(this);
@@ -29,18 +29,13 @@ namespace _8th_Circle_Server
             mAreaID = areaID;
         }// Constructor
 
-        // TODO
-        // Make this a dictionary
-        public Room getRoom(RoomID roomID)
+        public Room this[RoomID roomID]
         {
-            foreach(Room room in mRoomList)
+            get
             {
-                if (room.mRoomID == roomID)
-                    return room;
-            }// foreach
-
-            return null;
-        }// getRoom
+                return mRoomList[roomID];
+            }// Accessor
+        }// [] Property
 
         public List<Mob> GetPrototypeMobList()
         {
@@ -51,6 +46,16 @@ namespace _8th_Circle_Server
         {
             return mProtoManager.cloneMob(mobID, startingRoom, name, prototype);
         }// cloneMob
+
+        public void RegisterRoom(RoomID roomID, Room newRoom)
+        {
+            mRoomList.Add(roomID, newRoom);
+        }// RegisterRoom
+
+        public Dictionary<RoomID, Room> GetRooms()
+        {
+            return mRoomList;
+        }// GetRooms
 
     }// Class Area
 

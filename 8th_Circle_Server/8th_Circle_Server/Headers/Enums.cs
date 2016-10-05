@@ -105,6 +105,7 @@
         GPG_ROOM_75,
         GPG_ROOM_76,
         GPG_ROOM_77,
+        GPG_ROOM_78,
 
         // Proto Area
         PROTO_1,

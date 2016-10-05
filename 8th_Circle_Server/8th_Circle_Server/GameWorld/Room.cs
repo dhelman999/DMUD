@@ -76,7 +76,7 @@ namespace _8th_Circle_Server
             mAreaLoc[2] = zCoord;
             mRoomID = roomID;
             mCurrentArea = area;
-            area.mRoomList.Add(this);
+            area.RegisterRoom(mRoomID, this);
         }// Constructor
 
         public string viewed()
