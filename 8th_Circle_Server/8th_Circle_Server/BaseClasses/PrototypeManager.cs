@@ -2,28 +2,35 @@
 
 namespace _8th_Circle_Server
 {
-    class PrototypeManager
+    public class PrototypeManager
     {
-        private Dictionary<MOBLIST, Mob> mMobRegistry;
+        private static Dictionary<MOBLIST, Mob> sFullGameMobList;
+        private List<Mob> mPrototypeMobList;
 
         public PrototypeManager()
         {
-            mMobRegistry = new Dictionary<MOBLIST, Mob>();
+            mPrototypeMobList = new List<Mob>();
         }// Constructor
 
         // Accessors
-        public Mob getRegisteredMob(MOBLIST mobID)
+        public static Mob getFullGameRegisteredMob(MOBLIST mobID)
         {
-            return mMobRegistry[mobID];
-        }
+            if(sFullGameMobList == null)
+                PrototypeManager.sFullGameMobList = new Dictionary<MOBLIST, Mob>();
 
-        public bool registerMob(MOBLIST mobID, Mob newMob)
+            return PrototypeManager.sFullGameMobList[mobID];
+        }// getFullGameRegisteredMob
+
+        public static bool registerFullGameMob(MOBLIST mobID, Mob newMob)
         {
             bool ret = true;
 
+            if (sFullGameMobList == null)
+                PrototypeManager.sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+
             try
             {
-                mMobRegistry.Add(mobID, newMob);
+                PrototypeManager.sFullGameMobList.Add(mobID, newMob);
             }
             catch
             {
@@ -32,15 +39,18 @@ namespace _8th_Circle_Server
             }
 
             return ret;
-        }// registerMob
+        }// registerFullGameMob
 
-        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name)
+        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "")
         {
             // Create clone from prototype
-            Mob prototype = getRegisteredMob(mobID);
+            Mob prototype = PrototypeManager.getFullGameRegisteredMob(mobID);
             Mob parent = prototype.Clone();
             Mob child = prototype.Clone();
-            parent.mName = child.mName = name;
+            mPrototypeMobList.Add(parent);
+
+            if(name != "")
+                parent.mName = child.mName = name;
 
             // Setup parent/child relationship
             parent.mChildren.Add(child);
@@ -53,7 +63,6 @@ namespace _8th_Circle_Server
             parent.mCurrentArea = currentArea;
             parent.mStartingRoom = startingRoom;
             parent.mCurrentRoom = startingRoom;
-            startingRoom.mCurrentArea.mFullMobList.Add(parent);
 
             // Add the child to the physical location
             startingRoom.addMobResource(child);
@@ -61,6 +70,10 @@ namespace _8th_Circle_Server
             return parent;
         }// cloneMob
 
+        public List<Mob> GetPrototypeMobList()
+        {
+            return mPrototypeMobList;
+        }
     }// class PrototypeManager
 
 }// namespace _8th_Circle_Server

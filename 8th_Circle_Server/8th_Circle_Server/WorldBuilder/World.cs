@@ -21,7 +21,6 @@ namespace _8th_Circle_Server
         public List<Area> mAreaList; 
         public List<Mob> mFullMobList;
         private Room[, ,] mWorldGrid;
-        private PrototypeManager mProtoMgr;
 
         public World() : base()
         {
@@ -31,7 +30,6 @@ namespace _8th_Circle_Server
             mCombatHandler = new CombatHandler(this);
             mAreaList = new List<Area>();
             mFullMobList = new List<Mob>();
-            mProtoMgr = new PrototypeManager();
 
             mCommandHandler.start();
             mEventHandler.start();

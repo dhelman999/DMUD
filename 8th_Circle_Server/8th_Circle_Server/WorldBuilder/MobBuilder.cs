@@ -19,6 +19,7 @@ namespace _8th_Circle_Server
             key.mWorld = this;
             key.mMobId = (int)MOBLIST.BASIC_KEY;
             mFullMobList.Add(key);
+            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_KEY, key);
 
             Container chest = new Container();
             chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
@@ -41,6 +42,7 @@ namespace _8th_Circle_Server
             chest.mStartingRespawnTime = 30;
             chest.mCurrentRespawnTime = 30;
             mFullMobList.Add(chest);
+            PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST1, chest);
 
             Container chest2 = new Container();
             chest2.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
@@ -63,6 +65,7 @@ namespace _8th_Circle_Server
             chest2.mStartingRespawnTime = 30;
             chest2.mCurrentRespawnTime = 30;
             mFullMobList.Add(chest2);
+            PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST2, chest2);
 
             Mob first_circle = new Mob();
             first_circle.mDescription = "The first of eight ancient golden circles";
@@ -81,6 +84,7 @@ namespace _8th_Circle_Server
             first_circle.mWorld = this;
             first_circle.mMobId = (int)MOBLIST.FIRST_CIRCLE;
             mFullMobList.Add(first_circle);
+            PrototypeManager.registerFullGameMob(MOBLIST.FIRST_CIRCLE, first_circle);
 
             Container no_event_chest = new Container();
             no_event_chest.mDescription = "A sturdy, wooden chest.  It makes you wonder what is inside...";
@@ -97,6 +101,7 @@ namespace _8th_Circle_Server
             no_event_chest.mStartingRespawnTime = 30;
             no_event_chest.mCurrentRespawnTime = 30;
             mFullMobList.Add(no_event_chest);
+            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_CHEST, no_event_chest);
 
             Mob basic_switch = new Mob();
             basic_switch.mDescription = "A switch, it must trigger something...";
@@ -107,6 +112,7 @@ namespace _8th_Circle_Server
             basic_switch.mStartingRespawnTime = 30;
             basic_switch.mCurrentRespawnTime = 30;
             mFullMobList.Add(basic_switch);
+            PrototypeManager.registerFullGameMob(MOBLIST.SWITCH, basic_switch);
 
             Equipment basic_sword = new Equipment();
             basic_sword.mDescription = "A rusty old sword, it is barely passable as a weapon";
@@ -126,6 +132,7 @@ namespace _8th_Circle_Server
             basic_sword.mType = EQType.WEAPON;
             basic_sword.mSlot = EQSlot.PRIMARY;
             mFullMobList.Add(basic_sword);
+            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_SWORD, basic_sword);
 
             // NPCs start here
             CombatMob goblin_runt = new CombatMob();
@@ -142,7 +149,7 @@ namespace _8th_Circle_Server
             goblin_runt.mStats.mBaseHit = 50;
             goblin_runt.fillResistances();
             mFullMobList.Add(goblin_runt);
-            mProtoMgr.registerMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
+            PrototypeManager.registerFullGameMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
 
             CombatMob max = new CombatMob();
             max.mDescription = "A super big fluffy cute black and white kitty cat... you just want to hug him";
@@ -153,6 +160,7 @@ namespace _8th_Circle_Server
             max.mStartingRespawnTime = 10;
             max.mCurrentRespawnTime = 10;
             mFullMobList.Add(max);
+            PrototypeManager.registerFullGameMob(MOBLIST.MAX, max);
         }// addMobs
 
         private void addNewMob(MOBLIST mobId, Room startingRoom, Area startingArea)

@@ -111,6 +111,26 @@ namespace _8th_Circle_Server
                     }
                 }// for
 
+                foreach(Mob parent in area.GetPrototypeMobList())
+                {
+                    if (parent.mIsRespawning && (parent.mCurrentRespawnTime -= TICKTIME) <= 0)
+                    {
+                        if (parent.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                        {
+                            parent.mIsRespawning = false;
+                            parent.mCurrentRespawnTime = parent.mStartingRespawnTime;
+                        }
+                        else
+                        {
+                            for (int i= 0; i< parent.mChildren.Count; ++i)
+                                parent.mChildren[i--].destroy();
+
+                            Console.WriteLine("respawning " + parent.mName);
+                            parent.respawn();
+                        }
+                    }
+                }// foreach
+
                 if ((area.mCurrentRespawnTimer -= TICKTIME) <= 0)
                 {
                     targetList.Clear();
