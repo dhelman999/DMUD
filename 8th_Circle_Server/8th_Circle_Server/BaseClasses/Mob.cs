@@ -563,14 +563,14 @@ namespace _8th_Circle_Server
                         player.mClientHandler.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
-                    CommandClass com = mCurrentArea.mCommandExecuter.mCCDict[Utils.createTuple(commandName.COMMAND_TELL, 256)];
+                    CommandClass com = mCurrentArea.GetCommandExecutor().mCCDict[Utils.createTuple(commandName.COMMAND_TELL, 256)];
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
                         commandQueue.Add(com);
                         commandQueue.Add(pl);
                         commandQueue.Add("purrr");
-                        mCurrentArea.mCommandExecuter.execute(com, commandQueue, this);
+                        mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
                         commandQueue.Clear();
                     }
                 }// if (mMobId == (int)MOBLIST.MAX)
@@ -588,7 +588,7 @@ namespace _8th_Circle_Server
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
                         player.mClientHandler.safeWrite(mName + " scampers off\n");
 
-                    mCurrentArea.mCommandExecuter.execute(com, commandQueue, this);
+                    mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
                 }// if
                 else
                 { // There must be no exits in the room the CombatMob is trying to leave, so just stay put
@@ -598,7 +598,7 @@ namespace _8th_Circle_Server
 
         private void addExits(ArrayList commandQueue)
         {
-            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.mCommandExecuter.mCCDict;
+            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().mCCDict;
             Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
             directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
             directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(commandName.COMMAND_NORTH, 1)]);

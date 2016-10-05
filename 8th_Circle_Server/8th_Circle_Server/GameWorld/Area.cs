@@ -4,15 +4,14 @@ namespace _8th_Circle_Server
 {
     public class Area : ResourceHandler
     {
-        // Member Variables
-        public int mAreaOffset;
-        public int mStartingRespawnTimer;
-        public int mCurrentRespawnTimer;
-        public List<EventData> mRevertList;
-        public World mWorld;
-        public CommandExecuter mCommandExecuter;
-        public AreaID mAreaID;
-        public PrototypeManager mProtoManager;
+        private int mAreaOffset;
+        private int mStartingRespawnTimer;
+        private int mCurrentRespawnTimer;
+        private List<EventData> mRevertList;
+        private CommandExecuter mCommandExecuter;
+        private World mWorld;
+        private AreaID mAreaID;
+        private PrototypeManager mProtoManager;
         private Dictionary<RoomID, Room> mRoomList;
 
         public Area(World world, string name, AreaID areaID) : base()
@@ -29,19 +28,6 @@ namespace _8th_Circle_Server
             mAreaID = areaID;
         }// Constructor
 
-        public Room this[RoomID roomID]
-        {
-            get
-            {
-                return mRoomList[roomID];
-            }// Accessor
-        }// [] Property
-
-        public List<Mob> GetPrototypeMobList()
-        {
-            return mProtoManager.GetPrototypeMobList();
-        }// GetPrototypeMobList
-
         public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
             return mProtoManager.cloneMob(mobID, startingRoom, name, prototype);
@@ -52,10 +38,23 @@ namespace _8th_Circle_Server
             mRoomList.Add(roomID, newRoom);
         }// RegisterRoom
 
-        public Dictionary<RoomID, Room> GetRooms()
+        // Properties
+        public Room this[RoomID roomID]
         {
-            return mRoomList;
-        }// GetRooms
+            get { return mRoomList[roomID]; }
+        }
+
+        // Accessors
+        public List<Mob> GetPrototypeMobList() { return mProtoManager.GetPrototypeMobList(); }
+        public void ResetRespawnTimer() { mCurrentRespawnTimer = mStartingRespawnTimer; }
+        public int GetAreaOffset() { return mAreaOffset; }
+        public void SetAreaOffset(int offset) { mAreaOffset = offset; }
+        public int GetCurrentRespawnTimer() { return mCurrentRespawnTimer; }
+        public int DecrementRespawnTimer(int time) { return mCurrentRespawnTimer -= time; }
+        public Dictionary<RoomID, Room> GetRooms() { return mRoomList; }
+        public AreaID GetAreaID() { return mAreaID; }
+        public CommandExecuter GetCommandExecutor() { return mCommandExecuter; }
+        public List<EventData> GetRevertEvents() { return mRevertList; }
 
     }// Class Area
 

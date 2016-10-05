@@ -205,7 +205,7 @@ namespace _8th_Circle_Server
         {
             Area protoArea = new Area(this, "Proto Area", AreaID.AID_PROTOAREA);
             protoArea.mDescription = "The testing area for the 8th Circle";
-            protoArea.mAreaOffset = PROTO_OFFSET;
+            protoArea.SetAreaOffset(PROTO_OFFSET);
 
             Room pa1 = new Room("Room 0,0,0", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_1, protoArea);
             Room pa2 = new Room("Room 1,0,0", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_2, protoArea);
@@ -322,7 +322,7 @@ namespace _8th_Circle_Server
         {
             Area geraldineArea = new Area(this, "Geraldine Estate", AreaID.AID_GERALDINEMANOR);
             geraldineArea.mDescription = "The residence of the esteemed Renee and David";
-            geraldineArea.mAreaOffset = HOUSE_OFFSET;
+            geraldineArea.SetAreaOffset(HOUSE_OFFSET);
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " + "leading up.",
                 HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT, geraldineArea);
@@ -495,7 +495,7 @@ namespace _8th_Circle_Server
             houseBasepart5.addDoor(newDoor, Direction.NORTH);
 
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
-            getRoom(protoArea.mAreaOffset, protoArea.mAreaOffset, protoArea.mAreaOffset, AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
+            getRoom(protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
 
             addGeraldineNpcs(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
@@ -758,7 +758,7 @@ namespace _8th_Circle_Server
             ed.data = AreaID.AID_NEWBIEAREA;
             ed.eventFlag = EventFlag.EVENT_GPG_WALL_ADD;
             ed.commandName = commandName.COMMAND_USE;
-            newbieArea.mRevertList.Add(ed);
+            newbieArea.GetRevertEvents().Add(ed);
 
             addNewbieAreaMobs(newbieArea);
             mAreaHandler.registerArea(newbieArea);
@@ -824,7 +824,7 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
-                if (area.mAreaID == areaID)
+                if (area.GetAreaID() == areaID)
                     return area;
             }
 

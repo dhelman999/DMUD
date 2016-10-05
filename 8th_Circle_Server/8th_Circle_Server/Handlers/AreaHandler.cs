@@ -109,7 +109,8 @@ namespace _8th_Circle_Server
                     }
                 }// foreach
 
-                if ((area.mCurrentRespawnTimer -= TICKTIME) <= 0)
+
+                if (area.DecrementRespawnTimer(TICKTIME) <= 0)
                 {
                     targetList.Clear();
                     targetList.Add(area.getRes(ResType.OBJECT));
@@ -133,9 +134,9 @@ namespace _8th_Circle_Server
                     }// foreach (ArrayList ar in targetList)
 
                     // Revert events
-                    for (int i = 0; i < area.mRevertList.Count; ++i)
+                    for (int i = 0; i < area.GetRevertEvents().Count; ++i)
                     {
-                        EventData ed = area.mRevertList[i];
+                        EventData ed = area.GetRevertEvents()[i];
                         mWorld.mEventHandler.enQueueEvent(ed);
                     }// for
 
@@ -149,8 +150,8 @@ namespace _8th_Circle_Server
                 }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
 
                 // Reset Area respawn timer
-                if (area.mCurrentRespawnTimer <= 0)
-                    area.mCurrentRespawnTimer = area.mStartingRespawnTimer;
+                if (area.GetCurrentRespawnTimer() <= 0)
+                    area.ResetRespawnTimer();
 
             }// foreach (Area area in mAreaList)
 
