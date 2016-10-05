@@ -28,11 +28,11 @@ namespace _8th_Circle_Server
         public List<EventData> mEventList;
         public List<Mob> mChildren;
         public Mob mParent;
-        public int mMobId;
+        public int mMobId; // TODO this should be a MOBLIST enum id
         public int mStartingRespawnTime;
         public int mCurrentRespawnTime;
         public bool mIsRespawning;
-        public int mKeyId;
+        public int mKeyId; // TODO this should be a MOBLIST enum id
         public int mActionTimer;
         public int mStartingActionCounter;
         public int mCurrentActionCounter;

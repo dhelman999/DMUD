@@ -16,9 +16,9 @@ namespace _8th_Circle_Server
         public static Mob getFullGameRegisteredMob(MOBLIST mobID)
         {
             if(sFullGameMobList == null)
-                PrototypeManager.sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
 
-            return PrototypeManager.sFullGameMobList[mobID];
+            return sFullGameMobList[mobID];
         }// getFullGameRegisteredMob
 
         public static bool registerFullGameMob(MOBLIST mobID, Mob newMob)
@@ -26,11 +26,11 @@ namespace _8th_Circle_Server
             bool ret = true;
 
             if (sFullGameMobList == null)
-                PrototypeManager.sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
 
             try
             {
-                PrototypeManager.sFullGameMobList.Add(mobID, newMob);
+                sFullGameMobList.Add(mobID, newMob);
             }
             catch
             {
@@ -43,14 +43,15 @@ namespace _8th_Circle_Server
 
         public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
-            // Create clone from prototype
+            // Create clone from prototype, if none specified, use the global game protoypes
             if(prototype == null)
-                prototype = PrototypeManager.getFullGameRegisteredMob(mobID);
+                prototype = getFullGameRegisteredMob(mobID);
 
             Mob parent = prototype.Clone();
             Mob child = prototype.Clone();
             mPrototypeMobList.Add(parent);
 
+            // Use the name specified, if none, use the global game prototypes name
             if(name != "")
                 parent.mName = child.mName = name;
 
@@ -60,7 +61,7 @@ namespace _8th_Circle_Server
 
             Area currentArea = startingRoom.mCurrentArea;
 
-            // Add starting positions for the parent and add it to the area's prototype list
+            // Add starting positions for the parent
             parent.mStartingArea = currentArea;
             parent.mCurrentArea = currentArea;
             parent.mStartingRoom = startingRoom;

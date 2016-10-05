@@ -231,11 +231,11 @@ namespace _8th_Circle_Server
             newMob.mCurrentArea = mCurrentArea;
             newMob.mStartingRoom = this;
             newMob.mCurrentRoom = this;
-            newMob.mCurrentArea.addRes(newMob);
 
             // Add resources
-            newMob.mWorld.addRes(newMob);
             addRes(newMob);
+            newMob.mCurrentArea.addRes(newMob);
+            newMob.mWorld.addRes(newMob);
         }// addMobResource
 
         public void addDoor(Doorway door, Direction dir)
@@ -299,7 +299,7 @@ namespace _8th_Circle_Server
                 Direction oppositeDir = (Direction)(((int)dir + 5) % 10);
                 mRoomLinks[(int)dir] = targetRoom;
                 targetRoom.mRoomLinks[(int)oppositeDir] = this;
-            }// if
+            }
         }// addDualLinks
 
     }// Class Room
