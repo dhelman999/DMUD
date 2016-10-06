@@ -25,10 +25,10 @@ namespace _8th_Circle_Server
             else
             {
                 CombatMob backstabTarget = ((CombatMob)commandQueue[1]);
-                cm.mWorld.mCombatHandler.abilityAttack(cm, backstabTarget, commandExecutioner.mAbilitySpellList[(int)AbilitySpell.ABILITY_BACKSTAB]);
+                cm.mWorld.GetCombatHandler().abilityAttack(cm, backstabTarget, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BACKSTAB]);
                 commandQueue.Clear();
 
-                CommandClass targetCommand = commandExecutioner.mCCDict[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                CommandClass targetCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
                 commandQueue.Add(targetCommand);
 
                 commandQueue.Add(backstabTarget);

@@ -8,11 +8,10 @@ namespace _8th_Circle_Server
 {
     public class Room : ResourceHandler
     {
-        // Member Variables
-        public RoomID mRoomID;
-        public int []mAreaLoc;
-        public Area mCurrentArea;
-        public List<Room> mRoomLinks;
+        private RoomID mRoomID;
+        private int []mAreaLoc;
+        private Area mCurrentArea;
+        private List<Room> mRoomLinks;
 
         public Room() : base()
         {
@@ -302,6 +301,10 @@ namespace _8th_Circle_Server
             }
         }// addDualLinks
 
+        // Accessors
+        public int[] GetAreaLoc() { return mAreaLoc; }
+        public Area GetCurrentArea() { return mCurrentArea;  }
+        public List<Room> GetRoomLinks() { return mRoomLinks; }
     }// Class Room
 
 }// Namespace _8th_Circle_Server

@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
             mRoomList = new Dictionary<RoomID, Room>();
             mRevertList = new List<EventData>();
             mWorld = world;
-            mWorld.mAreaList.Add(this);
+            mWorld.GetAreas().Add(this);
             mCommandExecuter = new CommandExecuter();
             mProtoManager = new PrototypeManager();
             mAreaID = areaID;

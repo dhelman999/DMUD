@@ -32,7 +32,7 @@ namespace _8th_Circle_Server
                     }
 
                     target = (CombatMob)commandQueue[commandIndex];
-                    Action act = commandExecutioner.mAbilitySpellList[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
+                    Action act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
 
                     if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
@@ -44,15 +44,15 @@ namespace _8th_Circle_Server
                         target.mStats.mCombatList.Add((CombatMob)mob);
                         target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
-                        CommandClass attackCommand = commandExecutioner.mCCDict[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                        CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
                         attackQueue.Add(attackCommand);
 
-                        mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
+                        mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                         attackQueue.Add(target);
                         attackCommand.execute(attackQueue, target, commandExecutioner);
                     }
                     else
-                        mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
+                        mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                     break;
 
                 case "cure":
@@ -64,12 +64,12 @@ namespace _8th_Circle_Server
                     }
 
                     target = (CombatMob)commandQueue[commandIndex];
-                    act = commandExecutioner.mAbilitySpellList[(int)AbilitySpell.SPELL_CURE];
+                    act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_CURE];
 
                     if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
                         return "you don't have enough mana for that";
 
-                    mob.mWorld.mCombatHandler.executeSpell((CombatMob)mob, target, act);
+                    mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                     break;
 
                 default:

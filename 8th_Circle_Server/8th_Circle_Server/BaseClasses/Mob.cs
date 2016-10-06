@@ -133,11 +133,11 @@ namespace _8th_Circle_Server
 
             Direction dir = DirStrToEnum(direction);
 
-            if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
+            if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
             { 
-                clientString = changeRoom(mCurrentRoom.mRoomLinks[(int)dir]);
+                clientString = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir]);
             }
             else
                 return "you can't move that way\n";
@@ -153,16 +153,16 @@ namespace _8th_Circle_Server
             // Remove old references
             mCurrentRoom.removeRes(this);
 
-            if (mCurrentArea != newRoom.mCurrentArea)
+            if (mCurrentArea != newRoom.GetCurrentArea())
             {
                 mCurrentArea.removeRes(this);
-                newRoom.mCurrentArea.addRes(this);
-                mCurrentArea = newRoom.mCurrentArea;
+                newRoom.GetCurrentArea().addRes(this);
+                mCurrentArea = newRoom.GetCurrentArea();
             }// if
 
             // Add new references
             newRoom.addRes(this);
-            mAreaLoc = newRoom.mAreaLoc;
+            mAreaLoc = newRoom.GetAreaLoc();
             mCurrentRoom = newRoom;
 
             return mCurrentRoom.exitString();
@@ -563,7 +563,7 @@ namespace _8th_Circle_Server
                         player.mClientHandler.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
-                    CommandClass com = mCurrentArea.GetCommandExecutor().mCCDict[Utils.createTuple(commandName.COMMAND_TELL, 256)];
+                    CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(commandName.COMMAND_TELL, 256)];
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
@@ -598,7 +598,7 @@ namespace _8th_Circle_Server
 
         private void addExits(ArrayList commandQueue)
         {
-            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().mCCDict;
+            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
             Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
             directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
             directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(commandName.COMMAND_NORTH, 1)]);
@@ -613,7 +613,7 @@ namespace _8th_Circle_Server
 
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
-                if (mCurrentRoom.mRoomLinks[(int)dir] != null &&
+                if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                    (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                    ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
                 {

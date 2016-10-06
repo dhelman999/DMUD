@@ -6,11 +6,10 @@ namespace _8th_Circle_Server
 {
     public class CommandExecuter
     {
-        // Member Variables
-        public Dictionary<PrepositionType, Preposition> mPrepDict;
-        public List<Action> mAbilitySpellList;
-        public Dictionary<Tuple<commandName, int>, CommandClass> mCCDict;
-        public Dictionary<GrammarType, Grammar[]> mGrammarDict;
+        private Dictionary<PrepositionType, Preposition> mPrepDict;
+        private List<Action> mAbilitySpellList;
+        private Dictionary<Tuple<commandName, int>, CommandClass> mCCDict;
+        private Dictionary<GrammarType, Grammar[]> mGrammarDict;
 
         public CommandExecuter()
         {
@@ -573,7 +572,7 @@ namespace _8th_Circle_Server
                         eventData.eventObject = commandClass.predicate1Value;
                         eventData.eventRoom = commandClass.predicate1Value.mCurrentRoom;
                         eventData.validity = commandClass.validity;
-                        ((CombatMob)mob).mWorld.mEventHandler.enQueueEvent(eventData);
+                        ((CombatMob)mob).mWorld.GetEventHandler().enQueueEvent(eventData);
                     }// if       
                 }// if
             }// else if
@@ -789,6 +788,9 @@ namespace _8th_Circle_Server
                 commandQueue[0] = commandClass;
         }// fillEventArgs
 
+        // Accessors
+        public List<Action> GetASList() { return mAbilitySpellList; }
+        public Dictionary<Tuple<commandName, int>, CommandClass> GetCCDict() { return mCCDict; }
     }// Class CommandExecuter
 
 }// Namespace _8th_Circle_Server

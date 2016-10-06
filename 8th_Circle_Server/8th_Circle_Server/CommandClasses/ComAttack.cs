@@ -46,7 +46,7 @@ namespace _8th_Circle_Server
             }
 
             if (!CombatHandler.sCurrentCombats.Contains(attacker))
-                attacker.mWorld.mCombatHandler.enQueueCombat(attacker);
+                attacker.mWorld.GetCombatHandler().enQueueCombat(attacker);
 
             return clientString;
         }// execute

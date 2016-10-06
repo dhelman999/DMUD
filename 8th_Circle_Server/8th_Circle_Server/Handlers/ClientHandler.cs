@@ -27,7 +27,7 @@ namespace _8th_Circle_Server
             mPlayer.mClientHandler = this;
             mPlayer.mResType = ResType.PLAYER;
             mTcpListener = tcpListener;
-            mCommandHandler = world.mCommandHandler;
+            mCommandHandler = world.GetCommandHandler();
             mWorld = world;      
         }// Constructor
 
@@ -54,8 +54,8 @@ namespace _8th_Circle_Server
                             mPlayer.mWorld = mWorld;
                             mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
                             Room curRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
-                            curRoom.mCurrentArea.addRes(mPlayer);
-                            mPlayer.mCurrentArea = curRoom.mCurrentArea;
+                            curRoom.GetCurrentArea().addRes(mPlayer);
+                            mPlayer.mCurrentArea = curRoom.GetCurrentArea();
                             mPlayer.mAreaLoc[0] = 1;
                             mPlayer.mAreaLoc[1] = 1;
                             mPlayer.mAreaLoc[2] = 1;

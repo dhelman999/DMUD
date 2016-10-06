@@ -17,12 +17,11 @@ namespace _8th_Circle_Server
         const int MAXZSIZE = 3;
         
         // Member Variables
-        public CommandHandler mCommandHandler;
-        public EventHandler mEventHandler;
-        public AreaHandler mAreaHandler;
-        public CombatHandler mCombatHandler;
-        public List<Area> mAreaList; 
-        public List<Mob> mFullMobList;
+        private CommandHandler mCommandHandler;
+        private EventHandler mEventHandler;
+        private AreaHandler mAreaHandler;
+        private CombatHandler mCombatHandler;
+        private List<Area> mAreaList; 
         private Room[, ,] mWorldGrid;
 
         public World() : base()
@@ -32,7 +31,6 @@ namespace _8th_Circle_Server
             mAreaHandler = new AreaHandler(this);
             mCombatHandler = new CombatHandler(this);
             mAreaList = new List<Area>();
-            mFullMobList = new List<Mob>();
             mWorldGrid = new Room[MAXXSIZE, MAXYSIZE, MAXZSIZE];
 
             // Add global prototypes and areas
@@ -240,66 +238,66 @@ namespace _8th_Circle_Server
             {
                 Room currentRoom = keyValPair.Value;
 
-                Room nwRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room nRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room neRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room wRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room eRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room swRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room sRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room seRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_PROTOAREA);
-                Room uRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] + 1, AreaID.AID_PROTOAREA);
-                Room dRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] - 1, AreaID.AID_PROTOAREA);
+                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_PROTOAREA);
+                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] - 1, AreaID.AID_PROTOAREA);
 
                 if (nwRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
-                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.GetRoomLinks()[(int)Direction.SOUTHEAST] = currentRoom;
                 }
                 if (nRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTH] = nRoom;
-                    nRoom.mRoomLinks[(int)Direction.SOUTH] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTH] = nRoom;
+                    nRoom.GetRoomLinks()[(int)Direction.SOUTH] = currentRoom;
                 }
                 if (neRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
-                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.GetRoomLinks()[(int)Direction.SOUTHWEST] = currentRoom;
                 }
                 if (wRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.WEST] = wRoom;
-                    wRoom.mRoomLinks[(int)Direction.EAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.WEST] = wRoom;
+                    wRoom.GetRoomLinks()[(int)Direction.EAST] = currentRoom;
                 }
                 if (eRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.EAST] = eRoom;
-                    eRoom.mRoomLinks[(int)Direction.WEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.EAST] = eRoom;
+                    eRoom.GetRoomLinks()[(int)Direction.WEST] = currentRoom;
                 }
                 if (swRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
-                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.GetRoomLinks()[(int)Direction.NORTHEAST] = currentRoom;
                 }
                 if (sRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTH] = sRoom;
-                    sRoom.mRoomLinks[(int)Direction.NORTH] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTH] = sRoom;
+                    sRoom.GetRoomLinks()[(int)Direction.NORTH] = currentRoom;
                 }
                 if (seRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
-                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.GetRoomLinks()[(int)Direction.NORTHWEST] = currentRoom;
                 }
                 if (uRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.UP] = uRoom;
-                    uRoom.mRoomLinks[(int)Direction.DOWN] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.UP] = uRoom;
+                    uRoom.GetRoomLinks()[(int)Direction.DOWN] = currentRoom;
                 }
                 if (dRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.DOWN] = dRoom;
-                    dRoom.mRoomLinks[(int)Direction.UP] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.DOWN] = dRoom;
+                    dRoom.GetRoomLinks()[(int)Direction.UP] = currentRoom;
                 }
             }// foreach
 
@@ -403,18 +401,18 @@ namespace _8th_Circle_Server
             Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " + "for storage",
                 HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM, geraldineArea);
 
-            house1stentranceway.mRoomLinks[(int)Direction.NORTH] = house1stHallway;
-            house1stentranceway.mRoomLinks[(int)Direction.WEST] = house1stLivingRoom;
-            house1stHallway.mRoomLinks[(int)Direction.SOUTH] = house1stentranceway;
-            house1stHallway.mRoomLinks[(int)Direction.WEST] = house1stBathroom;
-            house1stHallway.mRoomLinks[(int)Direction.NORTH] = house1stKitchen;
-            house1stKitchen.mRoomLinks[(int)Direction.WEST] = house1stDiningRoom;
-            house1stKitchen.mRoomLinks[(int)Direction.SOUTH] = house1stHallway;
-            house1stDiningRoom.mRoomLinks[(int)Direction.EAST] = house1stKitchen;
-            house1stDiningRoom.mRoomLinks[(int)Direction.SOUTH] = house1stLivingRoom;
-            house1stLivingRoom.mRoomLinks[(int)Direction.EAST] = house1stentranceway;
-            house1stLivingRoom.mRoomLinks[(int)Direction.NORTH] = house1stDiningRoom;
-            house1stBathroom.mRoomLinks[(int)Direction.EAST] = house1stHallway;
+            house1stentranceway.GetRoomLinks()[(int)Direction.NORTH] = house1stHallway;
+            house1stentranceway.GetRoomLinks()[(int)Direction.WEST] = house1stLivingRoom;
+            house1stHallway.GetRoomLinks()[(int)Direction.SOUTH] = house1stentranceway;
+            house1stHallway.GetRoomLinks()[(int)Direction.WEST] = house1stBathroom;
+            house1stHallway.GetRoomLinks()[(int)Direction.NORTH] = house1stKitchen;
+            house1stKitchen.GetRoomLinks()[(int)Direction.WEST] = house1stDiningRoom;
+            house1stKitchen.GetRoomLinks()[(int)Direction.SOUTH] = house1stHallway;
+            house1stDiningRoom.GetRoomLinks()[(int)Direction.EAST] = house1stKitchen;
+            house1stDiningRoom.GetRoomLinks()[(int)Direction.SOUTH] = house1stLivingRoom;
+            house1stLivingRoom.GetRoomLinks()[(int)Direction.EAST] = house1stentranceway;
+            house1stLivingRoom.GetRoomLinks()[(int)Direction.NORTH] = house1stDiningRoom;
+            house1stBathroom.GetRoomLinks()[(int)Direction.EAST] = house1stHallway;
 
             Doorway newDoor = new Doorway("door");
             house1stBathroom.addDoor(newDoor, Direction.EAST);
@@ -424,20 +422,20 @@ namespace _8th_Circle_Server
             house1stKitchen.addDoor(newDoor, Direction.DOWN);
             houseBaseentrance.addDoor(newDoor, Direction.UP);
 
-            house1stentranceway.mRoomLinks[(int)Direction.UP] = house2ndHallway;
-            house2ndHallway.mRoomLinks[(int)Direction.DOWN] = house1stentranceway;
-            house2ndHallway.mRoomLinks[(int)Direction.EAST] = house2ndKittyroom;
-            house2ndHallway.mRoomLinks[(int)Direction.WEST] = house2ndBathroom;
-            house2ndHallway.mRoomLinks[(int)Direction.SOUTH] = house2ndBlueroom;
-            house2ndHallway.mRoomLinks[(int)Direction.SOUTHWEST] = house2ndBedroom;
-            house2ndKittyroom.mRoomLinks[(int)Direction.NORTH] = house2ndKittyCloset;
-            house2ndKittyroom.mRoomLinks[(int)Direction.WEST] = house2ndHallway;
-            house2ndKittyCloset.mRoomLinks[(int)Direction.SOUTH] = house2ndKittyroom;
-            house2ndBathroom.mRoomLinks[(int)Direction.EAST] = house2ndHallway;
-            house2ndBathroom.mRoomLinks[(int)Direction.SOUTH] = house2ndBedroom;
-            house2ndBedroom.mRoomLinks[(int)Direction.NORTHEAST] = house2ndHallway;
-            house2ndBedroom.mRoomLinks[(int)Direction.NORTH] = house2ndBathroom;
-            house2ndBlueroom.mRoomLinks[(int)Direction.NORTH] = house2ndHallway;
+            house1stentranceway.GetRoomLinks()[(int)Direction.UP] = house2ndHallway;
+            house2ndHallway.GetRoomLinks()[(int)Direction.DOWN] = house1stentranceway;
+            house2ndHallway.GetRoomLinks()[(int)Direction.EAST] = house2ndKittyroom;
+            house2ndHallway.GetRoomLinks()[(int)Direction.WEST] = house2ndBathroom;
+            house2ndHallway.GetRoomLinks()[(int)Direction.SOUTH] = house2ndBlueroom;
+            house2ndHallway.GetRoomLinks()[(int)Direction.SOUTHWEST] = house2ndBedroom;
+            house2ndKittyroom.GetRoomLinks()[(int)Direction.NORTH] = house2ndKittyCloset;
+            house2ndKittyroom.GetRoomLinks()[(int)Direction.WEST] = house2ndHallway;
+            house2ndKittyCloset.GetRoomLinks()[(int)Direction.SOUTH] = house2ndKittyroom;
+            house2ndBathroom.GetRoomLinks()[(int)Direction.EAST] = house2ndHallway;
+            house2ndBathroom.GetRoomLinks()[(int)Direction.SOUTH] = house2ndBedroom;
+            house2ndBedroom.GetRoomLinks()[(int)Direction.NORTHEAST] = house2ndHallway;
+            house2ndBedroom.GetRoomLinks()[(int)Direction.NORTH] = house2ndBathroom;
+            house2ndBlueroom.GetRoomLinks()[(int)Direction.NORTH] = house2ndHallway;
 
             newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.WEST);
@@ -459,24 +457,24 @@ namespace _8th_Circle_Server
             house2ndBathroom.addDoor(newDoor, Direction.SOUTH);
             house2ndBedroom.addDoor(newDoor, Direction.NORTH);
 
-            houseBaseentrance.mRoomLinks[(int)Direction.UP] = house1stKitchen;
-            house1stKitchen.mRoomLinks[(int)Direction.DOWN] = houseBaseentrance;
-            houseBaseentrance.mRoomLinks[(int)Direction.SOUTH] = houseBasepart2;
-            houseBaseentrance.mRoomLinks[(int)Direction.WEST] = houseBaseLaundryRoom;
-            houseBaseLaundryRoom.mRoomLinks[(int)Direction.EAST] = houseBaseentrance;
-            houseBasepart2.mRoomLinks[(int)Direction.NORTH] = houseBaseentrance;
-            houseBasepart2.mRoomLinks[(int)Direction.WEST] = houseBaseCloset;
-            houseBasepart2.mRoomLinks[(int)Direction.EAST] = houseBaseSumpRoom;
-            houseBasepart2.mRoomLinks[(int)Direction.SOUTH] = houseBasepart3;
-            houseBaseSumpRoom.mRoomLinks[(int)Direction.WEST] = houseBasepart2;
-            houseBaseCloset.mRoomLinks[(int)Direction.EAST] = houseBasepart2;
-            houseBasepart3.mRoomLinks[(int)Direction.NORTH] = houseBasepart2;
-            houseBasepart3.mRoomLinks[(int)Direction.SOUTH] = houseBasepart4;
-            houseBasepart4.mRoomLinks[(int)Direction.NORTH] = houseBasepart3;
-            houseBasepart4.mRoomLinks[(int)Direction.WEST] = houseBasepart5;
-            houseBasepart5.mRoomLinks[(int)Direction.EAST] = houseBasepart4;
-            houseBasepart5.mRoomLinks[(int)Direction.NORTH] = houseBaseBathroom;
-            houseBaseBathroom.mRoomLinks[(int)Direction.SOUTH] = houseBasepart5;
+            houseBaseentrance.GetRoomLinks()[(int)Direction.UP] = house1stKitchen;
+            house1stKitchen.GetRoomLinks()[(int)Direction.DOWN] = houseBaseentrance;
+            houseBaseentrance.GetRoomLinks()[(int)Direction.SOUTH] = houseBasepart2;
+            houseBaseentrance.GetRoomLinks()[(int)Direction.WEST] = houseBaseLaundryRoom;
+            houseBaseLaundryRoom.GetRoomLinks()[(int)Direction.EAST] = houseBaseentrance;
+            houseBasepart2.GetRoomLinks()[(int)Direction.NORTH] = houseBaseentrance;
+            houseBasepart2.GetRoomLinks()[(int)Direction.WEST] = houseBaseCloset;
+            houseBasepart2.GetRoomLinks()[(int)Direction.EAST] = houseBaseSumpRoom;
+            houseBasepart2.GetRoomLinks()[(int)Direction.SOUTH] = houseBasepart3;
+            houseBaseSumpRoom.GetRoomLinks()[(int)Direction.WEST] = houseBasepart2;
+            houseBaseCloset.GetRoomLinks()[(int)Direction.EAST] = houseBasepart2;
+            houseBasepart3.GetRoomLinks()[(int)Direction.NORTH] = houseBasepart2;
+            houseBasepart3.GetRoomLinks()[(int)Direction.SOUTH] = houseBasepart4;
+            houseBasepart4.GetRoomLinks()[(int)Direction.NORTH] = houseBasepart3;
+            houseBasepart4.GetRoomLinks()[(int)Direction.WEST] = houseBasepart5;
+            houseBasepart5.GetRoomLinks()[(int)Direction.EAST] = houseBasepart4;
+            houseBasepart5.GetRoomLinks()[(int)Direction.NORTH] = houseBaseBathroom;
+            houseBaseBathroom.GetRoomLinks()[(int)Direction.SOUTH] = houseBasepart5;
 
             newDoor = new Doorway("door");
             houseBaseentrance.addDoor(newDoor, Direction.WEST);
@@ -495,7 +493,7 @@ namespace _8th_Circle_Server
             houseBasepart5.addDoor(newDoor, Direction.NORTH);
 
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
-            getRoom(protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), AreaID.AID_PROTOAREA).mRoomLinks[(int)Direction.WEST] = house1stentranceway;
+            getRoom(protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), AreaID.AID_PROTOAREA).GetRoomLinks()[(int)Direction.WEST] = house1stentranceway;
 
             addGeraldineNpcs(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
@@ -620,66 +618,66 @@ namespace _8th_Circle_Server
             {
                 Room currentRoom = keyValPair.Value;
 
-                Room nwRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room nRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room neRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] + 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room wRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room eRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room swRoom = getRoom(currentRoom.mAreaLoc[0] - 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room sRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room seRoom = getRoom(currentRoom.mAreaLoc[0] + 1, currentRoom.mAreaLoc[1] - 1, currentRoom.mAreaLoc[2], AreaID.AID_NEWBIEAREA);
-                Room uRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] + 1, AreaID.AID_NEWBIEAREA);
-                Room dRoom = getRoom(currentRoom.mAreaLoc[0], currentRoom.mAreaLoc[1], currentRoom.mAreaLoc[2] - 1, AreaID.AID_NEWBIEAREA);
+                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_NEWBIEAREA);
+                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] - 1, AreaID.AID_NEWBIEAREA);
 
                 if (nwRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTHWEST] = nwRoom;
-                    nwRoom.mRoomLinks[(int)Direction.SOUTHEAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTHWEST] = nwRoom;
+                    nwRoom.GetRoomLinks()[(int)Direction.SOUTHEAST] = currentRoom;
                 }
                 if (nRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTH] = nRoom;
-                    nRoom.mRoomLinks[(int)Direction.SOUTH] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTH] = nRoom;
+                    nRoom.GetRoomLinks()[(int)Direction.SOUTH] = currentRoom;
                 }
                 if (neRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.NORTHEAST] = neRoom;
-                    neRoom.mRoomLinks[(int)Direction.SOUTHWEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.NORTHEAST] = neRoom;
+                    neRoom.GetRoomLinks()[(int)Direction.SOUTHWEST] = currentRoom;
                 }
                 if (wRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.WEST] = wRoom;
-                    wRoom.mRoomLinks[(int)Direction.EAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.WEST] = wRoom;
+                    wRoom.GetRoomLinks()[(int)Direction.EAST] = currentRoom;
                 }
                 if (eRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.EAST] = eRoom;
-                    eRoom.mRoomLinks[(int)Direction.WEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.EAST] = eRoom;
+                    eRoom.GetRoomLinks()[(int)Direction.WEST] = currentRoom;
                 }
                 if (swRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTHWEST] = swRoom;
-                    swRoom.mRoomLinks[(int)Direction.NORTHEAST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTHWEST] = swRoom;
+                    swRoom.GetRoomLinks()[(int)Direction.NORTHEAST] = currentRoom;
                 }
                 if (sRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTH] = sRoom;
-                    sRoom.mRoomLinks[(int)Direction.NORTH] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTH] = sRoom;
+                    sRoom.GetRoomLinks()[(int)Direction.NORTH] = currentRoom;
                 }
                 if (seRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.SOUTHEAST] = seRoom;
-                    seRoom.mRoomLinks[(int)Direction.NORTHWEST] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.SOUTHEAST] = seRoom;
+                    seRoom.GetRoomLinks()[(int)Direction.NORTHWEST] = currentRoom;
                 }
                 if (uRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.UP] = uRoom;
-                    uRoom.mRoomLinks[(int)Direction.DOWN] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.UP] = uRoom;
+                    uRoom.GetRoomLinks()[(int)Direction.DOWN] = currentRoom;
                 }
                 if (dRoom != null)
                 {
-                    currentRoom.mRoomLinks[(int)Direction.DOWN] = dRoom;
-                    dRoom.mRoomLinks[(int)Direction.UP] = currentRoom;
+                    currentRoom.GetRoomLinks()[(int)Direction.DOWN] = dRoom;
+                    dRoom.GetRoomLinks()[(int)Direction.UP] = currentRoom;
                 }
             }// foreach
 
@@ -752,7 +750,7 @@ namespace _8th_Circle_Server
             newDoor.mFlagList.Add(MobFlags.FLAG_HIDDEN);
             newDoor.mStartingFlagList.Add(MobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
-            ((gpg_71.mRoomLinks[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
+            ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
             EventData ed = new EventData();
             ed.data = AreaID.AID_NEWBIEAREA;
@@ -839,9 +837,9 @@ namespace _8th_Circle_Server
             {
                 Room currentRoom = keyValPair.Value;
 
-                if (currentRoom.mAreaLoc[0] == x &&
-                    currentRoom.mAreaLoc[1] == y &&
-                    currentRoom.mAreaLoc[2] == z)
+                if (currentRoom.GetAreaLoc()[0] == x &&
+                    currentRoom.GetAreaLoc()[1] == y &&
+                    currentRoom.GetAreaLoc()[2] == z)
                 {
                     return currentRoom;
                 }
@@ -860,6 +858,12 @@ namespace _8th_Circle_Server
 
             return null;
         }// getArea
+
+        // Accessors
+        public CommandHandler GetCommandHandler() { return mCommandHandler; }
+        public CombatHandler GetCombatHandler() { return mCombatHandler; }
+        public EventHandler GetEventHandler() { return mEventHandler; }
+        public List<Area> GetAreas() { return mAreaList; }
 
     }// Class World
 

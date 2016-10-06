@@ -80,7 +80,7 @@ namespace _8th_Circle_Server
                     if(mob is CombatMob && ((CombatMob)mob).mQueuedCommand != string.Empty)
                     {
                         commandData cd = new commandData(((CombatMob)mob).mQueuedCommand, (CombatMob)mob);
-                        mWorld.mCommandHandler.enQueueCommand(cd);
+                        mWorld.GetCommandHandler().enQueueCommand(cd);
                         ((CombatMob)mob).mQueuedCommand = string.Empty;
                     }
                 }// foreach
@@ -137,7 +137,7 @@ namespace _8th_Circle_Server
                     for (int i = 0; i < area.GetRevertEvents().Count; ++i)
                     {
                         EventData ed = area.GetRevertEvents()[i];
-                        mWorld.mEventHandler.enQueueEvent(ed);
+                        mWorld.GetEventHandler().enQueueEvent(ed);
                     }// for
 
                     // Revert Doorway's initial state

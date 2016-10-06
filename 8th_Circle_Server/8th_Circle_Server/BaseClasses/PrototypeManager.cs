@@ -59,7 +59,7 @@ namespace _8th_Circle_Server
             parent.mChildren.Add(child);
             child.mParent = parent;
 
-            Area currentArea = startingRoom.mCurrentArea;
+            Area currentArea = startingRoom.GetCurrentArea();
 
             // Add starting positions for the parent
             parent.mStartingArea = currentArea;

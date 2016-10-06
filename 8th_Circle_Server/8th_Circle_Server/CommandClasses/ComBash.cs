@@ -21,7 +21,7 @@ namespace _8th_Circle_Server
             else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't bash if you are not in combat\b";
             else
-                cm.mWorld.mCombatHandler.abilityAttack(cm, null, commandExecutioner.mAbilitySpellList[(int)AbilitySpell.ABILITY_BASH]);
+                cm.mWorld.GetCombatHandler().abilityAttack(cm, null, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BASH]);
 
             return clientString;
         }// execute
