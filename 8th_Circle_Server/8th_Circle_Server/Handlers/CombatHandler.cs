@@ -164,12 +164,12 @@ namespace _8th_Circle_Server
 
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
-                int level = attacker.mStats.mLevel;
+                int level = attacker.mStats.mStats[STAT.LEVEL];
                 damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
             else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL && ability.mWeaponRequired)
             {
-                int level = attacker.mStats.mLevel;
+                int level = attacker.mStats.mStats[STAT.LEVEL];
                 Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
                 damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
@@ -207,7 +207,7 @@ namespace _8th_Circle_Server
 
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
-                int level = attacker.mStats.mLevel;
+                int level = attacker.mStats.mStats[STAT.LEVEL];
                 healAmount = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
 
