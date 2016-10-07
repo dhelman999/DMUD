@@ -70,10 +70,10 @@ namespace _8th_Circle_Server
             chest.mInventory.Capacity = 20;
             chest.mWorld = this;
             EventData eventData = new EventData();
-            eventData.eventFlag = EventFlag.EVENT_TELL_PLAYER;
-            eventData.commandName = commandName.COMMAND_LOOK;
-            eventData.prepType = PrepositionType.PREP_IN;
-            eventData.data = "A voice speaks to you from within the chest";
+            eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
+            eventData.SetCommand(commandName.COMMAND_LOOK);
+            eventData.SetPrep(PrepositionType.PREP_IN);
+            eventData.SetData("A voice speaks to you from within the chest");
             chest.mEventList.Add(eventData);
             chest.mMobId = (int)MOBLIST.EVENT_CHEST1;
             chest.mKeyId = (int)MOBLIST.BASIC_KEY;
@@ -92,10 +92,10 @@ namespace _8th_Circle_Server
             chest2.mInventory.Capacity = 20;
             chest2.mWorld = this;
             eventData = new EventData();
-            eventData.eventFlag = EventFlag.EVENT_TELL_PLAYER;
-            eventData.commandName = commandName.COMMAND_LOOK;
-            eventData.prepType = PrepositionType.PREP_AT;
-            eventData.data = "The " + chest.mName + " says \"hello!\"";
+            eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
+            eventData.SetCommand(commandName.COMMAND_LOOK);
+            eventData.SetPrep(PrepositionType.PREP_AT);
+            eventData.SetData("The " + chest.mName + " says \"hello!\"");
             chest2.mEventList.Add(eventData);
             chest2.mMobId = (int)MOBLIST.EVENT_CHEST2;
             chest2.mKeyId = (int)MOBLIST.BASIC_KEY;
@@ -112,9 +112,9 @@ namespace _8th_Circle_Server
             first_circle.mFlagList.Add(MobFlags.FLAG_USEABLE);
             first_circle.mName = "1st Circle";
             eventData = new EventData();
-            eventData.eventFlag = EventFlag.EVENT_TELEPORT;
-            eventData.commandName = commandName.COMMAND_GET;
-            eventData.data = RoomID.GPG_PLAYER_START;
+            eventData.SetEvent(EventFlag.EVENT_TELEPORT);
+            eventData.SetCommand(commandName.COMMAND_GET);
+            eventData.SetData(RoomID.GPG_PLAYER_START);
             first_circle.mEventList.Add(eventData);
             first_circle.mInventory.Capacity = 0;
             first_circle.mWorld = this;
@@ -159,11 +159,11 @@ namespace _8th_Circle_Server
             basic_sword.mMobId = (int)MOBLIST.BASIC_SWORD;
             basic_sword.mStartingRespawnTime = 30;
             basic_sword.mCurrentRespawnTime = 30;
-            basic_sword.mMinDam = 2;
-            basic_sword.mMaxDam = 11;
-            basic_sword.mHitMod = 10;
-            basic_sword.mType = EQType.WEAPON;
-            basic_sword.mSlot = EQSlot.PRIMARY;
+            basic_sword.SetMinDam(2);
+            basic_sword.SetMaxDam(11);
+            basic_sword.SetHitMod(10);
+            basic_sword.SetType(EQType.WEAPON);
+            basic_sword.SetSlot(EQSlot.PRIMARY);
             PrototypeManager.registerFullGameMob(MOBLIST.BASIC_SWORD, basic_sword);
 
             CombatMob goblin_runt = new CombatMob();
@@ -202,7 +202,7 @@ namespace _8th_Circle_Server
         private void addProtoArea()
         {
             Area protoArea = new Area(this, "Proto Area", AreaID.AID_PROTOAREA);
-            protoArea.mDescription = "The testing area for the 8th Circle";
+            protoArea.SetDescription("The testing area for the 8th Circle");
             protoArea.SetAreaOffset(PROTO_OFFSET);
 
             Room pa1 = new Room("Room 0,0,0", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_1, protoArea);
@@ -319,7 +319,7 @@ namespace _8th_Circle_Server
         private void addGeraldineArea()
         {
             Area geraldineArea = new Area(this, "Geraldine Estate", AreaID.AID_GERALDINEMANOR);
-            geraldineArea.mDescription = "The residence of the esteemed Renee and David";
+            geraldineArea.SetDescription("The residence of the esteemed Renee and David");
             geraldineArea.SetAreaOffset(HOUSE_OFFSET);
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " + "leading up.",
@@ -509,9 +509,9 @@ namespace _8th_Circle_Server
         {
             Area newbieArea = new Area(this, "Goblin Prooving Grounds", AreaID.AID_NEWBIEAREA);
 
-            newbieArea.mDescription = "This area is the leftover pits where unworthy goblins were abandoned " +
+            newbieArea.SetDescription("This area is the leftover pits where unworthy goblins were abandoned " +
                "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
-               "and were cast out until they prooved themselves";
+               "and were cast out until they prooved themselves");
 
             string common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
                "a little further, the walls to the north rise as high as you can see.\n" +
@@ -748,14 +748,14 @@ namespace _8th_Circle_Server
 
             Doorway newDoor = new Doorway("door");
             newDoor.mFlagList.Add(MobFlags.FLAG_HIDDEN);
-            newDoor.mStartingFlagList.Add(MobFlags.FLAG_HIDDEN);
+            newDoor.GetStartingFlagList().Add(MobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
             EventData ed = new EventData();
-            ed.data = AreaID.AID_NEWBIEAREA;
-            ed.eventFlag = EventFlag.EVENT_GPG_WALL_ADD;
-            ed.commandName = commandName.COMMAND_USE;
+            ed.SetData(AreaID.AID_NEWBIEAREA);
+            ed.SetEvent(EventFlag.EVENT_GPG_WALL_ADD);
+            ed.SetCommand(commandName.COMMAND_USE);
             newbieArea.GetRevertEvents().Add(ed);
 
             addNewbieAreaMobs(newbieArea);
@@ -786,17 +786,17 @@ namespace _8th_Circle_Server
 
             Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
             EventData ed = new EventData();
-            ed.data = AreaID.AID_NEWBIEAREA;
-            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
-            ed.commandName = commandName.COMMAND_USE;
+            ed.SetData(AreaID.AID_NEWBIEAREA);
+            ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
+            ed.SetCommand(commandName.COMMAND_USE);
             basic_switch.mEventList.Add(ed);
             newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
 
             basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
             ed = new EventData();
-            ed.data = AreaID.AID_NEWBIEAREA;
-            ed.eventFlag = EventFlag.EVENT_GPG_WALL_REMOVE;
-            ed.commandName = commandName.COMMAND_USE;
+            ed.SetData(AreaID.AID_NEWBIEAREA);
+            ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
+            ed.SetCommand(commandName.COMMAND_USE);
             basic_switch.mEventList.Add(ed);
             newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
 
@@ -852,7 +852,7 @@ namespace _8th_Circle_Server
         {
             foreach (Area area in mAreaList)
             {
-                if(area.mName.Equals(areaName))
+                if(area.GetName().Equals(areaName))
                     return area;
             }// foreach
 

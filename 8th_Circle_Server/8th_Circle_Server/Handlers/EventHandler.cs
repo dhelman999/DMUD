@@ -6,14 +6,14 @@ namespace _8th_Circle_Server
 {
     public struct EventData
     {
-        public EventFlag eventFlag;
-        public Mob trigger;
-        public Mob eventObject;
-        public Room eventRoom;
-        public validityType validity;
-        public commandName commandName;
-        public PrepositionType prepType;
-        public Object data;
+        private EventFlag eventFlag;
+        private Mob trigger;
+        private Mob eventObject;
+        private Room eventRoom;
+        private validityType validity;
+        private commandName commandName;
+        private PrepositionType prepType;
+        private Object data;
 
         public EventData(EventFlag eventFlag, 
                          Mob trigger, 
@@ -33,15 +33,29 @@ namespace _8th_Circle_Server
             this.prepType = prepType;
             this.data = data;
         }// Constructor
+
+        // Accessors
+        public EventFlag GetEvent() { return eventFlag; }
+        public void SetEvent(EventFlag flag) { eventFlag = flag; }
+        public commandName GetCommand() { return commandName; }
+        public void SetCommand(commandName command) { commandName = command; }
+        public void SetPrep(PrepositionType prep) { prepType = prep; }
+        public Object GetData() { return data; }
+        public void SetData(Object dat) { data = dat; }
+        public Mob GetTrigger() { return trigger; }
+        public void SetTrigger(Mob trig) { trigger = trig; }
+        public Mob GetEventObject() { return eventObject; }
+        public void SetEventObject(Mob obj) { eventObject = obj; }
+        public void SetRoom(Room room) { eventRoom = room; }
+        public void SetValidity(validityType val) { validity = val; }
+        public PrepositionType GetPrepType() { return prepType; }
     }// EventData
 
     public class EventHandler
     {
-        // Member Variables
-        public ArrayList mEventCache;
-        public Queue mEventQueue;
-        public World mWorld;
-
+        private ArrayList mEventCache;
+        private Queue mEventQueue;
+        private World mWorld;
         private object mQueueLock;
         private Thread mSpinWorkThread; 
 
@@ -91,26 +105,26 @@ namespace _8th_Circle_Server
                 EventData eventData = (EventData)mEventQueue.Dequeue();
                 Area area;
 
-                switch (eventData.eventFlag)
+                switch (eventData.GetEvent())
                 {
                     case EventFlag.EVENT_TELL_PLAYER:
-                        if (eventData.trigger.mResType == ResType.PLAYER)
-                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite((string)eventData.data);
+                        if (eventData.GetTrigger().mResType == ResType.PLAYER)
+                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite((string)eventData.GetData());
 
                         break;
                         
                     case EventFlag.EVENT_TELEPORT:
-                        if (eventData.trigger.mResType == ResType.PLAYER)
+                        if (eventData.GetTrigger().mResType == ResType.PLAYER)
                         {
-                            RoomID roomID = (RoomID)eventData.data;
-                            (mWorld.GetAreas()[2])[roomID].addMobResource(eventData.trigger);
-                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
-                            ((CombatMob)eventData.trigger).mClientHandler.safeWrite(eventData.trigger.mCurrentRoom.exitString());
+                            RoomID roomID = (RoomID)eventData.GetData();
+                            (mWorld.GetAreas()[2])[roomID].addMobResource(eventData.GetTrigger());
+                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
+                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite(eventData.GetTrigger().mCurrentRoom.exitString());
                         }
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
-                        area = mWorld.getArea((AreaID)eventData.data);
+                        area = mWorld.getArea((AreaID)eventData.GetData());
 
                         foreach (CombatMob pl in area.getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite("The area shakes and rumbles");
@@ -134,7 +148,7 @@ namespace _8th_Circle_Server
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_ADD:
-                        area = mWorld.getArea((AreaID)eventData.data);
+                        area = mWorld.getArea((AreaID)eventData.GetData());
 
                         foreach (CombatMob pl in area.getRes(ResType.PLAYER))
                             pl.mClientHandler.safeWrite("The area shakes and rumbles");
@@ -165,6 +179,8 @@ namespace _8th_Circle_Server
             }// while
 
         }// processEvent
+
+        // Accessors
 
     }// Class EventHandler
 

@@ -3,29 +3,29 @@ namespace _8th_Circle_Server
 {
     public class Equipment : Mob
     {
-        public int mLevel;
-        public EQType mType;
-        public DamageType mDamType;
-        public EQSlot mSlot;
-        public Useable mUsedby;
-        public int mBaseDamBonus;
-        public int mMaxHpMod;
-        public int mHitMod;
-        public int mMinDam;
-        public int mMaxDam;
-        public int mArmor;
-        public int mPhysRes;
-        public int mMaxPhysRes;
-        public int mFireRes;
-        public int mMaxFireRes;
-        public int mColdRes;
-        public int mMaxColdRes;
-        public int mLightningRes;
-        public int mMaxLightningRes;
-        public int mAcidRes;
-        public int mMaxAcidRes;
-        public int mForceRes;
-        public int mMaxForceRes;
+        private int mLevel;
+        private EQType mType;
+        private DamageType mDamType;
+        private EQSlot mSlot;
+        private Useable mUsedby;
+        private int mBaseDamBonus;
+        private int mMaxHpMod;
+        private int mHitMod;
+        private int mMinDam;
+        private int mMaxDam;
+        private int mArmor;
+        private int mPhysRes;
+        private int mMaxPhysRes;
+        private int mFireRes;
+        private int mMaxFireRes;
+        private int mColdRes;
+        private int mMaxColdRes;
+        private int mLightningRes;
+        private int mMaxLightningRes;
+        private int mAcidRes;
+        private int mMaxAcidRes;
+        private int mForceRes;
+        private int mMaxForceRes;
 
         public Equipment() : base()
         {
@@ -113,6 +113,17 @@ namespace _8th_Circle_Server
             mob.mWorld.addRes(mob);
         }// respawn
 
+        // Accessors
+        public void SetType(EQType type) { mType = type; }
+        public DamageType GetDamType() { return mDamType; }
+        public EQSlot GetSlot() { return mSlot; }
+        public void SetSlot(EQSlot slot) { mSlot = slot; }
+        public int GetMinDam() { return mMinDam; }
+        public void SetMinDam(int dam) { mMinDam = dam; }
+        public int GetMaxDam() { return mMaxDam; }
+        public void SetMaxDam(int dam) { mMaxDam = dam; }
+        public int GetHitMod() { return mHitMod; }
+        public void SetHitMod(int mod) { mHitMod = mod; }
     }// class Equipment
 
 }// namespace _8th_Circle_Server

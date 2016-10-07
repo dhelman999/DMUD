@@ -9,11 +9,11 @@ namespace _8th_Circle_Server
         internal const int MAXROOMS = 10;
 
         // Member Variables
-        public bool mIsOpen;
-        public bool mIsLocked;
-        public Room [] mRoomList;
-        public List<MobFlags> mStartingFlagList;
-        public Memento mMemento;
+        private bool mIsOpen;
+        private bool mIsLocked;
+        private Room [] mRoomList;
+        private List<MobFlags> mStartingFlagList;
+        private Memento mMemento;
 
         public Doorway() : base()
         {
@@ -168,6 +168,12 @@ namespace _8th_Circle_Server
 
         }// exitString
 
+        // Accessors
+        public bool IsOpen() { return mIsOpen; }
+        public bool IsLocked() { return mIsLocked; }
+        public Room[] GetRoomList() { return mRoomList; }
+        public List<MobFlags> GetStartingFlagList() { return mStartingFlagList; }
+        public Memento Memento() { return mMemento; }
     }// Class Doorway
 
 }// Namespace _8th_Circle_Server

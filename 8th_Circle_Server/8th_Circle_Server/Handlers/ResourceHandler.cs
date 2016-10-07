@@ -4,9 +4,9 @@ namespace _8th_Circle_Server
 {
     public class ResourceHandler
     {
-        public string mName;
-        public string mDescription;
-        public List<List<Mob>> mResources;
+        protected string mName;
+        protected string mDescription;
+        protected List<List<Mob>> mResources;
 
         public ResourceHandler()
         {
@@ -31,6 +31,10 @@ namespace _8th_Circle_Server
             mResources[(int)mob.mResType].Remove(mob);
         }// removeRes  
 
+        // Accessors
+        public string GetName() { return mName; }
+        public string GetDescription() { return mDescription; }
+        public void SetDescription(string desc) { mDescription = desc; }
     }// class ResourceHandler
     
 }// Namespace _8th_Circle_Server

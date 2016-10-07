@@ -4,7 +4,7 @@ namespace _8th_Circle_Server
     public class Container : Mob
     {
         // Member Variables
-        public bool mIsOpen;
+        private bool mIsOpen;
 
         public Container(string name = "") : base()
         {
@@ -194,6 +194,8 @@ namespace _8th_Circle_Server
             cont.mWorld.addRes(cont);
         }// respawn
 
+        // Accessors
+        public bool IsOpen() { return mIsOpen; }
     }// Class Container
 
 }// Namespace _8th_Circle_Server

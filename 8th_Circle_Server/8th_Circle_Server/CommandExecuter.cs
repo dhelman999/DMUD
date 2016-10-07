@@ -565,13 +565,13 @@ namespace _8th_Circle_Server
                     // Also, this triggers regardless if the action was a success, for example
                     // if you look in a closed chest, and the event is trigger on the look in command,
                     // it will happen either way, need a way to check for success.
-                    if(eventData.commandName == commandClass.commandName &&
-                       eventData.prepType == commandClass.prep1Value.prepType)
+                    if(eventData.GetCommand() == commandClass.commandName &&
+                       eventData.GetPrepType() == commandClass.prep1Value.prepType)
                     {
-                        eventData.trigger = commandClass.commandOwner;
-                        eventData.eventObject = commandClass.predicate1Value;
-                        eventData.eventRoom = commandClass.predicate1Value.mCurrentRoom;
-                        eventData.validity = commandClass.validity;
+                        eventData.SetTrigger(commandClass.commandOwner);
+                        eventData.SetEventObject(commandClass.predicate1Value);
+                        eventData.SetRoom(commandClass.predicate1Value.mCurrentRoom);
+                        eventData.SetValidity(commandClass.validity);
                         ((CombatMob)mob).mWorld.GetEventHandler().enQueueEvent(eventData);
                     }// if       
                 }// if

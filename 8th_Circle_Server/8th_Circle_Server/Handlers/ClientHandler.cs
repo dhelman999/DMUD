@@ -7,19 +7,17 @@ namespace _8th_Circle_Server
 {
     public class ClientHandler
     {
-        // Member Variables
-        public TcpListener mTcpListener;
-        public Socket mSocketForClient;
-        public NetworkStream mNetworkStream;
-        public StreamReader mStreamReader;
-        public StreamWriter mStreamWriter;
-        public Thread mResponderThread;
-        public CombatMob mPlayer;
-        public string mCmdString;
-        public World mWorld;
-        public CommandHandler mCommandHandler;
-
-        private object PlayerLock = new object();  
+        private TcpListener mTcpListener;
+        private Socket mSocketForClient;
+        private NetworkStream mNetworkStream;
+        private StreamReader mStreamReader;
+        private StreamWriter mStreamWriter;
+        private Thread mResponderThread;
+        private CombatMob mPlayer;
+        private string mCmdString;
+        private World mWorld;
+        private CommandHandler mCommandHandler;
+        private object PlayerLock;  
 
         public ClientHandler(TcpListener tcpListener, World world)
         {
@@ -28,7 +26,8 @@ namespace _8th_Circle_Server
             mPlayer.mResType = ResType.PLAYER;
             mTcpListener = tcpListener;
             mCommandHandler = world.GetCommandHandler();
-            mWorld = world;      
+            mWorld = world;
+            PlayerLock = new object();
         }// Constructor
 
         public void start()

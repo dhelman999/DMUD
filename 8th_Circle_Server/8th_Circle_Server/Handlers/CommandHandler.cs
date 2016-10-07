@@ -5,11 +5,9 @@ namespace _8th_Circle_Server
 {
     public class CommandHandler
     {   
-        // Member Variables
-        public Queue<commandData> mCommandQueue;
-        public CommandExecuter mCommandExecuter;
-        public World mWorld;
-
+        private Queue<commandData> mCommandQueue;
+        private CommandExecuter mCommandExecuter;
+        private World mWorld;
         private object mQueueLock;
         private Thread mSpinWorkThread; 
   

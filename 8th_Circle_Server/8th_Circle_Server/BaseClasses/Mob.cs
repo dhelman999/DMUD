@@ -135,7 +135,7 @@ namespace _8th_Circle_Server
 
             if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-               ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
+               ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).IsOpen()))
             { 
                 clientString = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir]);
             }
@@ -254,7 +254,7 @@ namespace _8th_Circle_Server
                         return "you get " + exitString(mCurrentRoom) + "\n";
                     }
                     else if (container.mFlagList.Contains(MobFlags.FLAG_OPENABLE) &&
-                             container.mIsOpen)
+                             container.IsOpen())
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -615,7 +615,7 @@ namespace _8th_Circle_Server
             {
                 if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                    (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-                   ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).mIsOpen))
+                   ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).IsOpen()))
                 {
                     commandQueue.Add(directionalCommands[dir]);
                 }// if

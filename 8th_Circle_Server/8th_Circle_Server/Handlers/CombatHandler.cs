@@ -6,16 +6,14 @@ namespace _8th_Circle_Server
 {
     public class CombatHandler
     {
-        // Member Variables
-        public Queue<CombatMob> mCombatQueue;
-        public World mWorld;
-        public Random mRand;
-
         // TODO
         // Is this the best way to not spawn new combat threads
         // when someone issues another attack command?
         public static List<CombatMob> sCurrentCombats;
 
+        private Queue<CombatMob> mCombatQueue;
+        private World mWorld;
+        private Random mRand;
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
@@ -173,7 +171,7 @@ namespace _8th_Circle_Server
             {
                 int level = attacker.mStats.mLevel;
                 Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
-                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) * 2;
+                damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
                           ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
             }// else if
@@ -296,7 +294,7 @@ namespace _8th_Circle_Server
             double damage = 0;
 
             if (weapon != null)
-                damage = mRand.Next(weapon.mMinDam, weapon.mMaxDam) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
             else
                 damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
 
@@ -304,7 +302,7 @@ namespace _8th_Circle_Server
                 damage *= 1.5;
 
             if(weapon != null)
-                damage *= (1 - (target.mResistances[(int)weapon.mDamType] / 100));
+                damage *= (1 - (target.mResistances[(int)weapon.GetDamType()] / 100));
             else
                 damage *= (1 - (target.mResistances[(int)DamageType.PHYSICAL] / 100));
 

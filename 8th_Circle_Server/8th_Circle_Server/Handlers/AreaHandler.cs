@@ -8,10 +8,8 @@ namespace _8th_Circle_Server
     {
         internal const int TICKTIME = 1;
 
-        // Member Variables
-        public List<Area> mAreaList;
-        public World mWorld;
-
+        private List<Area> mAreaList;
+        private World mWorld;
         private object mQueueLock;
         private Thread mSpinWorkThread;
 
