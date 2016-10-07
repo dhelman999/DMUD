@@ -6,34 +6,36 @@ namespace _8th_Circle_Server
         public Wizard() : base()
         {
             mMobType = MobType.WIZARD;
-            mStats.mBaseHit -= 10;
-            mStats.mBaseMaxHp -= 10;
-            mStats.mCurrentHp -= 10;
-            mStats.mBaseMaxMana = 40;
-            mStats.mCurrentMana = 40;
+            this[STAT.BASEHIT] = this[STAT.BASEHIT] - 10;
+            this[STAT.BASEMAXHP] = this[STAT.BASEMAXHP] - 10;
+            this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 10;
+            this[STAT.BASEMAXMANA] = 40;
+            this[STAT.CURRENTMANA] = 40;
+
             addActions();
         }// Constructor
 
         public Wizard(CombatMob cm) : base(cm)
         {
             mMobType = MobType.WIZARD;
-            mStats.mBaseHit -= 10;
-            mStats.mBaseMaxHp -= 10;
-            mStats.mCurrentHp -= 10;
-            mStats.mBaseMaxMana = 40;
-            mStats.mCurrentMana = 40;
+            this[STAT.BASEHIT] = this[STAT.BASEHIT] - 10;
+            this[STAT.BASEMAXHP] = this[STAT.BASEMAXHP] - 10;
+            this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 10;
+            this[STAT.BASEMAXMANA] = 40;
+            this[STAT.CURRENTMANA] = 40;
+
             addActions();
         }// Constructor
 
         public override string playerString()
         {
-            return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp " +
-                   mStats.mCurrentMana + "/" + (mStats.mBaseMaxMana + mStats.mMaxManaMod) + " mana\n";
+            return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp " +
+                   this[STAT.CURRENTMANA] + "/" + (this[STAT.BASEMAXMANA] + this[STAT.MAXMANAMOD]) + " mana\n";
         }// playerString
 
         private void addActions()
         {   
-            mStats.mActionList.Add(new Mob("mystic shot"));
+            AddAction(new Mob("mystic shot"));
         }// addActions
 
     }// Class Wizard

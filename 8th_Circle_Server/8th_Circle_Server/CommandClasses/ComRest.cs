@@ -33,21 +33,21 @@ namespace _8th_Circle_Server
 
         public static void restTask(CombatMob mob)
         {
-            int maxHp = mob.mStats.mBaseMaxHp + mob.mStats.mMaxHpMod;
-            int maxMana = mob.mStats.mBaseMaxMana + mob.mStats.mMaxManaMod;
+            int maxHp = mob[STAT.BASEMAXHP] + mob[STAT.MAXHPMOD];
+            int maxMana = mob[STAT.BASEMAXMANA] + mob[STAT.MAXMANAMOD];
             double hpRegen = (maxHp / 20) + 1;
             double manaRegen = (maxMana / 20) + 1;
             Thread.Sleep(4000);
 
             while (mob.mFlagList.Contains(MobFlags.FLAG_RESTING))
             {
-                mob.mStats.mCurrentHp += (int)hpRegen;
-                mob.mStats.mCurrentMana += (int)manaRegen;
+                mob[STAT.CURRENTHP] = mob[STAT.CURRENTHP] + (int)hpRegen;
+                mob[STAT.CURRENTMANA] = mob[STAT.CURRENTMANA] + (int)manaRegen;
 
-                if (mob.mStats.mCurrentHp > (maxHp))
-                    mob.mStats.mCurrentHp = maxHp;
-                if (mob.mStats.mCurrentMana > (maxMana))
-                    mob.mStats.mCurrentMana = maxMana;
+                if (mob[STAT.CURRENTHP] > (maxHp))
+                    mob[STAT.CURRENTHP] = maxHp;
+                if (mob[STAT.CURRENTMANA] > (maxMana))
+                    mob[STAT.CURRENTMANA] = maxMana;
                 if (mob.mResType == ResType.PLAYER)
                     mob.mClientHandler.safeWrite(mob.playerString());
 

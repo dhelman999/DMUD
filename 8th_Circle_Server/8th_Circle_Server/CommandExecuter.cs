@@ -668,7 +668,7 @@ namespace _8th_Circle_Server
             }// if
 
             if (predType == predicateType.PREDICATE_SPELL)
-                targetList.Add(((CombatMob)target).mStats.mActionList);
+                targetList.Add(((CombatMob)target).GetActionList());
 
             // TODO
             // See if we have added the same list multiple times

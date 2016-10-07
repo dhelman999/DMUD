@@ -70,14 +70,14 @@ namespace _8th_Circle_Server
 
         public static void combatTask(CombatHandler ch, CombatMob attacker)
         {
-            List<CombatMob> combatList = attacker.mStats.mCombatList;
+            List<CombatMob> combatList = attacker.GetCombatList();
 
             while (combatList.Count > 0)
             {     
-                if (attacker.mStats.mPrimaryTarget == null)
-                    attacker.mStats.mPrimaryTarget = combatList[0];
+                if (attacker.GetPrimaryTarget() == null)
+                    attacker.SetPrimaryTarget(combatList[0]);
 
-                CombatMob target = attacker.mStats.mPrimaryTarget;
+                CombatMob target = attacker.GetPrimaryTarget();
                 ch.attack(attacker, target);
                 ch.checkDeath(attacker, target);
 
@@ -99,8 +99,8 @@ namespace _8th_Circle_Server
         {
             bool isCrit = false;
 
-            if (target == null && attacker.mStats.mCombatList.Count > 0)
-                target = attacker.mStats.mCombatList[0];
+            if (target == null && attacker.GetCombatList().Count > 0)
+                target = attacker.mStats.GetCombatList()[0];
 
             if (target == null)
                 return;
@@ -111,7 +111,7 @@ namespace _8th_Circle_Server
                 isCrit = true;
 
             bool isHit = true;
-            attacker.mStats.mCurrentMana -= spell.mManaCost;
+            attacker[STAT.CURRENTMANA] = attacker[STAT.CURRENTMANA] - spell.mManaCost;
 
             if (!isHit)
                 processMiss(attacker, target, spell);
@@ -129,14 +129,14 @@ namespace _8th_Circle_Server
             bool isHit = false;
 
             if (target == null)
-                target = attacker.mStats.mPrimaryTarget;
-            if (attacker.mStats.mPrimaryTarget == null && attacker.mStats.mCombatList.Count > 0)
-                target = attacker.mStats.mCombatList[0];
+                target = attacker.GetPrimaryTarget();
+            if (attacker.GetPrimaryTarget() == null && attacker.GetCombatList().Count > 0)
+                target = attacker.mStats.GetCombatList()[0];
             if (target == null)
                 return;
 
-            double hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod + ability.mHitBonus) -
-                               (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            double hitChance = ((attacker[STAT.BASEHIT] + attacker[STAT.HITMOD] + ability.mHitBonus) -
+                               (target[STAT.BASEEVADE] + target[STAT.EVADEMOD]));
             
             double attackRoll = mRand.NextDouble();
 
@@ -159,21 +159,21 @@ namespace _8th_Circle_Server
         public void processAbilityHit(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
             string damageString = string.Empty;
-            int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+            int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
             double damage = 0;
 
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
-                int level = attacker.mStats.mStats[STAT.LEVEL];
+                int level = attacker[STAT.LEVEL];
                 damage = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
             else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL && ability.mWeaponRequired)
             {
-                int level = attacker.mStats.mStats[STAT.LEVEL];
+                int level = attacker[STAT.LEVEL];
                 Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
                 damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
-                          ability.mDamageBonus + attacker.mStats.mDamBonusMod + attacker.mStats.mBaseDamBonus;
+                          ability.mDamageBonus + attacker[STAT.DAMBONUSMOD] + attacker[STAT.BASEDAMBONUSMOD];
             }// else if
 
             if (isCrit)
@@ -184,7 +184,7 @@ namespace _8th_Circle_Server
             if (damage == 0)
                 damage = 1;
 
-            target.mStats.mCurrentHp -= (int)damage;
+            target[STAT.CURRENTHP] -= (int)damage;
 
             if (!isCrit)
                 damageString += "your " + ability.mName + " " + damageToString(maxHp, damage) +
@@ -202,22 +202,22 @@ namespace _8th_Circle_Server
         public void processHeal(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
             string healString = string.Empty;
-            int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+            int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
             double healAmount = 0;
 
             if (ability.mDamScaling == DamageScaling.PERLEVEL)
             {
-                int level = attacker.mStats.mStats[STAT.LEVEL];
+                int level = attacker[STAT.LEVEL];
                 healAmount = mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) + ability.mDamageBonus;
             }// if
 
             if (isCrit)
                 healAmount *= 1.5 + 1;
 
-            target.mStats.mCurrentHp += (int)healAmount;
+            target[STAT.CURRENTHP] += (int)healAmount;
 
-            if (target.mStats.mCurrentHp > (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod))
-                target.mStats.mCurrentHp = (target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod);
+            if (target[STAT.CURRENTHP] > (target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD]))
+                target[STAT.CURRENTHP] = (target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD]);
 
             if (!isCrit)
                 healString += "your " + ability.mName + " heals " + target.mName + " for " + (int)healAmount + " hp";
@@ -233,7 +233,7 @@ namespace _8th_Circle_Server
 
         public void attack(CombatMob attacker, CombatMob target)
         {
-            double hitChance = hitChance = ((attacker.mStats.mBaseHit + attacker.mStats.mHitMod) - (target.mStats.mBaseEvade + target.mStats.mEvadeMod));
+            double hitChance = hitChance = ((attacker[STAT.BASEHIT] + attacker[STAT.HITMOD]) - (target[STAT.BASEEVADE] + target[STAT.EVADEMOD]));
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = mRand.NextDouble();
@@ -294,9 +294,9 @@ namespace _8th_Circle_Server
             double damage = 0;
 
             if (weapon != null)
-                damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) + attacker[STAT.BASEDAMBONUSMOD] + attacker[STAT.DAMBONUSMOD];
             else
-                damage = mRand.Next(attacker.mStats.mBaseMinDam, attacker.mStats.mBaseMaxDam) + attacker.mStats.mBaseDamBonus + attacker.mStats.mDamBonusMod;
+                damage = mRand.Next(attacker[STAT.BASEMINDAM], attacker[STAT.BASEMAXDAM]) + attacker[STAT.BASEDAMBONUSMOD] + attacker[STAT.DAMBONUSMOD];
 
             if (isCrit)
                 damage *= 1.5;
@@ -309,12 +309,12 @@ namespace _8th_Circle_Server
             if ((int)damage == 0)
                 damage = 1;
 
-            target.mStats.mCurrentHp -= (int)damage;
+            target[STAT.CURRENTHP] -= (int)damage;
             string damageString = string.Empty;
 
             if (attacker.mResType == ResType.PLAYER)
             {
-                int maxHp = target.mStats.mBaseMaxHp + target.mStats.mMaxHpMod;
+                int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
 
                 if (!isCrit)
                     damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
@@ -351,23 +351,23 @@ namespace _8th_Circle_Server
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
         {
-            if (target.mStats.mCurrentHp <= 0)
+            if (target[STAT.CURRENTHP] <= 0)
             {
                 CombatMob cm = null;
 
-                for (int i = 0; i < target.mStats.mCombatList.Count; ++i)
+                for (int i = 0; i < target.GetCombatList().Count; ++i)
                 {
-                    cm = target.mStats.mCombatList[i];
-                    cm.mStats.mCombatList.Remove(target);
+                    cm = target.GetCombatList()[i];
+                    cm.GetCombatList().Remove(target);
 
-                    if (cm.mStats.mCombatList.Count == 0)
+                    if (cm.GetCombatList().Count == 0)
                     {
                         cm.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
                         sCurrentCombats.Remove(cm);
                     }
                 }
 
-                target.mStats.mCombatList.Clear();
+                target.GetCombatList().Clear();
                 target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
                 sCurrentCombats.Remove(target);
 
@@ -379,8 +379,8 @@ namespace _8th_Circle_Server
                 if(target.mResType == ResType.PLAYER)
                     ((CombatMob)target).mClientHandler.safeWrite(target.slain(attacker));
 
-                if (attacker.mStats.mPrimaryTarget == target)
-                    attacker.mStats.mPrimaryTarget = null;
+                if (attacker.GetPrimaryTarget() == target)
+                    attacker.SetPrimaryTarget(null);
 
                 return true;
             }// if

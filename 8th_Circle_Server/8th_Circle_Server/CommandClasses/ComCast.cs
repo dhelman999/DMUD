@@ -34,14 +34,14 @@ namespace _8th_Circle_Server
                     target = (CombatMob)commandQueue[commandIndex];
                     Action act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
 
-                    if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
+                    if (((CombatMob)mob)[STAT.CURRENTMANA] < act.mManaCost)
                         return "you don't have enough mana for that";
 
-                    if (((CombatMob)mob).mStats.mCombatList.Count == 0)
+                    if (((CombatMob)mob).GetCombatList().Count == 0)
                     {
                         mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                        ((CombatMob)mob).mStats.mCombatList.Add(target);
-                        target.mStats.mCombatList.Add((CombatMob)mob);
+                        ((CombatMob)mob).GetCombatList().Add(target);
+                        target.GetCombatList().Add((CombatMob)mob);
                         target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
                         CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
@@ -66,7 +66,7 @@ namespace _8th_Circle_Server
                     target = (CombatMob)commandQueue[commandIndex];
                     act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_CURE];
 
-                    if (((CombatMob)mob).mStats.mCurrentMana < act.mManaCost)
+                    if (((CombatMob)mob)[STAT.CURRENTMANA] < act.mManaCost)
                         return "you don't have enough mana for that";
 
                     mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);

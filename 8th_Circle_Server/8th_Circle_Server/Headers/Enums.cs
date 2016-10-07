@@ -462,4 +462,33 @@
         MOBTYPE_END
     }// MobType
 
+    public enum STAT
+    {
+        STAT_START,
+
+        LEVEL,
+        CURRENTHP,
+        BASEMAXHP,
+        MAXHPMOD,
+        BASEMINDAM,
+        BASEMAXDAM,
+        BASEDAMBONUSMOD,
+        DAMBONUSMOD,
+        BASEHIT,
+        HITMOD,
+        BASEEVADE,
+        EVADEMOD,
+        BASEARMOR,
+        ARMORMOD,
+        BASEPHYRES,
+        PHYRESMOD,
+        BASEMAGICRES,
+        MAGICRESMOD,
+        BASEMAXMANA,
+        MAXMANAMOD,
+        CURRENTMANA,
+
+        STAT_EMD
+    }// STAT
+
 }// _8th_Circle_Server

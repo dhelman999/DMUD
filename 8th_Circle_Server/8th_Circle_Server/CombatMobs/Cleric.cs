@@ -6,30 +6,30 @@ namespace _8th_Circle_Server
         public Cleric() : base()
         {
             mMobType = MobType.CLERIC;
-            mStats.mBaseMaxMana = 30;
-            mStats.mCurrentMana = 30;
-            mStats.mBaseEvade -= 5;
+            this[STAT.BASEMAXMANA] = 30;
+            this[STAT.CURRENTMANA] = 30;
+            this[STAT.BASEEVADE] = this[STAT.BASEEVADE] - 5;
             addActions();
         }// Constructor
 
         public Cleric(CombatMob cm) : base(cm)
         {
             mMobType = MobType.CLERIC;
-            mStats.mBaseMaxMana = 30;
-            mStats.mCurrentMana = 30;
-            mStats.mBaseEvade -= 5;
+            this[STAT.BASEMAXMANA] = 30;
+            this[STAT.CURRENTMANA] = 30;
+            this[STAT.BASEEVADE] = this[STAT.BASEEVADE] - 5;
             addActions();
         }// Constructor
 
         public override string playerString()
         {
-            return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp " +
-                   mStats.mCurrentMana + "/" + (mStats.mBaseMaxMana + mStats.mMaxManaMod) + " mana\n";
+            return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp " +
+                   this[STAT.CURRENTMANA] + "/" + (this[STAT.BASEMAXMANA] + this[STAT.MAXMANAMOD]) + " mana\n";
         }// playerString
 
         private void addActions()
         {
-            mStats.mActionList.Add(new Mob("cure"));
+            AddAction(new Mob("cure"));
         }// addActions
 
     }// Class Cleric

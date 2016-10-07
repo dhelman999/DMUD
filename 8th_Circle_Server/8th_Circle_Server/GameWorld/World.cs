@@ -174,10 +174,10 @@ namespace _8th_Circle_Server
             goblin_runt.mMobId = (int)MOBLIST.GOBLIN_RUNT;
             goblin_runt.mStartingRespawnTime = 30;
             goblin_runt.mCurrentRespawnTime = 30;
-            goblin_runt.mStats.mBaseMaxDam = 5;
-            goblin_runt.mStats.mCurrentHp = 50;
-            goblin_runt.mStats.mBaseMaxHp = 50;
-            goblin_runt.mStats.mBaseHit = 50;
+            goblin_runt[STAT.BASEMAXDAM] = 5;
+            goblin_runt[STAT.CURRENTHP] = 50;
+            goblin_runt[STAT.BASEMAXHP] = 50;
+            goblin_runt[STAT.BASEHIT] = 50;
             goblin_runt.fillResistances();
             PrototypeManager.registerFullGameMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
 

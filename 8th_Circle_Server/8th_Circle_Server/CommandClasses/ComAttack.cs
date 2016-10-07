@@ -25,24 +25,24 @@ namespace _8th_Circle_Server
             CombatMob cm = (CombatMob)target;
             CombatMob attacker = (CombatMob)mob;
 
-            if (cm.mStats.mCombatList.Count == 0)
+            if (cm.GetCombatList().Count == 0)
             {
                 cm.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                cm.mStats.mCombatList.Add(attacker);
+                cm.GetCombatList().Add(attacker);
             }
-            else if (!cm.mStats.mCombatList.Contains(attacker))
-                cm.mStats.mCombatList.Add(attacker);
+            else if (!cm.GetCombatList().Contains(attacker))
+                cm.GetCombatList().Add(attacker);
 
-            if (attacker.mStats.mCombatList.Count == 0)
+            if (attacker.GetCombatList().Count == 0)
             {
                 attacker.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
-                attacker.mStats.mCombatList.Add(cm);
-                attacker.mStats.mPrimaryTarget = cm;
+                attacker.GetCombatList().Add(cm);
+                attacker.SetPrimaryTarget(cm);
             }
-            else if (!attacker.mStats.mCombatList.Contains(cm))
+            else if (!attacker.GetCombatList().Contains(cm))
             {
-                attacker.mStats.mCombatList.Add(cm);
-                attacker.mStats.mPrimaryTarget = cm;
+                attacker.GetCombatList().Add(cm);
+                attacker.SetPrimaryTarget(cm);
             }
 
             if (!CombatHandler.sCurrentCombats.Contains(attacker))

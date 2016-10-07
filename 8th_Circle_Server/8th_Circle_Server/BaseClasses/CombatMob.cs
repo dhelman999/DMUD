@@ -71,10 +71,9 @@ namespace _8th_Circle_Server
 
         public void fillResistances()
         {
-            mResistances[(int)DamageType.MAGICAL] = ((double)mStats.mBaseMagicRes + mStats.mMagicResMod / 10);
+            mResistances[(int)DamageType.MAGICAL] = ((double)this[STAT.BASEMAGICRES] + this[STAT.MAGICRESMOD]) / 10;
             mResistances[(int)DamageType.PURE] = 0;
-            mResistances[(int)DamageType.PHYSICAL] = (((double)mStats.mBaseArmor + mStats.mArmorMod + 
-                                                     mStats.mBasePhysRes + mStats.mPhysResMod) / 10); 
+            mResistances[(int)DamageType.PHYSICAL] = ((double)this[STAT.BASEARMOR] + this[STAT.ARMORMOD] + this[STAT.BASEPHYRES] + this[STAT.PHYRESMOD]) / 10; 
         }// fillResistances
 
         public override string viewed(Mob mob, Preposition prep)
@@ -89,8 +88,8 @@ namespace _8th_Circle_Server
             {
                 if (viewer != null)
                 {
-                    double viewerHp = viewer.mStats.mBaseMaxHp + viewer.mStats.mMaxHpMod;
-                    double targetHp = mStats.mBaseMaxHp + mStats.mMaxHpMod;
+                    double viewerHp = viewer[STAT.BASEMAXHP] + viewer[STAT.MAXHPMOD];
+                    double targetHp = this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD];
                     double lowEnd = viewerHp - (viewerHp*.1);
                     double highEnd = viewerHp + (viewerHp*.1);
 
@@ -112,7 +111,7 @@ namespace _8th_Circle_Server
         {
             mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
-            mStats.mCurrentHp = mStats.mBaseMaxHp;
+            this[STAT.CURRENTHP] = this[STAT.BASEMAXHP];
             CombatMob mob = new CombatMob(this);
             mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
@@ -122,15 +121,15 @@ namespace _8th_Circle_Server
 
         public override string fullheal()
         {
-            mStats.mCurrentHp = mStats.mBaseMaxHp + mStats.mMaxHpMod;
-            mStats.mCurrentMana = mStats.mBaseMaxMana + mStats.mMaxManaMod;
+            this[STAT.CURRENTHP] = this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD];
+            this[STAT.CURRENTMANA] = this[STAT.BASEMAXMANA] + this[STAT.MAXMANAMOD];
 
             return "you fully heal " + mName + "\n";
         }// fullheal
 
         public virtual string playerString()
         {
-            return "\n" + mStats.mCurrentHp + "/" + (mStats.mBaseMaxHp + mStats.mMaxHpMod) + " hp\n";
+            return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp\n";
         }// playerString
 
         public override string wearall()
@@ -177,6 +176,19 @@ namespace _8th_Circle_Server
             return string.Empty;
         }// slain
 
+        // Properties
+        public int this[STAT stat]
+        {
+            get { return mStats.GetStats()[stat];  }
+            set { mStats.GetStats()[stat] = value; }
+        }
+
+        // Accessors
+        public List<Mob> GetActionList() { return mStats.GetActionList(); }
+        public void AddAction(Mob action) { mStats.AddAction(action); }
+        public CombatMob GetPrimaryTarget() { return mStats.GetPrimaryTarget(); }
+        public void SetPrimaryTarget(CombatMob target) { mStats.SetPrimaryTarget(target); }
+        public List<CombatMob> GetCombatList() { return mStats.GetCombatList(); }
     }// class CombatMob
 
 }// namespace _8th_Circle_Server
