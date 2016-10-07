@@ -4,22 +4,22 @@ namespace _8th_Circle_Server
 {
     public class CommandClass
     {
-        public string command;
-        public string shortName;
-        public int matchNumber;
-        public int maxTokens;
-        public MobType usableBy;
-        public Grammar[] grammar;
-        public Preposition prep1Value;
-        public Preposition prep2Value;
-        public commandName commandName;
-        public predicateType predicate1;
-        public predicateType predicate2;
-        public Mob predicate1Value;
-        public Mob predicate2Value;
-        public Mob commandOwner;
-        public validityType validity;
-        public CommandType comType;
+        protected string mCommand;
+
+        private string mShortName;
+        private int mMatchNumber;
+        private int mMaxTokens;
+        private Grammar[] mGrammar;
+        private Preposition mPrep1Value;
+        private Preposition mPrep2Value;
+        private commandName mCommandName;
+        private predicateType mPredicate1;
+        private predicateType mPredicate2;
+        private Mob mPredicate1Value;
+        private Mob mPredicate2Value;
+        private Mob mCommandOwner;
+        private validityType mValidity;
+        private CommandType mComType; // TODO we don't use comType at all, do we even need it?
 
         public CommandClass()
         {
@@ -29,27 +29,47 @@ namespace _8th_Circle_Server
                             Grammar[] grammar, commandName commandName, predicateType predicate1, 
                             predicateType predicate2, validityType validity, CommandType comType)
         {
-            this.command = command;
-            this.commandOwner = null;
-            this.shortName = shortName;
-            this.matchNumber = matchNumber;
-            this.usableBy = type;
-            this.grammar = grammar;
-            this.maxTokens = maxTokens;
-            this.commandName = commandName;
-            this.predicate1 = predicate1;
-            this.predicate2 = predicate2;
-            this.validity = validity;
-            this.prep1Value = new Preposition();
-            this.prep2Value = new Preposition();
-            this.predicate1Value = predicate2Value = null;
-            this.comType = comType;
+            mCommand = command;
+            mCommandOwner = null;
+            mShortName = shortName;
+            mMatchNumber = matchNumber;
+            mGrammar = grammar;
+            mMaxTokens = maxTokens;
+            mCommandName = commandName;
+            mPredicate1 = predicate1;
+            mPredicate2 = predicate2;
+            mValidity = validity;
+            mPrep1Value = new Preposition();
+            mPrep2Value = new Preposition();
+            mPredicate1Value = mPredicate2Value = null;
+            mComType = comType;
         }// Constructor
 
         public virtual string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             return "huh?";
-        }
+        }// execute
+
+        // Accessors
+        public string GetCommand() { return mCommand; }
+        public string GetShortName() { return mShortName; }
+        public int GetMatchNumber() { return mMatchNumber; }
+        public int GetMaxTokens() { return mMaxTokens; }
+        public Grammar[] GetGrammar() { return mGrammar; }
+        public Preposition GetPrep1() { return mPrep1Value; }
+        public void SetPrep1(Preposition prep) { mPrep1Value = prep; }
+        public Preposition GetPrep2() { return mPrep2Value; }
+        public void SetPrep2(Preposition prep) { mPrep2Value = prep; }
+        public commandName GetCommandName() { return mCommandName; }
+        public predicateType GetPred1Type() { return mPredicate1; }
+        public predicateType GetPred2Type() { return mPredicate2; }
+        public Mob GetPred1() { return mPredicate1Value; }
+        public void SetPred1(Mob pred) { mPredicate1Value = pred; }
+        public Mob GetPred2() { return mPredicate2Value; }
+        public void SetPred2(Mob pred) { mPredicate2Value = pred; }
+        public Mob GetCommOwner() { return mCommandOwner; }
+        public void SetCommOwner(Mob owner) { mCommandOwner = owner; }
+        public validityType GetValidity() { return mValidity; }
     }// class CommandClass
 
 }// namespace _8th_Circle_Server

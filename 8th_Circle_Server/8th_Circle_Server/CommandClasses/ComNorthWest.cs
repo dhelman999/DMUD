@@ -13,7 +13,7 @@ namespace _8th_Circle_Server
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
-            return mob.move(command);
+            return mob.move(mCommand);
         }// execute
 
     }// class ComNorthWest
