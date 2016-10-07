@@ -12,15 +12,6 @@ namespace _8th_Circle_Server
             mPrototypeMobList = new List<Mob>();
         }// Constructor
 
-        // Accessors
-        public static Mob getFullGameRegisteredMob(MOBLIST mobID)
-        {
-            if(sFullGameMobList == null)
-                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
-
-            return sFullGameMobList[mobID];
-        }// getFullGameRegisteredMob
-
         public static bool registerFullGameMob(MOBLIST mobID, Mob newMob)
         {
             bool ret = true;
@@ -73,10 +64,16 @@ namespace _8th_Circle_Server
             return parent;
         }// cloneMob
 
-        public List<Mob> GetPrototypeMobList()
+        // Accessors
+        public static Mob getFullGameRegisteredMob(MOBLIST mobID)
         {
-            return mPrototypeMobList;
-        }// GetPrototypeMobList
+            if (sFullGameMobList == null)
+                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+
+            return sFullGameMobList[mobID];
+        }// getFullGameRegisteredMob
+
+        public List<Mob> GetPrototypeMobList() { return mPrototypeMobList; }
 
     }// class PrototypeManager
 

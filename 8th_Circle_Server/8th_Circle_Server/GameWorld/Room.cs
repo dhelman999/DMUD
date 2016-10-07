@@ -305,6 +305,7 @@ namespace _8th_Circle_Server
         public int[] GetAreaLoc() { return mAreaLoc; }
         public Area GetCurrentArea() { return mCurrentArea;  }
         public List<Room> GetRoomLinks() { return mRoomLinks; }
+
     }// Class Room
 
 }// Namespace _8th_Circle_Server

@@ -35,6 +35,7 @@ namespace _8th_Circle_Server
         public string GetName() { return mName; }
         public string GetDescription() { return mDescription; }
         public void SetDescription(string desc) { mDescription = desc; }
+
     }// class ResourceHandler
     
 }// Namespace _8th_Circle_Server

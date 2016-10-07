@@ -174,6 +174,7 @@ namespace _8th_Circle_Server
         public Room[] GetRoomList() { return mRoomList; }
         public List<MobFlags> GetStartingFlagList() { return mStartingFlagList; }
         public Memento Memento() { return mMemento; }
+
     }// Class Doorway
 
 }// Namespace _8th_Circle_Server

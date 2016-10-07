@@ -791,6 +791,7 @@ namespace _8th_Circle_Server
         // Accessors
         public List<Action> GetASList() { return mAbilitySpellList; }
         public Dictionary<Tuple<commandName, int>, CommandClass> GetCCDict() { return mCCDict; }
+
     }// Class CommandExecuter
 
 }// Namespace _8th_Circle_Server

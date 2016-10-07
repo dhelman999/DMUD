@@ -4,6 +4,8 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
+    // TODO
+    // Make this a class
     public struct EventData
     {
         private EventFlag eventFlag;
@@ -49,6 +51,7 @@ namespace _8th_Circle_Server
         public void SetRoom(Room room) { eventRoom = room; }
         public void SetValidity(validityType val) { validity = val; }
         public PrepositionType GetPrepType() { return prepType; }
+
     }// EventData
 
     public class EventHandler
@@ -179,8 +182,6 @@ namespace _8th_Circle_Server
             }// while
 
         }// processEvent
-
-        // Accessors
 
     }// Class EventHandler
 

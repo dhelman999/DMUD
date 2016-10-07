@@ -124,6 +124,7 @@ namespace _8th_Circle_Server
         public void SetMaxDam(int dam) { mMaxDam = dam; }
         public int GetHitMod() { return mHitMod; }
         public void SetHitMod(int mod) { mHitMod = mod; }
+
     }// class Equipment
 
 }// namespace _8th_Circle_Server

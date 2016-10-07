@@ -196,6 +196,7 @@ namespace _8th_Circle_Server
 
         // Accessors
         public bool IsOpen() { return mIsOpen; }
+
     }// Class Container
 
 }// Namespace _8th_Circle_Server
