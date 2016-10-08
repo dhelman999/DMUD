@@ -18,10 +18,10 @@ namespace _8th_Circle_Server
 
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
             {
-                if (player.mEQList[(int)slot] == null)
+                if (player[slot] == null)
                     clientString += slot + ":\n";
                 else
-                    clientString += slot.ToString() + ": " + (player.mEQList[(int)slot]).mName + "\n";
+                    clientString += slot.ToString() + ": " + (player[slot]).mName + "\n";
             }// for
 
             return clientString;

@@ -4,35 +4,36 @@ namespace _8th_Circle_Server
 {
     public class CombatMob : Mob
     {
-        public List<Mob> mEQList;
-        public List<double> mResistances;
-        public CombatStats mStats;
-        public MobType mMobType;
-        public ClientHandler mClientHandler;
-        public string mQueuedCommand;
+        protected MobType mMobType;
+        protected ClientHandler mClientHandler;
+
+        private Dictionary<EQSlot, Mob> mEQList;
+        private List<double> mResistances;
+        private CombatStats mStats; 
+        private string mQueuedCommand;
 
         public CombatMob() : base()
         {
-            mEQList = new List<Mob>();
+            mEQList = new Dictionary<EQSlot, Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
 
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
-                mEQList.Add(null);
+                mEQList.Add(slot, null);
 
             mResistances = new List<double>();
 
             for (DamageType dt = DamageType.DAMAGETYPE_START; dt < DamageType.DAMAGETYPE_END; ++dt)
                 mResistances.Add(0);
 
-            fillResistances();         
+            fillResistances();
             mFlagList.Add(MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
         }// Constructor
 
         public CombatMob(CombatMob cm) : base(cm)
         {
-            mEQList = new List<Mob>(cm.mEQList);
+            mEQList = new Dictionary<EQSlot, Mob>(cm.mEQList);
             mStats = new CombatStats(cm.mStats);
             mQueuedCommand = string.Empty;
             mResistances = new List<double>(cm.mResistances);
@@ -42,12 +43,12 @@ namespace _8th_Circle_Server
 
         public CombatMob(string newName) : base(newName)
         {
-            mEQList = new List<Mob>();
+            mEQList = new Dictionary<EQSlot, Mob>();
             mStats = new CombatStats();
             mQueuedCommand = string.Empty;
 
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
-                mEQList.Add(null);
+                mEQList.Add(slot, null);
 
             mResistances = new List<double>();
 
@@ -73,7 +74,7 @@ namespace _8th_Circle_Server
         {
             mResistances[(int)DamageType.MAGICAL] = ((double)this[STAT.BASEMAGICRES] + this[STAT.MAGICRESMOD]) / 10;
             mResistances[(int)DamageType.PURE] = 0;
-            mResistances[(int)DamageType.PHYSICAL] = ((double)this[STAT.BASEARMOR] + this[STAT.ARMORMOD] + this[STAT.BASEPHYRES] + this[STAT.PHYRESMOD]) / 10; 
+            mResistances[(int)DamageType.PHYSICAL] = ((double)this[STAT.BASEARMOR] + this[STAT.ARMORMOD] + this[STAT.BASEPHYRES] + this[STAT.PHYRESMOD]) / 10;
         }// fillResistances
 
         public override string viewed(Mob mob, Preposition prep)
@@ -90,8 +91,8 @@ namespace _8th_Circle_Server
                 {
                     double viewerHp = viewer[STAT.BASEMAXHP] + viewer[STAT.MAXHPMOD];
                     double targetHp = this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD];
-                    double lowEnd = viewerHp - (viewerHp*.1);
-                    double highEnd = viewerHp + (viewerHp*.1);
+                    double lowEnd = viewerHp - (viewerHp * .1);
+                    double highEnd = viewerHp + (viewerHp * .1);
 
                     if (targetHp >= highEnd)
                         clientString += mName + " looks stronger than you";
@@ -127,7 +128,7 @@ namespace _8th_Circle_Server
             return "you fully heal " + mName + "\n";
         }// fullheal
 
-        public virtual string playerString()
+        public override string playerString()
         {
             return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp\n";
         }// playerString
@@ -157,14 +158,14 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
-            for (int i = 0; i < mEQList.Count; ++i)
-            { 
-                if(mEQList[i] != null)
-                    clientString += mEQList[i].remove(this) + "\n";
+            for(EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
+            {
+                if (this[slot] != null)
+                    clientString += this[slot].remove(this) + "\n";
             }
 
             return clientString;
-        }// wearall
+        }// removeall
 
         public virtual string slain(Mob mob)
         {
@@ -176,11 +177,29 @@ namespace _8th_Circle_Server
             return string.Empty;
         }// slain
 
+        public override void safeWrite(string clientString)
+        {
+            if(mClientHandler != null)
+                mClientHandler.safeWrite(clientString);
+        }// safeWrite
+
         // Properties
+        public Mob this[EQSlot slot]
+        {
+            get { return mEQList[slot]; }
+            set { mEQList[slot] = value; }
+        }
+
         public int this[STAT stat]
         {
-            get { return mStats.GetStats()[stat];  }
+            get { return mStats.GetStats()[stat]; }
             set { mStats.GetStats()[stat] = value; }
+        }
+
+        public double this[DamageType damageType]
+        {
+            get { return mResistances[(int)damageType]; }
+            set { mResistances[(int)damageType] = value; }
         }
 
         // Accessors
@@ -189,6 +208,14 @@ namespace _8th_Circle_Server
         public CombatMob GetPrimaryTarget() { return mStats.GetPrimaryTarget(); }
         public void SetPrimaryTarget(CombatMob target) { mStats.SetPrimaryTarget(target); }
         public List<CombatMob> GetCombatList() { return mStats.GetCombatList(); }
+        public Dictionary<EQSlot, Mob> GetEQList() { return mEQList; }
+        public MobType GetMobType() { return mMobType; }
+        public void SetMobType(MobType mobType) { mMobType = mobType; }
+        public ClientHandler GetClientHandler() { return mClientHandler; }
+        public void SetClientHandler(ClientHandler clientHandler) { mClientHandler = clientHandler; }
+        public string GetQueuedCommand() { return mQueuedCommand; }
+        public void SetQueuedCommand(string command) { mQueuedCommand = command; }
+
     }// class CombatMob
 
 }// namespace _8th_Circle_Server

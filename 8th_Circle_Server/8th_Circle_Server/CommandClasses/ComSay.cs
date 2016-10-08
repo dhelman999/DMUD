@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
                 else
                     clientString = mob.mName + " says " + "\"" + commandQueue[1] + "\"";
 
-                currentPlayer.mClientHandler.safeWrite(clientString);
+                currentPlayer.safeWrite(clientString);
             }// foreach
 
             return "";

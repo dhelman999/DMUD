@@ -75,24 +75,24 @@ namespace _8th_Circle_Server
 
         public override string wear(CombatMob pl)
         {
-            if (pl.mEQList[(int)mSlot] == null)
+            if (pl[mSlot] == null)
             {
-                pl.mEQList[(int)mSlot] = this;
+                pl[mSlot] = this;
                 pl.mInventory.Remove(this);
 
                 return "you equip the " + mName;
             }// if
             else
-                return "you are already wearing the " + (pl.mEQList[(int)mSlot]).mName;
+                return "you are already wearing the " + (pl[mSlot]).mName;
         }// wear
 
         public override string remove(CombatMob pl)
         {
-            if (pl.mEQList[(int)mSlot] == null)
+            if (pl[mSlot] == null)
                 return "";
             else
             {
-                pl.mEQList[(int)mSlot] = null;
+                pl[mSlot] = null;
                 pl.mInventory.Add(this);
 
                 return "you remove the " + mName;

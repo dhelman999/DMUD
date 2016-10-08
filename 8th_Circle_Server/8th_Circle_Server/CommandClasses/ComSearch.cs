@@ -26,12 +26,7 @@ namespace _8th_Circle_Server
         public static void searchTask(Mob mob)
         {
             Thread.Sleep(4000);
-            string searchResult = mob.search();
-
-            if (mob.mResType == ResType.PLAYER)
-                ((CombatMob)mob).mClientHandler.safeWrite(searchResult);
-
-            mob.mFlagList.Remove(MobFlags.FLAG_SEARCHING);
+            mob.safeWrite(mob.search());
         }// searchTask
 
     }// class ComSearch

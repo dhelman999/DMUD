@@ -88,8 +88,7 @@ namespace _8th_Circle_Server
                     ch.checkDeath(target, attacker);
                 }
 
-                if (attacker.mResType == ResType.PLAYER)
-                    attacker.mClientHandler.safeWrite((attacker).playerString());
+                attacker.safeWrite((attacker).playerString());
 
                 Thread.Sleep(4000);
             }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
@@ -100,7 +99,7 @@ namespace _8th_Circle_Server
             bool isCrit = false;
 
             if (target == null && attacker.GetCombatList().Count > 0)
-                target = attacker.mStats.GetCombatList()[0];
+                target = attacker.GetCombatList()[0];
 
             if (target == null)
                 return;
@@ -131,7 +130,7 @@ namespace _8th_Circle_Server
             if (target == null)
                 target = attacker.GetPrimaryTarget();
             if (attacker.GetPrimaryTarget() == null && attacker.GetCombatList().Count > 0)
-                target = attacker.mStats.GetCombatList()[0];
+                target = attacker.GetCombatList()[0];
             if (target == null)
                 return;
 
@@ -170,7 +169,7 @@ namespace _8th_Circle_Server
             else if (ability.mDamScaling == DamageScaling.DAMAGEMULTPERLEVEL && ability.mWeaponRequired)
             {
                 int level = attacker[STAT.LEVEL];
-                Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
+                Equipment weapon = (Equipment)(attacker[EQSlot.PRIMARY]);
                 damage = mRand.Next(weapon.GetMinDam(), weapon.GetMaxDam()) * 2;
                 damage += mRand.Next(level * ability.mBaseMinDamage, level * ability.mBaseMaxDamage) +
                           ability.mDamageBonus + attacker[STAT.DAMBONUSMOD] + attacker[STAT.BASEDAMBONUSMOD];
@@ -179,7 +178,7 @@ namespace _8th_Circle_Server
             if (isCrit)
                 damage *= 1.5 + 1;
 
-            damage *= (1 - (target.mResistances[(int)ability.mDamType] / 100));
+            damage *= (1 - (target[ability.mDamType] / 100));
 
             if (damage == 0)
                 damage = 1;
@@ -193,8 +192,7 @@ namespace _8th_Circle_Server
                 damageString += "your critical " + ability.mName + " " + damageToString(maxHp, damage) +
                                 " the " + target.mName + " for " + (int)damage + " damage";
 
-            if (attacker.mResType == ResType.PLAYER)
-                ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
+            attacker.safeWrite(damageString);
 
             checkDeath(attacker, target);
         }// processAbilityHit
@@ -224,11 +222,10 @@ namespace _8th_Circle_Server
             else
                 healString += "your " + ability.mName + " critically heals " + target.mName + " for " + (int)healAmount + " hp";
             
-            if (attacker.mResType == ResType.PLAYER)
-                ((CombatMob)attacker).mClientHandler.safeWrite(healString);
+            attacker.safeWrite(healString);
 
             if (attacker != target && target.mResType == ResType.PLAYER)
-                ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + ability.mName + " heals you for " + (int)healAmount + " hp");
+                target.safeWrite(attacker.mName + "'s " + ability.mName + " heals you for " + (int)healAmount + " hp");
         }// processHeal
 
         public void attack(CombatMob attacker, CombatMob target)
@@ -247,7 +244,7 @@ namespace _8th_Circle_Server
             else if (attackRoll >= (1 - (hitChance / 100)))
                 isHit = true;
 
-            Equipment weapon = (Equipment)(attacker.mEQList[(int)EQSlot.PRIMARY]);
+            Equipment weapon = (Equipment)(attacker[EQSlot.PRIMARY]);
 
             if (isHit) 
                 processHit(attacker, target, weapon, isCrit);
@@ -302,9 +299,9 @@ namespace _8th_Circle_Server
                 damage *= 1.5;
 
             if(weapon != null)
-                damage *= (1 - (target.mResistances[(int)weapon.GetDamType()] / 100));
+                damage *= (1 - (target[weapon.GetDamType()] / 100));
             else
-                damage *= (1 - (target.mResistances[(int)DamageType.PHYSICAL] / 100));
+                damage *= (1 - (target[DamageType.PHYSICAL] / 100));
 
             if ((int)damage == 0)
                 damage = 1;
@@ -321,7 +318,7 @@ namespace _8th_Circle_Server
                 else
                     damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
 
-                ((CombatMob)attacker).mClientHandler.safeWrite(damageString);
+                attacker.safeWrite(damageString);
             }// if
             if (target.mResType == ResType.PLAYER)
             {
@@ -332,7 +329,7 @@ namespace _8th_Circle_Server
                 else
                     damageString += attacker.mName + " hits you for " + (int)damage + " damage";
 
-                ((CombatMob)target).mClientHandler.safeWrite(damageString);
+                target.safeWrite(damageString);
             }// if
         }// processHit
 
@@ -343,10 +340,8 @@ namespace _8th_Circle_Server
             if (ability != null)
                 attackString = ability.mName;
 
-            if (attacker.mResType == ResType.PLAYER)
-                    ((CombatMob)attacker).mClientHandler.safeWrite("your " + attackString + " misses the " + target.mName);
-            if (target.mResType == ResType.PLAYER)
-                    ((CombatMob)target).mClientHandler.safeWrite(attacker.mName + "'s " + attackString + " misses you");
+            attacker.safeWrite("your " + attackString + " misses the " + target.mName);
+            target.safeWrite(attacker.mName + "'s " + attackString + " misses you");
         }// processMiss
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
@@ -371,13 +366,9 @@ namespace _8th_Circle_Server
                 target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
                 sCurrentCombats.Remove(target);
 
-                if (attacker.mResType == ResType.PLAYER)
-                {
-                    ((CombatMob)attacker).mClientHandler.safeWrite("you have slain the " + target.mName);
-                    target.slain(attacker);
-                }
-                if(target.mResType == ResType.PLAYER)
-                    ((CombatMob)target).mClientHandler.safeWrite(target.slain(attacker));
+                attacker.safeWrite("you have slain the " + target.mName);
+                target.slain(attacker);
+                target.safeWrite(target.slain(attacker));
 
                 if (attacker.GetPrimaryTarget() == target)
                     attacker.SetPrimaryTarget(null);

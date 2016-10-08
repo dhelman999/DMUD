@@ -49,7 +49,7 @@ namespace _8th_Circle_Server
                 if (mob[STAT.CURRENTMANA] > (maxMana))
                     mob[STAT.CURRENTMANA] = maxMana;
                 if (mob.mResType == ResType.PLAYER)
-                    mob.mClientHandler.safeWrite(mob.playerString());
+                    mob.safeWrite(mob.playerString());
 
                 Thread.Sleep(4000);
             }// while

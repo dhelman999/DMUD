@@ -111,26 +111,21 @@ namespace _8th_Circle_Server
                 switch (eventData.GetEvent())
                 {
                     case EventFlag.EVENT_TELL_PLAYER:
-                        if (eventData.GetTrigger().mResType == ResType.PLAYER)
-                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite((string)eventData.GetData());
-
+                        ((CombatMob)eventData.GetTrigger()).safeWrite((string)eventData.GetData());
                         break;
                         
                     case EventFlag.EVENT_TELEPORT:
-                        if (eventData.GetTrigger().mResType == ResType.PLAYER)
-                        {
                             RoomID roomID = (RoomID)eventData.GetData();
                             (mWorld.GetAreas()[2])[roomID].addMobResource(eventData.GetTrigger());
-                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
-                            ((CombatMob)eventData.GetTrigger()).mClientHandler.safeWrite(eventData.GetTrigger().mCurrentRoom.exitString());
-                        }
+                            ((CombatMob)eventData.GetTrigger()).safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
+                            ((CombatMob)eventData.GetTrigger()).safeWrite(eventData.GetTrigger().mCurrentRoom.exitString());
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.GetData());
 
                         foreach (CombatMob pl in area.getRes(ResType.PLAYER))
-                            pl.mClientHandler.safeWrite("The area shakes and rumbles");
+                            pl.safeWrite("The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_40], Direction.WEST);
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_47], Direction.SOUTHWEST);
@@ -154,7 +149,7 @@ namespace _8th_Circle_Server
                         area = mWorld.getArea((AreaID)eventData.GetData());
 
                         foreach (CombatMob pl in area.getRes(ResType.PLAYER))
-                            pl.mClientHandler.safeWrite("The area shakes and rumbles");
+                            pl.safeWrite("The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.WEST);
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.SOUTHWEST);

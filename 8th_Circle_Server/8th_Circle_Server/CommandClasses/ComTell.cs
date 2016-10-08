@@ -15,10 +15,8 @@ namespace _8th_Circle_Server
         {
             CombatMob player = (CombatMob)commandQueue[1];
 
-            if (mob.mResType == ResType.PLAYER)
-                ((CombatMob)mob).mClientHandler.safeWrite("You tell " + player.mName + " \"" + commandQueue[2] + "\"");
-
-            player.mClientHandler.safeWrite(mob.mName + " tells you \"" + commandQueue[2] + "\"");
+            mob.safeWrite("You tell " + player.mName + " \"" + commandQueue[2] + "\"");
+            player.safeWrite(mob.mName + " tells you \"" + commandQueue[2] + "\"");
 
             return "";
         }// execute

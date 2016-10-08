@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
         public ClientHandler(TcpListener tcpListener, World world)
         {
             mPlayer = new CombatMob();
-            mPlayer.mClientHandler = this;
+            mPlayer.SetClientHandler(this);
             mPlayer.mResType = ResType.PLAYER;
             mTcpListener = tcpListener;
             mCommandHandler = world.GetCommandHandler();
@@ -100,7 +100,7 @@ namespace _8th_Circle_Server
                                         break;
 
                                     default:
-                                        mPlayer.mMobType = MobType.NONHEROIC;
+                                        mPlayer.SetMobType(MobType.NONHEROIC);
                                         break;
                                 }// switch
                             }
@@ -111,7 +111,7 @@ namespace _8th_Circle_Server
                         mPlayer.mCurrentRoom.addRes(mPlayer);
 
                         foreach (CombatMob player in mPlayer.mWorld.getRes(ResType.PLAYER))
-                            player.mClientHandler.safeWrite(mPlayer.mName + " has joined the World");
+                            player.safeWrite(mPlayer.mName + " has joined the World");
 
                         do
                         {     
@@ -215,7 +215,7 @@ namespace _8th_Circle_Server
                 if (mWorld.getRes(ResType.PLAYER).Count > 0)
                 {
                     foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
-                        player.mClientHandler.safeWrite(mPlayer.mName + " has left the world");
+                        player.safeWrite(mPlayer.mName + " has left the world");
 
                     mPlayer.mCurrentRoom.removeRes(mPlayer);
                     mPlayer.mCurrentArea.removeRes(mPlayer);

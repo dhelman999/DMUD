@@ -514,6 +514,8 @@ namespace _8th_Circle_Server
             if (!found)
                 searchString = "you find nothing";
 
+            mFlagList.Remove(MobFlags.FLAG_SEARCHING);
+
             return searchString + "\n";
         }// search
 
@@ -560,7 +562,7 @@ namespace _8th_Circle_Server
                 if (mMobId == (int)MOBLIST.MAX)
                 {
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                        player.mClientHandler.safeWrite(mName + " purrs softly\n");
+                        player.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
                     CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(commandName.COMMAND_TELL, 256)];
@@ -586,7 +588,7 @@ namespace _8th_Circle_Server
                     CommandClass com = (CommandClass)commandQueue[index];
 
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                        player.mClientHandler.safeWrite(mName + " scampers off\n");
+                        player.safeWrite(mName + " scampers off\n");
 
                     mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
                 }// if
@@ -621,6 +623,16 @@ namespace _8th_Circle_Server
                 }// if
             }// for
         }// addExits
+
+        public virtual string playerString()
+        {
+            return "";
+        }
+
+        public virtual void safeWrite(string clientString)
+        {
+            // not implemented
+        }// safeWrite
 
     }// Class Mob
 

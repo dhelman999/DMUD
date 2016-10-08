@@ -337,11 +337,8 @@ namespace _8th_Circle_Server
             else
                 clientString = tokens[0] + " is not a valid command";
 
-            if (mob.mResType == ResType.PLAYER)
-            {
-                clientString += ((CombatMob)mob).playerString();
-                ((CombatMob)mob).mClientHandler.safeWrite(clientString);
-            }
+            clientString += ((CombatMob)mob).playerString();
+            mob.safeWrite(clientString);
         }// process
 
         private errorCode initialMatching(string[] tokens, ArrayList ccList)
@@ -618,7 +615,7 @@ namespace _8th_Circle_Server
                     }
                 }// if
                 if (validity == validityType.VALID_EQUIP)
-                    targetList.Add(((CombatMob)target).mEQList);
+                    targetList.Add(((CombatMob)target).GetEQList());
             }// if
 
             if (predType == predicateType.PREDICATE_PLAYER || 
@@ -670,9 +667,36 @@ namespace _8th_Circle_Server
             if (predType == predicateType.PREDICATE_SPELL)
                 targetList.Add(((CombatMob)target).GetActionList());
 
+            Dictionary<EQSlot, Mob> eqList = null;
+
+            // Extract the mobs from the various lists, handle EQ lists a little differently
+            for(int index = 0; index < targetList.Count; ++index)
+            {
+                if(targetList[index] is Dictionary<EQSlot, Mob>)
+                {
+                    eqList = (Dictionary<EQSlot, Mob>)targetList[index];
+                    targetList.RemoveAt(index);
+                    break;
+                }
+            }
+
+            if(eqList != null)
+            {
+                foreach(KeyValuePair<EQSlot, Mob> keyValPair in eqList)
+                {
+                    Mob targetMob = keyValPair.Value;
+
+                    if (targetMob != null && validatePredicate(tokens[0].ToLower(), targetMob.exitString(target.mCurrentRoom).ToLower()))
+                    {
+                        ret = errorCode.E_OK;
+                        targetPredicates.Add(targetMob);
+                    }// if
+                }// foreach(KeyValuePair<EQSlot, Mob> keyValPair in eqList)
+            }// if(eqList != null)
+
             // TODO
             // See if we have added the same list multiple times
-            foreach(List<Mob> ar in targetList)
+            foreach (List<Mob> ar in targetList)
             {
                 if (ar.Count > 0)
                 {

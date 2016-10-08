@@ -16,7 +16,7 @@ namespace _8th_Circle_Server
             CombatMob cm = (CombatMob)mob;
             string clientString = "";
 
-            if (cm.mMobType != MobType.WARRIOR)
+            if (cm.GetMobType() != MobType.WARRIOR)
                 clientString = "you don't know how to bash";
             else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't bash if you are not in combat\b";
