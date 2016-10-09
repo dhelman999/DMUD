@@ -16,18 +16,15 @@ namespace _8th_Circle_Server
             Mob target = (Mob)commandQueue[1];
             string clientString = null;
 
-            if (!target.GetFlagList().Contains(MobFlags.FLAG_COMBATABLE) ||
-                !(target is CombatMob))
-            {
+            if (!target.HasFlag(MobFlags.FLAG_COMBATABLE) || !(target is CombatMob))
                 return "you can't attack that";
-            }
 
             CombatMob cm = (CombatMob)target;
             CombatMob attacker = (CombatMob)mob;
 
             if (cm.GetCombatList().Count == 0)
             {
-                cm.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref cm.mFlags, MobFlags.FLAG_INCOMBAT);
                 cm.GetCombatList().Add(attacker);
             }
             else if (!cm.GetCombatList().Contains(attacker))
@@ -35,7 +32,7 @@ namespace _8th_Circle_Server
 
             if (attacker.GetCombatList().Count == 0)
             {
-                attacker.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref attacker.mFlags, MobFlags.FLAG_INCOMBAT);
                 attacker.GetCombatList().Add(cm);
                 attacker.SetPrimaryTarget(cm);
             }

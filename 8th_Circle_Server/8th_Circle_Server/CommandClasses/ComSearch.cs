@@ -16,7 +16,7 @@ namespace _8th_Circle_Server
         {
             string clientString = "you start searching...\n";
             mob.SetActionTimer(4);
-            mob.GetFlagList().Add(MobFlags.FLAG_SEARCHING);
+            Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_SEARCHING);
             Thread searchThread = new Thread(() => searchTask(mob));
             searchThread.Start();
 

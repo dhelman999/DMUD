@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // TODO
+    // Rework how this works, use clone instead of register
     public class Memento
     {
         private List<Mob> mMementos;

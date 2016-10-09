@@ -18,9 +18,9 @@ namespace _8th_Circle_Server
 
             if (cm.GetMobType() != MobType.ROGUE)
                 clientString = "you don't know how to backstab\n";
-            else if (mob.GetFlagList().Contains(MobFlags.FLAG_INCOMBAT))
+            else if (mob.HasFlag(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't backstab while in combat\n";
-            else if ((cm[EQSlot.PRIMARY]) == null)
+            else if (cm[EQSlot.PRIMARY] == null)
                 clientString = "you can't backstab without a weapon!\n";
             else
             {

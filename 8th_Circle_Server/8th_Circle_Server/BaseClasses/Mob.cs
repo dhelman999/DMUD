@@ -21,7 +21,6 @@ namespace _8th_Circle_Server
         protected Mob mStartingOwner;
         protected Mob mCurrentOwner;
         protected List<PrepositionType> mPrepList;
-        protected List<MobFlags> mFlagList;
         protected List<Mob> mInventory;
         protected List<EventData> mEventList;
         protected List<Mob> mChildren;
@@ -45,7 +44,6 @@ namespace _8th_Circle_Server
             mInventory = new List<Mob>();
             mPrepList = new List<PrepositionType>();
             mPrepList.Add(PrepositionType.PREP_AT);
-            mFlagList = new List<MobFlags>();
             mEventList = new List<EventData>();
             mChildren = new List<Mob>();
             mInventory.Capacity = 20;
@@ -61,7 +59,7 @@ namespace _8th_Circle_Server
             mFlags = MobFlags.FLAG_NONE;
         }// Constructor
 
-        public Mob(string name)
+        public Mob(string name, MobFlags flags = MobFlags.FLAG_NONE)
         {
             mName = mExitStr = name;
             mDescription = mShortDescription = string.Empty;
@@ -69,7 +67,6 @@ namespace _8th_Circle_Server
             mInventory = new List<Mob>();
             mPrepList = new List<PrepositionType>();
             mPrepList.Add(PrepositionType.PREP_AT);
-            mFlagList = new List<MobFlags>();
             mEventList = new List<EventData>();
             mChildren = new List<Mob>();
             mInventory.Capacity = 20;
@@ -82,7 +79,7 @@ namespace _8th_Circle_Server
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
-            mFlags = MobFlags.FLAG_NONE;
+            mFlags = flags;
         }// Constructor
 
         public Mob(Mob mob)
@@ -95,7 +92,6 @@ namespace _8th_Circle_Server
             mAreaLoc = mob.mAreaLoc;
             mInventory = new List<Mob>(mob.mInventory);
             mPrepList = new List<PrepositionType>(mob.mPrepList);
-            mFlagList = new List<MobFlags>(mob.mFlagList);
             mEventList = new List<EventData>();
             mEventList = new List<EventData>(mob.mEventList);
             mChildren = new List<Mob>(mob.mChildren);
@@ -133,7 +129,7 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
-            if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.FLAG_INCOMBAT))
                 return "you can't move while in combat\n";
 
             Direction dir = DirStrToEnum(direction);
@@ -152,7 +148,7 @@ namespace _8th_Circle_Server
 
         public string changeRoom(Room newRoom)
         {
-            if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.FLAG_INCOMBAT))
                 return "you can't do that while in combat\n";
 
             // Remove old references
@@ -191,12 +187,12 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob)
         {
-            if (mFlagList.Contains(MobFlags.FLAG_GETTABLE) &&
+            if (HasFlag(MobFlags.FLAG_GETTABLE) &&
                 mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(MobFlags.FLAG_DUPLICATABLE))
+                    if (HasFlag(MobFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -244,11 +240,11 @@ namespace _8th_Circle_Server
         // in an object
         public virtual string get(Mob mob, PrepositionType prepType, Container container)
         {
-            if (mFlagList.Contains(MobFlags.FLAG_GETTABLE))
+            if (HasFlag(MobFlags.FLAG_GETTABLE))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (mFlagList.Contains(MobFlags.FLAG_DUPLICATABLE))
+                    if (HasFlag(MobFlags.FLAG_DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -256,8 +252,7 @@ namespace _8th_Circle_Server
 
                         return "you get " + exitString(mCurrentRoom) + "\n";
                     }
-                    else if (container.mFlagList.Contains(MobFlags.FLAG_OPENABLE) &&
-                             container.IsOpen())
+                    else if (container.HasFlag(MobFlags.FLAG_OPENABLE) && container.IsOpen())
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -281,13 +276,13 @@ namespace _8th_Circle_Server
                         }// if (prepType == PrepositionType.PREP_FROM)
                         else
                             return "you can't get like that\n";
-                    }// if (container.mFlagList.Contains(MobFlags.FLAG_OPENABLE))
+                    }// else if (container.HasFlag(MobFlags.FLAG_OPENABLE) && container.IsOpen())
                     else
                         return container.mName + " is closed\n";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
                     return "your inventory is full\n";
-            }// if (mFlagList.Contains(MobFlags.FLAG_GETTABLE))
+            }// if (HasFlag(MobFlags.FLAG_GETTABLE))
             else
                 return "you can't get that\n";
 
@@ -342,7 +337,7 @@ namespace _8th_Circle_Server
 
         public virtual string drop(Mob mob)
         {
-            if (mFlagList.Contains(MobFlags.FLAG_DROPPABLE))
+            if (HasFlag(MobFlags.FLAG_DROPPABLE))
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
@@ -402,7 +397,7 @@ namespace _8th_Circle_Server
         {
             // The actual processing of the event will be handled by checkEvent at the
             // end of command processing
-            if (mFlagList.Contains(MobFlags.FLAG_USEABLE) &&
+            if (HasFlag(MobFlags.FLAG_USEABLE) &&
                 mEventList.Count > 0)
             {
                 return "You use the " + mName + "\n";
@@ -512,7 +507,7 @@ namespace _8th_Circle_Server
             if (!found)
                 searchString = "you find nothing";
 
-            mFlagList.Remove(MobFlags.FLAG_SEARCHING);
+            Utils.UnsetFlag(ref mFlags, MobFlags.FLAG_SEARCHING);
 
             return searchString + "\n";
         }// search
@@ -551,7 +546,7 @@ namespace _8th_Circle_Server
         // Needs to be more generic
         public void randomAction()
         {
-            if (mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.FLAG_INCOMBAT))
                 return;
 
             if (mRand.NextDouble() < .5)
@@ -650,7 +645,6 @@ namespace _8th_Circle_Server
         public void SetCurrentArea(Area area) { mCurrentArea = area; }
         public Area GetStartingArea() { return mStartingArea; }
         public void SetStartingArea(Area area) { mStartingArea = area; }
-        public List<MobFlags> GetFlagList() { return mFlagList; }
         public List<Mob> GetInv() { return mInventory; }
         public List<EventData> GetEventList() { return mEventList; }
         public List<Mob> GetChildren() { return mChildren; }

@@ -91,7 +91,7 @@ namespace _8th_Circle_Server
                 {
                     if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
                     {
-                        if (parent.GetFlagList().Contains(MobFlags.FLAG_INCOMBAT))
+                        if (parent.HasFlag(MobFlags.FLAG_INCOMBAT))
                         {
                             parent.SetIsRespawning(false);
                             parent.SetStartingRespawnTime(parent.GetStartingRespawnTime());

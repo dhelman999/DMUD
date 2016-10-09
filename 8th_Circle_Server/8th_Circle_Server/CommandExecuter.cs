@@ -536,7 +536,7 @@ namespace _8th_Circle_Server
             if (!(commandClass.GetCommandName() == commandName.COMMAND_REST ||
                 commandClass.GetCommandName() == commandName.COMMAND_LOOK))
             {
-                mob.GetFlagList().Remove(MobFlags.FLAG_RESTING);
+                Utils.UnsetFlag(ref mob.mFlags, MobFlags.FLAG_RESTING);
             }
 
             clientString = commandClass.execute(commandQueue, mob, this);

@@ -91,7 +91,7 @@ namespace _8th_Circle_Server
                 attacker.safeWrite((attacker).playerString());
 
                 Thread.Sleep(4000);
-            }// while(pl.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+            }// while (combatList.Count > 0)
         }// combatTask
 
         public void executeSpell(CombatMob attacker, CombatMob target, Action spell)
@@ -357,13 +357,13 @@ namespace _8th_Circle_Server
 
                     if (cm.GetCombatList().Count == 0)
                     {
-                        cm.GetFlagList().Remove(MobFlags.FLAG_INCOMBAT);
+                        Utils.UnsetFlag(ref cm.mFlags, MobFlags.FLAG_INCOMBAT);
                         sCurrentCombats.Remove(cm);
                     }
                 }
 
                 target.GetCombatList().Clear();
-                target.GetFlagList().Remove(MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref target.mFlags, MobFlags.FLAG_INCOMBAT);
                 sCurrentCombats.Remove(target);
 
                 attacker.safeWrite("you have slain the " + target.GetName());

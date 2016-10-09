@@ -39,10 +39,10 @@ namespace _8th_Circle_Server
 
                     if (((CombatMob)mob).GetCombatList().Count == 0)
                     {
-                        mob.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
+                        Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_INCOMBAT);
                         ((CombatMob)mob).GetCombatList().Add(target);
                         target.GetCombatList().Add((CombatMob)mob);
-                        target.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
+                        Utils.SetFlag(ref target.mFlags, MobFlags.FLAG_INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
                         CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
                         attackQueue.Add(attackCommand);

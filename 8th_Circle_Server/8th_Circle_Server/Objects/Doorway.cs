@@ -12,7 +12,6 @@ namespace _8th_Circle_Server
         private bool mIsOpen;
         private bool mIsLocked;
         private Room [] mRoomList;
-        private List<MobFlags> mStartingFlagList;
         private Memento mMemento;
 
         public Doorway() : base()
@@ -20,16 +19,14 @@ namespace _8th_Circle_Server
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mStartingFlagList = new List<MobFlags>();
             mMemento = new Memento(this);
         }// Constructor
 
-        public Doorway(string name) : base(name)
+        public Doorway(string name, MobFlags flags = MobFlags.FLAG_NONE) : base(name, flags)
         {
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mStartingFlagList = new List<MobFlags>();
             mMemento = new Memento(this);
         }// Constructor
 
@@ -38,8 +35,8 @@ namespace _8th_Circle_Server
             mIsOpen = doorway.mIsOpen;
             mIsLocked = doorway.mIsLocked;
             mRoomList = (Room [])doorway.mRoomList.Clone();
-            mStartingFlagList = new List<MobFlags>(doorway.mStartingFlagList);
             mMemento = doorway.mMemento;
+            mFlags = doorway.mFlags;
         }// Copy Constructor
 
         public void reset()
@@ -48,7 +45,7 @@ namespace _8th_Circle_Server
             mIsOpen = memento.mIsOpen;
             mIsLocked = memento.mIsLocked;
             mRoomList = memento.mRoomList;
-            mFlagList = new List<MobFlags>(mStartingFlagList);
+            mFlags = memento.mFlags;
         }
 
         public override string open(Mob mob)
@@ -172,7 +169,6 @@ namespace _8th_Circle_Server
         public bool IsOpen() { return mIsOpen; }
         public bool IsLocked() { return mIsLocked; }
         public Room[] GetRoomList() { return mRoomList; }
-        public List<MobFlags> GetStartingFlagList() { return mStartingFlagList; }
         public Memento Memento() { return mMemento; }
 
     }// Class Doorway

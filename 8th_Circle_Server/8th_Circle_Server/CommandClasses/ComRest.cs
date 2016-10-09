@@ -16,12 +16,12 @@ namespace _8th_Circle_Server
         {
             string clientString = "";
 
-            if (mob.GetFlagList().Contains(MobFlags.FLAG_INCOMBAT))
+            if (mob.HasFlag(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't rest while in combat!\n";
-            else if (!mob.GetFlagList().Contains(MobFlags.FLAG_RESTING))
+            else if (!mob.HasFlag(MobFlags.FLAG_RESTING))
             {
                 clientString = "you sit down and rest...\n";
-                mob.GetFlagList().Add(MobFlags.FLAG_RESTING);
+                Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_RESTING);
                 Thread restThread = new Thread(() => restTask(((CombatMob)mob)));
                 restThread.Start();
             }
@@ -39,7 +39,7 @@ namespace _8th_Circle_Server
             double manaRegen = (maxMana / 20) + 1;
             Thread.Sleep(4000);
 
-            while (mob.GetFlagList().Contains(MobFlags.FLAG_RESTING))
+            while (mob.HasFlag(MobFlags.FLAG_RESTING))
             {
                 mob[STAT.CURRENTHP] = mob[STAT.CURRENTHP] + (int)hpRegen;
                 mob[STAT.CURRENTMANA] = mob[STAT.CURRENTMANA] + (int)manaRegen;

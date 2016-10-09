@@ -27,7 +27,7 @@ namespace _8th_Circle_Server
                 mResistances.Add(0);
 
             fillResistances();
-            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
+            Utils.SetFlag(ref mFlags, MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
         }// Constructor
 
@@ -56,7 +56,7 @@ namespace _8th_Circle_Server
                 mResistances.Add(0);
 
             fillResistances();
-            mFlagList.Add(MobFlags.FLAG_COMBATABLE);
+            Utils.SetFlag(ref mFlags, MobFlags.FLAG_COMBATABLE);
             mResType = ResType.NPC;
         }// Constructor
 
