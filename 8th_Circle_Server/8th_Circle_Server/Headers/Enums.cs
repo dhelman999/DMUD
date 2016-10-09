@@ -1,4 +1,6 @@
-﻿namespace _8th_Circle_Server
+﻿using System;
+
+namespace _8th_Circle_Server
 {
     public enum RoomID
     {
@@ -140,32 +142,33 @@
         ROOMID_END
     }// RoomID
 
+    [Flags]
     public enum MobFlags
     {
-        FLAG_START,
-        FLAG_OPENABLE = FLAG_START,
-        FLAG_CLOSEABLE,
-        FLAG_LOCKED,
-        FLAG_LOCKABLE,
-        FLAG_UNLOCKED,
-        FLAG_UNLOCKABLE,
-        FLAG_HIDDEN,
-        FLAG_INVISIBLE,
-        FLAG_GETTABLE,
-        FLAG_DROPPABLE,
-        FLAG_PUSHABLE,
-        FLAG_STORABLE,
-        FLAG_USEABLE,
-        FLAG_INSPECTABLE,
-        FLAG_WEARABLE,
-        FLAG_IDENTIFYABLE,
-        FLAG_STEALABLE,
-        FLAG_DUPLICATABLE,
-        FLAG_SEARCHING,
-        FLAG_COMBATABLE,
-        FLAG_INCOMBAT,
-        FLAG_RESTING,
-        FLAG_END
+        FLAG_NONE = 0,
+        FLAG_OPENABLE = 1,
+        FLAG_CLOSEABLE = 2,
+        FLAG_LOCKED = 4,
+        FLAG_LOCKABLE = 8,
+        FLAG_UNLOCKED = 16,
+        FLAG_UNLOCKABLE = 32,
+        FLAG_HIDDEN = 64,
+        FLAG_INVISIBLE = 128,
+        FLAG_GETTABLE = 256,
+        FLAG_DROPPABLE = 512,
+        FLAG_PUSHABLE = 1024,
+        FLAG_STORABLE = 2048,
+        FLAG_USEABLE = 4096,
+        FLAG_INSPECTABLE = 8192,
+        FLAG_WEARABLE = 16384,
+        FLAG_IDENTIFYABLE = 32768,
+        FLAG_STEALABLE = 65536,
+        FLAG_DUPLICATABLE = 131072,
+        FLAG_SEARCHING = 262144,
+        FLAG_COMBATABLE = 524288,
+        FLAG_INCOMBAT = 1048576,
+        FLAG_RESTING = 2097152,
+        FLAG_END = 4194304
     }// MobFlags
 
     public enum GrammarType

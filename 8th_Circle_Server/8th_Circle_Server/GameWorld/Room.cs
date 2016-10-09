@@ -154,10 +154,12 @@ namespace _8th_Circle_Server
             {
                 if (getRes(ResType.DOORWAY)[(int)dir] != null)
                 {
-                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
+                    Doorway currentDoor = (Doorway)getRes(ResType.DOORWAY)[(int)dir];
+
+                    if (!currentDoor.HasFlag(MobFlags.FLAG_HIDDEN))
                     {
                         ++visibleObjects;
-                        tmp += dir.ToString().ToLower() + " " + ((Doorway)getRes(ResType.DOORWAY)[(int)dir]).GetName() + "\n";        
+                        tmp += dir.ToString().ToLower() + " " + currentDoor.GetName() + "\n";        
                     }// if
                 }// if   
             }// for
@@ -175,10 +177,12 @@ namespace _8th_Circle_Server
             // multiple times
             for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
             {
-                if (!(getRes(ResType.OBJECT)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
+                Mob currentMob = getRes(ResType.OBJECT)[i];
+
+                if (!currentMob.HasFlag(MobFlags.FLAG_HIDDEN))
                 {
                     ++visibleObjects;
-                    tmp += (getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
+                    tmp += currentMob.exitString(this) + "\n";
                 }// if
             }// for
 
@@ -195,16 +199,20 @@ namespace _8th_Circle_Server
 
             for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
             {
-                if (!(getRes(ResType.NPC)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += (getRes(ResType.NPC)[i]).GetName() + "\n";
+                Mob currentMob = getRes(ResType.NPC)[i];
+
+                if (!currentMob.HasFlag(MobFlags.FLAG_HIDDEN))
+                    exitStr += currentMob.GetName() + "\n";
             }// if
 
             exitStr += "Players: ";
 
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
-                if (!(getRes(ResType.PLAYER)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += (getRes(ResType.PLAYER)[i]).GetName() + "\n";
+                Mob player = getRes(ResType.PLAYER)[i];
+
+                if (!player.HasFlag(MobFlags.FLAG_HIDDEN))
+                    exitStr += player.GetName() + "\n";
             }// if
 
             exitStr += "\n";

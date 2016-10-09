@@ -6,6 +6,8 @@ namespace _8th_Circle_Server
 {
     public class Mob
     {
+        public MobFlags mFlags;
+
         protected string mName;
         protected ResType mResType;
         protected string mExitStr;
@@ -56,6 +58,7 @@ namespace _8th_Circle_Server
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
+            mFlags = MobFlags.FLAG_NONE;
         }// Constructor
 
         public Mob(string name)
@@ -79,6 +82,7 @@ namespace _8th_Circle_Server
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
+            mFlags = MobFlags.FLAG_NONE;
         }// Constructor
 
         public Mob(Mob mob)
@@ -112,6 +116,7 @@ namespace _8th_Circle_Server
             mStartingActionCounter = mob.mStartingActionCounter;
             mCurrentActionCounter = mob.mCurrentActionCounter;
             mRand = new Random();
+            mFlags = mob.mFlags;
         }// Copy Constructor
 
         public virtual Mob Clone()
@@ -200,11 +205,11 @@ namespace _8th_Circle_Server
                         return "you get " + exitString(mCurrentRoom) + "\n";
                     }
                     else
-                    {
+                    {                    
                         // TODO
                         // Need to have a common error string for hidden objects that
                         // does not include their name
-                        if (!mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                        if (!HasFlag(MobFlags.FLAG_HIDDEN))
                         {
                             mob.mWorld.totallyRemoveRes(this);
                             mCurrentOwner = mob;
@@ -495,11 +500,10 @@ namespace _8th_Circle_Server
             {
                 foreach (Mob mob in ar)
                 {
-                    if(mob != null &&
-                       mob.mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                    if(mob != null && mob.HasFlag(MobFlags.FLAG_HIDDEN))
                     {
                         searchString += "you discover a " + mob.mName;
-                        mob.mFlagList.Remove(MobFlags.FLAG_HIDDEN);
+                        Utils.UnsetFlag(ref mob.mFlags, MobFlags.FLAG_HIDDEN);
                         found = true;
                     }// if
                 }// foreach
@@ -670,6 +674,8 @@ namespace _8th_Circle_Server
         public void SetCurrentActionTimer(int time) { mCurrentActionCounter = time; }
         public int DecCurrentActionTimer(int time) { return (mCurrentActionCounter = mCurrentActionCounter - time); }
         public int GetStartingActionTimer() { return mStartingActionCounter; }
+        public MobFlags GetFlags() { return mFlags; }
+        public bool HasFlag(Enum flag) { return mFlags.HasFlag(flag); }
 
     }// Class Mob
 

@@ -747,8 +747,7 @@ namespace _8th_Circle_Server
             gpg_76.removeTripleLinks(Direction.WEST);
 
             Doorway newDoor = new Doorway("door");
-            newDoor.GetFlagList().Add(MobFlags.FLAG_HIDDEN);
-            newDoor.GetStartingFlagList().Add(MobFlags.FLAG_HIDDEN);
+            Utils.SetFlag(ref newDoor.mFlags, MobFlags.FLAG_HIDDEN);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
 
@@ -779,7 +778,8 @@ namespace _8th_Circle_Server
             newbieArea.cloneMob(MOBLIST.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
 
             Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
-            steel_key.GetFlagList().Add(MobFlags.FLAG_HIDDEN);
+            Utils.SetFlag(ref steel_key.mFlags, MobFlags.FLAG_HIDDEN);
+            Utils.SetFlag(ref steel_key.mFlags, MobFlags.FLAG_LOCKED);
             steel_key.SetKeyID(5);
             steel_key.SetDesc("a small steel key, I wonder what it opens?");
             newbieArea.cloneMob(MOBLIST.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
