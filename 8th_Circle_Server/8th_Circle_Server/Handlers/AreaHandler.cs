@@ -72,8 +72,8 @@ namespace _8th_Circle_Server
             {
                 foreach (Mob mob in ar)
                 {
-                    if (mob.mActionTimer > 0)
-                        --(mob.mActionTimer);
+                    if (mob.GetActionTimer() > 0)
+                        mob.ModifyActionTimer(-1);
 
                     if(mob is CombatMob && ((CombatMob)mob).GetQueuedCommand() != string.Empty)
                     {
@@ -89,19 +89,19 @@ namespace _8th_Circle_Server
             {
                 foreach(Mob parent in area.GetPrototypeMobList())
                 {
-                    if (parent.mIsRespawning && (parent.mCurrentRespawnTime -= TICKTIME) <= 0)
+                    if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
                     {
-                        if (parent.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+                        if (parent.GetFlagList().Contains(MobFlags.FLAG_INCOMBAT))
                         {
-                            parent.mIsRespawning = false;
-                            parent.mCurrentRespawnTime = parent.mStartingRespawnTime;
+                            parent.SetIsRespawning(false);
+                            parent.SetStartingRespawnTime(parent.GetStartingRespawnTime());
                         }
                         else
                         {
-                            for (int i= 0; i< parent.mChildren.Count; ++i)
-                                parent.mChildren[i--].destroy();
+                            for (int i= 0; i< parent.GetChildren().Count; ++i)
+                                parent.GetChildren()[i--].destroy();
 
-                            Console.WriteLine("respawning " + parent.mName);
+                            Console.WriteLine("respawning " + parent.GetName());
                             parent.respawn();
                         }
                     }
@@ -122,9 +122,9 @@ namespace _8th_Circle_Server
                         {
                             Mob mob = ar[i];
 
-                            if (mob != null && mob.mStartingArea != area)
+                            if (mob != null && mob.GetStartingArea() != area)
                             {
-                                Console.WriteLine("despawning " + mob.mName + " from other area");
+                                Console.WriteLine("despawning " + mob.GetName() + " from other area");
                                 mob.destroy();
                                 --i;
                             }// if
@@ -165,9 +165,9 @@ namespace _8th_Circle_Server
                 {
                     CombatMob npc = (CombatMob)npcList[i];
 
-                    if ((npc.mCurrentActionCounter -= TICKTIME) <= 0)
+                    if (npc.DecCurrentActionTimer(TICKTIME) <= 0)
                     {
-                        npc.mCurrentActionCounter = npc.mStartingActionCounter;
+                        npc.SetCurrentActionTimer(npc.GetStartingActionTimer());
                         npc.randomAction();
                     }// if
 

@@ -6,37 +6,35 @@ namespace _8th_Circle_Server
 {
     public class Mob
     {
-        internal int SEED = 0;
+        protected string mName;
+        protected ResType mResType;
+        protected string mExitStr;
+        protected string mShortDescription;
+        protected string mDescription;
+        protected World mWorld;
+        protected Room mStartingRoom;
+        protected Room mCurrentRoom;
+        protected Area mStartingArea;
+        protected Area mCurrentArea;
+        protected Mob mStartingOwner;
+        protected Mob mCurrentOwner;
+        protected List<PrepositionType> mPrepList;
+        protected List<MobFlags> mFlagList;
+        protected List<Mob> mInventory;
+        protected List<EventData> mEventList;
+        protected List<Mob> mChildren;
+        protected Mob mParent;
+        protected MOBLIST mMobId;
+        protected int mKeyId;
+        protected int mStartingRespawnTime;
+        protected int mCurrentRespawnTime;
+        protected bool mIsRespawning;
+        protected int mActionTimer;
+        protected int mStartingActionCounter;
+        protected int mCurrentActionCounter;
 
-        // Member Variables
-        public string mName;
-        public ResType mResType;
-        public string mExitStr;
-        public string mShortDescription;
-        public string mDescription;
-        public World mWorld;
-        public int[] mAreaLoc;
-        public Room mStartingRoom;
-        public Room mCurrentRoom;
-        public Area mStartingArea;
-        public Area mCurrentArea;
-        public Mob mStartingOwner;
-        public Mob mCurrentOwner;
-        public List<PrepositionType> mPrepList;
-        public List<MobFlags> mFlagList;
-        public List<Mob> mInventory;
-        public List<EventData> mEventList;
-        public List<Mob> mChildren;
-        public Mob mParent;
-        public int mMobId; // TODO this should be a MOBLIST enum id
-        public int mStartingRespawnTime;
-        public int mCurrentRespawnTime;
-        public bool mIsRespawning;
-        public int mKeyId; // TODO this should be a MOBLIST enum id
-        public int mActionTimer;
-        public int mStartingActionCounter;
-        public int mCurrentActionCounter;
-        public Random mRand;
+        private Random mRand;
+        private int[] mAreaLoc;
 
         public Mob()
         {
@@ -53,8 +51,9 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mStartingRespawnTime = mCurrentRespawnTime = 25;
-            mMobId = mKeyId = -1;
-            mKeyId = mActionTimer = 0;
+            mMobId = MOBLIST.MOB_START;
+            mKeyId = (int)MOBLIST.MOB_START;
+            mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
         }// Constructor
@@ -75,8 +74,9 @@ namespace _8th_Circle_Server
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
-            mMobId = -1;
-            mKeyId = mActionTimer = 0;
+            mMobId = MOBLIST.MOB_START;
+            mKeyId = (int)MOBLIST.MOB_START;
+            mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
         }// Constructor
@@ -206,9 +206,7 @@ namespace _8th_Circle_Server
                         // does not include their name
                         if (!mFlagList.Contains(MobFlags.FLAG_HIDDEN))
                         {
-                            mob.mCurrentArea.removeRes(this);
-                            mob.mCurrentRoom.removeRes(this);
-                            mob.mWorld.removeRes(this);
+                            mob.mWorld.totallyRemoveRes(this);
                             mCurrentOwner = mob;
                             mob.mInventory.Add(this);
 
@@ -260,9 +258,7 @@ namespace _8th_Circle_Server
                         {
                             if (container.mInventory.Contains(this))
                             {
-                                mob.mCurrentArea.removeRes(this);
-                                mob.mCurrentRoom.removeRes(this);
-                                mob.mWorld.removeRes(this);
+                                mob.mWorld.totallyRemoveRes(this);
                                 container.mInventory.Remove(this);
                                 mCurrentOwner = mob;
                                 mob.mInventory.Add(this);
@@ -415,12 +411,10 @@ namespace _8th_Circle_Server
         // This needs to be done or else it can create dangling references to mobs in combat that never ends.
         public virtual string destroy()
         {
-            mCurrentArea.removeRes(this);
             mCurrentOwner = null;
             mInventory.Clear();
-            mEventList.Clear();
-            mCurrentRoom.removeRes(this);   
-            mWorld.removeRes(this);
+            mEventList.Clear(); 
+            mWorld.totallyRemoveRes(this);
 
             if (mParent != null)
             {
@@ -559,7 +553,7 @@ namespace _8th_Circle_Server
             if (mRand.NextDouble() < .5)
             {
                 // Max movement
-                if (mMobId == (int)MOBLIST.MAX)
+                if (mMobId == MOBLIST.MAX)
                 {
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
                         player.safeWrite(mName + " purrs softly\n");
@@ -633,6 +627,49 @@ namespace _8th_Circle_Server
         {
             // not implemented
         }// safeWrite
+
+        // Accessors
+        public string GetName() { return mName; }
+        public void SetName(string name) { mName = name; }
+        public ResType GetResType() { return mResType; }
+        public void SetResType(ResType resType) { mResType = resType; }
+        public string GetDesc() { return mDescription; }
+        public void SetDesc(string desc) { mDescription = desc; }
+        public World GetWorld() { return mWorld; }
+        public void SetWorld(World world) { mWorld = world; }
+        public void SetAreaLoc(int index, int val) { mAreaLoc[index] = val; }
+        public Room GetStartingRoom() { return mStartingRoom; }
+        public void SetStartingRoom(Room room) { mStartingRoom = room; }
+        public Room GetCurrentRoom() { return mCurrentRoom; }
+        public void SetCurrentRoom(Room room) { mCurrentRoom = room; }
+        public Area GetCurrentArea() { return mCurrentArea; }
+        public void SetCurrentArea(Area area) { mCurrentArea = area; }
+        public Area GetStartingArea() { return mStartingArea; }
+        public void SetStartingArea(Area area) { mStartingArea = area; }
+        public List<MobFlags> GetFlagList() { return mFlagList; }
+        public List<Mob> GetInv() { return mInventory; }
+        public List<EventData> GetEventList() { return mEventList; }
+        public List<Mob> GetChildren() { return mChildren; }
+        public Mob GetParent() { return mParent; }
+        public void SetParent(Mob parent) { mParent = parent; }
+        public MOBLIST GetMobID() { return mMobId; }
+        public void SetMobID(MOBLIST mobID) { mMobId = mobID; }
+        public int GetKeyID() { return mKeyId; }
+        public void SetKeyID(int keyID) { mKeyId = keyID; }
+        public int GetStartingRespawnTime() { return mStartingRespawnTime; }
+        public void SetStartingRespawnTime(int time) { mStartingRespawnTime = time; }
+        public int GetCurrentRespawnTime() { return mCurrentRespawnTime; }
+        public void SetCurrentRespawnTime(int time) { mCurrentRespawnTime = time; }
+        public int DecRespawnTime(int time) { return (mCurrentRespawnTime = mCurrentRespawnTime - time); }
+        public bool IsRespawning() { return mIsRespawning; }
+        public void SetIsRespawning(bool respawning) { mIsRespawning = respawning; }
+        public int GetActionTimer() { return mActionTimer; }
+        public void SetActionTimer(int time) { mActionTimer = time; }
+        public int ModifyActionTimer(int time) { return (mActionTimer = mActionTimer + time); }
+        public int GetCurrentActionTimer() { return mCurrentActionCounter; }
+        public void SetCurrentActionTimer(int time) { mCurrentActionCounter = time; }
+        public int DecCurrentActionTimer(int time) { return (mCurrentActionCounter = mCurrentActionCounter - time); }
+        public int GetStartingActionTimer() { return mStartingActionCounter; }
 
     }// Class Mob
 

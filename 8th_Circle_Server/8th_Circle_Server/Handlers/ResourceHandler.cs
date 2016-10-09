@@ -23,12 +23,12 @@ namespace _8th_Circle_Server
 
         public void addRes(Mob mob)
         {
-            mResources[(int)mob.mResType].Add(mob);
+            mResources[(int)mob.GetResType()].Add(mob);
         }// addRes
 
         public void removeRes(Mob mob)
         {
-            mResources[(int)mob.mResType].Remove(mob);
+            mResources[(int)mob.GetResType()].Remove(mob);
         }// removeRes  
 
         // Accessors

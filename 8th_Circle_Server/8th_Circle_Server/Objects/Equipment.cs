@@ -78,12 +78,12 @@ namespace _8th_Circle_Server
             if (pl[mSlot] == null)
             {
                 pl[mSlot] = this;
-                pl.mInventory.Remove(this);
+                pl.GetInv().Remove(this);
 
                 return "you equip the " + mName;
             }// if
             else
-                return "you are already wearing the " + (pl[mSlot]).mName;
+                return "you are already wearing the " + pl[mSlot].GetName();
         }// wear
 
         public override string remove(CombatMob pl)
@@ -93,7 +93,7 @@ namespace _8th_Circle_Server
             else
             {
                 pl[mSlot] = null;
-                pl.mInventory.Add(this);
+                pl.GetInv().Add(this);
 
                 return "you remove the " + mName;
             }// else

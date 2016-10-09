@@ -154,10 +154,10 @@ namespace _8th_Circle_Server
             {
                 if (getRes(ResType.DOORWAY)[(int)dir] != null)
                 {
-                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                    if (!((Doorway)getRes(ResType.DOORWAY)[(int)dir]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
                     {
                         ++visibleObjects;
-                        tmp += dir.ToString().ToLower() + " " + ((Doorway)getRes(ResType.DOORWAY)[(int)dir]).mName + "\n";        
+                        tmp += dir.ToString().ToLower() + " " + ((Doorway)getRes(ResType.DOORWAY)[(int)dir]).GetName() + "\n";        
                     }// if
                 }// if   
             }// for
@@ -175,7 +175,7 @@ namespace _8th_Circle_Server
             // multiple times
             for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
             {
-                if (!(getRes(ResType.OBJECT)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
+                if (!(getRes(ResType.OBJECT)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
                 {
                     ++visibleObjects;
                     tmp += (getRes(ResType.OBJECT)[i]).exitString(this) + "\n";
@@ -195,16 +195,16 @@ namespace _8th_Circle_Server
 
             for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
             {
-                if (!(getRes(ResType.NPC)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += (getRes(ResType.NPC)[i]).mName + "\n";
+                if (!(getRes(ResType.NPC)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
+                    exitStr += (getRes(ResType.NPC)[i]).GetName() + "\n";
             }// if
 
             exitStr += "Players: ";
 
             for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
             {
-                if (!(getRes(ResType.PLAYER)[i]).mFlagList.Contains(MobFlags.FLAG_HIDDEN))
-                    exitStr += (getRes(ResType.PLAYER)[i]).mName + "\n";
+                if (!(getRes(ResType.PLAYER)[i]).GetFlagList().Contains(MobFlags.FLAG_HIDDEN))
+                    exitStr += (getRes(ResType.PLAYER)[i]).GetName() + "\n";
             }// if
 
             exitStr += "\n";
@@ -215,26 +215,26 @@ namespace _8th_Circle_Server
         public void addMobResource(Mob newMob)
         {
             // Remove old references
-            if (newMob.mCurrentRoom != null && newMob.mCurrentArea != null)
+            if (newMob.GetCurrentRoom() != null && newMob.GetCurrentArea() != null)
             {
                 // Allow duplicates to be dropped in the same room
-                if(!(getRes(newMob.mResType).Contains(newMob)))
+                if(!(getRes(newMob.GetResType()).Contains(newMob)))
                 {
-                    newMob.mCurrentArea.removeRes(newMob);
-                    newMob.mCurrentRoom.removeRes(newMob);
+                    newMob.GetCurrentArea().removeRes(newMob);
+                    newMob.GetCurrentRoom().removeRes(newMob);
                 }
             }
 
             // Add new references
-            newMob.mStartingArea = mCurrentArea;
-            newMob.mCurrentArea = mCurrentArea;
-            newMob.mStartingRoom = this;
-            newMob.mCurrentRoom = this;
+            newMob.SetStartingArea(mCurrentArea);
+            newMob.SetCurrentArea(mCurrentArea);
+            newMob.SetStartingRoom(this);
+            newMob.SetCurrentRoom(this);
 
             // Add resources
             addRes(newMob);
-            newMob.mCurrentArea.addRes(newMob);
-            newMob.mWorld.addRes(newMob);
+            newMob.GetCurrentArea().addRes(newMob);
+            newMob.GetWorld().addRes(newMob);
         }// addMobResource
 
         public void addDoor(Doorway door, Direction dir)
@@ -267,7 +267,7 @@ namespace _8th_Circle_Server
                    break;
             }// for
 
-            return dir.ToString().ToLower() + " " + door.mName;
+            return dir.ToString().ToLower() + " " + door.GetName();
         }// getDoorString
 
         public void removeDualLinks(Direction dir)

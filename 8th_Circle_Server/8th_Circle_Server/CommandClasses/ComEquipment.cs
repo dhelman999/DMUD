@@ -21,7 +21,7 @@ namespace _8th_Circle_Server
                 if (player[slot] == null)
                     clientString += slot + ":\n";
                 else
-                    clientString += slot.ToString() + ": " + (player[slot]).mName + "\n";
+                    clientString += slot.ToString() + ": " + player[slot].GetName() + "\n";
             }// for
 
             return clientString;

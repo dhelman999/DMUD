@@ -13,7 +13,7 @@ namespace _8th_Circle_Server
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
-            Room currentRoom = mob.mCurrentRoom;
+            Room currentRoom = mob.GetCurrentRoom();
             string clientString = "";
 
             if (commandQueue.Count == 1)
@@ -21,7 +21,7 @@ namespace _8th_Circle_Server
             // The player looked in a direction, print out that connected rooms
             // location
             else if (commandQueue.Count == 2)
-                clientString = mob.mCurrentRoom.viewed((string)commandQueue[1]);
+                clientString = mob.GetCurrentRoom().viewed((string)commandQueue[1]);
             else if (commandQueue.Count == 3)
                 clientString = ((Mob)commandQueue[2]).viewed(mob, (Preposition)commandQueue[1]);
             else

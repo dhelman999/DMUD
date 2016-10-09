@@ -118,7 +118,7 @@ namespace _8th_Circle_Server
                             RoomID roomID = (RoomID)eventData.GetData();
                             (mWorld.GetAreas()[2])[roomID].addMobResource(eventData.GetTrigger());
                             ((CombatMob)eventData.GetTrigger()).safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
-                            ((CombatMob)eventData.GetTrigger()).safeWrite(eventData.GetTrigger().mCurrentRoom.exitString());
+                            ((CombatMob)eventData.GetTrigger()).safeWrite(eventData.GetTrigger().GetCurrentRoom().exitString());
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:

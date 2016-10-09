@@ -170,7 +170,7 @@ namespace _8th_Circle_Server
         public virtual string slain(Mob mob)
         {
             if (mResType == ResType.PLAYER)
-                return "you have been slain by " + mob.mName;
+                return "you have been slain by " + mob.GetName();
             else
                 base.destroy();
 

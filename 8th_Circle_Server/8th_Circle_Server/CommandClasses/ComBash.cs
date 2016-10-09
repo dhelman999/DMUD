@@ -18,10 +18,10 @@ namespace _8th_Circle_Server
 
             if (cm.GetMobType() != MobType.WARRIOR)
                 clientString = "you don't know how to bash";
-            else if (!mob.mFlagList.Contains(MobFlags.FLAG_INCOMBAT))
+            else if (!mob.GetFlagList().Contains(MobFlags.FLAG_INCOMBAT))
                 clientString = "you can't bash if you are not in combat\b";
             else
-                cm.mWorld.GetCombatHandler().abilityAttack(cm, null, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BASH]);
+                cm.GetWorld().GetCombatHandler().abilityAttack(cm, null, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BASH]);
 
             return clientString;
         }// execute

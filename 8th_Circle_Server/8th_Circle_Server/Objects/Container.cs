@@ -53,7 +53,7 @@ namespace _8th_Circle_Server
                     else
                     {
                         foreach (Mob mob in mInventory)
-                            clientString += mob.mName + "\n";
+                            clientString += mob.GetName() + "\n";
                     }// else
                 }// if
                 else
@@ -81,7 +81,7 @@ namespace _8th_Circle_Server
                     mIsOpen = true;
 
                     if (mParent != null)
-                        mParent.mIsRespawning = true;
+                        mParent.SetIsRespawning(true);
                 }// else
             }// if
 
@@ -102,7 +102,7 @@ namespace _8th_Circle_Server
                     mIsOpen = false;
 
                     if (mParent != null)
-                        mParent.mIsRespawning = true;
+                        mParent.SetIsRespawning(true);
                 }// else
             }// if
 
@@ -113,9 +113,9 @@ namespace _8th_Circle_Server
         {
             bool foundKey = false;
 
-            foreach(Mob key in mob.mInventory)
+            foreach(Mob key in mob.GetInv())
             {
-               if(key.mKeyId == mKeyId)
+               if(key.GetKeyID() == mKeyId)
                   foundKey = true;
             }// foreach
 
@@ -132,7 +132,7 @@ namespace _8th_Circle_Server
                         mFlagList.Remove(MobFlags.FLAG_UNLOCKED);
 
                         if (mParent != null)
-                            mParent.mIsRespawning = true;
+                            mParent.SetIsRespawning(true);
 
                         return "you lock " + mName + "\n";
                     }// if
@@ -150,9 +150,9 @@ namespace _8th_Circle_Server
         {
             bool foundKey = false;
 
-            foreach (Mob key in mob.mInventory)
+            foreach (Mob key in mob.GetInv())
             {
-                if (key.mKeyId == mKeyId)
+                if (key.GetKeyID() == mKeyId)
                     foundKey = true;
             }// foreach
 
@@ -169,7 +169,7 @@ namespace _8th_Circle_Server
                         mFlagList.Remove(MobFlags.FLAG_LOCKED);
 
                         if (mParent != null)
-                            mParent.mIsRespawning = true;
+                            mParent.SetIsRespawning(true);
 
                         return "you unlock " + mName + "\n";
                     }// if

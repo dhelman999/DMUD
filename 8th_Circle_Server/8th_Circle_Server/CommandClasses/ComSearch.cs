@@ -15,8 +15,8 @@ namespace _8th_Circle_Server
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             string clientString = "you start searching...\n";
-            mob.mActionTimer = 4;
-            mob.mFlagList.Add(MobFlags.FLAG_SEARCHING);
+            mob.SetActionTimer(4);
+            mob.GetFlagList().Add(MobFlags.FLAG_SEARCHING);
             Thread searchThread = new Thread(() => searchTask(mob));
             searchThread.Start();
 

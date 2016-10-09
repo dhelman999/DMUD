@@ -44,19 +44,22 @@ namespace _8th_Circle_Server
 
             // Use the name specified, if none, use the global game prototypes name
             if(name != "")
-                parent.mName = child.mName = name;
+            {
+                parent.SetName(name);
+                child.SetName(name);
+            }
 
             // Setup parent/child relationship
-            parent.mChildren.Add(child);
-            child.mParent = parent;
+            parent.GetChildren().Add(child);
+            child.SetParent(parent);
 
             Area currentArea = startingRoom.GetCurrentArea();
 
             // Add starting positions for the parent
-            parent.mStartingArea = currentArea;
-            parent.mCurrentArea = currentArea;
-            parent.mStartingRoom = startingRoom;
-            parent.mCurrentRoom = startingRoom;
+            parent.SetStartingArea(currentArea);
+            parent.SetCurrentArea(currentArea);
+            parent.SetStartingRoom(startingRoom);
+            parent.SetCurrentRoom(startingRoom);
 
             // Add the child to the physical location
             startingRoom.addMobResource(child);

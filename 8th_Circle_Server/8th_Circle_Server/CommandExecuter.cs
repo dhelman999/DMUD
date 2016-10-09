@@ -435,7 +435,7 @@ namespace _8th_Circle_Server
             // If we have a valid verb with a grammar of 1, we are done, execute it
             if (tokens.Length == 1 &&
                 currentCC.GetGrammar().Length == 1 &&
-                mob.mActionTimer == 0)
+                mob.GetActionTimer() == 0)
             {
                 return errorCode.E_OK;
             }
@@ -536,7 +536,7 @@ namespace _8th_Circle_Server
             if (!(commandClass.GetCommandName() == commandName.COMMAND_REST ||
                 commandClass.GetCommandName() == commandName.COMMAND_LOOK))
             {
-                mob.mFlagList.Remove(MobFlags.FLAG_RESTING);
+                mob.GetFlagList().Remove(MobFlags.FLAG_RESTING);
             }
 
             clientString = commandClass.execute(commandQueue, mob, this);
@@ -553,9 +553,9 @@ namespace _8th_Circle_Server
             if (commandClass.GetPred1Type() != predicateType.PREDICATE_END &&
                 commandClass.GetPred1Type() != predicateType.PREDICATE_CUSTOM)
             {
-                if ( commandClass.GetPred1().mEventList.Count > 0)
+                if ( commandClass.GetPred1().GetEventList().Count > 0)
                 {
-                    EventData eventData = commandClass.GetPred1().mEventList[0];
+                    EventData eventData = commandClass.GetPred1().GetEventList()[0];
 
                     // TODO
                     // This doesn't look like it supports predicate2 triggered events
@@ -567,9 +567,9 @@ namespace _8th_Circle_Server
                     {
                         eventData.SetTrigger(commandClass.GetCommOwner());
                         eventData.SetEventObject(commandClass.GetPred1());
-                        eventData.SetRoom(commandClass.GetPred1().mCurrentRoom);
+                        eventData.SetRoom(commandClass.GetPred1().GetCurrentRoom());
                         eventData.SetValidity(commandClass.GetValidity());
-                        ((CombatMob)mob).mWorld.GetEventHandler().enQueueEvent(eventData);
+                        ((CombatMob)mob).GetWorld().GetEventHandler().enQueueEvent(eventData);
                     }// if       
                 }// if
             }// else if
@@ -593,25 +593,25 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.getRes(ResType.OBJECT));
+                    targetList.Add(target.GetWorld().getRes(ResType.OBJECT));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mCurrentArea.getRes(ResType.OBJECT));
+                    targetList.Add(target.GetCurrentArea().getRes(ResType.OBJECT));
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.OBJECT));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
                 }// if
                 if(validity == validityType.VALID_INVENTORY)
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetInv());
                 if(validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.OBJECT));
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.OBJECT));
+                    targetList.Add(target.GetInv());
 
-                    foreach(Mob cont in target.mCurrentRoom.getRes(ResType.OBJECT))
+                    foreach(Mob cont in target.GetCurrentRoom().getRes(ResType.OBJECT))
                     {
                         if (cont is Container)
-                            targetList.Add(cont.mInventory);
+                            targetList.Add(cont.GetInv());
                     }
                 }// if
                 if (validity == validityType.VALID_EQUIP)
@@ -624,20 +624,20 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if(validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.getRes(ResType.PLAYER));
+                    targetList.Add(target.GetWorld().getRes(ResType.PLAYER));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mCurrentArea.getRes(ResType.PLAYER));
+                    targetList.Add(target.GetCurrentArea().getRes(ResType.PLAYER));
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.PLAYER));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetInv());
                 if (validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.PLAYER));
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.PLAYER));
+                    targetList.Add(target.GetInv());
                 }// if
             }// if
 
@@ -647,20 +647,20 @@ namespace _8th_Circle_Server
                 predType == predicateType.PREDICATE_ALL)
             {
                 if (validity == validityType.VALID_GLOBAL)
-                    targetList.Add(target.mWorld.getRes(ResType.NPC));
+                    targetList.Add(target.GetWorld().getRes(ResType.NPC));
                 if (validity == validityType.VALID_AREA)
-                    targetList.Add(target.mCurrentArea.getRes(ResType.NPC));
+                    targetList.Add(target.GetCurrentArea().getRes(ResType.NPC));
                 if (validity == validityType.VALID_LOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.NPC));
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.DOORWAY));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.NPC));
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
                 }// if
                 if (validity == validityType.VALID_INVENTORY)
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetInv());
                 if(validity == validityType.VALID_INVLOCAL)
                 {
-                    targetList.Add(target.mCurrentRoom.getRes(ResType.NPC));
-                    targetList.Add(target.mInventory);
+                    targetList.Add(target.GetCurrentRoom().getRes(ResType.NPC));
+                    targetList.Add(target.GetInv());
                 }// if
             }// if
 
@@ -686,7 +686,7 @@ namespace _8th_Circle_Server
                 {
                     Mob targetMob = keyValPair.Value;
 
-                    if (targetMob != null && validatePredicate(tokens[0].ToLower(), targetMob.exitString(target.mCurrentRoom).ToLower()))
+                    if (targetMob != null && validatePredicate(tokens[0].ToLower(), targetMob.exitString(target.GetCurrentRoom()).ToLower()))
                     {
                         ret = errorCode.E_OK;
                         targetPredicates.Add(targetMob);
@@ -702,7 +702,7 @@ namespace _8th_Circle_Server
                 {
                     foreach (Mob mob in ar)
                     {
-                        if (mob != null && validatePredicate(tokens[0].ToLower(), mob.exitString(target.mCurrentRoom).ToLower()))
+                        if (mob != null && validatePredicate(tokens[0].ToLower(), mob.exitString(target.GetCurrentRoom()).ToLower()))
                         {
                             ret = errorCode.E_OK;
                             targetPredicates.Add(mob);

@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
         {
             mPlayer = new CombatMob();
             mPlayer.SetClientHandler(this);
-            mPlayer.mResType = ResType.PLAYER;
+            mPlayer.SetResType(ResType.PLAYER);
             mTcpListener = tcpListener;
             mCommandHandler = world.GetCommandHandler();
             mWorld = world;
@@ -49,16 +49,16 @@ namespace _8th_Circle_Server
 
                         lock (PlayerLock)
                         {
-                            mPlayer.mName = mStreamReader.ReadLine();
-                            mPlayer.mWorld = mWorld;
-                            mPlayer.mDescription = mPlayer.mName + " is an 8th Circle Adventurer!";
+                            mPlayer.SetName(mStreamReader.ReadLine());
+                            mPlayer.SetWorld(mWorld);
+                            mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!");
                             Room curRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
                             curRoom.GetCurrentArea().addRes(mPlayer);
-                            mPlayer.mCurrentArea = curRoom.GetCurrentArea();
-                            mPlayer.mAreaLoc[0] = 1;
-                            mPlayer.mAreaLoc[1] = 1;
-                            mPlayer.mAreaLoc[2] = 1;
-                            mPlayer.mCurrentRoom = curRoom;
+                            mPlayer.SetCurrentArea(curRoom.GetCurrentArea());
+                            mPlayer.SetAreaLoc(0, 1);
+                            mPlayer.SetAreaLoc(1, 1);
+                            mPlayer.SetAreaLoc(2, 1);
+                            mPlayer.SetCurrentRoom(curRoom);
                         }// lock
 
                         mCmdString = string.Empty;
@@ -108,10 +108,10 @@ namespace _8th_Circle_Server
 
                         mPlayer.fillResistances();
                         mWorld.addRes(mPlayer);
-                        mPlayer.mCurrentRoom.addRes(mPlayer);
+                        mPlayer.GetCurrentRoom().addRes(mPlayer);
 
-                        foreach (CombatMob player in mPlayer.mWorld.getRes(ResType.PLAYER))
-                            player.safeWrite(mPlayer.mName + " has joined the World");
+                        foreach (CombatMob player in mPlayer.GetWorld().getRes(ResType.PLAYER))
+                            player.safeWrite(mPlayer.GetName() + " has joined the World");
 
                         do
                         {     
@@ -166,8 +166,8 @@ namespace _8th_Circle_Server
 
                 safeWrite("Welcome to the 8th Circle!");
 
-                if(mPlayer != null && mPlayer.mCurrentRoom != null)
-                   safeWrite(mPlayer.mCurrentRoom.exitString() + mPlayer.playerString());
+                if(mPlayer != null && mPlayer.GetCurrentRoom() != null)
+                   safeWrite(mPlayer.GetCurrentRoom().exitString() + mPlayer.playerString());
             }// catch
             while (true)
             {
@@ -212,15 +212,8 @@ namespace _8th_Circle_Server
         {
             if (mPlayer != null)
             {
-                if (mWorld.getRes(ResType.PLAYER).Count > 0)
-                {
-                    foreach (CombatMob player in mWorld.getRes(ResType.PLAYER))
-                        player.safeWrite(mPlayer.mName + " has left the world");
-
-                    mPlayer.mCurrentRoom.removeRes(mPlayer);
-                    mPlayer.mCurrentArea.removeRes(mPlayer);
-                    mWorld.removeRes(mPlayer);
-                }// if
+                mWorld.broadcast(mPlayer.GetName() + " has left the world");
+                mWorld.totallyRemoveRes(mPlayer);
             }// if
 
             mStreamReader.Close();

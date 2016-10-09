@@ -15,8 +15,8 @@ namespace _8th_Circle_Server
         {
             string clientString = "Inventory:\n\n";
 
-            foreach (Mob mob2 in mob.mInventory)
-                clientString += " " + mob2.mName + "\n";
+            foreach (Mob mob2 in mob.GetInv())
+                clientString += " " + mob2.GetName() + "\n";
 
             return clientString;
         }// execute

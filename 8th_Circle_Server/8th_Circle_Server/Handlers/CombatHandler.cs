@@ -119,7 +119,7 @@ namespace _8th_Circle_Server
             else
                 processAbilityHit(attacker, target, spell, isCrit);
 
-            attacker.mActionTimer += spell.mUseTime;
+            attacker.ModifyActionTimer(spell.mUseTime);
         }// executeSpell
 
         public void abilityAttack(CombatMob attacker, CombatMob target, Action ability)
@@ -152,7 +152,7 @@ namespace _8th_Circle_Server
             else
                 processAbilityHit(attacker, target, ability, isCrit);
 
-            attacker.mActionTimer += ability.mUseTime;
+            attacker.ModifyActionTimer(ability.mUseTime);
         }// abilityAttack
 
         public void processAbilityHit(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
@@ -186,11 +186,11 @@ namespace _8th_Circle_Server
             target[STAT.CURRENTHP] -= (int)damage;
 
             if (!isCrit)
-                damageString += "your " + ability.mName + " " + damageToString(maxHp, damage) +
-                                " the " + target.mName + " for " + (int)damage + " damage";
+                damageString += "your " + ability.GetName() + " " + damageToString(maxHp, damage) +
+                                " the " + target.GetName() + " for " + (int)damage + " damage";
             else
-                damageString += "your critical " + ability.mName + " " + damageToString(maxHp, damage) +
-                                " the " + target.mName + " for " + (int)damage + " damage";
+                damageString += "your critical " + ability.GetName() + " " + damageToString(maxHp, damage) +
+                                " the " + target.GetName() + " for " + (int)damage + " damage";
 
             attacker.safeWrite(damageString);
 
@@ -218,14 +218,14 @@ namespace _8th_Circle_Server
                 target[STAT.CURRENTHP] = (target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD]);
 
             if (!isCrit)
-                healString += "your " + ability.mName + " heals " + target.mName + " for " + (int)healAmount + " hp";
+                healString += "your " + ability.GetName() + " heals " + target.GetName() + " for " + (int)healAmount + " hp";
             else
-                healString += "your " + ability.mName + " critically heals " + target.mName + " for " + (int)healAmount + " hp";
+                healString += "your " + ability.GetName() + " critically heals " + target.GetName() + " for " + (int)healAmount + " hp";
             
             attacker.safeWrite(healString);
 
-            if (attacker != target && target.mResType == ResType.PLAYER)
-                target.safeWrite(attacker.mName + "'s " + ability.mName + " heals you for " + (int)healAmount + " hp");
+            if (attacker != target)
+                target.safeWrite(attacker.GetName() + "'s " + ability.GetName() + " heals you for " + (int)healAmount + " hp");
         }// processHeal
 
         public void attack(CombatMob attacker, CombatMob target)
@@ -309,25 +309,25 @@ namespace _8th_Circle_Server
             target[STAT.CURRENTHP] -= (int)damage;
             string damageString = string.Empty;
 
-            if (attacker.mResType == ResType.PLAYER)
+            if (attacker.GetResType() == ResType.PLAYER)
             {
                 int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
 
                 if (!isCrit)
-                    damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
+                    damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
                 else
-                    damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.mName + " for " + (int)damage + " damage";
+                    damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
 
                 attacker.safeWrite(damageString);
             }// if
-            if (target.mResType == ResType.PLAYER)
+            if (target.GetResType() == ResType.PLAYER)
             {
                 damageString = string.Empty;
 
                 if (isCrit)
-                    damageString += attacker.mName + " critically hits you for " + (int)damage + " damage";
+                    damageString += attacker.GetName() + " critically hits you for " + (int)damage + " damage";
                 else
-                    damageString += attacker.mName + " hits you for " + (int)damage + " damage";
+                    damageString += attacker.GetName() + " hits you for " + (int)damage + " damage";
 
                 target.safeWrite(damageString);
             }// if
@@ -338,10 +338,10 @@ namespace _8th_Circle_Server
             string attackString = "attack";
 
             if (ability != null)
-                attackString = ability.mName;
+                attackString = ability.GetName();
 
-            attacker.safeWrite("your " + attackString + " misses the " + target.mName);
-            target.safeWrite(attacker.mName + "'s " + attackString + " misses you");
+            attacker.safeWrite("your " + attackString + " misses the " + target.GetName());
+            target.safeWrite(attacker.GetName() + "'s " + attackString + " misses you");
         }// processMiss
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
@@ -357,16 +357,16 @@ namespace _8th_Circle_Server
 
                     if (cm.GetCombatList().Count == 0)
                     {
-                        cm.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                        cm.GetFlagList().Remove(MobFlags.FLAG_INCOMBAT);
                         sCurrentCombats.Remove(cm);
                     }
                 }
 
                 target.GetCombatList().Clear();
-                target.mFlagList.Remove(MobFlags.FLAG_INCOMBAT);
+                target.GetFlagList().Remove(MobFlags.FLAG_INCOMBAT);
                 sCurrentCombats.Remove(target);
 
-                attacker.safeWrite("you have slain the " + target.mName);
+                attacker.safeWrite("you have slain the " + target.GetName());
                 target.slain(attacker);
                 target.safeWrite(target.slain(attacker));
 

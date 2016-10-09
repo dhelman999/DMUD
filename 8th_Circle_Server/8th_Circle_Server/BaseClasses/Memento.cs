@@ -31,7 +31,7 @@ namespace _8th_Circle_Server
             else if (mob is Equipment)
                 mMementos[(int)MementoType.EQUIPMENT] = mob;
             else
-                Console.WriteLine("Error registering memento: %s\n", mob.mName);
+                Console.WriteLine("Error registering memento: %s\n", mob.GetName());
         }// registerMemento
 
     }// class Memento

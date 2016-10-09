@@ -19,15 +19,15 @@ namespace _8th_Circle_Server
             {
                 clientString = "\nPlayer\t\tArea\n\n";
 
-                foreach (CombatMob pl in mob.mWorld.getRes(ResType.PLAYER))
-                    clientString += pl.mName + "\t\t" + pl.mCurrentArea.GetName() + "\n";
+                foreach (CombatMob pl in mob.GetWorld().getRes(ResType.PLAYER))
+                    clientString += pl.GetName() + "\t\t" + pl.GetCurrentArea().GetName() + "\n";
             }// if
             else if (((string)commandQueue[1]).Equals("area"))
             {
                 clientString = "\nPlayer\t\tArea\n\n";
 
-                foreach (CombatMob pl in mob.mCurrentArea.getRes(ResType.PLAYER))
-                    clientString += pl.mName + "\t\t" + pl.mCurrentArea.GetName() + "\n";
+                foreach (CombatMob pl in mob.GetCurrentArea().getRes(ResType.PLAYER))
+                    clientString += pl.GetName() + "\t\t" + pl.GetCurrentArea().GetName() + "\n";
             }// else if
             else
                 return "you can't use who like that";

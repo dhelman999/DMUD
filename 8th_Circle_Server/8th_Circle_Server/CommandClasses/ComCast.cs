@@ -15,11 +15,11 @@ namespace _8th_Circle_Server
         {
             CommandClass currentCommand = (CommandClass)commandQueue[0];
             int commandIndex = 0;
-            Room currentRoom = mob.mCurrentRoom;
+            Room currentRoom = mob.GetCurrentRoom();
             string clientString = string.Empty;
             CombatMob target = null;
 
-            switch (((Mob)commandQueue[++commandIndex]).mName)
+            switch (((Mob)commandQueue[++commandIndex]).GetName())
             {
                 // TODO
                 // Make a spell class that inherits from Mob and handle all this crap
@@ -39,20 +39,20 @@ namespace _8th_Circle_Server
 
                     if (((CombatMob)mob).GetCombatList().Count == 0)
                     {
-                        mob.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                        mob.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
                         ((CombatMob)mob).GetCombatList().Add(target);
                         target.GetCombatList().Add((CombatMob)mob);
-                        target.mFlagList.Add(MobFlags.FLAG_INCOMBAT);
+                        target.GetFlagList().Add(MobFlags.FLAG_INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
                         CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
                         attackQueue.Add(attackCommand);
 
-                        mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
+                        mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                         attackQueue.Add(target);
                         attackCommand.execute(attackQueue, target, commandExecutioner);
                     }
                     else
-                        mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
+                        mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                     break;
 
                 case "cure":
@@ -69,7 +69,7 @@ namespace _8th_Circle_Server
                     if (((CombatMob)mob)[STAT.CURRENTMANA] < act.mManaCost)
                         return "you don't have enough mana for that";
 
-                    mob.mWorld.GetCombatHandler().executeSpell((CombatMob)mob, target, act);
+                    mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
                     break;
 
                 default:
