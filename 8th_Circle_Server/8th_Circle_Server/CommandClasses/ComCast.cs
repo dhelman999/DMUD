@@ -46,7 +46,7 @@ namespace _8th_Circle_Server
                         target.GetCombatList().Add((CombatMob)mob);
                         Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
-                        CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(CommandName.COMMAND_ATTACK, 1)];
+                        CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(CommandName.COMMAND_ATTACK, 2)];
                         attackQueue.Add(attackCommand);
 
                         mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);

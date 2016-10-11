@@ -208,7 +208,7 @@ namespace _8th_Circle_Server
         public CombatMob GetPrimaryTarget() { return mStats.GetPrimaryTarget(); }
         public void SetPrimaryTarget(CombatMob target) { mStats.SetPrimaryTarget(target); }
         public List<CombatMob> GetCombatList() { return mStats.GetCombatList(); }
-        public Dictionary<EQSlot, Mob> GetEQList() { return mEQList; }
+        public override Dictionary<EQSlot, Mob> GetEQList() { return mEQList; }
         public MobType GetMobType() { return mMobType; }
         public void SetMobType(MobType mobType) { mMobType = mobType; }
         public ClientHandler GetClientHandler() { return mClientHandler; }

@@ -9,6 +9,7 @@ namespace _8th_Circle_Server
                        PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
             base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
+            Utils.SetFlag(ref mPredicate1, PredicateType.DOORWAY);
         }
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)

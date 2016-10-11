@@ -581,116 +581,11 @@ namespace _8th_Circle_Server
 
         private errorCode doesPredicateExist(string name, PredicateType predType, ValidityType validity, ArrayList commandQueue, Mob target)
         {
-            errorCode ret = errorCode.E_INVALID_SYNTAX;
-            ArrayList targetList = new ArrayList();
             ArrayList targetPredicates = new ArrayList();
             string[] tokens = name.Split('.');
 
-            World world = target.GetWorld();
-            Area currentArea = target.GetCurrentArea();
-            Room currentRoom = target.GetCurrentRoom();
-            List<Mob> inventory = target.GetInv();
-
-            // Need to know which lists we need to search through to find the target predicate
-            if (predType.HasFlag(PredicateType.OBJECT))
-            {  
-                if (validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(world.getRes(ResType.OBJECT));
-                if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(currentArea.getRes(ResType.OBJECT));
-                if (validity.HasFlag(ValidityType.LOCAL))
-                {
-                    targetList.Add(currentRoom.getRes(ResType.OBJECT));
-                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
-                }// if
-
-                if(validity.HasFlag(ValidityType.INVENTORY) && validity.HasFlag(ValidityType.LOCAL))
-                {
-                    foreach(Mob cont in target.GetCurrentRoom().getRes(ResType.OBJECT))
-                    {
-                        if (cont is Container)
-                            targetList.Add(cont.GetInv());
-                    }
-                }// if
-                if (validity.HasFlag(ValidityType.EQUIPMENT))
-                    targetList.Add(((CombatMob)target).GetEQList());
-            }// if
-
-            if (predType.HasFlag(PredicateType.PLAYER))
-            {
-                if(validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(world.getRes(ResType.PLAYER));
-                if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(currentArea.getRes(ResType.PLAYER));
-                if (validity.HasFlag(ValidityType.LOCAL))
-                {
-                    targetList.Add(currentRoom.getRes(ResType.PLAYER));
-                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
-                }// if
-            }// if
-
-            if (predType.HasFlag(PredicateType.NPC))
-            {
-                if (validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(world.getRes(ResType.NPC));
-                if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(currentArea.getRes(ResType.NPC));
-                if (validity.HasFlag(ValidityType.LOCAL))
-                {
-                    targetList.Add(currentRoom.getRes(ResType.NPC));
-                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
-                }// if
-            }// if
-
-            if (validity.HasFlag(ValidityType.INVENTORY))
-                targetList.Add(inventory);
-
-            if (predType.HasFlag(PredicateType.SPELL))
-                targetList.Add(((CombatMob)target).GetActionList());
-
-            Dictionary<EQSlot, Mob> eqList = null;
-
-            // Extract the mobs from the various lists, handle EQ lists a little differently
-            for(int index = 0; index < targetList.Count; ++index)
-            {
-                if(targetList[index] is Dictionary<EQSlot, Mob>)
-                {
-                    eqList = (Dictionary<EQSlot, Mob>)targetList[index];
-                    targetList.RemoveAt(index);
-                    break;
-                }
-            }
-
-            if(eqList != null)
-            {
-                foreach(KeyValuePair<EQSlot, Mob> keyValPair in eqList)
-                {
-                    Mob targetMob = keyValPair.Value;
-
-                    if (targetMob != null && validatePredicate(tokens[0].ToLower(), targetMob.exitString(target.GetCurrentRoom()).ToLower()))
-                    {
-                        ret = errorCode.E_OK;
-                        targetPredicates.Add(targetMob);
-                    }// if
-                }// foreach(KeyValuePair<EQSlot, Mob> keyValPair in eqList)
-            }// if(eqList != null)
-
-            // TODO
-            // See if we have added the same list multiple times
-            foreach (List<Mob> ar in targetList)
-            {
-                if (ar.Count > 0)
-                {
-                    foreach (Mob mob in ar)
-                    {
-                        if (mob != null && validatePredicate(tokens[0].ToLower(), mob.exitString(target.GetCurrentRoom()).ToLower()))
-                        {
-                            ret = errorCode.E_OK;
-                            targetPredicates.Add(mob);
-                        }// if
-                    }// foreach
-                }// if
-            }// foreach
+            // Fill the targetPredicates with applicable predicates
+            errorCode ret = extractPredicates(tokens, predType, validity, target, targetPredicates);
 
             if (ret == errorCode.E_OK)
             {
@@ -792,6 +687,89 @@ namespace _8th_Circle_Server
             if(commandQueue.Count > 0)
                 commandQueue[0] = commandClass;
         }// fillEventArgs
+
+        // Fill the targetList with the extracted predicates from the commands and the applicable surroundings based on predicate type and validityType
+        private errorCode extractPredicates(string[] tokens, PredicateType predType, ValidityType validity, Mob target, ArrayList targetPredicates)
+        {
+            errorCode ret = errorCode.E_INVALID_SYNTAX;
+            ArrayList targetList = new ArrayList();
+            List<ResType> targetResTypes = new List<ResType>();
+            World world = target.GetWorld();
+            Area currentArea = target.GetCurrentArea();
+            Room currentRoom = target.GetCurrentRoom();
+            List<Mob> inventory = target.GetInv();
+
+            if (predType.HasFlag(PredicateType.OBJECT))
+                targetResTypes.Add(ResType.OBJECT);
+            if (predType.HasFlag(PredicateType.PLAYER))
+                targetResTypes.Add(ResType.PLAYER);
+            if (predType.HasFlag(PredicateType.NPC))
+                targetResTypes.Add(ResType.NPC);
+            if (predType.HasFlag(PredicateType.DOORWAY))
+                targetResTypes.Add(ResType.DOORWAY);
+
+            foreach (ResType targetResType in targetResTypes)
+            {
+                if (validity.HasFlag(ValidityType.GLOBAL))
+                    targetList.Add(world.getRes(targetResType));
+                if (validity.HasFlag(ValidityType.AREA))
+                    targetList.Add(currentArea.getRes(targetResType));
+                if (validity.HasFlag(ValidityType.LOCAL))
+                    targetList.Add(currentRoom.getRes(targetResType));
+                if (predType.HasFlag(PredicateType.DOORWAY))
+                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
+            }// foreach (ResType targetResType in targetResTypes)
+
+            if (validity.HasFlag(ValidityType.INVENTORY) && inventory != null)
+            {
+                targetList.Add(inventory);
+
+                foreach (Mob cont in target.GetCurrentRoom().getRes(ResType.OBJECT))
+                {
+                    if (cont is Container)
+                        targetList.Add(cont.GetInv());
+                }
+            }// if (validity.HasFlag(ValidityType.INVENTORY) && inventory != null)
+
+            if (predType.HasFlag(PredicateType.SPELL))
+                targetList.Add(((CombatMob)target).GetActionList());
+
+            if (validity.HasFlag(ValidityType.EQUIPMENT))
+            {
+                Dictionary<EQSlot, Mob> eqList = target.GetEQList();
+
+                if (eqList != null)
+                {
+                    foreach (KeyValuePair<EQSlot, Mob> keyValPair in eqList)
+                    {
+                        Mob targetMob = keyValPair.Value;
+
+                        if (targetMob != null && validatePredicate(tokens[0].ToLower(), targetMob.exitString(target.GetCurrentRoom()).ToLower()))
+                        {
+                            ret = errorCode.E_OK;
+                            targetPredicates.Add(targetMob);
+                        }
+                    }
+                }
+            }// if (validity.HasFlag(ValidityType.EQUIPMENT))
+
+            foreach (List<Mob> subList in targetList)
+            {
+                if (subList.Count > 0)
+                {
+                    foreach (Mob mob in subList)
+                    {
+                        if (mob != null && validatePredicate(tokens[0].ToLower(), mob.exitString(target.GetCurrentRoom()).ToLower()))
+                        {
+                            ret = errorCode.E_OK;
+                            targetPredicates.Add(mob);
+                        }
+                    }
+                }
+            }// foreach (List<Mob> subList in targetList)
+
+            return ret;
+        }// extractPredicates
 
         // Accessors
         public List<Action> GetASList() { return mAbilitySpellList; }

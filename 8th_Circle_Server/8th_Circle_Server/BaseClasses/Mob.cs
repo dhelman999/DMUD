@@ -670,6 +670,7 @@ namespace _8th_Circle_Server
         public int GetStartingActionTimer() { return mStartingActionCounter; }
         public MobFlags GetFlags() { return mFlags; }
         public bool HasFlag(Enum flag) { return mFlags.HasFlag(flag); }
+        public virtual Dictionary<EQSlot, Mob> GetEQList() { return null; }
 
     }// Class Mob
 

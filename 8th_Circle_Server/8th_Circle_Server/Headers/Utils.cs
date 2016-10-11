@@ -6,7 +6,7 @@ namespace _8th_Circle_Server
     {
         // There are some dictionaries that have more than one key.  This function creates a combination of objects as a single key.
         // The syntax for doing this in C# is really awkward, this function helps to make it slightly more readable even though it
-        // is still pretty bad.
+        // is still pretty bad.  This is mainly used to get command classes out of and into dictionaries.
         static public Tuple<CommandName, int> createTuple(CommandName cmdName, int maxTokens)
         {
             return new Tuple<CommandName, int>(cmdName, maxTokens);

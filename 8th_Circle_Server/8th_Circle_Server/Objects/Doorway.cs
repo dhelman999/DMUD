@@ -74,6 +74,8 @@ namespace _8th_Circle_Server
             }// else
         }// open
 
+        // TODO
+        // Does not check if it is hidden before returns if it is closed or locked on failure, this bypasses the point of hidden
         public override string close(Mob mob)
         {
             if (mIsLocked)

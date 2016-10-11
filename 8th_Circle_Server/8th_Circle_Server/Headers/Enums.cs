@@ -198,9 +198,10 @@ namespace _8th_Circle_Server
         OBJECT = 1,
         PLAYER = 2,
         NPC = 4,
-        CUSTOM = 8,
-        SPELL = 16,
-        END = 32
+        DOORWAY = 8,
+        CUSTOM = 16,
+        SPELL = 32,
+        END = 64
     }// PredicateType
 
     [Flags]
@@ -209,10 +210,11 @@ namespace _8th_Circle_Server
         NONE = 0,
         INVENTORY = 1,
         LOCAL = 2,
-        EQUIPMENT = 4,
-        AREA = 8,
-        GLOBAL = 16,
-        END = 32
+        DOORWAY = 4,
+        EQUIPMENT = 8,
+        AREA = 16,
+        GLOBAL = 32,
+        END = 64
     }// ValidityType
 
     public enum PrepositionType
