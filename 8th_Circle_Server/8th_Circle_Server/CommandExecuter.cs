@@ -586,28 +586,26 @@ namespace _8th_Circle_Server
             ArrayList targetPredicates = new ArrayList();
             string[] tokens = name.Split('.');
 
-            // TODO
-            // This probably needs to be turned into a mask switch statement or something
-            // it can't go on like this...
+            World world = target.GetWorld();
+            Area currentArea = target.GetCurrentArea();
+            Room currentRoom = target.GetCurrentRoom();
+            List<Mob> inventory = target.GetInv();
+
             // Need to know which lists we need to search through to find the target predicate
             if (predType.HasFlag(PredicateType.OBJECT))
-            {
+            {  
                 if (validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(target.GetWorld().getRes(ResType.OBJECT));
+                    targetList.Add(world.getRes(ResType.OBJECT));
                 if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(target.GetCurrentArea().getRes(ResType.OBJECT));
+                    targetList.Add(currentArea.getRes(ResType.OBJECT));
                 if (validity.HasFlag(ValidityType.LOCAL))
                 {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.OBJECT));
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
+                    targetList.Add(currentRoom.getRes(ResType.OBJECT));
+                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
                 }// if
-                if(validity.HasFlag(ValidityType.INVENTORY))
-                    targetList.Add(target.GetInv());
+
                 if(validity.HasFlag(ValidityType.INVENTORY) && validity.HasFlag(ValidityType.LOCAL))
                 {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.OBJECT));
-                    targetList.Add(target.GetInv());
-
                     foreach(Mob cont in target.GetCurrentRoom().getRes(ResType.OBJECT))
                     {
                         if (cont is Container)
@@ -621,42 +619,31 @@ namespace _8th_Circle_Server
             if (predType.HasFlag(PredicateType.PLAYER))
             {
                 if(validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(target.GetWorld().getRes(ResType.PLAYER));
+                    targetList.Add(world.getRes(ResType.PLAYER));
                 if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(target.GetCurrentArea().getRes(ResType.PLAYER));
+                    targetList.Add(currentArea.getRes(ResType.PLAYER));
                 if (validity.HasFlag(ValidityType.LOCAL))
                 {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.PLAYER));
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
-                }// if
-                if (validity.HasFlag(ValidityType.INVENTORY))
-                    targetList.Add(target.GetInv());
-                if (validity.HasFlag(ValidityType.INVENTORY) && validity.HasFlag(ValidityType.LOCAL))
-                {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.PLAYER));
-                    targetList.Add(target.GetInv());
+                    targetList.Add(currentRoom.getRes(ResType.PLAYER));
+                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
                 }// if
             }// if
 
             if (predType.HasFlag(PredicateType.NPC))
             {
                 if (validity.HasFlag(ValidityType.GLOBAL))
-                    targetList.Add(target.GetWorld().getRes(ResType.NPC));
+                    targetList.Add(world.getRes(ResType.NPC));
                 if (validity.HasFlag(ValidityType.AREA))
-                    targetList.Add(target.GetCurrentArea().getRes(ResType.NPC));
+                    targetList.Add(currentArea.getRes(ResType.NPC));
                 if (validity.HasFlag(ValidityType.LOCAL))
                 {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.NPC));
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.DOORWAY));
-                }// if
-                if (validity.HasFlag(ValidityType.INVENTORY))
-                    targetList.Add(target.GetInv());
-                if(validity.HasFlag(ValidityType.INVENTORY) && validity.HasFlag(ValidityType.LOCAL))
-                {
-                    targetList.Add(target.GetCurrentRoom().getRes(ResType.NPC));
-                    targetList.Add(target.GetInv());
+                    targetList.Add(currentRoom.getRes(ResType.NPC));
+                    targetList.Add(currentRoom.getRes(ResType.DOORWAY));
                 }// if
             }// if
+
+            if (validity.HasFlag(ValidityType.INVENTORY))
+                targetList.Add(inventory);
 
             if (predType.HasFlag(PredicateType.SPELL))
                 targetList.Add(((CombatMob)target).GetActionList());
