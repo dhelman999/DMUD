@@ -8,11 +8,12 @@ namespace _8th_Circle_Server
     // Make this a class
     public struct EventData
     {
+        public ValidityType validity;
+
         private EventFlag eventFlag;
         private Mob trigger;
         private Mob eventObject;
         private Room eventRoom;
-        private validityType validity;
         private commandName commandName;
         private PrepositionType prepType;
         private Object data;
@@ -21,7 +22,7 @@ namespace _8th_Circle_Server
                          Mob trigger, 
                          Mob eventObject, 
                          Room eventRoom,
-                         validityType validity,
+                         ValidityType validity,
                          commandName commandName,
                          PrepositionType prepType,
                          Object data)
@@ -49,7 +50,6 @@ namespace _8th_Circle_Server
         public Mob GetEventObject() { return eventObject; }
         public void SetEventObject(Mob obj) { eventObject = obj; }
         public void SetRoom(Room room) { eventRoom = room; }
-        public void SetValidity(validityType val) { validity = val; }
         public PrepositionType GetPrepType() { return prepType; }
 
     }// EventData

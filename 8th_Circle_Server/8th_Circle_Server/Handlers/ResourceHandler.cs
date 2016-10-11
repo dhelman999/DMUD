@@ -23,7 +23,11 @@ namespace _8th_Circle_Server
 
         public void addRes(Mob mob)
         {
-            mResources[(int)mob.GetResType()].Add(mob);
+            List<Mob> resourceList = mResources[(int)mob.GetResType()];
+
+            // Don't allow duplicates
+            if(!resourceList.Contains(mob))
+                resourceList.Add(mob);
         }// addRes
 
         public void removeRes(Mob mob)

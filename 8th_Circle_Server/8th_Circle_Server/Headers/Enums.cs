@@ -206,17 +206,17 @@ namespace _8th_Circle_Server
         PREDICATE_END
     }// predicateType
 
-    public enum validityType
+    [Flags]
+    public enum ValidityType
     {
-        VALID_START,
-        VALID_INVENTORY = VALID_START,
-        VALID_LOCAL,
-        VALID_INVLOCAL,
-        VALID_EQUIP,
-        VALID_AREA,
-        VALID_GLOBAL,
-        VALID_END
-    }// validityType
+        NONE = 0,
+        INVENTORY = 1,
+        LOCAL = 2,
+        EQUIPMENT = 4,
+        AREA = 8,
+        GLOBAL = 16,
+        END = 32
+    }// ValidityType
 
     public enum PrepositionType
     {
