@@ -69,11 +69,11 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            if(HasFlag(MobFlags.FLAG_OPENABLE))
+            if(HasFlag(MobFlags.OPENABLE))
             {
                 if(mIsOpen)
                     ret = mName + " is already open\n";
-                else if (HasFlag(MobFlags.FLAG_LOCKED))
+                else if (HasFlag(MobFlags.LOCKED))
                     return mName + " is locked\n";
                 else
                 {
@@ -92,7 +92,7 @@ namespace _8th_Circle_Server
         {
             string ret = string.Empty;
 
-            if (HasFlag(MobFlags.FLAG_CLOSEABLE))
+            if (HasFlag(MobFlags.CLOSEABLE))
             {
                 if (!mIsOpen)
                     ret = mName + " is already closed\n";
@@ -121,15 +121,15 @@ namespace _8th_Circle_Server
 
             if (foundKey)
             {
-                if (HasFlag(MobFlags.FLAG_LOCKABLE))
+                if (HasFlag(MobFlags.LOCKABLE))
                 {
                     if (mIsOpen)
                         return "you cannot lock " + mName + ", it is open!\n";
 
-                    if (HasFlag(MobFlags.FLAG_UNLOCKED))
+                    if (HasFlag(MobFlags.UNLOCKED))
                     {
-                        Utils.SetFlag(ref mFlags, MobFlags.FLAG_LOCKED);
-                        Utils.UnsetFlag(ref mFlags, MobFlags.FLAG_UNLOCKED);
+                        Utils.SetFlag(ref mFlags, MobFlags.LOCKED);
+                        Utils.UnsetFlag(ref mFlags, MobFlags.UNLOCKED);
 
                         if (mParent != null)
                             mParent.SetIsRespawning(true);
@@ -161,12 +161,12 @@ namespace _8th_Circle_Server
                 if (mIsOpen)
                     return "you cannot unlock " + mName + ", it is open!\n";
 
-                if (HasFlag(MobFlags.FLAG_UNLOCKABLE))
+                if (HasFlag(MobFlags.UNLOCKABLE))
                 {
-                    if (HasFlag(MobFlags.FLAG_LOCKED))
+                    if (HasFlag(MobFlags.LOCKED))
                     {
-                        Utils.SetFlag(ref mFlags, MobFlags.FLAG_UNLOCKED);
-                        Utils.UnsetFlag(ref mFlags, MobFlags.FLAG_LOCKED);
+                        Utils.SetFlag(ref mFlags, MobFlags.UNLOCKED);
+                        Utils.UnsetFlag(ref mFlags, MobFlags.LOCKED);
 
                         if (mParent != null)
                             mParent.SetIsRespawning(true);

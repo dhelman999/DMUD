@@ -28,7 +28,7 @@ namespace _8th_Circle_Server
             mAreaID = areaID;
         }// Constructor
 
-        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
+        public Mob cloneMob(MobList mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
             return mProtoManager.cloneMob(mobID, startingRoom, name, prototype);
         }// cloneMob

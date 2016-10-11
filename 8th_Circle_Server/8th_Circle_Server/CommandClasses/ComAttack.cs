@@ -5,10 +5,12 @@ namespace _8th_Circle_Server
     public class ComAttack : CommandClass
     {
         public ComAttack(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
+            Utils.SetFlag(ref mPredicate1, PredicateType.PLAYER);
+            Utils.SetFlag(ref mPredicate1, PredicateType.NPC);
         }
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
@@ -16,7 +18,7 @@ namespace _8th_Circle_Server
             Mob target = (Mob)commandQueue[1];
             string clientString = null;
 
-            if (!target.HasFlag(MobFlags.FLAG_COMBATABLE) || !(target is CombatMob))
+            if (!target.HasFlag(MobFlags.COMBATABLE) || !(target is CombatMob))
                 return "you can't attack that";
 
             CombatMob cm = (CombatMob)target;
@@ -24,7 +26,7 @@ namespace _8th_Circle_Server
 
             if (cm.GetCombatList().Count == 0)
             {
-                Utils.SetFlag(ref cm.mFlags, MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref cm.mFlags, MobFlags.INCOMBAT);
                 cm.GetCombatList().Add(attacker);
             }
             else if (!cm.GetCombatList().Contains(attacker))
@@ -32,7 +34,7 @@ namespace _8th_Circle_Server
 
             if (attacker.GetCombatList().Count == 0)
             {
-                Utils.SetFlag(ref attacker.mFlags, MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref attacker.mFlags, MobFlags.INCOMBAT);
                 attacker.GetCombatList().Add(cm);
                 attacker.SetPrimaryTarget(cm);
             }

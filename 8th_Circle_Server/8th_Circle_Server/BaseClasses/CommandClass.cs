@@ -5,6 +5,8 @@ namespace _8th_Circle_Server
     public class CommandClass
     {
         public ValidityType mValidity;
+        public PredicateType mPredicate1;
+        public PredicateType mPredicate2;
 
         protected string mCommand;
 
@@ -14,9 +16,7 @@ namespace _8th_Circle_Server
         private Grammar[] mGrammar;
         private Preposition mPrep1Value;
         private Preposition mPrep2Value;
-        private commandName mCommandName;
-        private predicateType mPredicate1;
-        private predicateType mPredicate2;
+        private CommandName mCommandName;
         private Mob mPredicate1Value;
         private Mob mPredicate2Value;
         private Mob mCommandOwner;
@@ -28,8 +28,8 @@ namespace _8th_Circle_Server
         }// dummy Constructor
 
         public CommandClass(string command, string shortName, int matchNumber, int maxTokens, MobType type, 
-                            Grammar[] grammar, commandName commandName, predicateType predicate1, 
-                            predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL)
+                            Grammar[] grammar, CommandName CommandName, PredicateType predicate1, 
+                            PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL)
         {
             mCommand = command;
             mCommandOwner = null;
@@ -37,7 +37,7 @@ namespace _8th_Circle_Server
             mMatchNumber = matchNumber;
             mGrammar = grammar;
             mMaxTokens = maxTokens;
-            mCommandName = commandName;
+            mCommandName = CommandName;
             mPredicate1 = predicate1;
             mPredicate2 = predicate2;
             mValidity = validity;
@@ -62,9 +62,7 @@ namespace _8th_Circle_Server
         public void SetPrep1(Preposition prep) { mPrep1Value = prep; }
         public Preposition GetPrep2() { return mPrep2Value; }
         public void SetPrep2(Preposition prep) { mPrep2Value = prep; }
-        public commandName GetCommandName() { return mCommandName; }
-        public predicateType GetPred1Type() { return mPredicate1; }
-        public predicateType GetPred2Type() { return mPredicate2; }
+        public CommandName GetCommandName() { return mCommandName; }
         public Mob GetPred1() { return mPredicate1Value; }
         public void SetPred1(Mob pred) { mPredicate1Value = pred; }
         public Mob GetPred2() { return mPredicate2Value; }

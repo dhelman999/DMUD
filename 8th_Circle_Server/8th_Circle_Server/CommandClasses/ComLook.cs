@@ -5,10 +5,14 @@ namespace _8th_Circle_Server
     public class ComLook : CommandClass
     {
         public ComLook(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
+            Utils.SetFlag(ref mPredicate1, PredicateType.PLAYER);
+            Utils.SetFlag(ref mPredicate1, PredicateType.NPC);
+            Utils.SetFlag(ref mPredicate1, PredicateType.OBJECT);
+
             if (maxTokens == 3)
                 Utils.SetFlag(ref mValidity, ValidityType.INVENTORY);
         }

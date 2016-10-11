@@ -6,9 +6,9 @@ namespace _8th_Circle_Server
     public class ComRest : CommandClass
     {
         public ComRest(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
         }
 
@@ -16,12 +16,12 @@ namespace _8th_Circle_Server
         {
             string clientString = "";
 
-            if (mob.HasFlag(MobFlags.FLAG_INCOMBAT))
+            if (mob.HasFlag(MobFlags.INCOMBAT))
                 clientString = "you can't rest while in combat!\n";
-            else if (!mob.HasFlag(MobFlags.FLAG_RESTING))
+            else if (!mob.HasFlag(MobFlags.RESTING))
             {
                 clientString = "you sit down and rest...\n";
-                Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_RESTING);
+                Utils.SetFlag(ref mob.mFlags, MobFlags.RESTING);
                 Thread restThread = new Thread(() => restTask(((CombatMob)mob)));
                 restThread.Start();
             }
@@ -39,7 +39,7 @@ namespace _8th_Circle_Server
             double manaRegen = (maxMana / 20) + 1;
             Thread.Sleep(4000);
 
-            while (mob.HasFlag(MobFlags.FLAG_RESTING))
+            while (mob.HasFlag(MobFlags.RESTING))
             {
                 mob[STAT.CURRENTHP] = mob[STAT.CURRENTHP] + (int)hpRegen;
                 mob[STAT.CURRENTMANA] = mob[STAT.CURRENTMANA] + (int)manaRegen;

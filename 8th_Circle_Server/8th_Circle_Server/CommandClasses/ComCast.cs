@@ -5,10 +5,12 @@ namespace _8th_Circle_Server
     public class ComCast : CommandClass
     {
         public ComCast(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
+            Utils.SetFlag(ref mPredicate2, PredicateType.PLAYER);
+            Utils.SetFlag(ref mPredicate2, PredicateType.NPC);
         }
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
@@ -39,12 +41,12 @@ namespace _8th_Circle_Server
 
                     if (((CombatMob)mob).GetCombatList().Count == 0)
                     {
-                        Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_INCOMBAT);
+                        Utils.SetFlag(ref mob.mFlags, MobFlags.INCOMBAT);
                         ((CombatMob)mob).GetCombatList().Add(target);
                         target.GetCombatList().Add((CombatMob)mob);
-                        Utils.SetFlag(ref target.mFlags, MobFlags.FLAG_INCOMBAT);
+                        Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
-                        CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                        CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(CommandName.COMMAND_ATTACK, 1)];
                         attackQueue.Add(attackCommand);
 
                         mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);

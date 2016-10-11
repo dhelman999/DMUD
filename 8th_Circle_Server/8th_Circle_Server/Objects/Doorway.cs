@@ -22,7 +22,7 @@ namespace _8th_Circle_Server
             mMemento = new Memento(this);
         }// Constructor
 
-        public Doorway(string name, MobFlags flags = MobFlags.FLAG_NONE) : base(name, flags)
+        public Doorway(string name, MobFlags flags = MobFlags.NONE) : base(name, flags)
         {
             mIsOpen = false;
             mIsLocked = false;
@@ -54,7 +54,7 @@ namespace _8th_Circle_Server
                 return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (mIsOpen)
                 return mob.GetCurrentRoom().getDoorString(this) + " is already open\n";
-            if (mFlags.HasFlag(MobFlags.FLAG_HIDDEN))
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
                 return "you can't find that\n";
 
             else
@@ -80,7 +80,7 @@ namespace _8th_Circle_Server
                 return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!mIsOpen)
                 return mob.GetCurrentRoom().getDoorString(this) + " is already closed\n";
-            if (mFlags.HasFlag(MobFlags.FLAG_HIDDEN))
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
                 return "you can't find that\n";
             else
             {

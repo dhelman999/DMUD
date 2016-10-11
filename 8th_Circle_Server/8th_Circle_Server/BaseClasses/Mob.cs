@@ -25,7 +25,7 @@ namespace _8th_Circle_Server
         protected List<EventData> mEventList;
         protected List<Mob> mChildren;
         protected Mob mParent;
-        protected MOBLIST mMobId;
+        protected MobList mMobId;
         protected int mKeyId;
         protected int mStartingRespawnTime;
         protected int mCurrentRespawnTime;
@@ -51,15 +51,15 @@ namespace _8th_Circle_Server
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
             mStartingRespawnTime = mCurrentRespawnTime = 25;
-            mMobId = MOBLIST.MOB_START;
-            mKeyId = (int)MOBLIST.MOB_START;
+            mMobId = MobList.MOB_START;
+            mKeyId = (int)MobList.MOB_START;
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
-            mFlags = MobFlags.FLAG_NONE;
+            mFlags = MobFlags.NONE;
         }// Constructor
 
-        public Mob(string name, MobFlags flags = MobFlags.FLAG_NONE)
+        public Mob(string name, MobFlags flags = MobFlags.NONE)
         {
             mName = mExitStr = name;
             mDescription = mShortDescription = string.Empty;
@@ -74,8 +74,8 @@ namespace _8th_Circle_Server
             mStartingRoom = mCurrentRoom = null;
             mStartingArea = mCurrentArea = null;
             mStartingOwner = mCurrentOwner = null;
-            mMobId = MOBLIST.MOB_START;
-            mKeyId = (int)MOBLIST.MOB_START;
+            mMobId = MobList.MOB_START;
+            mKeyId = (int)MobList.MOB_START;
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
             mRand = new Random();
@@ -129,7 +129,7 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
-            if (HasFlag(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.INCOMBAT))
                 return "you can't move while in combat\n";
 
             Direction dir = DirStrToEnum(direction);
@@ -148,7 +148,7 @@ namespace _8th_Circle_Server
 
         public string changeRoom(Room newRoom)
         {
-            if (HasFlag(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.INCOMBAT))
                 return "you can't do that while in combat\n";
 
             // Remove old references
@@ -187,12 +187,12 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob)
         {
-            if (HasFlag(MobFlags.FLAG_GETTABLE) &&
+            if (HasFlag(MobFlags.GETTABLE) &&
                 mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (HasFlag(MobFlags.FLAG_DUPLICATABLE))
+                    if (HasFlag(MobFlags.DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -205,7 +205,7 @@ namespace _8th_Circle_Server
                         // TODO
                         // Need to have a common error string for hidden objects that
                         // does not include their name
-                        if (!HasFlag(MobFlags.FLAG_HIDDEN))
+                        if (!HasFlag(MobFlags.HIDDEN))
                         {
                             mob.mWorld.totallyRemoveRes(this);
                             mCurrentOwner = mob;
@@ -240,11 +240,11 @@ namespace _8th_Circle_Server
         // in an object
         public virtual string get(Mob mob, PrepositionType prepType, Container container)
         {
-            if (HasFlag(MobFlags.FLAG_GETTABLE))
+            if (HasFlag(MobFlags.GETTABLE))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
-                    if (HasFlag(MobFlags.FLAG_DUPLICATABLE))
+                    if (HasFlag(MobFlags.DUPLICATABLE))
                     {
                         Mob dup = new Mob(this);
                         mCurrentOwner = mob;
@@ -252,7 +252,7 @@ namespace _8th_Circle_Server
 
                         return "you get " + exitString(mCurrentRoom) + "\n";
                     }
-                    else if (container.HasFlag(MobFlags.FLAG_OPENABLE) && container.IsOpen())
+                    else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -276,13 +276,13 @@ namespace _8th_Circle_Server
                         }// if (prepType == PrepositionType.PREP_FROM)
                         else
                             return "you can't get like that\n";
-                    }// else if (container.HasFlag(MobFlags.FLAG_OPENABLE) && container.IsOpen())
+                    }// else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
                     else
                         return container.mName + " is closed\n";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
                     return "your inventory is full\n";
-            }// if (HasFlag(MobFlags.FLAG_GETTABLE))
+            }// if (HasFlag(MobFlags.GETTABLE))
             else
                 return "you can't get that\n";
 
@@ -337,7 +337,7 @@ namespace _8th_Circle_Server
 
         public virtual string drop(Mob mob)
         {
-            if (HasFlag(MobFlags.FLAG_DROPPABLE))
+            if (HasFlag(MobFlags.DROPPABLE))
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
@@ -397,7 +397,7 @@ namespace _8th_Circle_Server
         {
             // The actual processing of the event will be handled by checkEvent at the
             // end of command processing
-            if (HasFlag(MobFlags.FLAG_USEABLE) &&
+            if (HasFlag(MobFlags.USEABLE) &&
                 mEventList.Count > 0)
             {
                 return "You use the " + mName + "\n";
@@ -495,10 +495,10 @@ namespace _8th_Circle_Server
             {
                 foreach (Mob mob in ar)
                 {
-                    if(mob != null && mob.HasFlag(MobFlags.FLAG_HIDDEN))
+                    if(mob != null && mob.HasFlag(MobFlags.HIDDEN))
                     {
                         searchString += "you discover a " + mob.mName;
-                        Utils.UnsetFlag(ref mob.mFlags, MobFlags.FLAG_HIDDEN);
+                        Utils.UnsetFlag(ref mob.mFlags, MobFlags.HIDDEN);
                         found = true;
                     }// if
                 }// foreach
@@ -507,7 +507,7 @@ namespace _8th_Circle_Server
             if (!found)
                 searchString = "you find nothing";
 
-            Utils.UnsetFlag(ref mFlags, MobFlags.FLAG_SEARCHING);
+            Utils.UnsetFlag(ref mFlags, MobFlags.SEARCHING);
 
             return searchString + "\n";
         }// search
@@ -546,19 +546,19 @@ namespace _8th_Circle_Server
         // Needs to be more generic
         public void randomAction()
         {
-            if (HasFlag(MobFlags.FLAG_INCOMBAT))
+            if (HasFlag(MobFlags.INCOMBAT))
                 return;
 
             if (mRand.NextDouble() < .5)
             {
                 // Max movement
-                if (mMobId == MOBLIST.MAX)
+                if (mMobId == MobList.MAX)
                 {
                     foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
                         player.safeWrite(mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
-                    CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(commandName.COMMAND_TELL, 256)];
+                    CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(CommandName.COMMAND_TELL, 256)];
 
                     foreach (CombatMob pl in mCurrentArea.getRes(ResType.PLAYER))
                     {
@@ -568,7 +568,7 @@ namespace _8th_Circle_Server
                         mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
                         commandQueue.Clear();
                     }
-                }// if (mMobId == (int)MOBLIST.MAX)
+                }// if (mMobId == (int)MobList.MAX)
             }// if
             else
             {
@@ -593,18 +593,18 @@ namespace _8th_Circle_Server
 
         private void addExits(ArrayList commandQueue)
         {
-            Dictionary<Tuple<commandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
+            Dictionary<Tuple<CommandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
             Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
-            directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
-            directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(commandName.COMMAND_NORTH, 1)]);
-            directionalCommands.Add(Direction.NORTHEAST, commandDict[Utils.createTuple(commandName.COMMAND_NORTHEAST, 1)]);
-            directionalCommands.Add(Direction.EAST, commandDict[Utils.createTuple(commandName.COMMAND_EAST, 1)]);
-            directionalCommands.Add(Direction.SOUTHEAST, commandDict[Utils.createTuple(commandName.COMMAND_SOUTHEAST, 1)]);
-            directionalCommands.Add(Direction.DOWN, commandDict[Utils.createTuple(commandName.COMMAND_DOWN, 1)]);
-            directionalCommands.Add(Direction.SOUTH, commandDict[Utils.createTuple(commandName.COMMAND_SOUTH, 1)]);
-            directionalCommands.Add(Direction.SOUTHWEST, commandDict[Utils.createTuple(commandName.COMMAND_SOUTHWEST, 1)]);
-            directionalCommands.Add(Direction.WEST, commandDict[Utils.createTuple(commandName.COMMAND_WEST, 1)]);
-            directionalCommands.Add(Direction.NORTHWEST, commandDict[Utils.createTuple(commandName.COMMAND_UP, 1)]);
+            directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
+            directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(CommandName.COMMAND_NORTH, 1)]);
+            directionalCommands.Add(Direction.NORTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_NORTHEAST, 1)]);
+            directionalCommands.Add(Direction.EAST, commandDict[Utils.createTuple(CommandName.COMMAND_EAST, 1)]);
+            directionalCommands.Add(Direction.SOUTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHEAST, 1)]);
+            directionalCommands.Add(Direction.DOWN, commandDict[Utils.createTuple(CommandName.COMMAND_DOWN, 1)]);
+            directionalCommands.Add(Direction.SOUTH, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTH, 1)]);
+            directionalCommands.Add(Direction.SOUTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHWEST, 1)]);
+            directionalCommands.Add(Direction.WEST, commandDict[Utils.createTuple(CommandName.COMMAND_WEST, 1)]);
+            directionalCommands.Add(Direction.NORTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
 
             for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
             {
@@ -650,8 +650,8 @@ namespace _8th_Circle_Server
         public List<Mob> GetChildren() { return mChildren; }
         public Mob GetParent() { return mParent; }
         public void SetParent(Mob parent) { mParent = parent; }
-        public MOBLIST GetMobID() { return mMobId; }
-        public void SetMobID(MOBLIST mobID) { mMobId = mobID; }
+        public MobList GetMobID() { return mMobId; }
+        public void SetMobID(MobList mobID) { mMobId = mobID; }
         public int GetKeyID() { return mKeyId; }
         public void SetKeyID(int keyID) { mKeyId = keyID; }
         public int GetStartingRespawnTime() { return mStartingRespawnTime; }

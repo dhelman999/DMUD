@@ -6,9 +6,9 @@ namespace _8th_Circle_Server
     public class ComSearch : CommandClass
     {
         public ComSearch(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
         }
 
@@ -16,7 +16,7 @@ namespace _8th_Circle_Server
         {
             string clientString = "you start searching...\n";
             mob.SetActionTimer(4);
-            Utils.SetFlag(ref mob.mFlags, MobFlags.FLAG_SEARCHING);
+            Utils.SetFlag(ref mob.mFlags, MobFlags.SEARCHING);
             Thread searchThread = new Thread(() => searchTask(mob));
             searchThread.Start();
 

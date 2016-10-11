@@ -50,15 +50,6 @@ namespace _8th_Circle_Server
                         lock (PlayerLock)
                         {
                             mPlayer.SetName(mStreamReader.ReadLine());
-                            mPlayer.SetWorld(mWorld);
-                            mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!");
-                            Room curRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
-                            curRoom.GetCurrentArea().addRes(mPlayer);
-                            mPlayer.SetCurrentArea(curRoom.GetCurrentArea());
-                            mPlayer.SetAreaLoc(0, 1);
-                            mPlayer.SetAreaLoc(1, 1);
-                            mPlayer.SetAreaLoc(2, 1);
-                            mPlayer.SetCurrentRoom(curRoom);
                         }// lock
 
                         mCmdString = string.Empty;
@@ -106,9 +97,24 @@ namespace _8th_Circle_Server
                             }
                         }// while
 
-                        mPlayer.fillResistances();
+                        mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!");
+                        mPlayer.fillResistances();  
+                        
+                        Room currentRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
+                        Area currentArea = currentRoom.GetCurrentArea();
+                        mPlayer.SetAreaLoc(0, 1);
+                        mPlayer.SetAreaLoc(1, 1);
+                        mPlayer.SetAreaLoc(2, 1);
+
+                        // TODO
+                        // Consolidate addres/and set current?
+                        mPlayer.SetCurrentRoom(currentRoom);
+                        mPlayer.SetCurrentArea(currentArea);
+                        mPlayer.SetWorld(mWorld);
+
+                        currentRoom.addRes(mPlayer);
+                        currentArea.addRes(mPlayer);
                         mWorld.addRes(mPlayer);
-                        mPlayer.GetCurrentRoom().addRes(mPlayer);
 
                         foreach (CombatMob player in mPlayer.GetWorld().getRes(ResType.PLAYER))
                             player.safeWrite(mPlayer.GetName() + " has joined the World");

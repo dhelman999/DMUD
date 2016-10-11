@@ -48,115 +48,115 @@ namespace _8th_Circle_Server
         {
             Mob key = new Mob();
             key.SetDesc("An old brass key, what does it unlock?");
-            Utils.SetFlag(ref key.mFlags, MobFlags.FLAG_GETTABLE);
-            Utils.SetFlag(ref key.mFlags, MobFlags.FLAG_INSPECTABLE);
-            Utils.SetFlag(ref key.mFlags, MobFlags.FLAG_STORABLE);
-            Utils.SetFlag(ref key.mFlags, MobFlags.FLAG_DROPPABLE);
+            Utils.SetFlag(ref key.mFlags, MobFlags.GETTABLE);
+            Utils.SetFlag(ref key.mFlags, MobFlags.INSPECTABLE);
+            Utils.SetFlag(ref key.mFlags, MobFlags.STORABLE);
+            Utils.SetFlag(ref key.mFlags, MobFlags.DROPPABLE);
             key.SetName("brass key");
-            key.SetKeyID((int)MOBLIST.BASIC_KEY);
+            key.SetKeyID((int)MobList.BASIC_KEY);
             key.GetInv().Capacity = 0;
             key.SetWorld(this);
-            key.SetMobID(MOBLIST.BASIC_KEY);
-            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_KEY, key);
+            key.SetMobID(MobList.BASIC_KEY);
+            PrototypeManager.registerFullGameMob(MobList.BASIC_KEY, key);
 
             Container chest = new Container();
             chest.SetDesc("A sturdy, wooden chest.  It makes you wonder what is inside...");
-            Utils.SetFlag(ref chest.mFlags, MobFlags.FLAG_OPENABLE);
-            Utils.SetFlag(ref chest.mFlags, MobFlags.FLAG_CLOSEABLE);
-            Utils.SetFlag(ref chest.mFlags, MobFlags.FLAG_LOCKED);
-            Utils.SetFlag(ref chest.mFlags, MobFlags.FLAG_LOCKABLE);
-            Utils.SetFlag(ref chest.mFlags, MobFlags.FLAG_UNLOCKABLE);
+            Utils.SetFlag(ref chest.mFlags, MobFlags.OPENABLE);
+            Utils.SetFlag(ref chest.mFlags, MobFlags.CLOSEABLE);
+            Utils.SetFlag(ref chest.mFlags, MobFlags.LOCKED);
+            Utils.SetFlag(ref chest.mFlags, MobFlags.LOCKABLE);
+            Utils.SetFlag(ref chest.mFlags, MobFlags.UNLOCKABLE);
             chest.SetName("chest1");
             chest.GetInv().Capacity = 20;
             chest.SetWorld(this);
             EventData eventData = new EventData();
             eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
-            eventData.SetCommand(commandName.COMMAND_LOOK);
+            eventData.SetCommand(CommandName.COMMAND_LOOK);
             eventData.SetPrep(PrepositionType.PREP_IN);
             eventData.SetData("A voice speaks to you from within the chest");
             chest.GetEventList().Add(eventData);
-            chest.SetMobID(MOBLIST.EVENT_CHEST1);
-            chest.SetKeyID((int)MOBLIST.BASIC_KEY);
+            chest.SetMobID(MobList.EVENT_CHEST1);
+            chest.SetKeyID((int)MobList.BASIC_KEY);
             chest.SetStartingRespawnTime(30);
             chest.SetCurrentRespawnTime(30);
-            PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST1, chest);
+            PrototypeManager.registerFullGameMob(MobList.EVENT_CHEST1, chest);
 
             Container chest2 = new Container();
             chest2.SetDesc("A sturdy, wooden chest.  It makes you wonder what is inside...");
-            Utils.SetFlag(ref chest2.mFlags, MobFlags.FLAG_OPENABLE);
-            Utils.SetFlag(ref chest2.mFlags, MobFlags.FLAG_CLOSEABLE);
-            Utils.SetFlag(ref chest2.mFlags, MobFlags.FLAG_LOCKED);
-            Utils.SetFlag(ref chest2.mFlags, MobFlags.FLAG_LOCKABLE);
-            Utils.SetFlag(ref chest2.mFlags, MobFlags.FLAG_UNLOCKABLE);
+            Utils.SetFlag(ref chest2.mFlags, MobFlags.OPENABLE);
+            Utils.SetFlag(ref chest2.mFlags, MobFlags.CLOSEABLE);
+            Utils.SetFlag(ref chest2.mFlags, MobFlags.LOCKED);
+            Utils.SetFlag(ref chest2.mFlags, MobFlags.LOCKABLE);
+            Utils.SetFlag(ref chest2.mFlags, MobFlags.UNLOCKABLE);
             chest2.SetName("large wooden chest2");
             chest2.GetInv().Capacity = 20;
             chest2.SetWorld(this);
             eventData = new EventData();
             eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
-            eventData.SetCommand(commandName.COMMAND_LOOK);
+            eventData.SetCommand(CommandName.COMMAND_LOOK);
             eventData.SetPrep(PrepositionType.PREP_AT);
             eventData.SetData("The " + chest.GetName() + " says \"hello!\"");
             chest2.GetEventList().Add(eventData);
-            chest2.SetMobID(MOBLIST.EVENT_CHEST2);
-            chest2.SetKeyID((int)MOBLIST.BASIC_KEY);
+            chest2.SetMobID(MobList.EVENT_CHEST2);
+            chest2.SetKeyID((int)MobList.BASIC_KEY);
             chest2.SetStartingRespawnTime(30);
             chest2.SetCurrentRespawnTime(30);
-            PrototypeManager.registerFullGameMob(MOBLIST.EVENT_CHEST2, chest2);
+            PrototypeManager.registerFullGameMob(MobList.EVENT_CHEST2, chest2);
 
             Mob first_circle = new Mob();
             first_circle.SetDesc("The first of eight ancient golden circles");
-            Utils.SetFlag(ref first_circle.mFlags, MobFlags.FLAG_GETTABLE);
-            Utils.SetFlag(ref first_circle.mFlags, MobFlags.FLAG_INSPECTABLE);
-            Utils.SetFlag(ref first_circle.mFlags, MobFlags.FLAG_STORABLE);
-            Utils.SetFlag(ref first_circle.mFlags, MobFlags.FLAG_DUPLICATABLE);
-            Utils.SetFlag(ref first_circle.mFlags, MobFlags.FLAG_USEABLE);
+            Utils.SetFlag(ref first_circle.mFlags, MobFlags.GETTABLE);
+            Utils.SetFlag(ref first_circle.mFlags, MobFlags.INSPECTABLE);
+            Utils.SetFlag(ref first_circle.mFlags, MobFlags.STORABLE);
+            Utils.SetFlag(ref first_circle.mFlags, MobFlags.DUPLICATABLE);
+            Utils.SetFlag(ref first_circle.mFlags, MobFlags.USEABLE);
             first_circle.SetName("1st Circle");
             eventData = new EventData();
             eventData.SetEvent(EventFlag.EVENT_TELEPORT);
-            eventData.SetCommand(commandName.COMMAND_GET);
+            eventData.SetCommand(CommandName.COMMAND_GET);
             eventData.SetData(RoomID.GPG_PLAYER_START);
             first_circle.GetEventList().Add(eventData);
             first_circle.GetInv().Capacity = 0;
             first_circle.SetWorld(this);
-            first_circle.SetMobID(MOBLIST.FIRST_CIRCLE);
-            PrototypeManager.registerFullGameMob(MOBLIST.FIRST_CIRCLE, first_circle);
+            first_circle.SetMobID(MobList.FIRST_CIRCLE);
+            PrototypeManager.registerFullGameMob(MobList.FIRST_CIRCLE, first_circle);
 
             Container no_event_chest = new Container();
             no_event_chest.SetDesc("A sturdy, wooden chest.  It makes you wonder what is inside...");
-            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.FLAG_OPENABLE);
-            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.FLAG_CLOSEABLE);
-            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.FLAG_LOCKED);
-            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.FLAG_LOCKABLE);
-            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.FLAG_UNLOCKABLE);
+            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.OPENABLE);
+            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.CLOSEABLE);
+            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.LOCKED);
+            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.LOCKABLE);
+            Utils.SetFlag(ref no_event_chest.mFlags, MobFlags.UNLOCKABLE);
             no_event_chest.SetName("wooden chest");
             no_event_chest.GetInv().Capacity = 20;
             no_event_chest.SetWorld(this);
-            no_event_chest.SetMobID(MOBLIST.BASIC_CHEST);
-            no_event_chest.SetKeyID((int)MOBLIST.BASIC_KEY);
+            no_event_chest.SetMobID(MobList.BASIC_CHEST);
+            no_event_chest.SetKeyID((int)MobList.BASIC_KEY);
             no_event_chest.SetStartingRespawnTime(30);
             no_event_chest.SetCurrentRespawnTime(30);
-            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_CHEST, no_event_chest);
+            PrototypeManager.registerFullGameMob(MobList.BASIC_CHEST, no_event_chest);
 
             Mob basic_switch = new Mob();
             basic_switch.SetDesc("A switch, it must trigger something...");
-            Utils.SetFlag(ref basic_switch.mFlags, MobFlags.FLAG_USEABLE);
+            Utils.SetFlag(ref basic_switch.mFlags, MobFlags.USEABLE);
             basic_switch.SetName("switch");
             basic_switch.SetWorld(this);
-            basic_switch.SetMobID(MOBLIST.SWITCH);
+            basic_switch.SetMobID(MobList.SWITCH);
             basic_switch.SetStartingRespawnTime(30);
             basic_switch.SetCurrentRespawnTime(30);
-            PrototypeManager.registerFullGameMob(MOBLIST.SWITCH, basic_switch);
+            PrototypeManager.registerFullGameMob(MobList.SWITCH, basic_switch);
 
             Equipment basic_sword = new Equipment();
             basic_sword.SetDesc("A rusty old sword, it is barely passable as a weapon");
-            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.FLAG_GETTABLE);
-            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.FLAG_DROPPABLE);
-            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.FLAG_INSPECTABLE);
-            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.FLAG_STORABLE);
-            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.FLAG_WEARABLE);
+            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.GETTABLE);
+            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.DROPPABLE);
+            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.INSPECTABLE);
+            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.STORABLE);
+            Utils.SetFlag(ref basic_sword.mFlags, MobFlags.WEARABLE);
             basic_sword.SetName("Rusty Sword");
             basic_sword.SetWorld(this);
-            basic_sword.SetMobID(MOBLIST.BASIC_SWORD);
+            basic_sword.SetMobID(MobList.BASIC_SWORD);
             basic_sword.SetStartingRespawnTime(30);
             basic_sword.SetCurrentRespawnTime(30);
             basic_sword.SetMinDam(2);
@@ -164,14 +164,14 @@ namespace _8th_Circle_Server
             basic_sword.SetHitMod(10);
             basic_sword.SetType(EQType.WEAPON);
             basic_sword.SetSlot(EQSlot.PRIMARY);
-            PrototypeManager.registerFullGameMob(MOBLIST.BASIC_SWORD, basic_sword);
+            PrototypeManager.registerFullGameMob(MobList.BASIC_SWORD, basic_sword);
 
             CombatMob goblin_runt = new CombatMob();
             goblin_runt.SetDesc("A runt of the goblin litter, truely a wretched creature.");
             goblin_runt.SetName("Goblin Runt");
             goblin_runt.GetInv().Capacity = 0;
             goblin_runt.SetWorld(this);
-            goblin_runt.SetMobID(MOBLIST.GOBLIN_RUNT);
+            goblin_runt.SetMobID(MobList.GOBLIN_RUNT);
             goblin_runt.SetStartingRespawnTime(30);
             goblin_runt.SetCurrentRespawnTime(30);
             goblin_runt[STAT.BASEMAXDAM] = 5;
@@ -179,17 +179,17 @@ namespace _8th_Circle_Server
             goblin_runt[STAT.BASEMAXHP] = 50;
             goblin_runt[STAT.BASEHIT] = 50;
             goblin_runt.fillResistances();
-            PrototypeManager.registerFullGameMob(MOBLIST.GOBLIN_RUNT, goblin_runt);
+            PrototypeManager.registerFullGameMob(MobList.GOBLIN_RUNT, goblin_runt);
 
             CombatMob max = new CombatMob();
             max.SetDesc("A super big fluffy cute black and white kitty cat... you just want to hug him");
             max.SetName("Max the MaineCoon");
             max.GetInv().Capacity = 0;
             max.SetWorld(this);
-            max.SetMobID(MOBLIST.MAX);
+            max.SetMobID(MobList.MAX);
             max.SetStartingRespawnTime(10);
             max.SetCurrentRespawnTime(10);
-            PrototypeManager.registerFullGameMob(MOBLIST.MAX, max);
+            PrototypeManager.registerFullGameMob(MobList.MAX, max);
         }// addMobs
 
         private void addAreas()
@@ -307,13 +307,13 @@ namespace _8th_Circle_Server
 
         private void addProtoMobs(Area protoArea)
         {
-            Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MOBLIST.EVENT_CHEST1).Clone();
+            Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MobList.EVENT_CHEST1).Clone();
             event_chest1.SetKeyID(3);
-            protoArea.cloneMob(MOBLIST.EVENT_CHEST1, protoArea[RoomID.PROTO_14], "protochest", event_chest1);
+            protoArea.cloneMob(MobList.EVENT_CHEST1, protoArea[RoomID.PROTO_14], "protochest", event_chest1);
 
-            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             basic_key.SetKeyID(3);
-            protoArea.cloneMob(MOBLIST.BASIC_KEY, protoArea[RoomID.PROTO_27], "proto key", basic_key);
+            protoArea.cloneMob(MobList.BASIC_KEY, protoArea[RoomID.PROTO_27], "proto key", basic_key);
         }
 
         private void addGeraldineArea()
@@ -501,8 +501,8 @@ namespace _8th_Circle_Server
 
         public void addGeraldineNpcs(Area area)
         {
-            area.cloneMob(MOBLIST.MAX, area[RoomID.GERALD_1ST_LIVINGROOM]);
-            area.cloneMob(MOBLIST.FIRST_CIRCLE, area[RoomID.GERALD_BASE_PART4]);
+            area.cloneMob(MobList.MAX, area[RoomID.GERALD_1ST_LIVINGROOM]);
+            area.cloneMob(MobList.FIRST_CIRCLE, area[RoomID.GERALD_BASE_PART4]);
         }// addGeraldineNpcs
 
         public void addNewbieArea()
@@ -746,7 +746,7 @@ namespace _8th_Circle_Server
             gpg_69.removeTripleLinks(Direction.WEST);
             gpg_76.removeTripleLinks(Direction.WEST);
 
-            MobFlags flags = MobFlags.FLAG_HIDDEN;
+            MobFlags flags = MobFlags.HIDDEN;
             Doorway newDoor = new Doorway("door", flags);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
@@ -754,7 +754,7 @@ namespace _8th_Circle_Server
             EventData ed = new EventData();
             ed.SetData(AreaID.AID_NEWBIEAREA);
             ed.SetEvent(EventFlag.EVENT_GPG_WALL_ADD);
-            ed.SetCommand(commandName.COMMAND_USE);
+            ed.SetCommand(CommandName.COMMAND_USE);
             newbieArea.GetRevertEvents().Add(ed);
 
             addNewbieAreaMobs(newbieArea);
@@ -763,59 +763,59 @@ namespace _8th_Circle_Server
 
         private void addNewbieAreaMobs(Area newbieArea)
         {
-            Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST).Clone();
+            Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             wooden_chest.SetKeyID(4);
-            newbieArea.cloneMob(MOBLIST.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
+            newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
 
-            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
+            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             basic_key.SetKeyID(4);
-            newbieArea.cloneMob(MOBLIST.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", basic_key);
+            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", basic_key);
 
-            Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_CHEST).Clone();
+            Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             small_metal_cage.SetDesc("a small metal cage, I wonder what is inside?");
             small_metal_cage.SetKeyID(5);
             small_metal_cage.GetInv().Add(basic_key);
-            newbieArea.cloneMob(MOBLIST.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
+            newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
 
-            Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MOBLIST.BASIC_KEY).Clone();
-            Utils.SetFlag(ref steel_key.mFlags, MobFlags.FLAG_HIDDEN);
-            Utils.SetFlag(ref steel_key.mFlags, MobFlags.FLAG_LOCKED);
+            Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
+            Utils.SetFlag(ref steel_key.mFlags, MobFlags.HIDDEN);
+            Utils.SetFlag(ref steel_key.mFlags, MobFlags.LOCKED);
             steel_key.SetKeyID(5);
             steel_key.SetDesc("a small steel key, I wonder what it opens?");
-            newbieArea.cloneMob(MOBLIST.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
+            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
 
-            Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
+            Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
             EventData ed = new EventData();
             ed.SetData(AreaID.AID_NEWBIEAREA);
             ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
-            ed.SetCommand(commandName.COMMAND_USE);
+            ed.SetCommand(CommandName.COMMAND_USE);
             basic_switch.GetEventList().Add(ed);
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
+            newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
 
-            basic_switch = PrototypeManager.getFullGameRegisteredMob(MOBLIST.SWITCH).Clone();
+            basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
             ed = new EventData();
             ed.SetData(AreaID.AID_NEWBIEAREA);
             ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
-            ed.SetCommand(commandName.COMMAND_USE);
+            ed.SetCommand(CommandName.COMMAND_USE);
             basic_switch.GetEventList().Add(ed);
-            newbieArea.cloneMob(MOBLIST.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
+            newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
 
-            newbieArea.cloneMob(MOBLIST.BASIC_SWORD, newbieArea[RoomID.GPG_PLAYER_START]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_6]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_10]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_17]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_21]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_25]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_29]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_32]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_42]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_47]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_62]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_77]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_60]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_37]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_46]);
-            newbieArea.cloneMob(MOBLIST.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_58]);
+            newbieArea.cloneMob(MobList.BASIC_SWORD, newbieArea[RoomID.GPG_PLAYER_START]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_6]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_10]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_17]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_21]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_25]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_29]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_32]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_42]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_47]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_62]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_77]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_60]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_37]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_46]);
+            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_58]);
         }
 
         public Area getArea(AreaID areaID)

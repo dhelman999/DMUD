@@ -145,30 +145,30 @@ namespace _8th_Circle_Server
     [Flags]
     public enum MobFlags
     {
-        FLAG_NONE = 0,
-        FLAG_OPENABLE = 1,
-        FLAG_CLOSEABLE = 2,
-        FLAG_LOCKED = 4,
-        FLAG_LOCKABLE = 8,
-        FLAG_UNLOCKED = 16,
-        FLAG_UNLOCKABLE = 32,
-        FLAG_HIDDEN = 64,
-        FLAG_INVISIBLE = 128,
-        FLAG_GETTABLE = 256,
-        FLAG_DROPPABLE = 512,
-        FLAG_PUSHABLE = 1024,
-        FLAG_STORABLE = 2048,
-        FLAG_USEABLE = 4096,
-        FLAG_INSPECTABLE = 8192,
-        FLAG_WEARABLE = 16384,
-        FLAG_IDENTIFYABLE = 32768,
-        FLAG_STEALABLE = 65536,
-        FLAG_DUPLICATABLE = 131072,
-        FLAG_SEARCHING = 262144,
-        FLAG_COMBATABLE = 524288,
-        FLAG_INCOMBAT = 1048576,
-        FLAG_RESTING = 2097152,
-        FLAG_END = 4194304
+        NONE = 0,
+        OPENABLE = 1,
+        CLOSEABLE = 2,
+        LOCKED = 4,
+        LOCKABLE = 8,
+        UNLOCKED = 16,
+        UNLOCKABLE = 32,
+        HIDDEN = 64,
+        INVISIBLE = 128,
+        GETTABLE = 256,
+        DROPPABLE = 512,
+        PUSHABLE = 1024,
+        STORABLE = 2048,
+        USEABLE = 4096,
+        INSPECTABLE = 8192,
+        WEARABLE = 16384,
+        IDENTIFYABLE = 32768,
+        STEALABLE = 65536,
+        DUPLICATABLE = 131072,
+        SEARCHING = 262144,
+        COMBATABLE = 524288,
+        INCOMBAT = 1048576,
+        RESTING = 2097152,
+        END = 4194304
     }// MobFlags
 
     public enum GrammarType
@@ -191,20 +191,17 @@ namespace _8th_Circle_Server
         GRAMMAR_END
     }// Grammar
 
-    public enum predicateType
+    [Flags]
+    public enum PredicateType
     {
-        PREDICATE_START,
-        PREDICATE_OBJECT = PREDICATE_START,
-        PREDICATE_PLAYER,
-        PREDICATE_NPC,
-        PREDICATE_PLAYER_OR_NPC,
-        PREDICATE_OBJECT_OR_PLAYER,
-        PREDICATE_OBJECT_OR_NPC,
-        PREDICATE_ALL,
-        PREDICATE_CUSTOM,
-        PREDICATE_SPELL,
-        PREDICATE_END
-    }// predicateType
+        NONE = 0,
+        OBJECT = 1,
+        PLAYER = 2,
+        NPC = 4,
+        CUSTOM = 8,
+        SPELL = 16,
+        END = 32
+    }// PredicateType
 
     [Flags]
     public enum ValidityType
@@ -230,7 +227,7 @@ namespace _8th_Circle_Server
         PREP_END
     }// PrepositionType
 
-    public enum commandName
+    public enum CommandName
     {
         COMMAND_START,
         COMMAND_LOOK = COMMAND_START,
@@ -275,7 +272,7 @@ namespace _8th_Circle_Server
         COMMAND_BASH,
         COMMAND_CAST,
         COMMAND_END
-    }// commandName
+    }// CommandName
 
     public enum errorCode
     {
@@ -319,7 +316,7 @@ namespace _8th_Circle_Server
         AID_END
     }// AreaID
 
-    public enum MOBLIST
+    public enum MobList
     {
         MOB_START = -1,
         // Reserved for players
@@ -339,7 +336,7 @@ namespace _8th_Circle_Server
         MAX,
 
         MOB_END
-    }// MOBLIST
+    }// MobList
 
     public enum MementoType
     {

@@ -357,13 +357,13 @@ namespace _8th_Circle_Server
 
                     if (cm.GetCombatList().Count == 0)
                     {
-                        Utils.UnsetFlag(ref cm.mFlags, MobFlags.FLAG_INCOMBAT);
+                        Utils.UnsetFlag(ref cm.mFlags, MobFlags.INCOMBAT);
                         sCurrentCombats.Remove(cm);
                     }
                 }
 
                 target.GetCombatList().Clear();
-                Utils.SetFlag(ref target.mFlags, MobFlags.FLAG_INCOMBAT);
+                Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
                 sCurrentCombats.Remove(target);
 
                 attacker.safeWrite("you have slain the " + target.GetName());

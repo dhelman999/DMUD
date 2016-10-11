@@ -156,7 +156,7 @@ namespace _8th_Circle_Server
                 {
                     Doorway currentDoor = (Doorway)getRes(ResType.DOORWAY)[(int)dir];
 
-                    if (!currentDoor.HasFlag(MobFlags.FLAG_HIDDEN))
+                    if (!currentDoor.HasFlag(MobFlags.HIDDEN))
                     {
                         ++visibleObjects;
                         tmp += dir.ToString().ToLower() + " " + currentDoor.GetName() + "\n";        
@@ -179,7 +179,7 @@ namespace _8th_Circle_Server
             {
                 Mob currentMob = getRes(ResType.OBJECT)[i];
 
-                if (!currentMob.HasFlag(MobFlags.FLAG_HIDDEN))
+                if (!currentMob.HasFlag(MobFlags.HIDDEN))
                 {
                     ++visibleObjects;
                     tmp += currentMob.exitString(this) + "\n";
@@ -201,7 +201,7 @@ namespace _8th_Circle_Server
             {
                 Mob currentMob = getRes(ResType.NPC)[i];
 
-                if (!currentMob.HasFlag(MobFlags.FLAG_HIDDEN))
+                if (!currentMob.HasFlag(MobFlags.HIDDEN))
                     exitStr += currentMob.GetName() + "\n";
             }// if
 
@@ -211,7 +211,7 @@ namespace _8th_Circle_Server
             {
                 Mob player = getRes(ResType.PLAYER)[i];
 
-                if (!player.HasFlag(MobFlags.FLAG_HIDDEN))
+                if (!player.HasFlag(MobFlags.HIDDEN))
                     exitStr += player.GetName() + "\n";
             }// if
 

@@ -43,7 +43,7 @@ namespace _8th_Circle_Server
 
                         if (comData.mob.GetActionTimer() <= 0)
                             commandExecuter.process(comData.command, comData.mob);
-                        else if (comData.mob.HasFlag(MobFlags.FLAG_SEARCHING))
+                        else if (comData.mob.HasFlag(MobFlags.SEARCHING))
                              comData.mob.safeWrite("you can't do that while searching");
                         else
                             comData.mob.SetQueuedCommand(comData.command);

@@ -5,10 +5,12 @@ namespace _8th_Circle_Server
     public class ComBackstab : CommandClass
     {
         public ComBackstab(string command, string shortName, int matchNumber, int maxTokens, MobType type,
-                       Grammar[] grammar, commandName commandName, predicateType predicate1,
-                       predicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
-            base(command, shortName, matchNumber, maxTokens, type, grammar, commandName, predicate1, predicate2, comType, validity)
+                       Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
+                       PredicateType predicate2, CommandType comType, ValidityType validity = ValidityType.LOCAL) :
+            base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, comType, validity)
         {
+            Utils.SetFlag(ref mPredicate1, PredicateType.PLAYER);
+            Utils.SetFlag(ref mPredicate1, PredicateType.NPC);
         }
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
@@ -18,7 +20,7 @@ namespace _8th_Circle_Server
 
             if (cm.GetMobType() != MobType.ROGUE)
                 clientString = "you don't know how to backstab\n";
-            else if (mob.HasFlag(MobFlags.FLAG_INCOMBAT))
+            else if (mob.HasFlag(MobFlags.INCOMBAT))
                 clientString = "you can't backstab while in combat\n";
             else if (cm[EQSlot.PRIMARY] == null)
                 clientString = "you can't backstab without a weapon!\n";
@@ -28,7 +30,7 @@ namespace _8th_Circle_Server
                 cm.GetWorld().GetCombatHandler().abilityAttack(cm, backstabTarget, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BACKSTAB]);
                 commandQueue.Clear();
 
-                CommandClass targetCommand = commandExecutioner.GetCCDict()[Utils.createTuple(commandName.COMMAND_ATTACK, 1)];
+                CommandClass targetCommand = commandExecutioner.GetCCDict()[Utils.createTuple(CommandName.COMMAND_ATTACK, 2)];
                 commandQueue.Add(targetCommand);
 
                 commandQueue.Add(backstabTarget);

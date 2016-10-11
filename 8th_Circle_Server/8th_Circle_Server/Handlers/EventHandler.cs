@@ -14,7 +14,7 @@ namespace _8th_Circle_Server
         private Mob trigger;
         private Mob eventObject;
         private Room eventRoom;
-        private commandName commandName;
+        private CommandName CommandName;
         private PrepositionType prepType;
         private Object data;
 
@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
                          Mob eventObject, 
                          Room eventRoom,
                          ValidityType validity,
-                         commandName commandName,
+                         CommandName CommandName,
                          PrepositionType prepType,
                          Object data)
         {
@@ -32,7 +32,7 @@ namespace _8th_Circle_Server
             this.eventObject = eventObject;
             this.eventRoom = eventRoom;
             this.validity = validity;
-            this.commandName = commandName;
+            this.CommandName = CommandName;
             this.prepType = prepType;
             this.data = data;
         }// Constructor
@@ -40,8 +40,8 @@ namespace _8th_Circle_Server
         // Accessors
         public EventFlag GetEvent() { return eventFlag; }
         public void SetEvent(EventFlag flag) { eventFlag = flag; }
-        public commandName GetCommand() { return commandName; }
-        public void SetCommand(commandName command) { commandName = command; }
+        public CommandName GetCommand() { return CommandName; }
+        public void SetCommand(CommandName command) { CommandName = command; }
         public void SetPrep(PrepositionType prep) { prepType = prep; }
         public Object GetData() { return data; }
         public void SetData(Object dat) { data = dat; }

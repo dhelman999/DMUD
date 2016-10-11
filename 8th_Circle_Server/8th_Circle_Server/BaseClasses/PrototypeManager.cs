@@ -4,7 +4,7 @@ namespace _8th_Circle_Server
 {
     public class PrototypeManager
     {
-        private static Dictionary<MOBLIST, Mob> sFullGameMobList;
+        private static Dictionary<MobList, Mob> sFullGameMobList;
         private List<Mob> mPrototypeMobList;
 
         public PrototypeManager()
@@ -12,12 +12,12 @@ namespace _8th_Circle_Server
             mPrototypeMobList = new List<Mob>();
         }// Constructor
 
-        public static bool registerFullGameMob(MOBLIST mobID, Mob newMob)
+        public static bool registerFullGameMob(MobList mobID, Mob newMob)
         {
             bool ret = true;
 
             if (sFullGameMobList == null)
-                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+                sFullGameMobList = new Dictionary<MobList, Mob>();
 
             try
             {
@@ -32,7 +32,7 @@ namespace _8th_Circle_Server
             return ret;
         }// registerFullGameMob
 
-        public Mob cloneMob(MOBLIST mobID, Room startingRoom, string name = "", Mob prototype = null)
+        public Mob cloneMob(MobList mobID, Room startingRoom, string name = "", Mob prototype = null)
         {
             // Create clone from prototype, if none specified, use the global game protoypes
             if(prototype == null)
@@ -68,10 +68,10 @@ namespace _8th_Circle_Server
         }// cloneMob
 
         // Accessors
-        public static Mob getFullGameRegisteredMob(MOBLIST mobID)
+        public static Mob getFullGameRegisteredMob(MobList mobID)
         {
             if (sFullGameMobList == null)
-                sFullGameMobList = new Dictionary<MOBLIST, Mob>();
+                sFullGameMobList = new Dictionary<MobList, Mob>();
 
             return sFullGameMobList[mobID];
         }// getFullGameRegisteredMob
