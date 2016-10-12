@@ -330,7 +330,7 @@ namespace _8th_Circle_Server
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
                     clientString = "you can't use the " + currentCC.GetCommand() + " command like that";
                 else if (eCode == errorCode.E_INVALID_SYNTAX && clientString != String.Empty)
-                    clientString = "You are not able to do that\n";
+                    clientString = "You can't do that\n";
                 else
                     clientString += "You can't do that\n";
             }// if (eCode == errorCode.E_OK)
@@ -440,8 +440,6 @@ namespace _8th_Circle_Server
                 return errorCode.E_OK;
             }
 
-            // TODO
-            // what happens if there is only 1 token, and the grammer was 1 but the mob action timer wasnt?
             // Start processing from after the first verb
             if (tokens.Length > 1)
                 subCommand = command.Substring((tokens[0].Length + 1));
@@ -566,6 +564,12 @@ namespace _8th_Circle_Server
                     // Also, this triggers regardless if the action was a success, for example
                     // if you look in a closed chest, and the event is trigger on the look in command,
                     // it will happen either way, need a way to check for success.
+                    // TODO
+                    // This only accounts for verbs that have a predicate to check, if a verb has none, like getall,
+                    // then the get triggered events will not occur, and the getall can't occur because there is no
+                    // predicate to get the event from.  It is looking like the event handling needs to be in the get
+                    // itself to check the event data to see if any of the triggers are there rather than this model.
+                    // This whole trigger system needs to be rethought.
                     if(eventData.GetCommand() == commandClass.GetCommandName() &&
                        eventData.GetPrepType() == commandClass.GetPrep1().prepType)
                     {
@@ -620,7 +624,7 @@ namespace _8th_Circle_Server
 
         private bool validatePredicate(string targetPred, string cmdString)
         {
-            bool found = true;
+            bool found = false;
             string subString = cmdString;
             int index = 0;
             char c;
@@ -642,9 +646,6 @@ namespace _8th_Circle_Server
                     {
                         if (index < len)
                         {
-                            // TODO
-                            // There seems to be a bug when names are 1 letter, such as 'tell n hi'
-                            // This resolves to true even if another player does not have an n in their name
                             found = true;
                             subString = subString.Substring(index + 1, len - index - 1);
                             break;

@@ -339,39 +339,47 @@ namespace _8th_Circle_Server
 
         private bool checkDeath(CombatMob attacker, CombatMob target)
         {
+            bool ret = false;
+
             if (target[STAT.CURRENTHP] <= 0)
             {
-                CombatMob cm = null;
-
-                for (int i = 0; i < target.GetCombatList().Count; ++i)
-                {
-                    cm = target.GetCombatList()[i];
-                    cm.GetCombatList().Remove(target);
-
-                    if (cm.GetCombatList().Count == 0)
-                    {
-                        Utils.UnsetFlag(ref cm.mFlags, MobFlags.INCOMBAT);
-                        sCurrentCombats.Remove(cm);
-                    }
-                }
-
-                target.GetCombatList().Clear();
-                Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
-                sCurrentCombats.Remove(target);
+                endCombat(target);
 
                 attacker.safeWrite("you have slain the " + target.GetName());
                 target.slain(attacker);
                 target.safeWrite(target.slain(attacker));
 
+                ret = true;
+            }// if
+
+            return ret;
+
+        }// checkDeath
+
+        public void endCombat(CombatMob target)
+        {
+            CombatMob attacker = null;
+
+            for (int i = 0; i < target.GetCombatList().Count; ++i)
+            {
+                attacker = target.GetCombatList()[i];
+                attacker.GetCombatList().Remove(target);
+
                 if (attacker.GetPrimaryTarget() == target)
                     attacker.SetPrimaryTarget(null);
 
-                return true;
-            }// if
+                if (attacker.GetCombatList().Count == 0)
+                {
+                    Utils.UnsetFlag(ref attacker.mFlags, MobFlags.INCOMBAT);
+                    sCurrentCombats.Remove(attacker);
+                }
+            }
 
-            return false;
-
-        }// checkDeath
+            target.GetCombatList().Clear();
+            target.SetPrimaryTarget(null);
+            Utils.UnsetFlag(ref target.mFlags, MobFlags.INCOMBAT);
+            sCurrentCombats.Remove(target);
+        }// endCombat
 
     }// Class CombatHandler
 

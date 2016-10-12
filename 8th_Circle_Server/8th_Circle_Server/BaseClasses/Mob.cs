@@ -202,9 +202,6 @@ namespace _8th_Circle_Server
                     }
                     else
                     {                    
-                        // TODO
-                        // Need to have a common error string for hidden objects that
-                        // does not include their name
                         if (!HasFlag(MobFlags.HIDDEN))
                         {
                             mob.mWorld.totallyRemoveRes(this);
@@ -220,7 +217,7 @@ namespace _8th_Circle_Server
                             return "you get " + exitString(mCurrentRoom) + "\n";
                         }
                         else
-                            return "you can't find that\n";
+                            return "you can't do that\n";
                     }
                 }// if
                 else
@@ -233,11 +230,6 @@ namespace _8th_Circle_Server
                 
         }// get
 
-        // TODO
-        // Needs to be a cleaner interface for this sort of thing
-        // Also, this probably won't work as a container when doing
-        // get from with things that are on an object instead of
-        // in an object
         public virtual string get(Mob mob, PrepositionType prepType, Container container)
         {
             if (HasFlag(MobFlags.GETTABLE))
@@ -292,16 +284,23 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
             List<Mob> targetList = mCurrentRoom.getRes(ResType.OBJECT);
-            int tmpInvCount = 0;
+            int index = 0;
+            int originalSize = targetList.Count;
 
-            for (int i = 0; i < targetList.Count; ++i)
+            if (targetList.Count == 0)
+                return "you can't do that";
+
+            for (int loopCount = 0; loopCount < originalSize; ++loopCount)
             {
-                tmpInvCount = mInventory.Count;
+                int sizeBeforeGet = targetList.Count;
+                clientString += targetList[index].get(this);
+                int sizeAfterGet = targetList.Count;
 
-                clientString += targetList[i].get(this);
-
-                if (tmpInvCount != mInventory.Count)
-                    --i;
+                // If the size is the same before and after, that means we didn't successfully get the object
+                // I.E. we didn't have the right permission/flag whatever, that means we need to skip trying 
+                // to get this object again by incrementing the index of the next get.
+                if (sizeAfterGet == sizeBeforeGet)
+                    ++index;
             }
 
             return clientString;
@@ -405,11 +404,15 @@ namespace _8th_Circle_Server
                 return "You can't use that\n";
         }// unlock
 
-        // TODO:
-        // Destory does not check if you are in combat and remove the combat flags and stop the attacking events
-        // This needs to be done or else it can create dangling references to mobs in combat that never ends.
         public virtual string destroy()
         {
+            if(this is CombatMob)
+            {
+                CombatMob target = (CombatMob)this;
+                CombatHandler combatHandler = GetWorld().GetCombatHandler();
+                combatHandler.endCombat(target);
+            }
+
             mCurrentOwner = null;
             mInventory.Clear();
             mEventList.Clear(); 

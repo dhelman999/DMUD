@@ -12,8 +12,6 @@ namespace _8th_Circle_Server
             Utils.SetFlag(ref mValidity, ValidityType.INVENTORY);
         }
 
-        // TODO
-        // Problem with the 1st circle and get all, it duplicates until inventory is full
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             string clientString = "";

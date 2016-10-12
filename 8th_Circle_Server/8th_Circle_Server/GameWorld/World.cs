@@ -127,7 +127,12 @@ namespace _8th_Circle_Server
             eventData.SetEvent(EventFlag.EVENT_TELEPORT);
             eventData.SetCommand(CommandName.COMMAND_GET);
             eventData.SetData(RoomID.GPG_PLAYER_START);
+            EventData eventData2 = new EventData();
+            eventData2.SetEvent(EventFlag.EVENT_TELEPORT);
+            eventData2.SetCommand(CommandName.COMMAND_GETALL);
+            eventData2.SetData(RoomID.GPG_PLAYER_START);
             first_circle.GetEventList().Add(eventData);
+            first_circle.GetEventList().Add(eventData2);
             first_circle.GetInv().Capacity = 0;
             first_circle.SetWorld(this);
             first_circle.SetMobID(MobList.FIRST_CIRCLE);
