@@ -59,6 +59,18 @@ namespace _8th_Circle_Server
             key.SetMobID(MobList.BASIC_KEY);
             PrototypeManager.registerFullGameMob(MobList.BASIC_KEY, key);
 
+            Mob strange_lump = new Mob();
+            strange_lump.SetDesc("A strange lump, made of... something");
+            Utils.SetFlag(ref strange_lump.mFlags, MobFlags.GETTABLE);
+            Utils.SetFlag(ref strange_lump.mFlags, MobFlags.INSPECTABLE);
+            Utils.SetFlag(ref strange_lump.mFlags, MobFlags.STORABLE);
+            Utils.SetFlag(ref strange_lump.mFlags, MobFlags.DROPPABLE);
+            strange_lump.SetName("strange lump");
+            strange_lump.GetInv().Capacity = 0;
+            strange_lump.SetWorld(this);
+            strange_lump.SetMobID(MobList.STRANGE_LUMP);
+            PrototypeManager.registerFullGameMob(MobList.STRANGE_LUMP, strange_lump);
+
             Container chest = new Container();
             chest.SetDesc("A sturdy, wooden chest.  It makes you wonder what is inside...");
             Utils.SetFlag(ref chest.mFlags, MobFlags.OPENABLE);
@@ -306,8 +318,16 @@ namespace _8th_Circle_Server
 
         private void addProtoMobs(Area protoArea)
         {
+            Mob lump1 = PrototypeManager.getFullGameRegisteredMob(MobList.STRANGE_LUMP).Clone();
+            //protoArea.cloneMob(MobList.STRANGE_LUMP, protoArea[RoomID.PROTO_14], "strange lump", lump1);
+
+            Mob lump2 = PrototypeManager.getFullGameRegisteredMob(MobList.STRANGE_LUMP).Clone();
+            //protoArea.cloneMob(MobList.STRANGE_LUMP, protoArea[RoomID.PROTO_14], "strange lump", lump2);
+
             Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MobList.EVENT_CHEST1).Clone();
             event_chest1.SetKeyID(3);
+            event_chest1.GetInv().Add(lump1);
+            event_chest1.GetInv().Add(lump2);
             protoArea.cloneMob(MobList.EVENT_CHEST1, protoArea[RoomID.PROTO_14], "protochest", event_chest1);
 
             Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();

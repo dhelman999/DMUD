@@ -310,27 +310,26 @@ namespace _8th_Circle_Server
         public virtual string getall(PrepositionType prepType, Container container)
         {
             string clientString = string.Empty;
-            List<Mob> targetList = container.mInventory;
-            int tmpInvCount = 0;
+            List<Mob> containerInv = container.mInventory;
 
-            // TODO
-            // There is a flaw in this inheritance logic, this checks the inventory before
-            // it checks the prep list.  This means a chest could be empty and then
-            // a get or getall command with the prep 'in' would return a blank string
-            // because it never made it in this loop to call get on the container which
-            // checks the prep list.
-            for (int i = 0; i < targetList.Count; ++i)
+            if (container.HasFlag(MobFlags.HIDDEN))
+                return clientString;
+            if (!container.IsOpen())
+                return "the " + container.GetName() + " is closed.";
+            if (containerInv.Count == 0)
+                return "there is nothing to get.";
+
+            while(containerInv.Count > 0)
             {
-                tmpInvCount = mInventory.Count;
-
-                // TODO
-                // is --i the best way to do so?  I am okay if it is,
-                // just reexamine and make sure
-                clientString += targetList[i].get(this, prepType, container);
-
-                if (tmpInvCount != mInventory.Count)
-                    --i;
-            }// if
+                if (mInventory.Count < mInventory.Capacity)
+                {
+                    // Assumes that each item is gettable, if we were to make an item that isn't gettable unless certain
+                    // circumstances are met (like the sword in the stone type of thing), this will need to be reworked.
+                    clientString += containerInv[0].get(this, prepType, container);
+                }
+                else
+                    break;
+            }
 
             return clientString;
         }// getall

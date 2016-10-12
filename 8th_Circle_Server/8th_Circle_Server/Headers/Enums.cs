@@ -325,6 +325,7 @@ namespace _8th_Circle_Server
         PLAYER = MOB_START,
 
         // Objects
+        STRANGE_LUMP,
         BASIC_KEY,
         EVENT_CHEST1,
         EVENT_CHEST2,
