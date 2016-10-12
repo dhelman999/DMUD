@@ -68,7 +68,7 @@ namespace _8th_Circle_Server
             }// while    
         }// processCombat
 
-        public static void combatTask(CombatHandler ch, CombatMob attacker)
+        public static void combatTask(CombatHandler combatHandler, CombatMob attacker)
         {
             List<CombatMob> combatList = attacker.GetCombatList();
 
@@ -78,14 +78,14 @@ namespace _8th_Circle_Server
                     attacker.SetPrimaryTarget(combatList[0]);
 
                 CombatMob target = attacker.GetPrimaryTarget();
-                ch.attack(attacker, target);
-                ch.checkDeath(attacker, target);
+                combatHandler.attack(attacker, target);
+                combatHandler.checkDeath(attacker, target);
 
                 for (int i = 0; i < combatList.Count; ++i)
                 {
                     target = combatList[i];
-                    ch.attack(target, attacker);
-                    ch.checkDeath(target, attacker);
+                    combatHandler.attack(target, attacker);
+                    combatHandler.checkDeath(target, attacker);
                 }
 
                 attacker.safeWrite((attacker).playerString());
@@ -110,7 +110,7 @@ namespace _8th_Circle_Server
                 isCrit = true;
 
             bool isHit = true;
-            attacker[STAT.CURRENTMANA] = attacker[STAT.CURRENTMANA] - spell.mManaCost;
+            attacker[STAT.CURRENTMANA] -= spell.mManaCost;
 
             if (!isHit)
                 processMiss(attacker, target, spell);
@@ -134,9 +134,7 @@ namespace _8th_Circle_Server
             if (target == null)
                 return;
 
-            double hitChance = ((attacker[STAT.BASEHIT] + attacker[STAT.HITMOD] + ability.mHitBonus) -
-                               (target[STAT.BASEEVADE] + target[STAT.EVADEMOD]));
-            
+            double hitChance = ((attacker[STAT.BASEHIT] + attacker[STAT.HITMOD] + ability.mHitBonus) - (target[STAT.BASEEVADE] + target[STAT.EVADEMOD]));
             double attackRoll = mRand.NextDouble();
 
             if (attackRoll >= .95)
@@ -309,28 +307,23 @@ namespace _8th_Circle_Server
             target[STAT.CURRENTHP] -= (int)damage;
             string damageString = string.Empty;
 
-            if (attacker.GetResType() == ResType.PLAYER)
-            {
-                int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
+            int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
 
-                if (!isCrit)
-                    damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
-                else
-                    damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
+            if (!isCrit)
+                damageString += "your attack " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
+            else
+                damageString += "your critical hit " + damageToString(maxHp, damage) + " the " + target.GetName() + " for " + (int)damage + " damage";
 
-                attacker.safeWrite(damageString);
-            }// if
-            if (target.GetResType() == ResType.PLAYER)
-            {
-                damageString = string.Empty;
+            attacker.safeWrite(damageString);
 
-                if (isCrit)
-                    damageString += attacker.GetName() + " critically hits you for " + (int)damage + " damage";
-                else
-                    damageString += attacker.GetName() + " hits you for " + (int)damage + " damage";
+            damageString = string.Empty;
 
-                target.safeWrite(damageString);
-            }// if
+            if (isCrit)
+                damageString += attacker.GetName() + " critically hits you for " + (int)damage + " damage";
+            else
+                damageString += attacker.GetName() + " hits you for " + (int)damage + " damage";
+
+            target.safeWrite(damageString);
         }// processHit
 
         private void processMiss(CombatMob attacker, CombatMob target, Action ability)

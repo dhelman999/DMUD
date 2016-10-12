@@ -14,9 +14,10 @@ namespace _8th_Circle_Server
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             Room currentRoom = mob.GetCurrentRoom();
+            Area currentArea = mob.GetCurrentArea();
             string clientString = "";
 
-            foreach (CombatMob currentPlayer in mob.GetCurrentArea().getRes(ResType.PLAYER))
+            foreach (CombatMob currentPlayer in currentArea.getRes(ResType.PLAYER))
             {
                 if (currentPlayer.Equals(mob))
                     clientString = "You yell " + "\"" + commandQueue[1] + "\"";

@@ -111,38 +111,47 @@ namespace _8th_Circle_Server
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTH]).IsOpen()))
                 exitStr += "North ";
+
             if (mRoomLinks[(int)Direction.SOUTH] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTH] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).IsOpen()))
                 exitStr += "South ";
+
             if (mRoomLinks[(int)Direction.EAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.EAST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.EAST]).IsOpen()))
                 exitStr += "East ";
+
             if (mRoomLinks[(int)Direction.WEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.WEST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.WEST]).IsOpen()))
                 exitStr += "West ";
+
             if (mRoomLinks[(int)Direction.UP] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.UP] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.UP]).IsOpen()))
                 exitStr += "Up ";
+
             if (mRoomLinks[(int)Direction.DOWN] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.DOWN] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.DOWN]).IsOpen()))
                 exitStr += "Down ";
+
             if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).IsOpen()))
                 exitStr += "Northwest ";
+
             if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).IsOpen()))
                 exitStr += "Northeast ";
+
             if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).IsOpen()))
                 exitStr += "Southwest ";
+
             if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST] == null ||
                 ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).IsOpen()))

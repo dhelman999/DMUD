@@ -11,7 +11,7 @@ namespace _8th_Circle_Server
             this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 10;
             this[STAT.BASEMAXMANA] = 40;
             this[STAT.CURRENTMANA] = 40;
-
+            fillResistances();
             addActions();
         }// Constructor
 
@@ -23,7 +23,7 @@ namespace _8th_Circle_Server
             this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 10;
             this[STAT.BASEMAXMANA] = 40;
             this[STAT.CURRENTMANA] = 40;
-
+            fillResistances();
             addActions();
         }// Constructor
 

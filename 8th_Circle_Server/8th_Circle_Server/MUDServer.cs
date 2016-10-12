@@ -8,20 +8,18 @@ namespace _8th_Circle_Server
 {
     class MUDServer
     {
-        // Constants
         internal const int MUD_SERVER_PORT = 8888;
 
-        // Static Variables
         static TcpListener sTcpListener;
         static List<Thread> sListenerThreadList;
-        static List<ClientHandler> clientHandlerList;
+        static List<ClientHandler> sClientHandlerList;
         static World sWorld;
 
         static void Main(string[] args)
         {
             sWorld = new World();
             sListenerThreadList  = new List<Thread>();
-            clientHandlerList = new List<ClientHandler>();     
+            sClientHandlerList = new List<ClientHandler>();     
 
             try
             {
@@ -57,7 +55,7 @@ namespace _8th_Circle_Server
         static void ClientListener(World world)
         {
             ClientHandler clientHandler = new ClientHandler(sTcpListener, world);
-            clientHandlerList.Add(clientHandler);
+            sClientHandlerList.Add(clientHandler);
             clientHandler.start();
         }// ClientListener  
      

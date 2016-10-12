@@ -107,25 +107,30 @@ namespace _8th_Circle_Server
             {
                 EventData eventData = (EventData)mEventQueue.Dequeue();
                 Area area;
+                CombatMob player;
 
                 switch (eventData.GetEvent())
                 {
                     case EventFlag.EVENT_TELL_PLAYER:
-                        ((CombatMob)eventData.GetTrigger()).safeWrite((string)eventData.GetData());
+                        player = (CombatMob)eventData.GetTrigger();
+                        string message = (string)eventData.GetData();
+                        player.safeWrite(message);
                         break;
                         
                     case EventFlag.EVENT_TELEPORT:
-                            RoomID roomID = (RoomID)eventData.GetData();
-                            (mWorld.GetAreas()[2])[roomID].addMobResource(eventData.GetTrigger());
-                            ((CombatMob)eventData.GetTrigger()).safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
-                            ((CombatMob)eventData.GetTrigger()).safeWrite(eventData.GetTrigger().GetCurrentRoom().exitString());
+                        player = (CombatMob)eventData.GetTrigger();
+                        RoomID roomID = (RoomID)eventData.GetData();
+                        Area targetArea = mWorld.GetAreas()[2];
+                        Room targetRoom = targetArea[roomID];
+
+                        targetRoom.addMobResource(player);
+                        player.safeWrite("You feel a " + "mystical energy whisk you away, only to find yourself...");
+                        player.safeWrite(targetRoom.exitString());
                         break;
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.GetData());
-
-                        foreach (CombatMob pl in area.getRes(ResType.PLAYER))
-                            pl.safeWrite("The area shakes and rumbles");
+                        area.broadcast("The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_40], Direction.WEST);
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_47], Direction.SOUTHWEST);
@@ -147,9 +152,7 @@ namespace _8th_Circle_Server
 
                     case EventFlag.EVENT_GPG_WALL_ADD:
                         area = mWorld.getArea((AreaID)eventData.GetData());
-
-                        foreach (CombatMob pl in area.getRes(ResType.PLAYER))
-                            pl.safeWrite("The area shakes and rumbles");
+                        area.broadcast("The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.WEST);
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.SOUTHWEST);

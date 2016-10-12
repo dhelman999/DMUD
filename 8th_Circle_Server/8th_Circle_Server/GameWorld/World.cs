@@ -178,7 +178,6 @@ namespace _8th_Circle_Server
             goblin_runt[STAT.CURRENTHP] = 50;
             goblin_runt[STAT.BASEMAXHP] = 50;
             goblin_runt[STAT.BASEHIT] = 50;
-            goblin_runt.fillResistances();
             PrototypeManager.registerFullGameMob(MobList.GOBLIN_RUNT, goblin_runt);
 
             CombatMob max = new CombatMob();

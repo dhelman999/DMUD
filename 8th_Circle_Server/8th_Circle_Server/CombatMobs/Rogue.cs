@@ -11,6 +11,7 @@ namespace _8th_Circle_Server
             this[STAT.BASEEVADE] = this[STAT.BASEEVADE] + 5;
             this[STAT.BASEMAXHP] = this[STAT.BASEMAXHP] - 5;
             this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 5;
+            fillResistances();
         }// Constructor
 
         public Rogue(CombatMob cm) : base(cm)
@@ -21,6 +22,7 @@ namespace _8th_Circle_Server
             this[STAT.BASEEVADE] = this[STAT.BASEEVADE] + 5;
             this[STAT.BASEMAXHP] = this[STAT.BASEMAXHP] - 5;
             this[STAT.CURRENTHP] = this[STAT.CURRENTHP] - 5;
+            fillResistances();
         }// Constructor
 
         private void addActions()

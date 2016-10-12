@@ -97,8 +97,7 @@ namespace _8th_Circle_Server
                             }
                         }// while
 
-                        mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!");
-                        mPlayer.fillResistances();  
+                        mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!"); 
                         
                         Room currentRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
                         Area currentArea = currentRoom.GetCurrentArea();
@@ -107,7 +106,7 @@ namespace _8th_Circle_Server
                         mPlayer.SetAreaLoc(2, 1);
 
                         // TODO
-                        // Consolidate addres/and set current?
+                        // Consolidate address/and set current?
                         mPlayer.SetCurrentRoom(currentRoom);
                         mPlayer.SetCurrentArea(currentArea);
                         mPlayer.SetWorld(mWorld);

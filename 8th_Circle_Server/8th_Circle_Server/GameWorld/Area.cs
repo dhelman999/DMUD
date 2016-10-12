@@ -38,6 +38,12 @@ namespace _8th_Circle_Server
             mRoomList.Add(roomID, newRoom);
         }// RegisterRoom
 
+        public void broadcast(string message)
+        {
+            foreach (CombatMob player in getRes(ResType.PLAYER))
+                player.safeWrite(message);
+        }// broadcast
+
         // Properties
         public Room this[RoomID roomID]
         {

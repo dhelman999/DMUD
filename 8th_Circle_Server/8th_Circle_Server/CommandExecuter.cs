@@ -406,7 +406,7 @@ namespace _8th_Circle_Server
 
                     foreach (CommandClass com in ccList)
                     {
-                        if (!(tokens.Length > com.GetMaxTokens()))
+                        if (tokens.Length <= com.GetMaxTokens())
                         {
                             currentCC = com;
                             eCode = errorCode.E_OK;
