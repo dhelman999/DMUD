@@ -564,12 +564,6 @@ namespace _8th_Circle_Server
                     // Also, this triggers regardless if the action was a success, for example
                     // if you look in a closed chest, and the event is trigger on the look in command,
                     // it will happen either way, need a way to check for success.
-                    // TODO
-                    // This only accounts for verbs that have a predicate to check, if a verb has none, like getall,
-                    // then the get triggered events will not occur, and the getall can't occur because there is no
-                    // predicate to get the event from.  It is looking like the event handling needs to be in the get
-                    // itself to check the event data to see if any of the triggers are there rather than this model.
-                    // This whole trigger system needs to be rethought.
                     if(eventData.GetCommand() == commandClass.GetCommandName() &&
                        eventData.GetPrepType() == commandClass.GetPrep1().prepType)
                     {

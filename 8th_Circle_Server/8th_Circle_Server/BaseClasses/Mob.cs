@@ -282,18 +282,31 @@ namespace _8th_Circle_Server
 
         public virtual string getall()
         {
-            string clientString = string.Empty;
             List<Mob> targetList = mCurrentRoom.getRes(ResType.OBJECT);
-            int index = 0;
-            int originalSize = targetList.Count;
+            string clientString = string.Empty;
 
             if (targetList.Count == 0)
                 return "you can't do that";
 
+            CommandExecuter cmdExecuter = GetCurrentArea().GetCommandExecutor();
+            CommandClass get = cmdExecuter.GetCCDict()[Utils.createTuple(CommandName.COMMAND_GET, 2)];
+            ArrayList ccList = new ArrayList();
+            ccList.Add(get);
+         
+            int index = 0;
+            int originalSize = targetList.Count;
+
             for (int loopCount = 0; loopCount < originalSize; ++loopCount)
             {
                 int sizeBeforeGet = targetList.Count;
-                clientString += targetList[index].get(this);
+                Mob target = targetList[index];
+                ccList.Add(target);
+
+                // We could ignore most of this and simply call get directly on each object, but that would
+                // bypass our event system because the main command is getall, so if any event is triggered
+                // off of get and the command is getall, then it would not trigger, this way, it actually
+                // is doing the real get command through the executer so it will trigger the event.
+                clientString += cmdExecuter.execute(get, ccList, this);
                 int sizeAfterGet = targetList.Count;
 
                 // If the size is the same before and after, that means we didn't successfully get the object
@@ -301,6 +314,8 @@ namespace _8th_Circle_Server
                 // to get this object again by incrementing the index of the next get.
                 if (sizeAfterGet == sizeBeforeGet)
                     ++index;
+
+                ccList.Remove(target);
             }
 
             return clientString;
