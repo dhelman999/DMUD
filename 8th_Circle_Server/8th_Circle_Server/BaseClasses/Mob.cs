@@ -176,6 +176,9 @@ namespace _8th_Circle_Server
 
         public virtual string viewed(Mob viewer, Preposition prep)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             if (prep.prepType == PrepositionType.PREP_AT &&
                 mPrepList.Contains(PrepositionType.PREP_AT))
             {
@@ -187,6 +190,9 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             if (HasFlag(MobFlags.GETTABLE) &&
                 mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
@@ -232,6 +238,9 @@ namespace _8th_Circle_Server
 
         public virtual string get(Mob mob, PrepositionType prepType, Container container)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             if (HasFlag(MobFlags.GETTABLE))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
@@ -388,21 +397,33 @@ namespace _8th_Circle_Server
 
         public virtual string open(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "You can't open that\n";
         }// open
 
         public virtual string close(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "You can't close that\n";
         }// close
 
         public virtual string lck(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "You can't lock that\n";
         }// lck
 
         public virtual string unlock(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "You can't unlock that\n";
         }// unlock
 
@@ -460,16 +481,25 @@ namespace _8th_Circle_Server
 
         public virtual string lck()
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "you can't lock that\n";
         }// lck
 
         public virtual string unlock()
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "you can't unlock that\n";
         }// unlock
 
         public virtual string fullheal()
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             return "you can't fullheal that\n";
         }// fullheal
 

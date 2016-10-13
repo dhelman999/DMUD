@@ -35,6 +35,9 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 if(mIsOpen)
@@ -67,6 +70,9 @@ namespace _8th_Circle_Server
 
         public override string open(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
+
             string ret = string.Empty;
 
             if(HasFlag(MobFlags.OPENABLE))

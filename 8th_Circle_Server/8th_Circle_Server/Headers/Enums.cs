@@ -363,7 +363,7 @@ namespace _8th_Circle_Server
         SOUTHWEST,
         WEST,
         NORTHWEST,
-        DIRECTION_END = NORTHWEST
+        DIRECTION_END
     }// Direction
 
     public enum ResType

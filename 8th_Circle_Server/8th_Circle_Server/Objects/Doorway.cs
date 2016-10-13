@@ -50,12 +50,12 @@ namespace _8th_Circle_Server
 
         public override string open(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
             if (mIsLocked)
                 return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (mIsOpen)
                 return mob.GetCurrentRoom().getDoorString(this) + " is already open\n";
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't find that\n";
 
             else
             {
@@ -74,16 +74,14 @@ namespace _8th_Circle_Server
             }// else
         }// open
 
-        // TODO
-        // Does not check if it is hidden before returns if it is closed or locked on failure, this bypasses the point of hidden
         public override string close(Mob mob)
         {
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+                return "you can't do that\n";
             if (mIsLocked)
                 return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!mIsOpen)
                 return mob.GetCurrentRoom().getDoorString(this) + " is already closed\n";
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't find that\n";
             else
             {
                 mIsOpen = false;

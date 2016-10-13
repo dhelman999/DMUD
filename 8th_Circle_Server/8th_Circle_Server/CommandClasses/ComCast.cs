@@ -23,8 +23,6 @@ namespace _8th_Circle_Server
 
             switch (((Mob)commandQueue[++commandIndex]).GetName())
             {
-                // TODO
-                // Make a spell class that inherits from Mob and handle all this crap
                 case "mystic shot":
                     if (commandQueue.Count != 3 ||
                         ((Mob)commandQueue[++commandIndex] != null &&

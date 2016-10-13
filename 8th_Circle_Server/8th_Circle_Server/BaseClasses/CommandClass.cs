@@ -46,6 +46,19 @@ namespace _8th_Circle_Server
             mPredicate1Value = mPredicate2Value = null;
             mComType = comType;
         }// Constructor
+        public virtual string preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        {
+            string clientString = string.Empty;
+            CommandClass commandClass = (CommandClass)commandQueue[0];
+
+            if (!(commandClass.GetCommandName() == CommandName.COMMAND_REST ||
+                commandClass.GetCommandName() == CommandName.COMMAND_LOOK))
+            {
+                Utils.UnsetFlag(ref mob.mFlags, MobFlags.RESTING);
+            }
+
+            return clientString;
+        }// preExecute
 
         public virtual string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {

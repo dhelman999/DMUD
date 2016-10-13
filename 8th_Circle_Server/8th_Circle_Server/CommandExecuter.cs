@@ -330,9 +330,9 @@ namespace _8th_Circle_Server
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
                     clientString = "you can't use the " + currentCC.GetCommand() + " command like that";
                 else if (eCode == errorCode.E_INVALID_SYNTAX && clientString != String.Empty)
-                    clientString = "You can't do that\n";
+                    clientString = "you can't do that\n";
                 else
-                    clientString += "You can't do that\n";
+                    clientString += "you can't do that\n";
             }// if (eCode == errorCode.E_OK)
             else
                 clientString = tokens[0] + " is not a valid command";
@@ -535,12 +535,8 @@ namespace _8th_Circle_Server
         {
             string clientString = string.Empty;
 
-            if (!(commandClass.GetCommandName() == CommandName.COMMAND_REST ||
-                commandClass.GetCommandName() == CommandName.COMMAND_LOOK))
-            {
-                Utils.UnsetFlag(ref mob.mFlags, MobFlags.RESTING);
-            }
 
+            commandClass.preExecute(commandQueue, mob, this);
             clientString = commandClass.execute(commandQueue, mob, this);
             checkEvent(commandClass, commandQueue, mob);
 
