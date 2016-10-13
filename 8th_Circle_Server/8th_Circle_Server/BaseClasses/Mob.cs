@@ -446,7 +446,7 @@ namespace _8th_Circle_Server
         {
             mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
-            Mob mob = new Mob(this);
+            Mob mob = Clone();
             mChildren.Add(mob);
             mob.mCurrentArea.addRes(mob);
             mob.mCurrentRoom.addRes(mob);

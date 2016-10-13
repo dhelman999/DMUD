@@ -183,17 +183,6 @@ namespace _8th_Circle_Server
                 return "you don't have the right key to unlock " + mName + "\n";
         }// unlock
 
-        public override void respawn()
-        {
-            mIsRespawning = false;
-            mCurrentRespawnTime = mStartingRespawnTime;
-            Container cont = new Container(this);
-            mChildren.Add(cont);
-            cont.mCurrentArea.addRes(cont);
-            cont.mCurrentRoom.addRes(cont);
-            cont.mWorld.addRes(cont);
-        }// respawn
-
         // Accessors
         public bool IsOpen() { return mIsOpen; }
 

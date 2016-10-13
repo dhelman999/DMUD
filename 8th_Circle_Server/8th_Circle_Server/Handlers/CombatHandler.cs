@@ -88,7 +88,8 @@ namespace _8th_Circle_Server
                     combatHandler.checkDeath(target, attacker);
                 }
 
-                attacker.safeWrite((attacker).playerString());
+                attacker.safeWrite(attacker.playerString());
+                target.safeWrite(target.playerString());
 
                 Thread.Sleep(4000);
             }// while (combatList.Count > 0)

@@ -108,18 +108,6 @@ namespace _8th_Circle_Server
                 return "You can't look like that";
         }// viewed
 
-        public override void respawn()
-        {
-            mIsRespawning = false;
-            mCurrentRespawnTime = mStartingRespawnTime;
-            this[STAT.CURRENTHP] = this[STAT.BASEMAXHP];
-            CombatMob mob = new CombatMob(this);
-            mChildren.Add(mob);
-            mob.mCurrentArea.addRes(mob);
-            mob.mCurrentRoom.addRes(mob);
-            mob.mWorld.addRes(mob);
-        }// respawn
-
         public override string fullheal()
         {
             this[STAT.CURRENTHP] = this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD];

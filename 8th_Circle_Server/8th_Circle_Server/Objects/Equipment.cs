@@ -73,45 +73,31 @@ namespace _8th_Circle_Server
             return new Equipment(this, name);
         }
 
-        public override string wear(CombatMob pl)
+        public override string wear(CombatMob cm)
         {
-            if (pl[mSlot] == null)
+            if (cm[mSlot] == null)
             {
-                pl[mSlot] = this;
-                pl.GetInv().Remove(this);
+                cm[mSlot] = this;
+                cm.GetInv().Remove(this);
 
                 return "you equip the " + mName;
             }// if
             else
-                return "you are already wearing the " + pl[mSlot].GetName();
+                return "you are already wearing the " + cm[mSlot].GetName();
         }// wear
 
-        public override string remove(CombatMob pl)
+        public override string remove(CombatMob cm)
         {
-            if (pl[mSlot] == null)
+            if (cm[mSlot] == null)
                 return "";
             else
             {
-                pl[mSlot] = null;
-                pl.GetInv().Add(this);
+                cm[mSlot] = null;
+                cm.GetInv().Add(this);
 
                 return "you remove the " + mName;
             }// else
         }// wear
-
-        // TODO, can this be made generic inside the mob class? 
-        // so I can avoid forgetting to implement this in the future,
-        // it has already happened several times
-        public override void respawn()
-        {
-            mIsRespawning = false;
-            mCurrentRespawnTime = mStartingRespawnTime;
-            Equipment mob = new Equipment(this);
-            mChildren.Add(mob);
-            mob.mCurrentArea.addRes(mob);
-            mob.mCurrentRoom.addRes(mob);
-            mob.mWorld.addRes(mob);
-        }// respawn
 
         // Accessors
         public void SetType(EQType type) { mType = type; }

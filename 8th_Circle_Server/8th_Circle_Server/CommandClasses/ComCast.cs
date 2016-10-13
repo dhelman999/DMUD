@@ -13,11 +13,11 @@ namespace _8th_Circle_Server
             Utils.SetFlag(ref mPredicate2, PredicateType.NPC);
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public override string execute(ArrayList commandQueue, Mob caster, CommandExecuter commandExecutioner)
         {
             CommandClass currentCommand = (CommandClass)commandQueue[0];
             int commandIndex = 0;
-            Room currentRoom = mob.GetCurrentRoom();
+            Room currentRoom = caster.GetCurrentRoom();
             string clientString = string.Empty;
             CombatMob target = null;
 
@@ -36,25 +36,25 @@ namespace _8th_Circle_Server
                     target = (CombatMob)commandQueue[commandIndex];
                     Action act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_MYSTIC_SHOT];
 
-                    if (((CombatMob)mob)[STAT.CURRENTMANA] < act.mManaCost)
+                    if (((CombatMob)caster)[STAT.CURRENTMANA] < act.mManaCost)
                         return "you don't have enough mana for that";
 
-                    if (((CombatMob)mob).GetCombatList().Count == 0)
+                    if (((CombatMob)caster).GetCombatList().Count == 0)
                     {
-                        Utils.SetFlag(ref mob.mFlags, MobFlags.INCOMBAT);
-                        ((CombatMob)mob).GetCombatList().Add(target);
-                        target.GetCombatList().Add((CombatMob)mob);
+                        Utils.SetFlag(ref caster.mFlags, MobFlags.INCOMBAT);
+                        ((CombatMob)caster).GetCombatList().Add(target);
+                        target.GetCombatList().Add((CombatMob)caster);
                         Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
                         ArrayList attackQueue = new ArrayList();
                         CommandClass attackCommand = commandExecutioner.GetCCDict()[Utils.createTuple(CommandName.COMMAND_ATTACK, 2)];
                         attackQueue.Add(attackCommand);
 
-                        mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
-                        attackQueue.Add(target);
+                        caster.GetWorld().GetCombatHandler().executeSpell((CombatMob)caster, target, act);
+                        attackQueue.Add(caster);
                         attackCommand.execute(attackQueue, target, commandExecutioner);
                     }
                     else
-                        mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
+                        caster.GetWorld().GetCombatHandler().executeSpell((CombatMob)caster, target, act);
                     break;
 
                 case "cure":
@@ -68,10 +68,10 @@ namespace _8th_Circle_Server
                     target = (CombatMob)commandQueue[commandIndex];
                     act = commandExecutioner.GetASList()[(int)AbilitySpell.SPELL_CURE];
 
-                    if (((CombatMob)mob)[STAT.CURRENTMANA] < act.mManaCost)
+                    if (((CombatMob)caster)[STAT.CURRENTMANA] < act.mManaCost)
                         return "you don't have enough mana for that";
 
-                    mob.GetWorld().GetCombatHandler().executeSpell((CombatMob)mob, target, act);
+                    caster.GetWorld().GetCombatHandler().executeSpell((CombatMob)caster, target, act);
                     break;
 
                 default:
