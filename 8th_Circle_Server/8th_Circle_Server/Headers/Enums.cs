@@ -285,15 +285,6 @@ namespace _8th_Circle_Server
         E_END
     }// errorCode
 
-    public enum CommandType
-    {
-        COMTYPE_START,
-        GENERAL,
-        ABILITY,
-        SPELL,
-        COMTYPE_END
-    }// CommandType
-
     public enum AbilitySpell
     {
         ABILITY_SPELL_START,

@@ -60,183 +60,183 @@ namespace _8th_Circle_Server
         {
             // Add Verbs
             CommandClass commandClass = new ComUp("up", "u", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_UP,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_UP, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComNorth("north", "n", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_NORTH,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_NORTH, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComNorthEast("northeast", "ne", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_NORTHEAST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_NORTHEAST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComEast("east", "e", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_EAST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_EAST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSouthEast("southeast", "se", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_SOUTHEAST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SOUTHEAST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComDown("down", "d", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_DOWN,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_DOWN, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSouth("south", "s", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_SOUTH,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SOUTH, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSouthWest("southwest", "sw", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_SOUTHWEST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SOUTHWEST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComWest("west", "w", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_WEST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_WEST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComNorthWest("northwest", "nw", 6, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_NORTHWEST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_NORTHWEST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComExit("exit", null, 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_EXIT,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_EXIT, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComLook("look", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_LOOK,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_LOOK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComLook("look", null, 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_LOOK,
-                PredicateType.CUSTOM, PredicateType.END, CommandType.GENERAL);
+                PredicateType.CUSTOM, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_LOOK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComLook("look", null, 1, 3, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PREP_PRED], CommandName.COMMAND_LOOK,
-                PredicateType.NONE, PredicateType.END, CommandType.GENERAL);
+                PredicateType.NONE, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_LOOK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSay("say", null, 3, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_SAY,
-               PredicateType.CUSTOM, PredicateType.END, CommandType.GENERAL);
+               PredicateType.CUSTOM, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SAY, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComYell("yell", null, 2, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_YELL,
-                PredicateType.CUSTOM, PredicateType.END, CommandType.GENERAL, ValidityType.AREA);
+                PredicateType.CUSTOM, PredicateType.END, ValidityType.AREA);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_YELL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComTell("tell", null, 1, 256, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED_PRED], CommandName.COMMAND_TELL,
-                PredicateType.PLAYER, PredicateType.CUSTOM, CommandType.GENERAL, ValidityType.GLOBAL);
+                PredicateType.PLAYER, PredicateType.CUSTOM, ValidityType.GLOBAL);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_TELL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComOpen("open", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_OPEN,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_OPEN, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComFullHeal("fullheal", "fh", 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_FULLHEAL,
-                PredicateType.NONE, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.NONE, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_FULLHEAL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComClose("close", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_CLOSE,
-                PredicateType.OBJECT, PredicateType.END, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_CLOSE, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComDestroy("destroy", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_DESTROY,
-                PredicateType.NONE, PredicateType.END, CommandType.GENERAL);
+                PredicateType.NONE, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_DESTROY, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSpawn("spawn", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_SPAWN,
-                PredicateType.CUSTOM, PredicateType.END, CommandType.GENERAL);
+                PredicateType.CUSTOM, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SPAWN, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComGet("get", null, 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_GET,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_GET, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComGet("get", null, 1, 4, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED_PREP_PRED], CommandName.COMMAND_GET,
-                PredicateType.OBJECT, PredicateType.OBJECT, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.OBJECT);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_GET, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComGetAll("getall", "ga", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_GETALL,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_GETALL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComGetAll("getall", "ga", 1, 3, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PREP_PRED], CommandName.COMMAND_GETALL,
-                PredicateType.OBJECT, PredicateType.END, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_GETALL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComDrop("drop", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_DROP,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL, ValidityType.INVENTORY);
+                PredicateType.OBJECT, PredicateType.CUSTOM, ValidityType.INVENTORY);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_DROP, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComDropAll("dropall", "da", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_DROPALL,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL, ValidityType.INVENTORY);
+                PredicateType.END, PredicateType.END, ValidityType.INVENTORY);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_DROPALL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComInventory("inventory", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_INVENTORY,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_INVENTORY, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComEquipment("equipment", "eq", 2, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_EQUIPMENT,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_EQUIPMENT, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComLock("lock", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_LOCK,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_LOCK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComUnlock("unlock", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_UNLOCK,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_UNLOCK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComUse("use", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_USE,
-                PredicateType.OBJECT, PredicateType.CUSTOM, CommandType.GENERAL);
+                PredicateType.OBJECT, PredicateType.CUSTOM);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_USE, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComWear("wear", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_WEAR,
-                PredicateType.OBJECT, PredicateType.END, CommandType.GENERAL, ValidityType.INVENTORY);
+                PredicateType.OBJECT, PredicateType.END, ValidityType.INVENTORY);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_WEAR, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComWearAll("wearall", "wa", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_WEARALL,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL, ValidityType.INVENTORY);
+                PredicateType.END, PredicateType.END, ValidityType.INVENTORY);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_WEARALL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComRemove("remove", null, 3, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_REMOVE,
-                PredicateType.OBJECT, PredicateType.END, CommandType.GENERAL, ValidityType.EQUIPMENT);
+                PredicateType.OBJECT, PredicateType.END, ValidityType.EQUIPMENT);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_REMOVE, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComRemoveAll("removeall", "ra", 5, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_REMOVEALL,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL, ValidityType.EQUIPMENT);
+                PredicateType.END, PredicateType.END, ValidityType.EQUIPMENT);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_REMOVEALL, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComAttack("attack", "a", 1, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_ATTACK,
-                PredicateType.NONE, PredicateType.END, CommandType.GENERAL);
+                PredicateType.NONE, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_ATTACK, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComTeleport("teleport", "tp", 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_TELEPORT,
-                PredicateType.NONE, PredicateType.END, CommandType.GENERAL, ValidityType.GLOBAL);
+                PredicateType.NONE, PredicateType.END, ValidityType.GLOBAL);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_TELEPORT, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComSearch("search", null, 3, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_SEARCH,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_SEARCH, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComWho("who", null, 2, 2, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_WHO,
-                PredicateType.CUSTOM, PredicateType.END, CommandType.GENERAL, ValidityType.GLOBAL);
+                PredicateType.CUSTOM, PredicateType.END, ValidityType.GLOBAL);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_WHO, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComRest("rest", null, 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_REST,
-                PredicateType.END, PredicateType.END, CommandType.GENERAL);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_REST, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComBackstab("backstab", "bs", 2, 2, MobType.ROGUE, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED], CommandName.COMMAND_BACKSTAB,
-                PredicateType.NONE, PredicateType.END, CommandType.ABILITY);
+                PredicateType.NONE, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_BACKSTAB, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComBash("bash", "b", 1, 1, MobType.WARRIOR, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_BASH,
-                PredicateType.END, PredicateType.END, CommandType.ABILITY);
+                PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_BASH, commandClass.GetMaxTokens()), commandClass);
 
             commandClass = new ComCast("cast", "c", 1, 3, MobType.SPELLCASTER, mGrammarDict[GrammarType.GRAMMAR_VERB_PRED_PRED], CommandName.COMMAND_CAST,
-                PredicateType.SPELL, PredicateType.NONE, CommandType.SPELL);
+                PredicateType.SPELL, PredicateType.NONE);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_CAST, commandClass.GetMaxTokens()), commandClass);
         }// addCommands;
 
