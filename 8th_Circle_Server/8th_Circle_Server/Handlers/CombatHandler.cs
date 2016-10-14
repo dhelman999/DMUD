@@ -338,15 +338,12 @@ namespace _8th_Circle_Server
             {
                 endCombat(target);
 
-                attacker.safeWrite("you have slain the " + target.GetName());
+                string attackerString = "you have slain the " + target.GetName();
+                string receiversString = attacker.GetName() + " has slain " + target.GetName();
+                Utils.broadcast(attacker.GetCurrentRoom(), attacker, receiversString, attackerString);
+
                 target.slain(attacker);
                 target.safeWrite(target.slain(attacker));
-
-                foreach (Mob player in attacker.GetCurrentRoom().getRes(ResType.PLAYER))
-                {
-                    if(player != attacker)
-                        player.safeWrite(attacker.GetName() + " has slain " + target.GetName());
-                }         
 
                 ret = true;
             }// if

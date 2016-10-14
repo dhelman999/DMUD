@@ -601,8 +601,7 @@ namespace _8th_Circle_Server
                 // Max movement
                 if (mMobId == MobList.MAX)
                 {
-                    foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                        player.safeWrite(mName + " purrs softly\n");
+                    Utils.broadcast(mCurrentRoom, this, mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
                     CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(CommandName.COMMAND_TELL, 256)];
@@ -624,12 +623,10 @@ namespace _8th_Circle_Server
 
                 if (commandQueue.Count > 0)
                 {
+                    Utils.broadcast(mCurrentRoom, this, mName + " scampers off\n");
+
                     int index = (int)(commandQueue.Count * mRand.NextDouble());
                     CommandClass com = (CommandClass)commandQueue[index];
-
-                    foreach (CombatMob player in mCurrentRoom.getRes(ResType.PLAYER))
-                        player.safeWrite(mName + " scampers off\n");
-
                     mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
                 }// if
                 else

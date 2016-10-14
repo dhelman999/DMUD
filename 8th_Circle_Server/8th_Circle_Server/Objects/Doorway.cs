@@ -48,14 +48,14 @@ namespace _8th_Circle_Server
             mFlags = memento.mFlags;
         }
 
-        public override string open(Mob mob)
+        public override string open(Mob opener)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
                 return "you can't do that\n";
             if (mIsLocked)
-                return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
+                return opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (mIsOpen)
-                return mob.GetCurrentRoom().getDoorString(this) + " is already open\n";
+                return opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
 
             else
             {
@@ -65,23 +65,23 @@ namespace _8th_Circle_Server
                 {
                     if (mRoomList[i] != null)
                     {
-                        foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
-                            pl.safeWrite(mRoomList[i].getDoorString(this) + " opens\n");
+                        Room currentRoom = mRoomList[i];
+                        Utils.broadcast(currentRoom, opener, currentRoom.getDoorString(this) + " opens\n");
                     }
                 }// for
 
-                return "you open " + mob.GetCurrentRoom().getDoorString(this) + "\n";
+                return "you open " + opener.GetCurrentRoom().getDoorString(this) + "\n";
             }// else
         }// open
 
-        public override string close(Mob mob)
+        public override string close(Mob closer)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
                 return "you can't do that\n";
             if (mIsLocked)
-                return mob.GetCurrentRoom().getDoorString(this) + " is locked\n";
+                return closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!mIsOpen)
-                return mob.GetCurrentRoom().getDoorString(this) + " is already closed\n";
+                return closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
             else
             {
                 mIsOpen = false;
@@ -90,12 +90,12 @@ namespace _8th_Circle_Server
                 {
                     if (mRoomList[i] != null)
                     {
-                        foreach (CombatMob pl in mRoomList[i].getRes(ResType.PLAYER))
-                            pl.safeWrite(mRoomList[i].getDoorString(this) + " closes\n");
+                        Room currentRoom = mRoomList[i];
+                        Utils.broadcast(currentRoom, closer, currentRoom.getDoorString(this) + " closes\n");
                     }
                 }// for
 
-                return "you close " + mob.GetCurrentRoom().getDoorString(this) + "\n";
+                return "you close " + closer.GetCurrentRoom().getDoorString(this) + "\n";
             }// else
         }// close
 

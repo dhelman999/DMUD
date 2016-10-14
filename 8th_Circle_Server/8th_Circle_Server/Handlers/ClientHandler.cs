@@ -115,8 +115,7 @@ namespace _8th_Circle_Server
                         currentArea.addRes(mPlayer);
                         mWorld.addRes(mPlayer);
 
-                        foreach (CombatMob player in mPlayer.GetWorld().getRes(ResType.PLAYER))
-                            player.safeWrite(mPlayer.GetName() + " has joined the World");
+                        Utils.broadcast(mWorld, mPlayer, mPlayer.GetName() + " has joined the World", "You enter the 8th Circle...");
 
                         do
                         {     
@@ -169,8 +168,6 @@ namespace _8th_Circle_Server
                 if (mCmdString.Equals("exit"))
                     return;
 
-                safeWrite("Welcome to the 8th Circle!");
-
                 if(mPlayer != null && mPlayer.GetCurrentRoom() != null)
                    safeWrite(mPlayer.GetCurrentRoom().exitString() + mPlayer.playerString());
             }// catch
@@ -217,7 +214,7 @@ namespace _8th_Circle_Server
         {
             if (mPlayer != null)
             {
-                mWorld.broadcast(mPlayer.GetName() + " has left the world");
+                Utils.broadcast(mWorld, mPlayer, mPlayer.GetName() + " has left the world");
                 mWorld.totallyRemoveRes(mPlayer);
             }// if
 

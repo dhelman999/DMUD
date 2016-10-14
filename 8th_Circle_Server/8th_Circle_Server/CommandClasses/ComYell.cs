@@ -11,21 +11,11 @@ namespace _8th_Circle_Server
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public override string execute(ArrayList commandQueue, Mob yeller, CommandExecuter commandExecutioner)
         {
-            Room currentRoom = mob.GetCurrentRoom();
-            Area currentArea = mob.GetCurrentArea();
-            string clientString = "";
-
-            foreach (CombatMob currentPlayer in currentArea.getRes(ResType.PLAYER))
-            {
-                if (currentPlayer.Equals(mob))
-                    clientString = "You yell " + "\"" + commandQueue[1] + "\"";
-                else
-                    clientString = mob.GetName() + " yells \"" + commandQueue[1] + "\"";
-
-                currentPlayer.safeWrite(clientString);
-            }// foreach
+            string yellerString = "You yell " + "\"" + commandQueue[1] + "\"";
+            string receiversString = yeller.GetName() + " yells \"" + commandQueue[1] + "\"";
+            Utils.broadcast(yeller.GetCurrentArea(), yeller, receiversString, yellerString);
 
             return "";
         }// execute

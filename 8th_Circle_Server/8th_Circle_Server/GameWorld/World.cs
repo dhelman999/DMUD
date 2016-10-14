@@ -896,12 +896,6 @@ namespace _8th_Circle_Server
             removeRes(resource);
         }// totallyRemoveRes
 
-        public void broadcast(string message)
-        {
-            foreach (CombatMob player in getRes(ResType.PLAYER))
-                player.safeWrite(message);
-        }// broadcast
-
         // Accessors
         public CommandHandler GetCommandHandler() { return mCommandHandler; }
         public CombatHandler GetCombatHandler() { return mCombatHandler; }
