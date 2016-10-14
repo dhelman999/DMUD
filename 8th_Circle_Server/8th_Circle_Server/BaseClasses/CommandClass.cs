@@ -43,7 +43,6 @@ namespace _8th_Circle_Server
             mPrep1Value = new Preposition();
             mPrep2Value = new Preposition();
             mPredicate1Value = mPredicate2Value = null;
-            mComType = comType;
         }// Constructor
         public virtual string preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
