@@ -6,11 +6,6 @@ namespace _8th_Circle_Server
 {
     public class CombatHandler
     {
-        // TODO
-        // Is this the best way to not spawn new combat threads
-        // when someone issues another attack command?
-        public static List<CombatMob> sCurrentCombats;
-
         private Queue<CombatMob> mCombatQueue;
         private World mWorld;
         private Random mRand;
@@ -23,7 +18,6 @@ namespace _8th_Circle_Server
             mQueueLock = new object();
             mWorld = world;
             mRand = new Random();
-            sCurrentCombats = new List<CombatMob>();
         }// Constructor
 
         public void start()
@@ -42,7 +36,16 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
-                    combatHandler.processCombat();
+                    lock (combatHandler.GetCombatLock())
+                    {
+                        Queue<CombatMob> combatQueue = combatHandler.GetCombatQueue();
+
+                        if (combatQueue.Count > 0)
+                        {
+                            Thread combatThread = new Thread(() => combatTask(combatHandler, combatQueue.Dequeue()));
+                            combatThread.Start();
+                        }
+                    }
                 }// catch
             }// while
         }// spinWork
@@ -52,28 +55,17 @@ namespace _8th_Circle_Server
             lock (mQueueLock)
             {
                 mCombatQueue.Enqueue(mob);
-            }// lock
+            }
 
             mSpinWorkThread.Interrupt();
-        }// enQueueEvent
-
-        private void processCombat()
-        {
-            while (mCombatQueue.Count > 0)
-            {
-                CombatMob mob = mCombatQueue.Dequeue();
-                sCurrentCombats.Add(mob);
-                Thread combatThread = new Thread(() => combatTask(this, mob));
-                combatThread.Start();
-            }// while    
-        }// processCombat
+        }// enQueueCombat
 
         public static void combatTask(CombatHandler combatHandler, CombatMob attacker)
         {
             List<CombatMob> combatList = attacker.GetCombatList();
 
             while (combatList.Count > 0)
-            {     
+            {  
                 if (attacker.GetPrimaryTarget() == null)
                     attacker.SetPrimaryTarget(combatList[0]);
 
@@ -350,6 +342,12 @@ namespace _8th_Circle_Server
                 target.slain(attacker);
                 target.safeWrite(target.slain(attacker));
 
+                foreach (Mob player in attacker.GetCurrentRoom().getRes(ResType.PLAYER))
+                {
+                    if(player != attacker)
+                        player.safeWrite(attacker.GetName() + " has slain " + target.GetName());
+                }         
+
                 ret = true;
             }// if
 
@@ -370,18 +368,17 @@ namespace _8th_Circle_Server
                     attacker.SetPrimaryTarget(null);
 
                 if (attacker.GetCombatList().Count == 0)
-                {
                     Utils.UnsetFlag(ref attacker.mFlags, MobFlags.INCOMBAT);
-                    sCurrentCombats.Remove(attacker);
-                }
             }
 
             target.GetCombatList().Clear();
             target.SetPrimaryTarget(null);
             Utils.UnsetFlag(ref target.mFlags, MobFlags.INCOMBAT);
-            sCurrentCombats.Remove(target);
         }// endCombat
 
+        // Accessors
+        public Queue<CombatMob> GetCombatQueue() { return mCombatQueue; }
+        public object GetCombatLock() { return mQueueLock; }
     }// Class CombatHandler
 
 }// Namespace _8th_Circle_Server

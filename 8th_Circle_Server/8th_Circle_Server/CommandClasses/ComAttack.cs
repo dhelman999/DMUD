@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -15,37 +16,41 @@ namespace _8th_Circle_Server
 
         public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
-            Mob target = (Mob)commandQueue[1];
+            CombatMob attacker = (CombatMob)mob;
+            CombatMob target = (CombatMob)commandQueue[1];
             string clientString = null;
 
             if (!target.HasFlag(MobFlags.COMBATABLE) || !(target is CombatMob))
                 return "you can't attack that";
 
-            CombatMob cm = (CombatMob)target;
-            CombatMob attacker = (CombatMob)mob;
-
-            if (cm.GetCombatList().Count == 0)
+            if (target.GetCombatList().Count == 0)
             {
-                Utils.SetFlag(ref cm.mFlags, MobFlags.INCOMBAT);
-                cm.GetCombatList().Add(attacker);
+                Utils.SetFlag(ref target.mFlags, MobFlags.INCOMBAT);
+                target.GetCombatList().Add(attacker);
             }
-            else if (!cm.GetCombatList().Contains(attacker))
-                cm.GetCombatList().Add(attacker);
+            else if (!target.GetCombatList().Contains(attacker))
+                target.GetCombatList().Add(attacker);
 
             if (attacker.GetCombatList().Count == 0)
             {
                 Utils.SetFlag(ref attacker.mFlags, MobFlags.INCOMBAT);
-                attacker.GetCombatList().Add(cm);
-                attacker.SetPrimaryTarget(cm);
+                attacker.GetCombatList().Add(target);
+                attacker.SetPrimaryTarget(target);
             }
-            else if (!attacker.GetCombatList().Contains(cm))
+            else if (!attacker.GetCombatList().Contains(target))
             {
-                attacker.GetCombatList().Add(cm);
-                attacker.SetPrimaryTarget(cm);
+                attacker.GetCombatList().Add(target);
+                attacker.SetPrimaryTarget(target);
             }
 
-            if (!CombatHandler.sCurrentCombats.Contains(attacker))
-                attacker.GetWorld().GetCombatHandler().enQueueCombat(attacker);
+            CombatHandler combatHandler = attacker.GetWorld().GetCombatHandler();
+            Queue<CombatMob> combatQueue = combatHandler.GetCombatQueue();
+
+            lock (combatHandler.GetCombatLock())
+            {
+                if (!combatQueue.Contains(attacker))
+                    combatHandler.enQueueCombat(attacker);
+            }
 
             return clientString;
         }// execute
