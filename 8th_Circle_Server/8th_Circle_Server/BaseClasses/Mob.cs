@@ -153,10 +153,10 @@ namespace _8th_Circle_Server
                 return "you can't do that while in combat\n";
 
             // Remove old references
-            if (mCurrentRoom != null)
+            if (mCurrentRoom != null && mCurrentRoom != newRoom)
                 mCurrentRoom.removeRes(this);
 
-            if (mCurrentArea != null)
+            if (mCurrentArea != null && mCurrentArea != newRoom.GetCurrentArea())
                 mCurrentArea.removeRes(this);
 
             if (mCurrentArea != newRoom.GetCurrentArea())

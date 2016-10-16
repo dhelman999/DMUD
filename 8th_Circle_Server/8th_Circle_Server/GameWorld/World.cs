@@ -81,11 +81,8 @@ namespace _8th_Circle_Server
             chest.SetName("chest1");
             chest.GetInv().Capacity = 20;
             chest.SetWorld(this);
-            EventData eventData = new EventData();
-            eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
-            eventData.SetCommand(CommandName.COMMAND_LOOK);
+            EventData eventData = new EventData(EventFlag.EVENT_TELL_PLAYER, CommandName.COMMAND_LOOK, "A voice speaks to you from within the chest");
             eventData.SetPrep(PrepositionType.PREP_IN);
-            eventData.SetData("A voice speaks to you from within the chest");
             chest.GetEventList().Add(eventData);
             chest.SetMobID(MobList.EVENT_CHEST1);
             chest.SetKeyID((int)MobList.BASIC_KEY);
@@ -103,9 +100,7 @@ namespace _8th_Circle_Server
             chest2.SetName("large wooden chest2");
             chest2.GetInv().Capacity = 20;
             chest2.SetWorld(this);
-            eventData = new EventData();
-            eventData.SetEvent(EventFlag.EVENT_TELL_PLAYER);
-            eventData.SetCommand(CommandName.COMMAND_LOOK);
+            eventData = new EventData(EventFlag.EVENT_TELL_PLAYER, CommandName.COMMAND_LOOK);
             eventData.SetPrep(PrepositionType.PREP_AT);
             eventData.SetData("The " + chest.GetName() + " says \"hello!\"");
             chest2.GetEventList().Add(eventData);
@@ -123,14 +118,9 @@ namespace _8th_Circle_Server
             Utils.SetFlag(ref first_circle.mFlags, MobFlags.DUPLICATABLE);
             Utils.SetFlag(ref first_circle.mFlags, MobFlags.USEABLE);
             first_circle.SetName("1st Circle");
-            eventData = new EventData();
-            eventData.SetEvent(EventFlag.EVENT_TELEPORT);
-            eventData.SetCommand(CommandName.COMMAND_GET);
+            eventData = new EventData(EventFlag.EVENT_TELEPORT, CommandName.COMMAND_GET);
             eventData.SetData(RoomID.GPG_PLAYER_START);
-            EventData eventData2 = new EventData();
-            eventData2.SetEvent(EventFlag.EVENT_TELEPORT);
-            eventData2.SetCommand(CommandName.COMMAND_GETALL);
-            eventData2.SetData(RoomID.GPG_PLAYER_START);
+            EventData eventData2 = new EventData(EventFlag.EVENT_TELEPORT, CommandName.COMMAND_GETALL, RoomID.GPG_PLAYER_START);
             first_circle.GetEventList().Add(eventData);
             first_circle.GetEventList().Add(eventData2);
             first_circle.GetInv().Capacity = 0;
@@ -784,10 +774,7 @@ namespace _8th_Circle_Server
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
             newDoor.CreateMemento();
 
-            EventData ed = new EventData();
-            ed.SetData(AreaID.AID_NEWBIEAREA);
-            ed.SetEvent(EventFlag.EVENT_GPG_WALL_ADD);
-            ed.SetCommand(CommandName.COMMAND_USE);
+            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_ADD, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
             newbieArea.GetRevertEvents().Add(ed);
 
             addNewbieAreaMobs(newbieArea);
@@ -818,18 +805,12 @@ namespace _8th_Circle_Server
             newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
 
             Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
-            EventData ed = new EventData();
-            ed.SetData(AreaID.AID_NEWBIEAREA);
-            ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
-            ed.SetCommand(CommandName.COMMAND_USE);
+            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
             basic_switch.GetEventList().Add(ed);
             newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
 
             basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
-            ed = new EventData();
-            ed.SetData(AreaID.AID_NEWBIEAREA);
-            ed.SetEvent(EventFlag.EVENT_GPG_WALL_REMOVE);
-            ed.SetCommand(CommandName.COMMAND_USE);
+            ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
             basic_switch.GetEventList().Add(ed);
             newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
 

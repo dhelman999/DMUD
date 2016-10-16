@@ -32,7 +32,6 @@ namespace _8th_Circle_Server
     public struct EventData
     {
         public ValidityType validity;
-
         private EventFlag eventFlag;
         private Mob trigger;
         private Mob eventObject;
@@ -42,21 +41,16 @@ namespace _8th_Circle_Server
         private Object data;
 
         public EventData(EventFlag eventFlag,
-                         Mob trigger,
-                         Mob eventObject,
-                         Room eventRoom,
-                         ValidityType validity,
                          CommandName CommandName,
-                         PrepositionType prepType,
-                         Object data)
+                         Object data = null)
         {
             this.eventFlag = eventFlag;
-            this.trigger = trigger;
-            this.eventObject = eventObject;
-            this.eventRoom = eventRoom;
-            this.validity = validity;
+            this.trigger = null;
+            this.eventObject = null;
+            this.eventRoom = null;
+            this.validity = ValidityType.NONE;
             this.CommandName = CommandName;
-            this.prepType = prepType;
+            this.prepType = PrepositionType.PREP_START;
             this.data = data;
         }// Constructor
 

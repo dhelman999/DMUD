@@ -220,7 +220,7 @@ namespace _8th_Circle_Server
     public enum PrepositionType
     {
         PREP_START,
-        PREP_IN = PREP_START,
+        PREP_IN,
         PREP_ON,
         PREP_WITH,
         PREP_AT,
