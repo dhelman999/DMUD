@@ -25,9 +25,11 @@ namespace _8th_Circle_Server
         {
             List<Mob> resourceList = mResources[(int)mob.GetResType()];
 
-            // Don't allow duplicates
-            if(!resourceList.Contains(mob))
-                resourceList.Add(mob);
+            // Don't allow duplicates for players
+            if (mob.GetResType() == ResType.PLAYER && resourceList.Contains(mob))
+                return;
+
+            resourceList.Add(mob);
         }// addRes
 
         public void removeRes(Mob mob)
