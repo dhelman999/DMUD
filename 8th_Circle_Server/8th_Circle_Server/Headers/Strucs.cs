@@ -27,8 +27,6 @@ namespace _8th_Circle_Server
 
     }// Preposition
 
-    // TODO
-    // Make this a class
     public struct EventData
     {
         public ValidityType validity;

@@ -103,128 +103,43 @@ namespace _8th_Circle_Server
 
         public string exitString()
         {
-            string exitStr = mDescription + "\n" + "Exits: ";
-            string tmp = string.Empty;
-            int visibleObjects = 0;
+            string exitStr = string.Empty;
+            string resourceString = string.Empty;
 
-            if (mRoomLinks[(int)Direction.NORTH] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTH]).IsOpen()))
-                exitStr += "North ";
-
-            if (mRoomLinks[(int)Direction.SOUTH] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.SOUTH] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).IsOpen()))
-                exitStr += "South ";
-
-            if (mRoomLinks[(int)Direction.EAST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.EAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.EAST]).IsOpen()))
-                exitStr += "East ";
-
-            if (mRoomLinks[(int)Direction.WEST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.WEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.WEST]).IsOpen()))
-                exitStr += "West ";
-
-            if (mRoomLinks[(int)Direction.UP] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.UP] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.UP]).IsOpen()))
-                exitStr += "Up ";
-
-            if (mRoomLinks[(int)Direction.DOWN] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.DOWN] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.DOWN]).IsOpen()))
-                exitStr += "Down ";
-
-            if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).IsOpen()))
-                exitStr += "Northwest ";
-
-            if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).IsOpen()))
-                exitStr += "Northeast ";
-
-            if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).IsOpen()))
-                exitStr += "Southwest ";
-
-            if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
-                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).IsOpen()))
-                exitStr += "Southeast ";
+            exitStr += AddExitStrings();
 
             exitStr += "\n";
 
-            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
-            {
-                if (getRes(ResType.DOORWAY)[(int)dir] != null)
-                {
-                    Doorway currentDoor = (Doorway)getRes(ResType.DOORWAY)[(int)dir];
+            resourceString = Utils.printResources(this, ResType.DOORWAY);
 
-                    if (!currentDoor.HasFlag(MobFlags.HIDDEN))
-                    {
-                        ++visibleObjects;
-                        tmp += dir.ToString().ToLower() + " " + currentDoor.GetName() + "\n";        
-                    }// if
-                }// if   
-            }// for
-
-            if (visibleObjects != 0)
-                exitStr += tmp;
-
-            visibleObjects = 0;
-            tmp = string.Empty;
+            exitStr += resourceString + "\n";
 
             exitStr += "Objects: ";
-            
-            // TODO
-            // Probably add something like a targetList instead of repeating this
-            // multiple times
-            for (int i = 0; i < getRes(ResType.OBJECT).Count; ++i)
-            {
-                Mob currentMob = getRes(ResType.OBJECT)[i];
 
-                if (!currentMob.HasFlag(MobFlags.HIDDEN))
-                {
-                    ++visibleObjects;
-                    tmp += currentMob.exitString(this) + "\n";
-                }// if
-            }// for
+            resourceString = Utils.printResources(this, ResType.OBJECT);
 
-            if (visibleObjects == 0)
-                exitStr += "\n";
+            if (resourceString != string.Empty)
+                exitStr += resourceString;
             else
-                exitStr += tmp;
+                exitStr += "\n";
 
-            tmp = string.Empty;
             exitStr += "Npcs: ";
 
-            if (getRes(ResType.NPC).Count == 0)
+            resourceString = Utils.printResources(this, ResType.NPC);
+
+            if (resourceString != string.Empty)
+                exitStr += resourceString;
+            else
                 exitStr += "\n";
-
-            for (int i = 0; i < getRes(ResType.NPC).Count; ++i)
-            {
-                Mob currentMob = getRes(ResType.NPC)[i];
-
-                if (!currentMob.HasFlag(MobFlags.HIDDEN))
-                    exitStr += currentMob.GetName() + "\n";
-            }// if
 
             exitStr += "Players: ";
 
-            for (int i = 0; i < getRes(ResType.PLAYER).Count; ++i)
-            {
-                Mob player = getRes(ResType.PLAYER)[i];
+            resourceString = Utils.printResources(this, ResType.PLAYER);
 
-                if (!player.HasFlag(MobFlags.HIDDEN))
-                    exitStr += player.GetName() + "\n";
-            }// if
-
-            exitStr += "\n";
+            if (resourceString != string.Empty)
+                exitStr += resourceString;
+            else
+                exitStr += "\n";         
 
             return exitStr;
         }// exitString
@@ -286,6 +201,62 @@ namespace _8th_Circle_Server
             return dir.ToString().ToLower() + " " + door.GetName();
         }// getDoorString
 
+        public string AddExitStrings()
+        {
+            string exitStr = mDescription + "\n" + "Exits: ";
+
+            if (mRoomLinks[(int)Direction.NORTH] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTH]).IsOpen()))
+                exitStr += "North ";
+
+            if (mRoomLinks[(int)Direction.SOUTH] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTH] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).IsOpen()))
+                exitStr += "South ";
+
+            if (mRoomLinks[(int)Direction.EAST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.EAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.EAST]).IsOpen()))
+                exitStr += "East ";
+
+            if (mRoomLinks[(int)Direction.WEST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.WEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.WEST]).IsOpen()))
+                exitStr += "West ";
+
+            if (mRoomLinks[(int)Direction.UP] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.UP] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.UP]).IsOpen()))
+                exitStr += "Up ";
+
+            if (mRoomLinks[(int)Direction.DOWN] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.DOWN] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.DOWN]).IsOpen()))
+                exitStr += "Down ";
+
+            if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).IsOpen()))
+                exitStr += "Northwest ";
+
+            if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).IsOpen()))
+                exitStr += "Northeast ";
+
+            if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).IsOpen()))
+                exitStr += "Southwest ";
+
+            if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST] == null ||
+                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).IsOpen()))
+                exitStr += "Southeast ";
+
+            return exitStr;
+        }
         public void removeDualLinks(Direction dir)
         {
             if(mRoomLinks[(int)dir] != null)

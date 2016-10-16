@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -42,7 +43,34 @@ namespace _8th_Circle_Server
                 else
                     player.safeWrite(receiversMessage);
             }      
-        }
+        }// broadcast
+
+        // Returns a string of all resources of a specific type in a location
+        public static string printResources<T>(T location, ResType resType) where T : ResourceHandler
+        {
+            string returnString = string.Empty;
+
+            List<Mob> locResources = location.getRes(resType);
+
+            for(int index = 0; index < locResources.Count; ++index)
+            {
+                Mob currentMob = locResources[index];
+
+                if (currentMob == null || currentMob.mFlags.HasFlag(MobFlags.HIDDEN))
+                    continue;
+
+                if(resType == ResType.DOORWAY)
+                {
+                    Direction dir = (Direction)index;
+                    returnString += dir.ToString().ToLower() + " " + currentMob.GetName() + "\n";
+                }
+                else
+                    returnString += currentMob.GetName() + "\n";
+            }
+
+            return returnString;
+        }// printResources
+
     }// Utils
 
 }// _8th_Circle_Server
