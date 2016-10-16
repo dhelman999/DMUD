@@ -324,10 +324,7 @@ namespace _8th_Circle_Server
         private void addProtoMobs(Area protoArea)
         {
             Mob lump1 = PrototypeManager.getFullGameRegisteredMob(MobList.STRANGE_LUMP).Clone();
-            //protoArea.cloneMob(MobList.STRANGE_LUMP, protoArea[RoomID.PROTO_14], "strange lump", lump1);
-
             Mob lump2 = PrototypeManager.getFullGameRegisteredMob(MobList.STRANGE_LUMP).Clone();
-            //protoArea.cloneMob(MobList.STRANGE_LUMP, protoArea[RoomID.PROTO_14], "strange lump", lump2);
 
             Mob event_chest1 = PrototypeManager.getFullGameRegisteredMob(MobList.EVENT_CHEST1).Clone();
             event_chest1.SetKeyID(3);
@@ -441,10 +438,12 @@ namespace _8th_Circle_Server
             Doorway newDoor = new Doorway("door");
             house1stBathroom.addDoor(newDoor, Direction.EAST);
             house1stHallway.addDoor(newDoor, Direction.WEST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             house1stKitchen.addDoor(newDoor, Direction.DOWN);
             houseBaseentrance.addDoor(newDoor, Direction.UP);
+            newDoor.CreateMemento();
 
             house1stentranceway.GetRoomLinks()[(int)Direction.UP] = house2ndHallway;
             house2ndHallway.GetRoomLinks()[(int)Direction.DOWN] = house1stentranceway;
@@ -464,22 +463,27 @@ namespace _8th_Circle_Server
             newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.WEST);
             house2ndBathroom.addDoor(newDoor, Direction.EAST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.EAST);
             house2ndKittyroom.addDoor(newDoor, Direction.WEST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.SOUTH);
             house2ndBlueroom.addDoor(newDoor, Direction.NORTH);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             house2ndHallway.addDoor(newDoor, Direction.SOUTHWEST);
             house2ndBedroom.addDoor(newDoor, Direction.NORTHEAST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             house2ndBathroom.addDoor(newDoor, Direction.SOUTH);
             house2ndBedroom.addDoor(newDoor, Direction.NORTH);
+            newDoor.CreateMemento();
 
             houseBaseentrance.GetRoomLinks()[(int)Direction.UP] = house1stKitchen;
             house1stKitchen.GetRoomLinks()[(int)Direction.DOWN] = houseBaseentrance;
@@ -503,18 +507,22 @@ namespace _8th_Circle_Server
             newDoor = new Doorway("door");
             houseBaseentrance.addDoor(newDoor, Direction.WEST);
             houseBaseLaundryRoom.addDoor(newDoor, Direction.EAST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             houseBasepart2.addDoor(newDoor, Direction.WEST);
             houseBaseCloset.addDoor(newDoor, Direction.EAST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             houseBasepart2.addDoor(newDoor, Direction.EAST);
             houseBaseSumpRoom.addDoor(newDoor, Direction.WEST);
+            newDoor.CreateMemento();
 
             newDoor = new Doorway("door");
             houseBaseBathroom.addDoor(newDoor, Direction.SOUTH);
             houseBasepart5.addDoor(newDoor, Direction.NORTH);
+            newDoor.CreateMemento();
 
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
             getRoom(protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), AreaID.AID_PROTOAREA).GetRoomLinks()[(int)Direction.WEST] = house1stentranceway;
@@ -774,6 +782,7 @@ namespace _8th_Circle_Server
             Doorway newDoor = new Doorway("door", flags);
             gpg_71.addDoor(newDoor, Direction.SOUTH);
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
+            newDoor.CreateMemento();
 
             EventData ed = new EventData();
             ed.SetData(AreaID.AID_NEWBIEAREA);

@@ -12,14 +12,12 @@ namespace _8th_Circle_Server
         private bool mIsOpen;
         private bool mIsLocked;
         private Room [] mRoomList;
-        private Memento mMemento;
 
         public Doorway() : base()
         {
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mMemento = new Memento(this);
         }// Constructor
 
         public Doorway(string name, MobFlags flags = MobFlags.NONE) : base(name, flags)
@@ -27,26 +25,37 @@ namespace _8th_Circle_Server
             mIsOpen = false;
             mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
-            mMemento = new Memento(this);
         }// Constructor
 
-        public Doorway(Doorway doorway)
+        public Doorway(Doorway doorway) : base()
         {
             mIsOpen = doorway.mIsOpen;
             mIsLocked = doorway.mIsLocked;
             mRoomList = (Room [])doorway.mRoomList.Clone();
-            mMemento = doorway.mMemento;
             mFlags = doorway.mFlags;
         }// Copy Constructor
 
+        public override Mob Clone()
+        {
+            return new Doorway(this);
+        }// Clone
+
+        public override Mob Clone(string name)
+        {
+            return new Doorway(name);
+        }// Clone
+
         public void reset()
         {
-            Doorway memento = (Doorway)(mMemento.getMemento(MementoType.DOORWAY));
-            mIsOpen = memento.mIsOpen;
-            mIsLocked = memento.mIsLocked;
-            mRoomList = memento.mRoomList;
-            mFlags = memento.mFlags;
-        }
+            if(mMemento != null)
+            {
+                Doorway memento = (Doorway)mMemento;
+                mIsLocked = memento.mIsLocked;
+                mIsOpen = memento.mIsOpen;
+                mRoomList = memento.mRoomList;
+                mFlags = memento.mFlags;
+            }
+        }// reset
 
         public override string open(Mob opener)
         {
@@ -169,7 +178,6 @@ namespace _8th_Circle_Server
         public bool IsOpen() { return mIsOpen; }
         public bool IsLocked() { return mIsLocked; }
         public Room[] GetRoomList() { return mRoomList; }
-        public Memento Memento() { return mMemento; }
 
     }// Class Doorway
 

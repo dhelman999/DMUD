@@ -33,6 +33,7 @@ namespace _8th_Circle_Server
         protected int mActionTimer;
         protected int mStartingActionCounter;
         protected int mCurrentActionCounter;
+        protected Mob mMemento;
 
         private Random mRand;
         private int[] mAreaLoc;
@@ -152,14 +153,17 @@ namespace _8th_Circle_Server
                 return "you can't do that while in combat\n";
 
             // Remove old references
-            mCurrentRoom.removeRes(this);
+            if (mCurrentRoom != null)
+                mCurrentRoom.removeRes(this);
+
+            if (mCurrentArea != null)
+                mCurrentArea.removeRes(this);
 
             if (mCurrentArea != newRoom.GetCurrentArea())
             {
-                mCurrentArea.removeRes(this);
                 newRoom.GetCurrentArea().addRes(this);
                 mCurrentArea = newRoom.GetCurrentArea();
-            }// if
+            }
 
             // Add new references
             newRoom.addRes(this);
@@ -715,6 +719,7 @@ namespace _8th_Circle_Server
         public MobFlags GetFlags() { return mFlags; }
         public bool HasFlag(Enum flag) { return mFlags.HasFlag(flag); }
         public virtual Dictionary<EQSlot, Mob> GetEQList() { return null; }
+        public void CreateMemento() { mMemento = Clone(); }
 
     }// Class Mob
 

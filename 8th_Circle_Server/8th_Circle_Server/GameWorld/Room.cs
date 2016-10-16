@@ -256,7 +256,6 @@ namespace _8th_Circle_Server
 
         public void addDoor(Doorway door, Direction dir)
         {
-            door.Memento().registerMemento(door);
             getRes(ResType.DOORWAY)[(int)dir] = door;
             door.GetRoomList()[(int)dir] = this;
         }// addDoor

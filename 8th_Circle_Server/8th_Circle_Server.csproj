@@ -102,7 +102,6 @@
     <Compile Include="8th_Circle_Server\Handlers\ResourceHandler.cs" />
     <Compile Include="8th_Circle_Server\Headers\Enums.cs" />
     <Compile Include="8th_Circle_Server\Headers\Strucs.cs" />
-    <Compile Include="8th_Circle_Server\BaseClasses\Memento.cs" />
     <Compile Include="8th_Circle_Server\BaseClasses\Mob.cs" />
     <Compile Include="8th_Circle_Server\Headers\Utils.cs" />
     <Compile Include="8th_Circle_Server\MUDServer.cs" />
