@@ -63,7 +63,7 @@ namespace _8th_Circle_Server
                 {
                     case EventFlag.EVENT_TELL_PLAYER:
                         player = (CombatMob)eventData.GetTrigger();
-                        string message = (string)eventData.GetData();
+                        String message = (String)eventData.GetData();
                         player.safeWrite(message);
                         break;
                         

@@ -299,17 +299,17 @@ namespace _8th_Circle_Server
             mAbilitySpellList.Add(act);
         }// addAbilitySpells
 
-        public void process(string command, Mob mob)
+        public void process(String command, Mob mob)
         {
-            string[] tokens = command.Split(' ');
+            String[] tokens = command.Split(' ');
             ArrayList ccList = new ArrayList();
             CommandClass currentCC = null;
-            string clientString = string.Empty;
+            String clientString = String.Empty;
 
-            if (command.Equals(string.Empty))
+            if (command.Equals(String.Empty))
                 return;
 
-            // First see if the shortname matches, if so we are done, otherwise match any substring
+            // First see if the shortname matches, if so we are done, otherwise match any subString
             errorCode eCode = initialMatching(tokens, ccList);
 
             if (eCode == errorCode.E_OK)
@@ -320,13 +320,13 @@ namespace _8th_Circle_Server
                 // In this case, the player must have sent us a verb that has multiple arguements.
                 // This means we have to parse the grammar of the verb and add back the appropriate
                 // predicates to the command list if they even exist.
-                eCode = populateCommandList(command, tokens, currentCC, ccList, mob, clientString);
+                eCode = populateCommandList(command, tokens, currentCC, ccList, mob, ref clientString);
 
                 // All predicates must have checked out, the commandList will be correctly
                 // populated with all correct predicates in the right order according to
                 // the verbs description.  Go ahead and execute the command
                 if (eCode == errorCode.E_OK)
-                    clientString = execute(currentCC, ccList, mob);
+                    eCode = execute(currentCC, ccList, mob, ref clientString);
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
                     clientString = "you can't use the " + currentCC.GetCommand() + " command like that";
                 else if (eCode == errorCode.E_INVALID_SYNTAX && clientString != String.Empty)
@@ -341,7 +341,7 @@ namespace _8th_Circle_Server
             mob.safeWrite(clientString);
         }// process
 
-        private errorCode initialMatching(string[] tokens, ArrayList ccList)
+        private errorCode initialMatching(String[] tokens, ArrayList ccList)
         {
             errorCode foundMatch = errorCode.E_INVALID_COMMAND_USAGE;
 
@@ -369,7 +369,7 @@ namespace _8th_Circle_Server
             return foundMatch;
         }// initialMatching
 
-        private CommandClass resolveMultipleVerbs(ArrayList ccList, errorCode eCode, string[] tokens)
+        private CommandClass resolveMultipleVerbs(ArrayList ccList, errorCode eCode, String[] tokens)
         {
             CommandClass currentCC = null;
 
@@ -380,7 +380,7 @@ namespace _8th_Circle_Server
                 eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
                 // If our command has the exact same number of tokens as the players
-                // tokenized command string, then we are done, this is the one.
+                // tokenized command String, then we are done, this is the one.
                 foreach (CommandClass com in ccList)
                 {
                     if (tokens.Length == com.GetMaxTokens())
@@ -423,14 +423,14 @@ namespace _8th_Circle_Server
             return currentCC;
         }// resolveMultipleVerbs
 
-        private errorCode populateCommandList(string command, string[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob, string clientString)
+        private errorCode populateCommandList(String command, String[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob, ref String clientString)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             PredicateType targetPredicate;
             int grammarIndex = 0;
             int predicateCount = 0;
-            string errorString = currentCC.GetCommand();
-            string subCommand = String.Empty;
+            String errorString = currentCC.GetCommand();
+            String subCommand = String.Empty;
 
             // If we have a valid verb with a grammar of 1, we are done, execute it
             if (tokens.Length == 1 &&
@@ -496,7 +496,7 @@ namespace _8th_Circle_Server
                     ret = errorCode.E_INVALID_SYNTAX;
                     tokens = subCommand.Split(' ');
                     errorString += " " + tokens[0];
-                    string prepName = tokens[0];
+                    String prepName = tokens[0];
 
                     foreach (KeyValuePair<PrepositionType, Preposition> prepPair in mPrepDict)
                     {
@@ -531,16 +531,16 @@ namespace _8th_Circle_Server
             return ret;
         }// populateCommandList
 
-        public string execute(CommandClass commandClass, ArrayList commandQueue, Mob mob)
+        public errorCode execute(CommandClass commandClass, ArrayList commandQueue, Mob mob, ref String clientString)
         {
-            string clientString = string.Empty;
-
-
             commandClass.preExecute(commandQueue, mob, this);
-            clientString = commandClass.execute(commandQueue, mob, this);
-            checkEvent(commandClass, commandQueue, mob);
+            errorCode eCode = commandClass.execute(commandQueue, mob, this, ref clientString);
 
-            return clientString;
+            // If the command fails we don't want to trigger events off of the command
+            if(eCode == errorCode.E_OK)
+                checkEvent(commandClass, commandQueue, mob);
+
+            return eCode;
         }// execute
 
         private void checkEvent(CommandClass commandClass, ArrayList commandQueue, Mob mob)
@@ -555,11 +555,6 @@ namespace _8th_Circle_Server
                 {
                     EventData eventData = commandClass.GetPred1().GetEventList()[0];
 
-                    // TODO
-                    // This doesn't look like it supports predicate2 triggered events
-                    // Also, this triggers regardless if the action was a success, for example
-                    // if you look in a closed chest, and the event is trigger on the look in command,
-                    // it will happen either way, need a way to check for success.
                     if(eventData.GetCommand() == commandClass.GetCommandName() &&
                        eventData.GetPrepType() == commandClass.GetPrep1().prepType)
                     {
@@ -573,10 +568,10 @@ namespace _8th_Circle_Server
             }// else if
         }// checkEvent
 
-        private errorCode doesPredicateExist(string name, PredicateType predType, ValidityType validity, ArrayList commandQueue, Mob target)
+        private errorCode doesPredicateExist(String name, PredicateType predType, ValidityType validity, ArrayList commandQueue, Mob target)
         {
             ArrayList targetPredicates = new ArrayList();
-            string[] tokens = name.Split('.');
+            String[] tokens = name.Split('.');
 
             // Fill the targetPredicates with applicable predicates
             errorCode ret = extractPredicates(tokens, predType, validity, target, targetPredicates);
@@ -612,10 +607,10 @@ namespace _8th_Circle_Server
             return ret;
         }// doesPredicateExist
 
-        private bool validatePredicate(string targetPred, string cmdString)
+        private bool validatePredicate(String targetPred, String cmdString)
         {
             bool found = false;
-            string subString = cmdString;
+            String subString = cmdString;
             int index = 0;
             char c;
 
@@ -661,9 +656,9 @@ namespace _8th_Circle_Server
             {
                 if (grammar[i] == Grammar.PREDICATE)
                 {
-                    if ((++predicateCount == 1) && !(commandQueue[i] is string))
+                    if ((++predicateCount == 1) && !(commandQueue[i] is String))
                         commandClass.SetPred1((Mob)commandQueue[i]);
-                    else if (!(commandQueue[i] is string))
+                    else if (!(commandQueue[i] is String))
                         commandClass.SetPred2((Mob)commandQueue[i]);
                 }// if
                 else if (grammar[i] == Grammar.PREP)
@@ -680,7 +675,7 @@ namespace _8th_Circle_Server
         }// fillEventArgs
 
         // Fill the targetList with the extracted predicates from the commands and the applicable surroundings based on predicate type and validityType
-        private errorCode extractPredicates(string[] tokens, PredicateType predType, ValidityType validity, Mob target, ArrayList targetPredicates)
+        private errorCode extractPredicates(String[] tokens, PredicateType predType, ValidityType validity, Mob target, ArrayList targetPredicates)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
             ArrayList targetList = new ArrayList();

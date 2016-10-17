@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace _8th_Circle_Server
 {
     public class Equipment : Mob
@@ -33,7 +35,7 @@ namespace _8th_Circle_Server
             mDamType = DamageType.PHYSICAL;
         }// constructor
 
-        public Equipment(Equipment eq, string name = "") : base(eq)
+        public Equipment(Equipment eq, String name = "") : base(eq)
         {
             if (name != "")
                 mName = name;
@@ -68,35 +70,45 @@ namespace _8th_Circle_Server
             return new Equipment(this);
         }
 
-        public override Mob Clone(string name)
+        public override Mob Clone(String name)
         {
             return new Equipment(this, name);
         }
 
-        public override string wear(CombatMob cm)
+        public override errorCode wear(CombatMob cm, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (cm[mSlot] == null)
             {
                 cm[mSlot] = this;
                 cm.GetInv().Remove(this);
 
-                return "you equip the " + mName;
+                clientString = "you equip the " + mName;
+                eCode = errorCode.E_OK;
             }// if
             else
-                return "you are already wearing the " + cm[mSlot].GetName();
+                clientString = "you are already wearing the " + cm[mSlot].GetName();
+
+            return eCode;
         }// wear
 
-        public override string remove(CombatMob cm)
+        public override errorCode remove(CombatMob cm, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (cm[mSlot] == null)
-                return "";
+                return eCode;
             else
             {
                 cm[mSlot] = null;
                 cm.GetInv().Add(this);
 
-                return "you remove the " + mName;
+                clientString = "you remove the " + mName;
+                eCode = errorCode.E_OK;
             }// else
+
+            return eCode;
         }// wear
 
         // Accessors

@@ -1,20 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Threading;
 
 namespace _8th_Circle_Server
 {
     public class ComRest : CommandClass
     {
-        public ComRest(string command, string shortName, int matchNumber, int maxTokens, MobType type,
+        public ComRest(String command, String shortName, int matchNumber, int maxTokens, MobType type,
                        Grammar[] grammar, CommandName CommandName, PredicateType predicate1,
                        PredicateType predicate2, ValidityType validity = ValidityType.LOCAL) :
             base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, validity)
         {
         }
 
-        public override string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public override errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
         {
-            string clientString = "";
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (mob.HasFlag(MobFlags.INCOMBAT))
                 clientString = "you can't rest while in combat!\n";
@@ -24,11 +25,12 @@ namespace _8th_Circle_Server
                 Utils.SetFlag(ref mob.mFlags, MobFlags.RESTING);
                 Thread restThread = new Thread(() => restTask(((CombatMob)mob)));
                 restThread.Start();
+                eCode = errorCode.E_OK;
             }
             else
                 clientString = "you are already resting\n";
 
-            return clientString;
+            return eCode;
         }// execute
 
         public static void restTask(CombatMob mob)

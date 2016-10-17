@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace _8th_Circle_Server
 {
     public class Action : Mob
@@ -19,7 +21,7 @@ namespace _8th_Circle_Server
         public AbilitySpell mAbilitySpell;
         public bool mWeaponRequired;
 
-        public Action(string name, int cooldown, int useTime, ActionType type) : base()
+        public Action(String name, int cooldown, int useTime, ActionType type) : base()
         {
             mName = name;
             mCooldown = cooldown;

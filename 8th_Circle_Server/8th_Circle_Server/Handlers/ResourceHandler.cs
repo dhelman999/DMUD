@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
     public class ResourceHandler
     {
-        protected string mName;
-        protected string mDescription;
+        protected String mName;
+        protected String mDescription;
         protected List<List<Mob>> mResources;
 
         public ResourceHandler()
@@ -38,9 +39,9 @@ namespace _8th_Circle_Server
         }// removeRes  
 
         // Accessors
-        public string GetName() { return mName; }
-        public string GetDescription() { return mDescription; }
-        public void SetDescription(string desc) { mDescription = desc; }
+        public String GetName() { return mName; }
+        public String GetDescription() { return mDescription; }
+        public void SetDescription(String desc) { mDescription = desc; }
 
     }// class ResourceHandler
     

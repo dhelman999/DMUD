@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -535,22 +536,22 @@ namespace _8th_Circle_Server
                "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
                "and were cast out until they prooved themselves");
 
-            string common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
+            String common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
                "a little further, the walls to the north rise as high as you can see.\n" +
                "The plains still span in other directions.  All around, you can hear\n" +
                "goblins lurking about and you can see dark mud splattered about.\n";
 
-            string common_gpg_south_field = "The plains end to the south along a rock wall.  There is some light\n" +
+            String common_gpg_south_field = "The plains end to the south along a rock wall.  There is some light\n" +
                "a little further, the walls to the south rise as high as you can see.\n" +
                "The plains still span in other directions.  All around, you can hear\n" +
                "goblins lurking about and you can see dark mud splattered about.\n";
 
-            string common_gpg_east_field = "The plains end to the east along a rock wall.  There is some light\n" +
+            String common_gpg_east_field = "The plains end to the east along a rock wall.  There is some light\n" +
                "a little further, the walls to the east rise as high as you can see.\n" +
                "The plains still span in other directions.  All around, you can hear\n" +
                "goblins lurking about and you can see dark mud splattered about.\n";
 
-            string common_gpg_open_field = "The plains continue on in every direction.  All around, you\n" +
+            String common_gpg_open_field = "The plains continue on in every direction.  All around, you\n" +
                "can hear goblins lurking about and you can see dark mud splattered about.\n";
 
             Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in\n" +
@@ -862,7 +863,7 @@ namespace _8th_Circle_Server
             return null;
         }// getRoom
 
-        public Area getArea(string areaName)
+        public Area getArea(String areaName)
         {
             foreach (Area area in mAreaList)
             {

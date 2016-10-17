@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace _8th_Circle_Server
 {
     public class Wizard : CombatMob
@@ -27,7 +29,7 @@ namespace _8th_Circle_Server
             addActions();
         }// Constructor
 
-        public override string playerString()
+        public override String playerString()
         {
             return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp " +
                    this[STAT.CURRENTMANA] + "/" + (this[STAT.BASEMAXMANA] + this[STAT.MAXMANAMOD]) + " mana\n";

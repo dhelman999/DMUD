@@ -75,11 +75,11 @@ namespace _8th_Circle_Server
                     if (mob.GetActionTimer() > 0)
                         mob.ModifyActionTimer(-1);
 
-                    if(mob is CombatMob && ((CombatMob)mob).GetQueuedCommand() != string.Empty)
+                    if(mob is CombatMob && ((CombatMob)mob).GetQueuedCommand() != String.Empty)
                     {
                         commandData cd = new commandData(((CombatMob)mob).GetQueuedCommand(), (CombatMob)mob);
                         mWorld.GetCommandHandler().enQueueCommand(cd);
-                        ((CombatMob)mob).SetQueuedCommand(string.Empty);
+                        ((CombatMob)mob).SetQueuedCommand(String.Empty);
                     }
                 }// foreach
             }// foreach
@@ -98,8 +98,10 @@ namespace _8th_Circle_Server
                         }
                         else
                         {
+                            String clientString = String.Empty;
+
                             for (int i= 0; i< parent.GetChildren().Count; ++i)
-                                parent.GetChildren()[i--].destroy();
+                                parent.GetChildren()[i--].destroy(ref clientString);
 
                             Console.WriteLine("respawning " + parent.GetName());
                             parent.respawn();
@@ -124,8 +126,9 @@ namespace _8th_Circle_Server
 
                             if (mob != null && mob.GetStartingArea() != area)
                             {
+                                String clientString = String.Empty;
                                 Console.WriteLine("despawning " + mob.GetName() + " from other area");
-                                mob.destroy();
+                                mob.destroy(ref clientString);
                                 --i;
                             }// if
                         }// for

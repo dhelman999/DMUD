@@ -14,7 +14,7 @@ namespace _8th_Circle_Server
         private StreamWriter mStreamWriter;
         private Thread mResponderThread;
         private CombatMob mPlayer;
-        private string mCmdString;
+        private String mCmdString;
         private World mWorld;
         private CommandHandler mCommandHandler;
         private object PlayerLock;  
@@ -52,7 +52,7 @@ namespace _8th_Circle_Server
                             mPlayer.SetName(mStreamReader.ReadLine());
                         }// lock
 
-                        mCmdString = string.Empty;
+                        mCmdString = String.Empty;
                         mResponderThread.Interrupt();
 
                         while (mCmdString != "warrior" &&
@@ -60,7 +60,7 @@ namespace _8th_Circle_Server
                                mCmdString != "cleric"  &&
                                mCmdString != "wizard")
                         {
-                            mCmdString = string.Empty;
+                            mCmdString = String.Empty;
                             mCmdString = mStreamReader.ReadLine();
 
                             if (mCmdString != "warrior" &&
@@ -105,7 +105,8 @@ namespace _8th_Circle_Server
                         mWorld.addRes(mPlayer);
                         Room currentRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
 
-                        mPlayer.changeRoom(currentRoom);
+                        String clientString = String.Empty;
+                        mPlayer.changeRoom(currentRoom, ref clientString);
 
                         Utils.broadcast(mWorld, mPlayer, mPlayer.GetName() + " has joined the World", "You enter the 8th Circle...");
 
@@ -182,7 +183,7 @@ namespace _8th_Circle_Server
             }// while
         }// ClientResponder
 
-        public void safeWrite(string response)
+        public void safeWrite(String response)
         {
             try
             {

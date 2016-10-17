@@ -148,7 +148,7 @@ namespace _8th_Circle_Server
 
         public void processAbilityHit(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
-            string damageString = string.Empty;
+            String damageString = String.Empty;
             int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
             double damage = 0;
 
@@ -190,7 +190,7 @@ namespace _8th_Circle_Server
 
         public void processHeal(CombatMob attacker, CombatMob target, Action ability, bool isCrit)
         {
-            string healString = string.Empty;
+            String healString = String.Empty;
             int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
             double healAmount = 0;
 
@@ -243,7 +243,7 @@ namespace _8th_Circle_Server
                 processMiss(attacker, target, null);
         }// attack
 
-        private string damageToString(int maxHp, double damage)
+        private String damageToString(int maxHp, double damage)
         {
             double dam = damage / maxHp;
 
@@ -298,7 +298,7 @@ namespace _8th_Circle_Server
                 damage = 1;
 
             target[STAT.CURRENTHP] -= (int)damage;
-            string damageString = string.Empty;
+            String damageString = String.Empty;
 
             int maxHp = target[STAT.BASEMAXHP] + target[STAT.MAXHPMOD];
 
@@ -309,7 +309,7 @@ namespace _8th_Circle_Server
 
             attacker.safeWrite(damageString);
 
-            damageString = string.Empty;
+            damageString = String.Empty;
 
             if (isCrit)
                 damageString += attacker.GetName() + " critically hits you for " + (int)damage + " damage";
@@ -321,7 +321,7 @@ namespace _8th_Circle_Server
 
         private void processMiss(CombatMob attacker, CombatMob target, Action ability)
         {
-            string attackString = "attack";
+            String attackString = "attack";
 
             if (ability != null)
                 attackString = ability.GetName();
@@ -333,17 +333,18 @@ namespace _8th_Circle_Server
         private bool checkDeath(CombatMob attacker, CombatMob target)
         {
             bool ret = false;
+            String clientString = String.Empty;
 
             if (target[STAT.CURRENTHP] <= 0)
             {
                 endCombat(target);
 
-                string attackerString = "you have slain the " + target.GetName();
-                string receiversString = attacker.GetName() + " has slain " + target.GetName();
+                String attackerString = "you have slain the " + target.GetName();
+                String receiversString = attacker.GetName() + " has slain " + target.GetName();
                 Utils.broadcast(attacker.GetCurrentRoom(), attacker, receiversString, attackerString);
 
-                target.slain(attacker);
-                target.safeWrite(target.slain(attacker));
+                target.slain(attacker, ref clientString);
+                target.safeWrite(clientString);
 
                 ret = true;
             }// if

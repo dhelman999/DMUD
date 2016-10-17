@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -14,7 +15,7 @@ namespace _8th_Circle_Server
         private PrototypeManager mProtoManager;
         private Dictionary<RoomID, Room> mRoomList;
 
-        public Area(World world, string name, AreaID areaID) : base()
+        public Area(World world, String name, AreaID areaID) : base()
         {
             mName = name;
             mAreaOffset = 0;
@@ -28,7 +29,7 @@ namespace _8th_Circle_Server
             mAreaID = areaID;
         }// Constructor
 
-        public Mob cloneMob(MobList mobID, Room startingRoom, string name = "", Mob prototype = null)
+        public Mob cloneMob(MobList mobID, Room startingRoom, String name = "", Mob prototype = null)
         {
             return mProtoManager.cloneMob(mobID, startingRoom, name, prototype);
         }// cloneMob

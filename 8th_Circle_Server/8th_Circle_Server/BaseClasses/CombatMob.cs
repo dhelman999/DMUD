@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -10,13 +11,13 @@ namespace _8th_Circle_Server
         private Dictionary<EQSlot, Mob> mEQList;
         private List<double> mResistances;
         private CombatStats mStats; 
-        private string mQueuedCommand;
+        private String mQueuedCommand;
 
         public CombatMob() : base()
         {
             mEQList = new Dictionary<EQSlot, Mob>();
             mStats = new CombatStats();
-            mQueuedCommand = string.Empty;
+            mQueuedCommand = String.Empty;
 
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(slot, null);
@@ -35,17 +36,17 @@ namespace _8th_Circle_Server
         {
             mEQList = new Dictionary<EQSlot, Mob>(cm.mEQList);
             mStats = new CombatStats(cm.mStats);
-            mQueuedCommand = string.Empty;
+            mQueuedCommand = String.Empty;
             mResistances = new List<double>(cm.mResistances);
             mResType = cm.mResType;
             mClientHandler = cm.mClientHandler;
         }// Copy Constructor
 
-        public CombatMob(string newName) : base(newName)
+        public CombatMob(String newName) : base(newName)
         {
             mEQList = new Dictionary<EQSlot, Mob>();
             mStats = new CombatStats();
-            mQueuedCommand = string.Empty;
+            mQueuedCommand = String.Empty;
 
             for (EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
                 mEQList.Add(slot, null);
@@ -65,7 +66,7 @@ namespace _8th_Circle_Server
             return new CombatMob(this);
         }
 
-        public override Mob Clone(string name)
+        public override Mob Clone(String name)
         {
             return new CombatMob(name);
         }
@@ -77,10 +78,10 @@ namespace _8th_Circle_Server
             mResistances[(int)DamageType.PHYSICAL] = ((double)this[STAT.BASEARMOR] + this[STAT.ARMORMOD] + this[STAT.BASEPHYRES] + this[STAT.PHYRESMOD]) / 10;
         }// fillResistances
 
-        public override string viewed(Mob mob, Preposition prep)
+        public override errorCode viewed(Mob mob, Preposition prep, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             CombatMob viewer = null;
-            string clientString = null;
 
             if (mob is CombatMob)
                 viewer = (CombatMob)mob;
@@ -100,30 +101,35 @@ namespace _8th_Circle_Server
                         clientString += mName + " looks weaker than you";
                     else
                         clientString += "you both appear equal in strength";
+
+                    eCode = errorCode.E_OK;
                 }// if
 
-                return clientString + "\n" + mDescription + "\n";
+                clientString += "\n" + mDescription + "\n";
             }// if
             else
-                return "You can't look like that";
+                clientString = "You can't look like that";
+
+            return eCode;
         }// viewed
 
-        public override string fullheal()
+        public override errorCode fullheal(ref String clientString)
         {
             this[STAT.CURRENTHP] = this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD];
             this[STAT.CURRENTMANA] = this[STAT.BASEMAXMANA] + this[STAT.MAXMANAMOD];
 
-            return "you fully heal " + mName + "\n";
+            clientString = "you fully heal " + mName + "\n";
+
+            return errorCode.E_OK;
         }// fullheal
 
-        public override string playerString()
+        public override String playerString()
         {
             return "\n" + this[STAT.CURRENTHP] + "/" + (this[STAT.BASEMAXHP] + this[STAT.MAXHPMOD]) + " hp\n";
         }// playerString
 
-        public override string wearall()
+        public override errorCode wearall(ref String clientString)
         {
-            string clientString = string.Empty;
             int tmpInvCount = 0;
 
             for (int i = 0; i < mInventory.Count; ++i)
@@ -132,40 +138,40 @@ namespace _8th_Circle_Server
 
                 if (mInventory[i] is Equipment)
                 {
-                    clientString += ((Equipment)mInventory[i]).wear(this) + "\n";
+                    ((Equipment)mInventory[i]).wear(this, ref clientString);
 
                     if (tmpInvCount != mInventory.Count)
                         --i;
                 }// if
             }// for
 
-            return clientString;
+            return errorCode.E_OK;
         }// wearall
 
-        public override string removeall()
+        public override errorCode removeall(ref String clientString)
         {
-            string clientString = string.Empty;
-
             for(EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
             {
                 if (this[slot] != null)
-                    clientString += this[slot].remove(this) + "\n";
+                    clientString += this[slot].remove(this, ref clientString) + "\n";
             }
 
-            return clientString;
+            return errorCode.E_OK;
         }// removeall
 
-        public virtual string slain(Mob mob)
+        public virtual errorCode slain(Mob mob, ref String clientString)
         {
-            if (mResType == ResType.PLAYER)
-                return "you have been slain by " + mob.GetName();
-            else
-                base.destroy();
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            return string.Empty;
+            if (mResType == ResType.PLAYER)
+                clientString = "you have been slain by " + mob.GetName();
+            else
+                eCode = base.destroy(ref clientString);
+
+            return eCode;
         }// slain
 
-        public override void safeWrite(string clientString)
+        public override void safeWrite(String clientString)
         {
             if(mClientHandler != null)
                 mClientHandler.safeWrite(clientString);
@@ -201,8 +207,8 @@ namespace _8th_Circle_Server
         public void SetMobType(MobType mobType) { mMobType = mobType; }
         public ClientHandler GetClientHandler() { return mClientHandler; }
         public void SetClientHandler(ClientHandler clientHandler) { mClientHandler = clientHandler; }
-        public string GetQueuedCommand() { return mQueuedCommand; }
-        public void SetQueuedCommand(string command) { mQueuedCommand = command; }
+        public String GetQueuedCommand() { return mQueuedCommand; }
+        public void SetQueuedCommand(String command) { mQueuedCommand = command; }
 
     }// class CombatMob
 

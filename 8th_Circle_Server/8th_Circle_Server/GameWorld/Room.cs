@@ -25,7 +25,7 @@ namespace _8th_Circle_Server
             }               
         }// Constructor
 
-        public Room(string desc) : base()
+        public Room(String desc) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -40,7 +40,7 @@ namespace _8th_Circle_Server
             mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
         }// Constructor
 
-        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID) : base()
+        public Room(String desc, int xCoord, int yCoord, int zCoord, RoomID roomID) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -58,7 +58,7 @@ namespace _8th_Circle_Server
             mRoomID = roomID;
         }// Constructor
 
-        public Room(string desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area) : base()
+        public Room(String desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area) : base()
         {
             mDescription = desc;
             mAreaLoc = new int[3];
@@ -78,13 +78,18 @@ namespace _8th_Circle_Server
             area.RegisterRoom(mRoomID, this);
         }// Constructor
 
-        public string viewed()
+        public errorCode viewed(ref String clientString)
         {
-            return exitString();
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
+            clientString = exitString();
+
+            return eCode;
         }// viewed
 
-        public string viewed(string direction)
+        public errorCode viewed(String direction, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             Room remoteRoom = null;
             bool validRoom = false;
             Direction dir = Mob.DirStrToEnum(direction);
@@ -96,15 +101,20 @@ namespace _8th_Circle_Server
             }
 
             if(validRoom)
-                return remoteRoom.exitString();
+            {
+                clientString = remoteRoom.exitString();
+                eCode = errorCode.E_OK;
+            }
+            else
+                clientString = "you can't look that way";
 
-            return "you can't look that way";
+            return eCode;
         }// viewed
 
-        public string exitString()
+        public String exitString()
         {
-            string exitStr = string.Empty;
-            string resourceString = string.Empty;
+            String exitStr = String.Empty;
+            String resourceString = String.Empty;
 
             exitStr += AddExitStrings();
 
@@ -118,7 +128,7 @@ namespace _8th_Circle_Server
 
             resourceString = Utils.printResources(this, ResType.OBJECT);
 
-            if (resourceString != string.Empty)
+            if (resourceString != String.Empty)
                 exitStr += resourceString;
             else
                 exitStr += "\n";
@@ -127,7 +137,7 @@ namespace _8th_Circle_Server
 
             resourceString = Utils.printResources(this, ResType.NPC);
 
-            if (resourceString != string.Empty)
+            if (resourceString != String.Empty)
                 exitStr += resourceString;
             else
                 exitStr += "\n";
@@ -136,7 +146,7 @@ namespace _8th_Circle_Server
 
             resourceString = Utils.printResources(this, ResType.PLAYER);
 
-            if (resourceString != string.Empty)
+            if (resourceString != String.Empty)
                 exitStr += resourceString;
             else
                 exitStr += "\n";         
@@ -188,7 +198,7 @@ namespace _8th_Circle_Server
             }// for
         }// respawnDoorways
 
-        public string getDoorString(Doorway door)
+        public String getDoorString(Doorway door)
         {
             Direction dir;
 
@@ -201,9 +211,9 @@ namespace _8th_Circle_Server
             return dir.ToString().ToLower() + " " + door.GetName();
         }// getDoorString
 
-        public string AddExitStrings()
+        public String AddExitStrings()
         {
-            string exitStr = mDescription + "\n" + "Exits: ";
+            String exitStr = mDescription + "\n" + "Exits: ";
 
             if (mRoomLinks[(int)Direction.NORTH] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||

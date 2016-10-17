@@ -20,7 +20,7 @@ namespace _8th_Circle_Server
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
-        public Doorway(string name, MobFlags flags = MobFlags.NONE) : base(name, flags)
+        public Doorway(String name, MobFlags flags = MobFlags.NONE) : base(name, flags)
         {
             mIsOpen = false;
             mIsLocked = false;
@@ -40,7 +40,7 @@ namespace _8th_Circle_Server
             return new Doorway(this);
         }// Clone
 
-        public override Mob Clone(string name)
+        public override Mob Clone(String name)
         {
             return new Doorway(name);
         }// Clone
@@ -57,14 +57,16 @@ namespace _8th_Circle_Server
             }
         }// reset
 
-        public override string open(Mob opener)
+        public override errorCode open(Mob opener, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
             if (mIsLocked)
-                return opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
+                clientString = opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (mIsOpen)
-                return opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
+                clientString = opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
 
             else
             {
@@ -79,18 +81,23 @@ namespace _8th_Circle_Server
                     }
                 }// for
 
-                return "you open " + opener.GetCurrentRoom().getDoorString(this) + "\n";
+                clientString = "you open " + opener.GetCurrentRoom().getDoorString(this) + "\n";
+                eCode = errorCode.E_OK;
             }// else
+
+            return eCode;
         }// open
 
-        public override string close(Mob closer)
+        public override errorCode close(Mob closer, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
             if (mIsLocked)
-                return closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
+                clientString = closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!mIsOpen)
-                return closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
+                clientString = closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
             else
             {
                 mIsOpen = false;
@@ -104,13 +111,16 @@ namespace _8th_Circle_Server
                     }
                 }// for
 
-                return "you close " + closer.GetCurrentRoom().getDoorString(this) + "\n";
+                clientString = "you close " + closer.GetCurrentRoom().getDoorString(this) + "\n";
+                eCode = errorCode.E_OK;
             }// else
+
+            return eCode;
         }// close
 
-        public override string exitString(Room currentRoom)
+        public override String exitString(Room currentRoom)
         {
-            string ret = string.Empty;
+            String ret = String.Empty;
             Direction direction = Direction.DIRECTION_END;
 
             for (int i = 0; i < currentRoom.getRes(ResType.DOORWAY).Count; ++i)

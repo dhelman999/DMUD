@@ -34,7 +34,7 @@ namespace _8th_Circle_Server
         }// UnsetFlag
 
         // Broadcasts a message to the broadcaster and a different message to everyone else
-        public static void broadcast<T>(T location, Mob broadcaster, string receiversMessage, string broadcasterMessage = null) where T : ResourceHandler
+        public static void broadcast<T>(T location, Mob broadcaster, String receiversMessage, String broadcasterMessage = null) where T : ResourceHandler
         {
             foreach(CombatMob player in location.getRes(ResType.PLAYER))
             {
@@ -45,10 +45,10 @@ namespace _8th_Circle_Server
             }      
         }// broadcast
 
-        // Returns a string of all resources of a specific type in a location
-        public static string printResources<T>(T location, ResType resType) where T : ResourceHandler
+        // Returns a String of all resources of a specific type in a location
+        public static String printResources<T>(T location, ResType resType) where T : ResourceHandler
         {
-            string returnString = string.Empty;
+            String returnString = String.Empty;
 
             List<Mob> locResources = location.getRes(resType);
 

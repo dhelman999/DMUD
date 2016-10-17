@@ -15,7 +15,7 @@ namespace _8th_Circle_Server
         static List<ClientHandler> sClientHandlerList;
         static World sWorld;
 
-        static void Main(string[] args)
+        static void Main(String[] args)
         {
             sWorld = new World();
             sListenerThreadList  = new List<Thread>();
@@ -25,7 +25,7 @@ namespace _8th_Circle_Server
             {
                 Console.WriteLine("Welcome to the 8th Circle, the Server Application\n\n");
                 //Console.WriteLine("Please type the IP address where you want to host the MUD: ");
-                //string ipAddr = Console.ReadLine();
+                //String ipAddr = Console.ReadLine();
                 //IPAddress MUDAddress = IPAddress.Parse(ipAddr);
                 //sTcpListener = new TcpListener(MUDAddress, MUD_SERVER_PORT);
                 sTcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), MUD_SERVER_PORT);

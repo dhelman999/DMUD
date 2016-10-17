@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace _8th_Circle_Server
 {
@@ -8,9 +9,9 @@ namespace _8th_Circle_Server
         public PredicateType mPredicate1;
         public PredicateType mPredicate2;
 
-        protected string mCommand;
+        protected String mCommand;
 
-        private string mShortName;
+        private String mShortName;
         private int mMatchNumber;
         private int mMaxTokens;
         private Grammar[] mGrammar;
@@ -26,7 +27,7 @@ namespace _8th_Circle_Server
             Utils.SetFlag(ref mValidity, ValidityType.LOCAL);
         }// dummy Constructor
 
-        public CommandClass(string command, string shortName, int matchNumber, int maxTokens, MobType type, 
+        public CommandClass(String command, String shortName, int matchNumber, int maxTokens, MobType type, 
                             Grammar[] grammar, CommandName CommandName, PredicateType predicate1, 
                             PredicateType predicate2, ValidityType validity = ValidityType.LOCAL)
         {
@@ -44,9 +45,9 @@ namespace _8th_Circle_Server
             mPrep2Value = new Preposition();
             mPredicate1Value = mPredicate2Value = null;
         }// Constructor
-        public virtual string preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public virtual String preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
-            string clientString = string.Empty;
+            String clientString = String.Empty;
             CommandClass commandClass = (CommandClass)commandQueue[0];
 
             if (!(commandClass.GetCommandName() == CommandName.COMMAND_REST ||
@@ -58,14 +59,16 @@ namespace _8th_Circle_Server
             return clientString;
         }// preExecute
 
-        public virtual string execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public virtual errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
         {
-            return "huh?";
+            clientString = "huh";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// execute
 
         // Accessors
-        public string GetCommand() { return mCommand; }
-        public string GetShortName() { return mShortName; }
+        public String GetCommand() { return mCommand; }
+        public String GetShortName() { return mShortName; }
         public int GetMatchNumber() { return mMatchNumber; }
         public int GetMaxTokens() { return mMaxTokens; }
         public Grammar[] GetGrammar() { return mGrammar; }

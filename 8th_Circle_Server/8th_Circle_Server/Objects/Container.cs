@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace _8th_Circle_Server
 {
     public class Container : Mob
@@ -6,7 +8,7 @@ namespace _8th_Circle_Server
         // Member Variables
         private bool mIsOpen;
 
-        public Container(string name = "") : base()
+        public Container(String name = "") : base()
         {
             if (name != "")
                 mName = name;
@@ -26,17 +28,21 @@ namespace _8th_Circle_Server
             return new Container(this);
         }
 
-        public override Mob Clone(string name)
+        public override Mob Clone(String name)
         {
             return new Container(name);
         }
 
-        public override string viewed(Mob viewer, Preposition prep)
+        public override errorCode viewed(Mob viewer, Preposition prep, ref String clientString)
         {
-            string clientString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+            {
+                clientString = "you can't do that\n";
+
+                return eCode;
+            }     
 
             if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
@@ -44,6 +50,8 @@ namespace _8th_Circle_Server
                     clientString += mName + " is open\n";
                 else
                     clientString += mName + " is closed\n";
+
+                eCode = errorCode.E_OK;
             }// if
             else if (prep.prepType == PrepositionType.PREP_IN && mPrepList.Contains(PrepositionType.PREP_IN))
             {
@@ -58,6 +66,8 @@ namespace _8th_Circle_Server
                         foreach (Mob mob in mInventory)
                             clientString += mob.GetName() + "\n";
                     }// else
+
+                    eCode = errorCode.E_OK;
                 }// if
                 else
                     clientString += mName + " is closed, you cannot look inside\n";
@@ -65,58 +75,73 @@ namespace _8th_Circle_Server
             else
                 clientString += "You can't look like that\n";
 
-            return clientString;
+            return eCode;
         }// viewed
 
-        public override string open(Mob mob)
+        public override errorCode open(Mob mob, ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            string ret = string.Empty;
+            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            {
+                clientString = "you can't do that\n";
+
+                return eCode;
+            }   
 
             if(HasFlag(MobFlags.OPENABLE))
             {
                 if(mIsOpen)
-                    ret = mName + " is already open\n";
+                    clientString = mName + " is already open\n";
                 else if (HasFlag(MobFlags.LOCKED))
-                    return mName + " is locked\n";
+                    clientString = mName + " is locked\n";
                 else
                 {
-                    ret = "You open the " + mName + "\n";
+                    clientString = "You open the " + mName + "\n";
                     mIsOpen = true;
 
                     if (mParent != null)
                         mParent.SetIsRespawning(true);
+
+                    eCode = errorCode.E_OK;
                 }// else
             }// if
 
-            return ret;
+            return eCode;
         }// open
 
-        public override string close(Mob mob)
+        public override errorCode close(Mob mob, ref String clientString)
         {
-            string ret = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.CLOSEABLE))
             {
                 if (!mIsOpen)
-                    ret = mName + " is already closed\n";
+                {
+                    clientString = mName + " is already closed\n";
+
+                    return eCode;
+                }
+                    
                 else
                 {
-                    ret = "You close the " + mName + "\n";
+                    clientString = "You close the " + mName + "\n";
                     mIsOpen = false;
 
                     if (mParent != null)
                         mParent.SetIsRespawning(true);
+
+                    eCode = errorCode.E_OK;
                 }// else
             }// if
 
-            return ret;
+            return eCode;
         }// close
 
-        public override string lck(Mob mob)
+        public override errorCode lck(Mob mob, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             bool foundKey = false;
 
             foreach(Mob key in mob.GetInv())
@@ -130,7 +155,11 @@ namespace _8th_Circle_Server
                 if (HasFlag(MobFlags.LOCKABLE))
                 {
                     if (mIsOpen)
-                        return "you cannot lock " + mName + ", it is open!\n";
+                    {
+                        clientString = "you cannot lock " + mName + ", it is open!\n";
+
+                        return eCode;
+                    }   
 
                     if (HasFlag(MobFlags.UNLOCKED))
                     {
@@ -140,20 +169,25 @@ namespace _8th_Circle_Server
                         if (mParent != null)
                             mParent.SetIsRespawning(true);
 
-                        return "you lock " + mName + "\n";
+                        clientString = "you lock " + mName + "\n";
+                        eCode = errorCode.E_OK;
                     }// if
                     else
-                        return mName + " is not unlocked\n";
+                        clientString = mName + " is not unlocked\n";
                 }// if
                 else
-                    return "you can't lock " + mName + "\n";
+                    clientString = "you can't lock " + mName + "\n";
             }// if
             else
-                return "you don't have the right key to lock " + mName + "\n";
+                clientString = "you don't have the right key to lock " + mName + "\n";
+
+            return eCode;
         }// lck
 
-        public override string unlock(Mob mob)
+        public override errorCode unlock(Mob mob, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             bool foundKey = false;
 
             foreach (Mob key in mob.GetInv())
@@ -165,7 +199,11 @@ namespace _8th_Circle_Server
             if (foundKey)
             {
                 if (mIsOpen)
-                    return "you cannot unlock " + mName + ", it is open!\n";
+                {
+                    clientString = "you cannot unlock " + mName + ", it is open!\n";
+
+                    return eCode;
+                }               
 
                 if (HasFlag(MobFlags.UNLOCKABLE))
                 {
@@ -177,16 +215,19 @@ namespace _8th_Circle_Server
                         if (mParent != null)
                             mParent.SetIsRespawning(true);
 
-                        return "you unlock " + mName + "\n";
+                        clientString = "you unlock " + mName + "\n";
+                        eCode = errorCode.E_OK;
                     }// if
                     else
-                        return mName + " is not locked\n";
+                        clientString = mName + " is not locked\n";
                 }// if
                 else
-                    return "you can't unlock " + mName + "\n";
+                    clientString = "you can't unlock " + mName + "\n";
             }// if
             else
-                return "you don't have the right key to unlock " + mName + "\n";
+                clientString = "you don't have the right key to unlock " + mName + "\n";
+
+            return eCode;
         }// unlock
 
         // Accessors

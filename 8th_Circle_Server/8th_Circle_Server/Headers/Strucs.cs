@@ -4,10 +4,10 @@ namespace _8th_Circle_Server
 {
     public struct commandData
     {
-        public string command;
+        public String command;
         public CombatMob mob;
 
-        public commandData(string command, CombatMob mob)
+        public commandData(String command, CombatMob mob)
         {
             this.command = command;
             this.mob = mob;
@@ -16,10 +16,10 @@ namespace _8th_Circle_Server
 
     public struct Preposition
     {
-        public string name;
+        public String name;
         public PrepositionType prepType;
 
-        public Preposition(string name, PrepositionType prepType)
+        public Preposition(String name, PrepositionType prepType)
         {
             this.name = name;
             this.prepType = prepType;

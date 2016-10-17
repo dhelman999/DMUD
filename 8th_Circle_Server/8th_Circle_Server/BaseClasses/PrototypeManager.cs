@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -32,7 +33,7 @@ namespace _8th_Circle_Server
             return ret;
         }// registerFullGameMob
 
-        public Mob cloneMob(MobList mobID, Room startingRoom, string name = "", Mob prototype = null)
+        public Mob cloneMob(MobList mobID, Room startingRoom, String name = "", Mob prototype = null)
         {
             // Create clone from prototype, if none specified, use the global game protoypes
             if(prototype == null)

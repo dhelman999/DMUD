@@ -18,3 +18,10 @@ Larger Enhancements/Fixes:
 	if full multiplayer is going to be supported with many people and many combats at a time... then again, if we support this we are going to need...
 	
 4.  Thread safety!  Almost none of this game is thread safe at the moment and there are race conditions all over the place with game resources.  
+
+5.  Random actions need to be more generic.  This probably means there needs to be a random action class, and each Mob has a list of random actions and probabilities for each one.  When a mob is created, or when triggers
+	happen, actions can be added to this list with probabilities or other factors on when the mob can do them, then this will be easily executed as the handlers can just grab the class from the mob and execute it.
+	So like they would call something like mob.randomactionhandler.getrandomaction and then get the command executer and call execute on it.
+	
+6.  Events are triggered only by predicate1 events and not predicate2.  Events are not a class and are not flexible, I am not sure the solution to this, I could probably just extend the current struct to support 
+	predicate2 triggered events.

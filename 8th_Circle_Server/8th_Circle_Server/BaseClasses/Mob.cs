@@ -8,11 +8,11 @@ namespace _8th_Circle_Server
     {
         public MobFlags mFlags;
 
-        protected string mName;
+        protected String mName;
         protected ResType mResType;
-        protected string mExitStr;
-        protected string mShortDescription;
-        protected string mDescription;
+        protected String mExitStr;
+        protected String mShortDescription;
+        protected String mDescription;
         protected World mWorld;
         protected Room mStartingRoom;
         protected Room mCurrentRoom;
@@ -40,7 +40,7 @@ namespace _8th_Circle_Server
 
         public Mob()
         {
-            mName = mDescription = mShortDescription = mExitStr = string.Empty;
+            mName = mDescription = mShortDescription = mExitStr = String.Empty;
             mAreaLoc = new int[3];
             mInventory = new List<Mob>();
             mPrepList = new List<PrepositionType>();
@@ -60,10 +60,10 @@ namespace _8th_Circle_Server
             mFlags = MobFlags.NONE;
         }// Constructor
 
-        public Mob(string name, MobFlags flags = MobFlags.NONE)
+        public Mob(String name, MobFlags flags = MobFlags.NONE)
         {
             mName = mExitStr = name;
-            mDescription = mShortDescription = string.Empty;
+            mDescription = mShortDescription = String.Empty;
             mAreaLoc = new int[3];
             mInventory = new List<Mob>();
             mPrepList = new List<PrepositionType>();
@@ -121,17 +121,17 @@ namespace _8th_Circle_Server
             return new Mob(this);
         }
 
-        public virtual Mob Clone(string name)
+        public virtual Mob Clone(String name)
         {
             return new Mob(name);
         }
 
-        public string move(string direction)
+        public errorCode move(String direction, ref String clientString)
         {
-            string clientString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.INCOMBAT))
-                return "you can't move while in combat\n";
+                clientString = "you can't move while in combat\n";
 
             Direction dir = DirStrToEnum(direction);
 
@@ -139,18 +139,21 @@ namespace _8th_Circle_Server
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
                ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).IsOpen()))
             { 
-                clientString = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir]);
+                eCode = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir], ref clientString);
             }
             else
-                return "you can't move that way\n";
+                clientString = "you can't move that way\n";
 
-            return clientString;
+            return eCode;
         }// move
 
-        public string changeRoom(Room newRoom)
+        public errorCode changeRoom(Room newRoom, ref String clientString)
         {
             if (HasFlag(MobFlags.INCOMBAT))
-                return "you can't do that while in combat\n";
+            {
+                clientString = "you can't do that while in combat\n";
+                return errorCode.E_INVALID_COMMAND_USAGE;
+            }    
 
             // Remove old references
             if (mCurrentRoom != null && mCurrentRoom != newRoom)
@@ -170,32 +173,49 @@ namespace _8th_Circle_Server
             mAreaLoc = newRoom.GetAreaLoc();
             mCurrentRoom = newRoom;
 
-            return mCurrentRoom.exitString();
+            clientString = mCurrentRoom.exitString();
+
+            return errorCode.E_OK;
         }// changeRoom
 
-        public virtual string used()
+        public virtual String used()
         {
-            return string.Empty;
+            return String.Empty;
         }// used
 
-        public virtual string viewed(Mob viewer, Preposition prep)
+        public virtual errorCode viewed(Mob viewer, Preposition prep, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+            {
+                clientString = "you can't do that\n";
+
+                return eCode;
+            }   
 
             if (prep.prepType == PrepositionType.PREP_AT &&
                 mPrepList.Contains(PrepositionType.PREP_AT))
             {
-                return mDescription;
+                clientString = mDescription;
+                eCode = errorCode.E_OK;
             }
             else
-                return "You can't look like that\n";
+                clientString = "You can't look like that\n";
+
+            return eCode;
         }// viewed
 
-        public virtual string get(Mob mob)
+        public virtual errorCode get(Mob mob, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+            {
+                clientString = "you can't do that\n";
+
+                return eCode;
+            }       
 
             if (HasFlag(MobFlags.GETTABLE) &&
                 mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
@@ -208,7 +228,8 @@ namespace _8th_Circle_Server
                         mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
-                        return "you get " + exitString(mCurrentRoom) + "\n";
+                        clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                        eCode = errorCode.E_OK;
                     }
                     else
                     {                    
@@ -224,26 +245,34 @@ namespace _8th_Circle_Server
                                 mParent.mIsRespawning = true;
                             }
 
-                            return "you get " + exitString(mCurrentRoom) + "\n";
+                            clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                            eCode = errorCode.E_OK;
                         }
                         else
-                            return "you can't do that\n";
+                            clientString = "you can't do that\n";
                     }
                 }// if
                 else
                 {
-                    return "your inventory is full\n";
+                    clientString = "your inventory is full\n";
                 }// else
             }// if
             else
-                return "you can't get that\n";
-                
+                clientString = "you can't get that\n";
+
+            return eCode;
         }// get
 
-        public virtual string get(Mob mob, PrepositionType prepType, Container container)
+        public virtual errorCode get(Mob mob, PrepositionType prepType, Container container, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+            {
+                clientString = "you can't do that\n";
+
+                return eCode;
+            }     
 
             if (HasFlag(MobFlags.GETTABLE))
             {
@@ -255,7 +284,8 @@ namespace _8th_Circle_Server
                         mCurrentOwner = mob;
                         mob.mInventory.Add(this);
 
-                        return "you get " + exitString(mCurrentRoom) + "\n";
+                        clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                        eCode = errorCode.E_OK;
                     }
                     else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
                     {
@@ -274,32 +304,37 @@ namespace _8th_Circle_Server
                                     mParent.mIsRespawning = true;
                                 }
                                 
-                                return "you get " + exitString(mCurrentRoom) + "\n";
+                                clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                                eCode = errorCode.E_OK;
                             }// if
                             else
-                                return container.mName + " does not contain a " + this.mName + "\n";
+                                clientString = container.mName + " does not contain a " + this.mName + "\n";
                         }// if (prepType == PrepositionType.PREP_FROM)
                         else
-                            return "you can't get like that\n";
+                            clientString = "you can't get like that\n";
                     }// else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
                     else
-                        return container.mName + " is closed\n";
+                        clientString = container.mName + " is closed\n";
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
-                    return "your inventory is full\n";
+                    clientString = "your inventory is full\n";
             }// if (HasFlag(MobFlags.GETTABLE))
             else
-                return "you can't get that\n";
+                clientString = "you can't get that\n";
 
+            return eCode;
         }// get
 
-        public virtual string getall()
+        public virtual errorCode getall(ref String clientSString)
         {
             List<Mob> targetList = mCurrentRoom.getRes(ResType.OBJECT);
-            string clientString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (targetList.Count == 0)
-                return "you can't do that";
+            {
+                clientSString = "you can't do that";
+                return eCode;
+            }      
 
             CommandExecuter cmdExecuter = GetCurrentArea().GetCommandExecutor();
             CommandClass get = cmdExecuter.GetCCDict()[Utils.createTuple(CommandName.COMMAND_GET, 2)];
@@ -319,7 +354,7 @@ namespace _8th_Circle_Server
                 // bypass our event system because the main command is getall, so if any event is triggered
                 // off of get and the command is getall, then it would not trigger, this way, it actually
                 // is doing the real get command through the executer so it will trigger the event.
-                clientString += cmdExecuter.execute(get, ccList, this);
+                eCode = cmdExecuter.execute(get, ccList, this, ref clientSString);
                 int sizeAfterGet = targetList.Count;
 
                 // If the size is the same before and after, that means we didn't successfully get the object
@@ -331,38 +366,40 @@ namespace _8th_Circle_Server
                 ccList.Remove(target);
             }
 
-            return clientString;
+            return eCode;
         }// getall
 
-        public virtual string getall(PrepositionType prepType, Container container)
+        public virtual errorCode getall(PrepositionType prepType, Container container, ref String clientString)
         {
-            string clientString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             List<Mob> containerInv = container.mInventory;
 
             if (container.HasFlag(MobFlags.HIDDEN))
-                return clientString;
+                return eCode;
             if (!container.IsOpen())
-                return "the " + container.GetName() + " is closed.";
+                clientString = "the " + container.GetName() + " is closed.";
             if (containerInv.Count == 0)
-                return "there is nothing to get.";
+                clientString = "there is nothing to get.";
 
-            while(containerInv.Count > 0)
+            while (containerInv.Count > 0)
             {
                 if (mInventory.Count < mInventory.Capacity)
                 {
                     // Assumes that each item is gettable, if we were to make an item that isn't gettable unless certain
                     // circumstances are met (like the sword in the stone type of thing), this will need to be reworked.
-                    clientString += containerInv[0].get(this, prepType, container);
+                    eCode = containerInv[0].get(this, prepType, container, ref clientString);
                 }
                 else
                     break;
             }
 
-            return clientString;
+            return eCode;
         }// getall
 
-        public virtual string drop(Mob mob)
+        public virtual errorCode drop(Mob mob, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             if (HasFlag(MobFlags.DROPPABLE))
             {  
                 mob.mInventory.Remove(this);
@@ -376,75 +413,91 @@ namespace _8th_Circle_Server
                     mParent.mIsRespawning = true;
                 }
 
-                return "you drop " + exitString(mCurrentRoom) + "\n";
+                clientString += "you drop " + exitString(mCurrentRoom) + "\n";
+                eCode = errorCode.E_OK;
             }// if
             else
-                return "you can't drop that\n";
+                clientString += "you can't drop that\n";
+
+            return eCode;
         }// drop
 
-        public virtual string dropall()
+        public virtual errorCode dropall(ref String clientString)
         {
-            string clientString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             int tmpInvCount = 0;
 
             for (int i = 0; i < mInventory.Count; ++i)
             {
                 tmpInvCount = mInventory.Count;
-                clientString += mInventory[i].drop(this);
+                eCode = mInventory[i].drop(this, ref clientString);
 
                 if (tmpInvCount != mInventory.Count)
                     --i;
             }
 
-            return clientString;
+            return eCode;
         }// dropall
 
-        public virtual string open(Mob mob)
+        public virtual errorCode open(Mob mob, ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "You can't open that\n";
+            clientString = "You can't open that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// open
 
-        public virtual string close(Mob mob)
+        public virtual errorCode close(Mob mob, ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "You can't close that\n";
+            clientString = "You can't close that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// close
 
-        public virtual string lck(Mob mob)
+        public virtual errorCode lck(Mob mob, ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "You can't lock that\n";
+            clientString = "You can't lock that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
 
-        public virtual string unlock(Mob mob)
+        public virtual errorCode unlock(Mob mob, ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "You can't unlock that\n";
+            clientString = "You can't unlock that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
 
-        public virtual string use(Mob mob)
+        public virtual errorCode use(Mob mob, ref String clientString)
         {
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             // The actual processing of the event will be handled by checkEvent at the
             // end of command processing
             if (HasFlag(MobFlags.USEABLE) &&
                 mEventList.Count > 0)
             {
-                return "You use the " + mName + "\n";
+                clientString = "You use the " + mName + "\n";
+                eCode = errorCode.E_OK;
             }
             else
-                return "You can't use that\n";
+                clientString = "You can't use that\n";
+
+            return eCode;
         }// unlock
 
-        public virtual string destroy()
+        public virtual errorCode destroy(ref String clientString)
         {
             if(this is CombatMob)
             {
@@ -464,7 +517,9 @@ namespace _8th_Circle_Server
                 mParent.mIsRespawning = true;
             }
             
-            return "destroying " + mName + "\n";
+            clientString = "destroying " + mName + "\n";
+
+            return errorCode.E_OK;
         }// destroy
 
         public virtual void respawn()
@@ -478,63 +533,78 @@ namespace _8th_Circle_Server
             mob.mWorld.addRes(mob);
         }// respawn
 
-        public virtual string exitString(Room currentRoom)
+        public virtual String exitString(Room currentRoom)
         {
             return mName;
         }// exitString
 
-        public virtual string lck()
+        public virtual errorCode lck(ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "you can't lock that\n";
+            clientString = "you can't lock that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
 
-        public virtual string unlock()
+        public virtual errorCode unlock(ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "you can't unlock that\n";
+            clientString = "you can't unlock that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
 
-        public virtual string fullheal()
+        public virtual errorCode fullheal(ref String clientString)
         {
             if (mFlags.HasFlag(MobFlags.HIDDEN))
-                return "you can't do that\n";
+                clientString = "you can't do that\n";
 
-            return "you can't fullheal that\n";
+            clientString = "you can't fullheal that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// fullheal
 
-        public virtual string wear(CombatMob mob)
+        public virtual errorCode wear(CombatMob mob, ref String clientString)
         {
-            return "you can't wear that\n";
+            clientString = "you can't wear that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
 
-        public virtual string wearall()
+        public virtual errorCode wearall(ref String clientString)
         {
-            return "you can't wear that\n";
+            clientString = "you can't wear that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
 
-        public virtual string remove(CombatMob mob)
+        public virtual errorCode remove(CombatMob mob, ref String clientString)
         {
-            return "you can't remove that\n";
+            clientString = "you can't remove that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
 
-        public virtual string removeall()
+        public virtual errorCode removeall(ref String clientString)
         {
-            return "you can't remove that\n";
+            clientString = "you can't remove that\n";
+
+            return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
 
-        public virtual string teleport(Mob target)
+        public virtual errorCode teleport(Mob target, ref String clientString)
         {
-            return changeRoom(target.mCurrentRoom);
+            return changeRoom(target.mCurrentRoom, ref clientString);
         }// teleport
 
-        public virtual string search()
+        public virtual errorCode search(ref String clientString)
         {
-            string searchString = string.Empty;
+            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
+
             List<List<Mob>> targetList = new List<List<Mob>>();
             targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
             targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
@@ -548,22 +618,25 @@ namespace _8th_Circle_Server
                 {
                     if(mob != null && mob.HasFlag(MobFlags.HIDDEN))
                     {
-                        searchString += "you discover a " + mob.mName;
+                        clientString += "you discover a " + mob.mName;
                         Utils.UnsetFlag(ref mob.mFlags, MobFlags.HIDDEN);
                         found = true;
+                        eCode = errorCode.E_OK;
                     }// if
                 }// foreach
             }// foreach
 
             if (!found)
-                searchString = "you find nothing";
+                clientString = "you find nothing";
 
             Utils.UnsetFlag(ref mFlags, MobFlags.SEARCHING);
 
-            return searchString + "\n";
+            clientString += "\n";
+
+            return eCode;
         }// search
 
-        public static Direction DirStrToEnum(string dirStr)
+        public static Direction DirStrToEnum(String dirStr)
         {
             switch (dirStr)
             {
@@ -593,10 +666,10 @@ namespace _8th_Circle_Server
             }// switch
         }// DirStrToEnum
 
-        // TODO
-        // Needs to be more generic
         public void randomAction()
         {
+            String clientString = String.Empty;
+
             if (HasFlag(MobFlags.INCOMBAT))
                 return;
 
@@ -615,7 +688,7 @@ namespace _8th_Circle_Server
                         commandQueue.Add(com);
                         commandQueue.Add(pl);
                         commandQueue.Add("purrr");
-                        mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
+                        mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this, ref clientString);
                         commandQueue.Clear();
                     }
                 }// if (mMobId == (int)MobList.MAX)
@@ -631,7 +704,7 @@ namespace _8th_Circle_Server
 
                     int index = (int)(commandQueue.Count * mRand.NextDouble());
                     CommandClass com = (CommandClass)commandQueue[index];
-                    mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this);
+                    mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this, ref clientString);
                 }// if
                 else
                 { // There must be no exits in the room the CombatMob is trying to leave, so just stay put
@@ -665,23 +738,23 @@ namespace _8th_Circle_Server
             }// for
         }// addExits
 
-        public virtual string playerString()
+        public virtual String playerString()
         {
             return "";
         }
 
-        public virtual void safeWrite(string clientString)
+        public virtual void safeWrite(String clientString)
         {
             // not implemented
         }// safeWrite
 
         // Accessors
-        public string GetName() { return mName; }
-        public void SetName(string name) { mName = name; }
+        public String GetName() { return mName; }
+        public void SetName(String name) { mName = name; }
         public ResType GetResType() { return mResType; }
         public void SetResType(ResType resType) { mResType = resType; }
-        public string GetDesc() { return mDescription; }
-        public void SetDesc(string desc) { mDescription = desc; }
+        public String GetDesc() { return mDescription; }
+        public void SetDesc(String desc) { mDescription = desc; }
         public World GetWorld() { return mWorld; }
         public void SetWorld(World world) { mWorld = world; }
         public void SetAreaLoc(int index, int val) { mAreaLoc[index] = val; }
