@@ -5,7 +5,6 @@ namespace _8th_Circle_Server
 {
     public class Area : ResourceHandler
     {
-        private int mAreaOffset;
         private int mStartingRespawnTimer;
         private int mCurrentRespawnTimer;
         private List<EventData> mRevertList;
@@ -18,7 +17,6 @@ namespace _8th_Circle_Server
         public Area(World world, String name, AreaID areaID) : base()
         {
             mName = name;
-            mAreaOffset = 0;
             mStartingRespawnTimer = mCurrentRespawnTimer = 30;
             mRoomList = new Dictionary<RoomID, Room>();
             mRevertList = new List<EventData>();
@@ -48,8 +46,6 @@ namespace _8th_Circle_Server
         // Accessors
         public List<Mob> GetPrototypeMobList() { return mProtoManager.GetPrototypeMobList(); }
         public void ResetRespawnTimer() { mCurrentRespawnTimer = mStartingRespawnTimer; }
-        public int GetAreaOffset() { return mAreaOffset; }
-        public void SetAreaOffset(int offset) { mAreaOffset = offset; }
         public int GetCurrentRespawnTimer() { return mCurrentRespawnTimer; }
         public int DecrementRespawnTimer(int time) { return mCurrentRespawnTimer -= time; }
         public Dictionary<RoomID, Room> GetRooms() { return mRoomList; }

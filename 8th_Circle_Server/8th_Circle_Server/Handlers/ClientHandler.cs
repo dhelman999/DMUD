@@ -103,7 +103,7 @@ namespace _8th_Circle_Server
                         mPlayer.SetDesc(mPlayer.GetName() + " is an 8th Circle Adventurer!");
                         mPlayer.SetWorld(mWorld);
                         mWorld.addRes(mPlayer);
-                        Room currentRoom = mWorld.getRoom(100 + 1, 100 + 1, 100 + 1, AreaID.AID_PROTOAREA);
+                        Room currentRoom = mWorld.getRoom(1,1,1, AreaID.AID_PROTOAREA);
 
                         String clientString = String.Empty;
                         mPlayer.changeRoom(currentRoom, ref clientString);

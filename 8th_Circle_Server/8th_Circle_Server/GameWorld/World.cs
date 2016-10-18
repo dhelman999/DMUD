@@ -5,13 +5,6 @@ namespace _8th_Circle_Server
 {
     public partial class World : ResourceHandler
     {
-        // TODO
-        // Each area should have its own offsets, and not belong to a global one
-        // Spacings to seperate the areas
-        internal const int HOUSE_OFFSET = 10000;
-        internal const int BAO = 1000;
-        internal const int PROTO_OFFSET = 100;
-
         // Constants
         const int MAXXSIZE = 3;
         const int MAXYSIZE = 3;
@@ -210,51 +203,52 @@ namespace _8th_Circle_Server
         {
             Area protoArea = new Area(this, "Proto Area", AreaID.AID_PROTOAREA);
             protoArea.SetDescription("The testing area for the 8th Circle");
-            protoArea.SetAreaOffset(PROTO_OFFSET);
 
-            Room pa1 = new Room("Room 0,0,0", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_1, protoArea);
-            Room pa2 = new Room("Room 1,0,0", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_2, protoArea);
-            Room pa3 = new Room("Room 2,0,0", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET, RoomID.PROTO_3, protoArea);
-            Room pa4 = new Room("Room 0,1,0", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_4, protoArea);
-            Room pa5 = new Room("Room 1,1,0", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_5, protoArea);
-            Room pa6 = new Room("Room 2,1,0", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET, RoomID.PROTO_6, protoArea);
-            Room pa7 = new Room("Room 0,2,0", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_7, protoArea);
-            Room pa8 = new Room("Room 1,2,0", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_8, protoArea);
-            Room pa9 = new Room("Room 2,2,0", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET, RoomID.PROTO_9, protoArea);
-            Room pa10 = new Room("Room 0,0,1", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_10, protoArea);
-            Room pa11 = new Room("Room 1,0,1", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_11, protoArea);
-            Room pa12 = new Room("Room 2,0,1", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET + 1, RoomID.PROTO_12, protoArea);
-            Room pa13 = new Room("Room 0,1,1", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_13, protoArea);
-            Room pa14 = new Room("Room 1,1,1", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_14, protoArea);
-            Room pa15 = new Room("Room 2,1,1", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET + 1, RoomID.PROTO_15, protoArea);
-            Room pa16 = new Room("Room 0,2,1", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_16, protoArea);
-            Room pa17 = new Room("Room 1,2,1", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_17, protoArea);
-            Room pa18 = new Room("Room 2,2,1", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET + 1, RoomID.PROTO_18, protoArea);
-            Room pa19 = new Room("Room 0,0,2", PROTO_OFFSET, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_19, protoArea);
-            Room pa20 = new Room("Room 1,0,2", PROTO_OFFSET + 1, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_20, protoArea);
-            Room pa21 = new Room("Room 2,0,2", PROTO_OFFSET + 2, PROTO_OFFSET, PROTO_OFFSET + 2, RoomID.PROTO_21, protoArea);
-            Room pa22 = new Room("Room 0,1,2", PROTO_OFFSET, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_22, protoArea);
-            Room pa23 = new Room("Room 1,1,2", PROTO_OFFSET + 1, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_23, protoArea);
-            Room pa24 = new Room("Room 2,1,2", PROTO_OFFSET + 2, PROTO_OFFSET + 1, PROTO_OFFSET + 2, RoomID.PROTO_24, protoArea);
-            Room pa25 = new Room("Room 0,2,2", PROTO_OFFSET, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_25, protoArea);
-            Room pa26 = new Room("Room 1,2,2", PROTO_OFFSET + 1, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_26, protoArea);
-            Room pa27 = new Room("Room 2,2,2", PROTO_OFFSET + 2, PROTO_OFFSET + 2, PROTO_OFFSET + 2, RoomID.PROTO_27, protoArea);
+            Room pa1 = new Room("Room 0,0,0",0,0,0, RoomID.PROTO_1, protoArea);
+            Room pa2 = new Room("Room 1,0,0",1,0,0, RoomID.PROTO_2, protoArea);
+            Room pa3 = new Room("Room 2,0,0",2,0,0, RoomID.PROTO_3, protoArea);
+            Room pa4 = new Room("Room 0,1,0",0,1,0, RoomID.PROTO_4, protoArea);
+            Room pa5 = new Room("Room 1,1,0",1,1,0, RoomID.PROTO_5, protoArea);
+            Room pa6 = new Room("Room 2,1,0",2,1,0, RoomID.PROTO_6, protoArea);
+            Room pa7 = new Room("Room 0,2,0",0,2,0, RoomID.PROTO_7, protoArea);
+            Room pa8 = new Room("Room 1,2,0",1,2,0, RoomID.PROTO_8, protoArea);
+            Room pa9 = new Room("Room 2,2,0",2,2,0, RoomID.PROTO_9, protoArea);
+            Room pa10 = new Room("Room 0,0,1",0,0,1, RoomID.PROTO_10, protoArea);
+            Room pa11 = new Room("Room 1,0,1",1,0,1, RoomID.PROTO_11, protoArea);
+            Room pa12 = new Room("Room 2,0,1",2,0,1, RoomID.PROTO_12, protoArea);
+            Room pa13 = new Room("Room 0,1,1",0,1,1, RoomID.PROTO_13, protoArea);
+            Room pa14 = new Room("Room 1,1,1",1,1,1, RoomID.PROTO_14, protoArea);
+            Room pa15 = new Room("Room 2,1,1",2,1,1, RoomID.PROTO_15, protoArea);
+            Room pa16 = new Room("Room 0,2,1",0,2,1, RoomID.PROTO_16, protoArea);
+            Room pa17 = new Room("Room 1,2,1",1,2,1, RoomID.PROTO_17, protoArea);
+            Room pa18 = new Room("Room 2,2,1",2,2,1, RoomID.PROTO_18, protoArea);
+            Room pa19 = new Room("Room 0,0,2",0,0,2, RoomID.PROTO_19, protoArea);
+            Room pa20 = new Room("Room 1,0,2",1,0,2, RoomID.PROTO_20, protoArea);
+            Room pa21 = new Room("Room 2,0,2",2,0,2, RoomID.PROTO_21, protoArea);
+            Room pa22 = new Room("Room 0,1,2",0,1,2, RoomID.PROTO_22, protoArea);
+            Room pa23 = new Room("Room 1,1,2",1,1,2, RoomID.PROTO_23, protoArea);
+            Room pa24 = new Room("Room 2,1,2",2,1,2, RoomID.PROTO_24, protoArea);
+            Room pa25 = new Room("Room 0,2,2",0,2,2, RoomID.PROTO_25, protoArea);
+            Room pa26 = new Room("Room 1,2,2",1,2,2, RoomID.PROTO_26, protoArea);
+            Room pa27 = new Room("Room 2,2,2",2,2,2, RoomID.PROTO_27, protoArea);
 
             // Add links
             foreach (KeyValuePair<RoomID, Room> keyValPair in protoArea.GetRooms())
             {
                 Room currentRoom = keyValPair.Value;
-
-                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                
+                // TODO
+                // Implement a getRoom with a direction
+                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
-                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
-                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
-                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
-                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
+                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_PROTOAREA);
-                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] - 1, AreaID.AID_PROTOAREA);
+                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] -1, AreaID.AID_PROTOAREA);
 
                 if (nwRoom != null)
                 {
@@ -332,86 +326,85 @@ namespace _8th_Circle_Server
         {
             Area geraldineArea = new Area(this, "Geraldine Estate", AreaID.AID_GERALDINEMANOR);
             geraldineArea.SetDescription("The residence of the esteemed Renee and David");
-            geraldineArea.SetAreaOffset(HOUSE_OFFSET);
 
             Room house1stentranceway = new Room("The entrance to the Geraldine Manor, there are stairs " + "leading up.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_ENT, geraldineArea);
+                0, 0, 0, RoomID.GERALD_1ST_ENT, geraldineArea);
 
             Room house1stHallway = new Room("The west hallway is empty besides a few pictures",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_HALLWAY, geraldineArea);
+                -1, 0, 0, RoomID.GERALD_1ST_HALLWAY, geraldineArea);
 
             Room house1stKitchen = new Room("The kitchen has a nice view of the outside to the west; " +
                 "there are also stairs leading down and a doorway to the north",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET, HOUSE_OFFSET, RoomID.GERALD_1ST_KITCHEN, geraldineArea);
+                -2, 0, 0, RoomID.GERALD_1ST_KITCHEN, geraldineArea);
 
             Room house1stDiningRoom = new Room("The dining room is blue with various pictures; one is " +
                 "particularly interesting, featuring a type of chicken",
-                HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_DININGROOM, geraldineArea);
+                -2, -1, 0, RoomID.GERALD_1ST_DININGROOM, geraldineArea);
 
             Room house1stLivingRoom = new Room("The living room is grey with a nice flatscreen tv along " + "the north wall",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_LIVINGROOM, geraldineArea);
+                0, -1, 0, RoomID.GERALD_1ST_LIVINGROOM, geraldineArea);
 
             Room house1stBathroom = new Room("The powder room is a nice small comfortable bathroom with " + "a sink and toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET, RoomID.GERALD_1ST_BATHROOM, geraldineArea);
+                -1, -1, 0, RoomID.GERALD_1ST_BATHROOM, geraldineArea);
 
             Room house2ndHallway = new Room("The hallway to the 2nd floor.  This is a long corridor\n with " +
                 "many rooms attached to it with stairs leading down at the base.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_HALLWAY, geraldineArea);
+                0, 0,  1, RoomID.GERALD_2ND_HALLWAY, geraldineArea);
 
             Room house2ndKittyroom = new Room("The kittyroom, there is not much here besides some litterboxes.",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYROOM, geraldineArea);
+                -1, 0,  1, RoomID.GERALD_2ND_KITTYROOM, geraldineArea);
 
             Room house2ndKittyCloset = new Room("The closet of the kittyroom holds various appliances such as " +
                 "vaccuums and other cleaning supplies",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_KITTYCLOSET, geraldineArea);
+                -1, -1,  1, RoomID.GERALD_2ND_KITTYCLOSET, geraldineArea);
 
             Room house2ndBathroom = new Room("A small master bathroom has a sink, shower and toilet",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
+                 1, 0,  1, RoomID.GERALD_2ND_BATHROOM, geraldineArea);
 
             Room house2ndBedroom = new Room("The master bedroom is huge with two sliding door closets\n and " +
                 "windows on the north and northwest sides",
-                HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BEDROOM, geraldineArea);
+                 1,  1,  1, RoomID.GERALD_2ND_BEDROOM, geraldineArea);
 
             Room house2ndBlueroom = new Room("The blueroom has a large bookshelf, a sliding door closet and " + "a loveseat",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_2ND_BLUEROOM, geraldineArea);
+                0,  1,  1, RoomID.GERALD_2ND_BLUEROOM, geraldineArea);
 
             Room houseBaseentrance = new Room("The bottom of the stairs leads to the basement.\n This " +
                 " is a large basement that spans to the south with \nrooms attached on both sides.",
-                HOUSE_OFFSET, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART1, geraldineArea);
+                0, 0, -1, RoomID.GERALD_BASE_PART1, geraldineArea);
 
             Room houseBasepart2 = new Room("There is a piano here along the wall with light grey\n " +
                 "carpet with the walls being a darker grey",
-                HOUSE_OFFSET, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART2, geraldineArea);
+                0, -1, -1, RoomID.GERALD_BASE_PART2, geraldineArea);
 
             Room houseBasepart3 = new Room("There isn't much to this piece of the basement besides\n " +
                 "some pictures on both the west and east walls.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART3, geraldineArea);
+                0, -2, -1, RoomID.GERALD_BASE_PART3, geraldineArea);
 
             Room houseBasepart4 = new Room("You have reached the southern corner of the basement.\n " +
                 "There is a computer desk here with a glowing PC and monitor.  There are all\n " +
                 "sorts of figurines of wonderous power sitting on the desk along with pictures\n " +
                 "depicting awesome scenes of wonder and adventure.  Something about this room\n " +
                 "seems filled with some sort of power.",
-                HOUSE_OFFSET, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART4, geraldineArea);
+                0, -3, -1, RoomID.GERALD_BASE_PART4, geraldineArea);
 
             Room houseBasepart5 = new Room("The southwest most edge of the basement, there is a\n " +
                 "couch on the south end of the wall facing a TV in the corner beside a doorway",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 3, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_PART5, geraldineArea);
+                -1, -3, -1, RoomID.GERALD_BASE_PART5, geraldineArea);
 
             Room houseBaseBathroom = new Room("The bathroom has a standing shower as well as a long \n " +
                 "vanity with an accompanying toilet",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 2, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_BATHROOM, geraldineArea);
+                -1, -2, -1, RoomID.GERALD_BASE_BATHROOM, geraldineArea);
 
             Room houseBaseCloset = new Room("This is a closet that has large holding shelves with\n " +
                 "board games from top to bottom.  This is an impressive collection indeed!",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_CLOSET, geraldineArea);
+                -1, -1, -1, RoomID.GERALD_BASE_CLOSET, geraldineArea);
 
             Room houseBaseLaundryRoom = new Room("The laundry room has no carpet and has many shelves\n " +
                 "with various pieces of hardware and tools",
-                HOUSE_OFFSET - 1, HOUSE_OFFSET, HOUSE_OFFSET - 1, RoomID.GERALD_BASE_LAUNDRYROOM, geraldineArea);
+                -1, 0, -1, RoomID.GERALD_BASE_LAUNDRYROOM, geraldineArea);
 
             Room houseBaseSumpRoom = new Room("The sump pump room is bare concrete with a few shelves\n " + "for storage",
-                HOUSE_OFFSET, HOUSE_OFFSET + 1, HOUSE_OFFSET + 1, RoomID.GERALD_BASE_SUMPROOM, geraldineArea);
+                0,  1,  1, RoomID.GERALD_BASE_SUMPROOM, geraldineArea);
 
             house1stentranceway.GetRoomLinks()[(int)Direction.NORTH] = house1stHallway;
             house1stentranceway.GetRoomLinks()[(int)Direction.WEST] = house1stLivingRoom;
@@ -516,7 +509,7 @@ namespace _8th_Circle_Server
             newDoor.CreateMemento();
 
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
-            getRoom(protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), protoArea.GetAreaOffset(), AreaID.AID_PROTOAREA).GetRoomLinks()[(int)Direction.WEST] = house1stentranceway;
+            getRoom(0,0,0, AreaID.AID_PROTOAREA).GetRoomLinks()[(int)Direction.WEST] = house1stentranceway;
 
             addGeraldineNpcs(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
@@ -556,101 +549,101 @@ namespace _8th_Circle_Server
 
             Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in\n" +
                "every direction, although you see some walls to your west.  You hear grunting.\n" +
-               "It smells like... goblins.\n", BAO, BAO, BAO, RoomID.GPG_PLAYER_START, newbieArea);
+               "It smells like... goblins.\n", 0, 0, 0, RoomID.GPG_PLAYER_START, newbieArea);
 
-            Room gpg_1 = new Room("GPG 1", BAO - 1, BAO + 3, BAO, RoomID.GPG_ROOM_1, newbieArea);
-            Room gpg_2 = new Room(common_gpg_north_field, BAO, BAO + 3, BAO, RoomID.GPG_ROOM_2, newbieArea);
-            Room gpg_3 = new Room(common_gpg_north_field, BAO + 1, BAO + 3, BAO, RoomID.GPG_ROOM_3, newbieArea);
-            Room gpg_4 = new Room(common_gpg_north_field, BAO + 2, BAO + 3, BAO, RoomID.GPG_ROOM_4, newbieArea);
-            Room gpg_5 = new Room(common_gpg_north_field, BAO + 3, BAO + 3, BAO, RoomID.GPG_ROOM_5, newbieArea);
-            Room gpg_6 = new Room(common_gpg_east_field, BAO + 4, BAO + 3, BAO, RoomID.GPG_ROOM_6, newbieArea);
-            Room gpg_7 = new Room("GPG 7", BAO - 1, BAO + 2, BAO, RoomID.GPG_ROOM_7, newbieArea);
-            Room gpg_8 = new Room(common_gpg_open_field, BAO, BAO + 2, BAO, RoomID.GPG_ROOM_8, newbieArea);
-            Room gpg_9 = new Room(common_gpg_open_field, BAO + 1, BAO + 2, BAO, RoomID.GPG_ROOM_9, newbieArea);
-            Room gpg_10 = new Room(common_gpg_open_field, BAO + 2, BAO + 2, BAO, RoomID.GPG_ROOM_10, newbieArea);
-            Room gpg_11 = new Room(common_gpg_open_field, BAO + 3, BAO + 2, BAO, RoomID.GPG_ROOM_11, newbieArea);
-            Room gpg_12 = new Room(common_gpg_east_field, BAO + 4, BAO + 2, BAO, RoomID.GPG_ROOM_12, newbieArea);
-            Room gpg_13 = new Room("GPG 13", BAO - 1, BAO + 1, BAO, RoomID.GPG_ROOM_13, newbieArea);
-            Room gpg_14 = new Room(common_gpg_open_field, BAO, BAO + 1, BAO, RoomID.GPG_ROOM_14, newbieArea);
-            Room gpg_15 = new Room(common_gpg_open_field, BAO + 1, BAO + 1, BAO, RoomID.GPG_ROOM_15, newbieArea);
-            Room gpg_16 = new Room(common_gpg_open_field, BAO + 2, BAO + 1, BAO, RoomID.GPG_ROOM_16, newbieArea);
-            Room gpg_17 = new Room(common_gpg_open_field, BAO + 3, BAO + 1, BAO, RoomID.GPG_ROOM_17, newbieArea);
-            Room gpg_18 = new Room(common_gpg_east_field, BAO + 4, BAO + 1, BAO, RoomID.GPG_ROOM_18, newbieArea);
-            Room gpg_19 = new Room("GPG 19", BAO - 1, BAO, BAO, RoomID.GPG_ROOM_19, newbieArea);
-            Room gpg_21 = new Room(common_gpg_open_field, BAO + 1, BAO, BAO, RoomID.GPG_ROOM_21, newbieArea);
-            Room gpg_22 = new Room(common_gpg_open_field, BAO + 2, BAO, BAO, RoomID.GPG_ROOM_22, newbieArea);
-            Room gpg_23 = new Room(common_gpg_open_field, BAO + 3, BAO, BAO, RoomID.GPG_ROOM_23, newbieArea);
-            Room gpg_24 = new Room(common_gpg_east_field, BAO + 4, BAO, BAO, RoomID.GPG_ROOM_24, newbieArea);
-            Room gpg_25 = new Room("GPG 25", BAO - 1, BAO - 1, BAO, RoomID.GPG_ROOM_25, newbieArea);
-            Room gpg_26 = new Room(common_gpg_open_field, BAO, BAO - 1, BAO, RoomID.GPG_ROOM_26, newbieArea);
-            Room gpg_27 = new Room(common_gpg_open_field, BAO + 1, BAO - 1, BAO, RoomID.GPG_ROOM_27, newbieArea);
-            Room gpg_28 = new Room(common_gpg_open_field, BAO + 2, BAO - 1, BAO, RoomID.GPG_ROOM_28, newbieArea);
+            Room gpg_1 = new Room("GPG 1",-1, 3, 0, RoomID.GPG_ROOM_1, newbieArea);
+            Room gpg_2 = new Room(common_gpg_north_field, 0, 3, 0, RoomID.GPG_ROOM_2, newbieArea);
+            Room gpg_3 = new Room(common_gpg_north_field, 1, 3, 0, RoomID.GPG_ROOM_3, newbieArea);
+            Room gpg_4 = new Room(common_gpg_north_field, 2, 3, 0, RoomID.GPG_ROOM_4, newbieArea);
+            Room gpg_5 = new Room(common_gpg_north_field, 3, 3, 0, RoomID.GPG_ROOM_5, newbieArea);
+            Room gpg_6 = new Room(common_gpg_east_field, 4, 3, 0, RoomID.GPG_ROOM_6, newbieArea);
+            Room gpg_7 = new Room("GPG 7",-1, 2, 0, RoomID.GPG_ROOM_7, newbieArea);
+            Room gpg_8 = new Room(common_gpg_open_field, 0, 2, 0, RoomID.GPG_ROOM_8, newbieArea);
+            Room gpg_9 = new Room(common_gpg_open_field, 1, 2, 0, RoomID.GPG_ROOM_9, newbieArea);
+            Room gpg_10 = new Room(common_gpg_open_field, 2, 2, 0, RoomID.GPG_ROOM_10, newbieArea);
+            Room gpg_11 = new Room(common_gpg_open_field, 3, 2, 0, RoomID.GPG_ROOM_11, newbieArea);
+            Room gpg_12 = new Room(common_gpg_east_field, 4, 2, 0, RoomID.GPG_ROOM_12, newbieArea);
+            Room gpg_13 = new Room("GPG 13",-1, 1, 0, RoomID.GPG_ROOM_13, newbieArea);
+            Room gpg_14 = new Room(common_gpg_open_field, 0, 1, 0, RoomID.GPG_ROOM_14, newbieArea);
+            Room gpg_15 = new Room(common_gpg_open_field, 1, 1, 0, RoomID.GPG_ROOM_15, newbieArea);
+            Room gpg_16 = new Room(common_gpg_open_field, 2, 1, 0, RoomID.GPG_ROOM_16, newbieArea);
+            Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, newbieArea);
+            Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, newbieArea);
+            Room gpg_19 = new Room("GPG 19",-1, 0, 0, RoomID.GPG_ROOM_19, newbieArea);
+            Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, newbieArea);
+            Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, newbieArea);
+            Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, newbieArea);
+            Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, newbieArea);
+            Room gpg_25 = new Room("GPG 25",-1,-1, 0, RoomID.GPG_ROOM_25, newbieArea);
+            Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, newbieArea);
+            Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, newbieArea);
+            Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, newbieArea);
             Room gpg_29 = new Room(common_gpg_open_field + "there is a small switch built into the side of a rock.\n" +
-               "You can't help but wonder what would happen if you used it...\n", BAO + 3, BAO - 1, BAO, RoomID.GPG_ROOM_29, newbieArea);
-            Room gpg_30 = new Room(common_gpg_east_field, BAO + 4, BAO - 1, BAO, RoomID.GPG_ROOM_30, newbieArea);
-            Room gpg_31 = new Room("GPG 31", BAO - 1, BAO - 2, BAO, RoomID.GPG_ROOM_31, newbieArea);
-            Room gpg_32 = new Room(common_gpg_south_field, BAO, BAO - 2, BAO, RoomID.GPG_ROOM_32, newbieArea);
-            Room gpg_33 = new Room(common_gpg_south_field, BAO + 1, BAO - 2, BAO, RoomID.GPG_ROOM_33, newbieArea);
-            Room gpg_34 = new Room(common_gpg_south_field, BAO + 2, BAO - 2, BAO, RoomID.GPG_ROOM_34, newbieArea);
-            Room gpg_35 = new Room(common_gpg_south_field, BAO + 3, BAO - 2, BAO, RoomID.GPG_ROOM_35, newbieArea);
-            Room gpg_36 = new Room(common_gpg_east_field, BAO + 4, BAO - 2, BAO, RoomID.GPG_ROOM_36, newbieArea);
-            Room gpg_37 = new Room("GPG 37", BAO - 8, BAO + 3, BAO, RoomID.GPG_ROOM_37, newbieArea);
-            Room gpg_38 = new Room("GPG 38", BAO - 7, BAO + 3, BAO, RoomID.GPG_ROOM_38, newbieArea);
-            Room gpg_39 = new Room("GPG 39", BAO - 6, BAO + 3, BAO, RoomID.GPG_ROOM_39, newbieArea);
-            Room gpg_40 = new Room("GPG 40", BAO - 5, BAO + 3, BAO, RoomID.GPG_ROOM_40, newbieArea);
-            Room gpg_41 = new Room("GPG 41", BAO - 4, BAO + 3, BAO, RoomID.GPG_ROOM_41, newbieArea);
-            Room gpg_42 = new Room("GPG 42", BAO - 3, BAO + 3, BAO, RoomID.GPG_ROOM_42, newbieArea);
-            Room gpg_43 = new Room("GPG 43", BAO - 2, BAO + 3, BAO, RoomID.GPG_ROOM_43, newbieArea);
-            Room gpg_44 = new Room("GPG 44", BAO - 8, BAO + 2, BAO, RoomID.GPG_ROOM_44, newbieArea);
-            Room gpg_45 = new Room("GPG 45", BAO - 7, BAO + 2, BAO, RoomID.GPG_ROOM_45, newbieArea);
-            Room gpg_46 = new Room("GPG 46", BAO - 6, BAO + 2, BAO, RoomID.GPG_ROOM_46, newbieArea);
-            Room gpg_47 = new Room("GPG 47", BAO - 5, BAO + 2, BAO, RoomID.GPG_ROOM_47, newbieArea);
-            Room gpg_48 = new Room("GPG 48", BAO - 4, BAO + 2, BAO, RoomID.GPG_ROOM_48, newbieArea);
-            Room gpg_49 = new Room("GPG 49", BAO - 3, BAO + 2, BAO, RoomID.GPG_ROOM_49, newbieArea);
-            Room gpg_50 = new Room("GPG 50", BAO - 2, BAO + 2, BAO, RoomID.GPG_ROOM_50, newbieArea);
-            Room gpg_51 = new Room("GPG 51", BAO - 8, BAO + 1, BAO, RoomID.GPG_ROOM_51, newbieArea);
-            Room gpg_52 = new Room("GPG 52", BAO - 7, BAO + 1, BAO, RoomID.GPG_ROOM_52, newbieArea);
-            Room gpg_53 = new Room("GPG 53", BAO - 6, BAO + 1, BAO, RoomID.GPG_ROOM_53, newbieArea);
-            Room gpg_54 = new Room("GPG 54", BAO - 5, BAO + 1, BAO, RoomID.GPG_ROOM_54, newbieArea);
-            Room gpg_55 = new Room("GPG 55", BAO - 4, BAO + 1, BAO, RoomID.GPG_ROOM_55, newbieArea);
-            Room gpg_56 = new Room("GPG 56", BAO - 3, BAO + 1, BAO, RoomID.GPG_ROOM_56, newbieArea);
-            Room gpg_57 = new Room("GPG 57", BAO - 2, BAO + 1, BAO, RoomID.GPG_ROOM_57, newbieArea);
-            Room gpg_58 = new Room("GPG 58", BAO - 8, BAO, BAO, RoomID.GPG_ROOM_58, newbieArea);
-            Room gpg_59 = new Room("GPG 59", BAO - 7, BAO, BAO, RoomID.GPG_ROOM_59, newbieArea);
-            Room gpg_60 = new Room("GPG 60", BAO - 6, BAO, BAO, RoomID.GPG_ROOM_60, newbieArea);
-            Room gpg_61 = new Room("GPG 61", BAO - 5, BAO, BAO, RoomID.GPG_ROOM_61, newbieArea);
-            Room gpg_62 = new Room("GPG 62", BAO - 4, BAO, BAO, RoomID.GPG_ROOM_62, newbieArea);
-            Room gpg_63 = new Room("GPG 63", BAO - 3, BAO, BAO, RoomID.GPG_ROOM_63, newbieArea);
-            Room gpg_64 = new Room("GPG 64", BAO - 2, BAO, BAO, RoomID.GPG_ROOM_64, newbieArea);
-            Room gpg_65 = new Room("GPG 65", BAO - 8, BAO - 1, BAO, RoomID.GPG_ROOM_65, newbieArea);
-            Room gpg_66 = new Room("GPG 66", BAO - 7, BAO - 1, BAO, RoomID.GPG_ROOM_66, newbieArea);
-            Room gpg_67 = new Room("GPG 67", BAO - 6, BAO - 1, BAO, RoomID.GPG_ROOM_67, newbieArea);
-            Room gpg_68 = new Room("GPG 68", BAO - 5, BAO - 1, BAO, RoomID.GPG_ROOM_68, newbieArea);
-            Room gpg_69 = new Room("GPG 69", BAO - 4, BAO - 1, BAO, RoomID.GPG_ROOM_69, newbieArea);
-            Room gpg_70 = new Room("GPG 70", BAO - 3, BAO - 1, BAO, RoomID.GPG_ROOM_70, newbieArea);
-            Room gpg_71 = new Room("GPG 71", BAO - 2, BAO - 1, BAO, RoomID.GPG_ROOM_71, newbieArea);
-            Room gpg_72 = new Room("GPG 72", BAO - 8, BAO - 2, BAO, RoomID.GPG_ROOM_72, newbieArea);
-            Room gpg_73 = new Room("GPG 73", BAO - 7, BAO - 2, BAO, RoomID.GPG_ROOM_73, newbieArea);
-            Room gpg_74 = new Room("GPG 74", BAO - 6, BAO - 2, BAO, RoomID.GPG_ROOM_74, newbieArea);
-            Room gpg_75 = new Room("GPG 75", BAO - 5, BAO - 2, BAO, RoomID.GPG_ROOM_75, newbieArea);
-            Room gpg_76 = new Room("GPG 76", BAO - 4, BAO - 2, BAO, RoomID.GPG_ROOM_76, newbieArea);
-            Room gpg_77 = new Room("GPG 77", BAO - 3, BAO - 2, BAO, RoomID.GPG_ROOM_77, newbieArea);
-            Room gpg_78 = new Room("GPG 78", BAO - 2, BAO - 2, BAO, RoomID.GPG_ROOM_78, newbieArea);
+               "You can't help but wonder what would happen if you used it...\n", 3,-1, 0, RoomID.GPG_ROOM_29, newbieArea);
+            Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, newbieArea);
+            Room gpg_31 = new Room("GPG 31",-1,-2, 0, RoomID.GPG_ROOM_31, newbieArea);
+            Room gpg_32 = new Room(common_gpg_south_field, 0,-2, 0, RoomID.GPG_ROOM_32, newbieArea);
+            Room gpg_33 = new Room(common_gpg_south_field, 1,-2, 0, RoomID.GPG_ROOM_33, newbieArea);
+            Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, newbieArea);
+            Room gpg_35 = new Room(common_gpg_south_field, 3,-2, 0, RoomID.GPG_ROOM_35, newbieArea);
+            Room gpg_36 = new Room(common_gpg_east_field, 4,-2, 0, RoomID.GPG_ROOM_36, newbieArea);
+            Room gpg_37 = new Room("GPG 37",-8, 3, 0, RoomID.GPG_ROOM_37, newbieArea);
+            Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, newbieArea);
+            Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, newbieArea);
+            Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, newbieArea);
+            Room gpg_41 = new Room("GPG 41",-4, 3, 0, RoomID.GPG_ROOM_41, newbieArea);
+            Room gpg_42 = new Room("GPG 42",-3, 3, 0, RoomID.GPG_ROOM_42, newbieArea);
+            Room gpg_43 = new Room("GPG 43",-2, 3, 0, RoomID.GPG_ROOM_43, newbieArea);
+            Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, newbieArea);
+            Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, newbieArea);
+            Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, newbieArea);
+            Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, newbieArea);
+            Room gpg_48 = new Room("GPG 48",-4, 2, 0, RoomID.GPG_ROOM_48, newbieArea);
+            Room gpg_49 = new Room("GPG 49",-3, 2, 0, RoomID.GPG_ROOM_49, newbieArea);
+            Room gpg_50 = new Room("GPG 50",-2, 2, 0, RoomID.GPG_ROOM_50, newbieArea);
+            Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, newbieArea);
+            Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, newbieArea);
+            Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, newbieArea);
+            Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, newbieArea);
+            Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, newbieArea);
+            Room gpg_56 = new Room("GPG 56",-3, 1, 0, RoomID.GPG_ROOM_56, newbieArea);
+            Room gpg_57 = new Room("GPG 57",-2, 1, 0, RoomID.GPG_ROOM_57, newbieArea);
+            Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, newbieArea);
+            Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, newbieArea);
+            Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, newbieArea);
+            Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, newbieArea);
+            Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, newbieArea);
+            Room gpg_63 = new Room("GPG 63",-3, 0, 0, RoomID.GPG_ROOM_63, newbieArea);
+            Room gpg_64 = new Room("GPG 64",-2, 0, 0, RoomID.GPG_ROOM_64, newbieArea);
+            Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, newbieArea);
+            Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, newbieArea);
+            Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, newbieArea);
+            Room gpg_68 = new Room("GPG 68",-5,-1, 0, RoomID.GPG_ROOM_68, newbieArea);
+            Room gpg_69 = new Room("GPG 69",-4,-1, 0, RoomID.GPG_ROOM_69, newbieArea);
+            Room gpg_70 = new Room("GPG 70",-3,-1, 0, RoomID.GPG_ROOM_70, newbieArea);
+            Room gpg_71 = new Room("GPG 71",-2,-1, 0, RoomID.GPG_ROOM_71, newbieArea);
+            Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, newbieArea);
+            Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, newbieArea);
+            Room gpg_74 = new Room("GPG 74",-6,-2, 0, RoomID.GPG_ROOM_74, newbieArea);
+            Room gpg_75 = new Room("GPG 75",-5,-2, 0, RoomID.GPG_ROOM_75, newbieArea);
+            Room gpg_76 = new Room("GPG 76",-4,-2, 0, RoomID.GPG_ROOM_76, newbieArea);
+            Room gpg_77 = new Room("GPG 77",-3,-2, 0, RoomID.GPG_ROOM_77, newbieArea);
+            Room gpg_78 = new Room("GPG 78",-2,-2, 0, RoomID.GPG_ROOM_78, newbieArea);
 
             foreach (KeyValuePair<RoomID, Room> keyValPair in newbieArea.GetRooms())
             {
                 Room currentRoom = keyValPair.Value;
 
-                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
                 Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
                 Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
                 Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] - 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] - 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
+                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
                 Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_NEWBIEAREA);
-                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] - 1, AreaID.AID_NEWBIEAREA);
+                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] -1, AreaID.AID_NEWBIEAREA);
 
                 if (nwRoom != null)
                 {
