@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
 
 namespace _8th_Circle_Server
 {
@@ -59,11 +56,11 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             Room remoteRoom = null;
             bool validRoom = false;
-            Direction dir = Mob.DirStrToEnum(direction);
+            int dir = Mob.DirStrToInt(direction);
 
-            if (mRoomLinks[(int)dir] != null)
+            if (mRoomLinks[dir] != null)
             {
-                remoteRoom = mRoomLinks[(int)dir];
+                remoteRoom = mRoomLinks[dir];
                 validRoom = true;
             }
 
@@ -87,13 +84,13 @@ namespace _8th_Circle_Server
 
             exitStr += "\n";
 
-            resourceString = Utils.printResources(this, ResType.DOORWAY);
+            resourceString = Utils.PrintResources(this, ResType.DOORWAY);
 
             exitStr += resourceString + "\n";
 
             exitStr += "Objects: ";
 
-            resourceString = Utils.printResources(this, ResType.OBJECT);
+            resourceString = Utils.PrintResources(this, ResType.OBJECT);
 
             if (resourceString != String.Empty)
                 exitStr += resourceString;
@@ -102,7 +99,7 @@ namespace _8th_Circle_Server
 
             exitStr += "Npcs: ";
 
-            resourceString = Utils.printResources(this, ResType.NPC);
+            resourceString = Utils.PrintResources(this, ResType.NPC);
 
             if (resourceString != String.Empty)
                 exitStr += resourceString;
@@ -111,7 +108,7 @@ namespace _8th_Circle_Server
 
             exitStr += "Players: ";
 
-            resourceString = Utils.printResources(this, ResType.PLAYER);
+            resourceString = Utils.PrintResources(this, ResType.PLAYER);
 
             if (resourceString != String.Empty)
                 exitStr += resourceString;
@@ -126,7 +123,6 @@ namespace _8th_Circle_Server
             // Remove old references
             if (newMob.GetCurrentRoom() != null && newMob.GetCurrentArea() != null)
             {
-                // Allow duplicates to be dropped in the same room
                 if(!(getRes(newMob.GetResType()).Contains(newMob)))
                 {
                     newMob.GetCurrentArea().removeRes(newMob);
@@ -141,9 +137,7 @@ namespace _8th_Circle_Server
             newMob.SetCurrentRoom(this);
 
             // Add resources
-            addRes(newMob);
-            newMob.GetCurrentArea().addRes(newMob);
-            newMob.GetWorld().addRes(newMob);
+            GetWorld().totallyAddRes(newMob);
         }// addMobResource
 
         public void addDoor(Doorway door, Direction dir)
@@ -269,7 +263,7 @@ namespace _8th_Circle_Server
         public int[] GetAreaLoc() { return mAreaLoc; }
         public Area GetCurrentArea() { return mCurrentArea;  }
         public List<Room> GetRoomLinks() { return mRoomLinks; }
-        
+        public World GetWorld() { return mCurrentArea.GetWorld(); }
     }// Class Room
 
 }// Namespace _8th_Circle_Server

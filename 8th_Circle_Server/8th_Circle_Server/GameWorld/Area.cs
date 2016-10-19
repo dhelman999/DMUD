@@ -44,6 +44,7 @@ namespace _8th_Circle_Server
         }
 
         // Accessors
+        public World GetWorld() { return mWorld; }
         public List<Mob> GetPrototypeMobList() { return mProtoManager.GetPrototypeMobList(); }
         public void ResetRespawnTimer() { mCurrentRespawnTimer = mStartingRespawnTimer; }
         public int GetCurrentRespawnTimer() { return mCurrentRespawnTimer; }

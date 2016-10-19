@@ -167,7 +167,7 @@ namespace _8th_Circle_Server
             goblin_runt.SetMobID(MobList.GOBLIN_RUNT);
             goblin_runt.SetStartingRespawnTime(30);
             goblin_runt.SetCurrentRespawnTime(30);
-            goblin_runt[STAT.BASEMAXDAM] = 5;
+            goblin_runt[STAT.BASEMAXDAM] = 6;
             goblin_runt[STAT.CURRENTHP] = 50;
             goblin_runt[STAT.BASEMAXHP] = 50;
             goblin_runt[STAT.BASEHIT] = 50;
@@ -771,15 +771,15 @@ namespace _8th_Circle_Server
             wooden_chest.SetKeyID(4);
             newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
 
-            Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
-            basic_key.SetKeyID(4);
-            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", basic_key);
+            Mob brass_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
+            brass_key.SetKeyID(4);
+            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", brass_key);
 
             Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             small_metal_cage.SetDesc("a small metal cage, I wonder what is inside?");
             small_metal_cage.SetKeyID(5);
-            small_metal_cage.GetInv().Add(basic_key);
-            newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
+            small_metal_cage.GetInv().Add(brass_key);
+            Mob parentCage = newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
 
             Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             Utils.SetFlag(ref steel_key.mFlags, MobFlags.HIDDEN);
@@ -858,6 +858,19 @@ namespace _8th_Circle_Server
 
             removeRes(resource);
         }// totallyRemoveRes
+
+        public void totallyAddRes(Mob resource)
+        {
+            Room currentRoom = resource.GetCurrentRoom();
+            Area currentArea = resource.GetCurrentArea();
+
+            if (currentRoom != null)
+                currentRoom.addRes(resource);
+            if (currentArea != null)
+                currentArea.addRes(resource);
+
+            addRes(resource);
+        }// totallyAddRes
 
         // Accessors
         public CommandHandler GetCommandHandler() { return mCommandHandler; }

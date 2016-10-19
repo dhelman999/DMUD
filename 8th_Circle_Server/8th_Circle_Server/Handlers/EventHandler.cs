@@ -80,7 +80,7 @@ namespace _8th_Circle_Server
 
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.GetData());
-                        Utils.broadcast(area, null, "The area shakes and rumbles");
+                        Utils.Broadcast(area, null, "The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_40], Direction.WEST);
                         area[RoomID.GPG_ROOM_41].addDualLinks(area[RoomID.GPG_ROOM_47], Direction.SOUTHWEST);
@@ -102,7 +102,7 @@ namespace _8th_Circle_Server
 
                     case EventFlag.EVENT_GPG_WALL_ADD:
                         area = mWorld.getArea((AreaID)eventData.GetData());
-                        Utils.broadcast(area, null, "The area shakes and rumbles");
+                        Utils.Broadcast(area, null, "The area shakes and rumbles");
 
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.WEST);
                         area[RoomID.GPG_ROOM_41].removeDualLinks(Direction.SOUTHWEST);
@@ -126,9 +126,7 @@ namespace _8th_Circle_Server
                         Console.WriteLine("something went wrong...");
                         break;
                 }// switch
-
-            }// while
-
+            }// while (mEventQueue.Count > 0)
         }// processEvent
 
     }// Class EventHandler

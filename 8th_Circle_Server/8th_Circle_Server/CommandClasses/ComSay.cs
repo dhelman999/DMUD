@@ -18,7 +18,7 @@ namespace _8th_Circle_Server
             String talkerString = "You say \"" + commandQueue[1] + "\"";
             String receiversString = talker.GetName() + " says " + "\"" + commandQueue[1] + "\"";
 
-            Utils.broadcast(currentRoom, talker, receiversString, talkerString);
+            Utils.Broadcast(currentRoom, talker, receiversString, talkerString);
 
             return errorCode.E_OK;
         }// execute

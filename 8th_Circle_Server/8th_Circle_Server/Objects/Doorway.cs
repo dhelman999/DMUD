@@ -66,7 +66,7 @@ namespace _8th_Circle_Server
                     if (mRoomList[i] != null)
                     {
                         Room currentRoom = mRoomList[i];
-                        Utils.broadcast(currentRoom, opener, currentRoom.getDoorString(this) + " opens\n");
+                        Utils.Broadcast(currentRoom, opener, currentRoom.getDoorString(this) + " opens\n");
                     }
                 }// for
 
@@ -96,7 +96,7 @@ namespace _8th_Circle_Server
                     if (mRoomList[i] != null)
                     {
                         Room currentRoom = mRoomList[i];
-                        Utils.broadcast(currentRoom, closer, currentRoom.getDoorString(this) + " closes\n");
+                        Utils.Broadcast(currentRoom, closer, currentRoom.getDoorString(this) + " closes\n");
                     }
                 }// for
 

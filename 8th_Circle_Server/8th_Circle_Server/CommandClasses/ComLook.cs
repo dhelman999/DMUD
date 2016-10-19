@@ -25,10 +25,10 @@ namespace _8th_Circle_Server
 
             if (commandQueue.Count == 1)
                 eCode = currentRoom.viewed(ref clientString);
-            // The player looked in a direction, print out that connected rooms
-            // location
+            // The player looked in a direction, print out that connected rooms location
             else if (commandQueue.Count == 2)
                 eCode = mob.GetCurrentRoom().viewed((String)commandQueue[1], ref clientString);
+            // Player must have looked at or in something
             else if (commandQueue.Count == 3)
                 eCode = ((Mob)commandQueue[2]).viewed(mob, (Preposition)commandQueue[1], ref clientString);
             else

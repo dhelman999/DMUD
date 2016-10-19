@@ -77,7 +77,7 @@ namespace _8th_Circle_Server
 
                     if(mob is CombatMob && ((CombatMob)mob).GetQueuedCommand() != String.Empty)
                     {
-                        commandData cd = new commandData(((CombatMob)mob).GetQueuedCommand(), (CombatMob)mob);
+                        CommandData cd = new CommandData(((CombatMob)mob).GetQueuedCommand(), (CombatMob)mob);
                         mWorld.GetCommandHandler().enQueueCommand(cd);
                         ((CombatMob)mob).SetQueuedCommand(String.Empty);
                     }
@@ -106,8 +106,8 @@ namespace _8th_Circle_Server
                             Console.WriteLine("respawning " + parent.GetName());
                             parent.respawn();
                         }
-                    }
-                }// foreach
+                    }// if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
+                }// foreach(Mob parent in area.GetPrototypeMobList())
 
 
                 if (area.DecrementRespawnTimer(TICKTIME) <= 0)
@@ -130,8 +130,8 @@ namespace _8th_Circle_Server
                                 Console.WriteLine("despawning " + mob.GetName() + " from other area");
                                 mob.destroy(ref clientString);
                                 --i;
-                            }// if
-                        }// for
+                            }
+                        }
                     }// foreach (ArrayList ar in targetList)
 
                     // Revert events
@@ -147,8 +147,8 @@ namespace _8th_Circle_Server
                         Room currentRoom = keyValPair.Value;
                         currentRoom.respawnDoorways();
                     }
-                        
-                }// if (area.mCurrentRespawnTimer -= TICKTIME <= 0)
+
+                }// if (area.DecrementRespawnTimer(TICKTIME) <= 0)
 
                 // Reset Area respawn timer
                 if (area.GetCurrentRespawnTimer() <= 0)
@@ -172,12 +172,9 @@ namespace _8th_Circle_Server
                     {
                         npc.SetCurrentActionTimer(npc.GetStartingActionTimer());
                         npc.randomAction();
-                    }// if
-
-                }// for
-
-            }// foreach
-
+                    }
+                }
+            }// foreach (Area area in mAreaList)
         }// processNpcs
 
     }// Class AreaHandler

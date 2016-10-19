@@ -41,8 +41,7 @@ namespace _8th_Circle_Server
                     listenerThread.Start();      
                 }// for
 
-                //Console.WriteLine("The 8th Circle has been started on " + ipAddr + 
-                //    "::" + MUD_SERVER_PORT);
+                //Console.WriteLine("The 8th Circle has been started on " + ipAddr + "::" + MUD_SERVER_PORT);
                 Console.WriteLine("The 8th Circle has been started on 127.0.0.1" + "::" + MUD_SERVER_PORT);
             }// try
             catch

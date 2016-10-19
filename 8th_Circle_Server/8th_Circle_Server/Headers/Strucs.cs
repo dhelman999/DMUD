@@ -2,17 +2,17 @@
 
 namespace _8th_Circle_Server
 {
-    public struct commandData
+    public struct CommandData
     {
         public String command;
         public CombatMob mob;
 
-        public commandData(String command, CombatMob mob)
+        public CommandData(String command, CombatMob mob)
         {
             this.command = command;
             this.mob = mob;
         }// Constructor
-    }// commandData
+    }// CommandData
 
     public struct Preposition
     {

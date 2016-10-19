@@ -24,7 +24,7 @@ namespace _8th_Circle_Server
 
             switch (((Mob)commandQueue[++commandIndex]).GetName())
             {
-                case "mystic shot":
+                case "mysticshot":
                     if (commandQueue.Count != 3 ||
                         ((Mob)commandQueue[++commandIndex] != null &&
                         !((Mob)commandQueue[commandIndex] is CombatMob)))

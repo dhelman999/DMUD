@@ -248,12 +248,11 @@ namespace _8th_Circle_Server
             mPrepDict.Add(PrepositionType.PREP_WITH, new Preposition("with", PrepositionType.PREP_WITH));
             mPrepDict.Add(PrepositionType.PREP_AT, new Preposition("at", PrepositionType.PREP_AT));
             mPrepDict.Add(PrepositionType.PREP_FROM, new Preposition("from", PrepositionType.PREP_FROM));
-            mPrepDict.Add(PrepositionType.PREP_OFF, new Preposition("off", PrepositionType.PREP_OFF));
         }// addPrepositions
 
         private void addAbilitySpells()
         {
-            // Order matters, no change change, if you do, update the ActionType enums
+            // This order matters, it must align with the order defined in the enums in AbilitySpell.
             Action act = new Action("bash", 4, 4, ActionType.ABILITY);
             act.mHitBonus = 5;
             act.mEvadable = true;
@@ -276,7 +275,7 @@ namespace _8th_Circle_Server
             act.mAbilitySpell = AbilitySpell.ABILITY_BACKSTAB;
             mAbilitySpellList.Add(act);
 
-            act = new Action("mystic shot", 4, 4, ActionType.SPELL);
+            act = new Action("mysticshot", 4, 4, ActionType.SPELL);
             act.mDamType = DamageType.MAGICAL;
             act.mResistable = true;
             act.mDamScaling = DamageScaling.PERLEVEL;
@@ -322,9 +321,9 @@ namespace _8th_Circle_Server
                 // predicates to the command list if they even exist.
                 eCode = populateCommandList(command, tokens, currentCC, ccList, mob, ref clientString);
 
-                // All predicates must have checked out, the commandList will be correctly
-                // populated with all correct predicates in the right order according to
-                // the verbs description.  Go ahead and execute the command
+                // If all predicates check out, the commandList will be correctly populated with all 
+                // correct predicates in the right order according to the verbs description.  
+                // Go ahead and execute the command, otherwise construct the error string.
                 if (eCode == errorCode.E_OK)
                     eCode = execute(currentCC, ccList, mob, ref clientString);
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
@@ -337,7 +336,7 @@ namespace _8th_Circle_Server
             else
                 clientString = tokens[0] + " is not a valid command";
 
-            clientString += ((CombatMob)mob).playerString();
+            clientString += mob.playerString();
             mob.safeWrite(clientString);
         }// process
 
@@ -354,7 +353,7 @@ namespace _8th_Circle_Server
                     foundMatch = errorCode.E_OK;
                     ccList.Add(com);
                     continue;
-                }// if
+                }
 
                 if (tokens[0].Length < com.GetMatchNumber() || tokens[0].Length > com.GetCommand().Length)
                     continue;
@@ -363,7 +362,7 @@ namespace _8th_Circle_Server
                 {
                     foundMatch = errorCode.E_OK;
                     ccList.Add(com);
-                }// if
+                }
             }// foreach
 
             return foundMatch;
@@ -388,7 +387,7 @@ namespace _8th_Circle_Server
                         currentCC = com;
                         eCode = errorCode.E_OK;
                         break;
-                    }// if
+                    }
                 }// foreach
 
                 // Remove all other commands and add the one we found
@@ -413,7 +412,7 @@ namespace _8th_Circle_Server
                             ccList.Clear();
                             ccList.Add(com);
                             break;
-                        }// if
+                        }
                     }// foreach
                 }// else
             }// (commandList.Count > 1)
@@ -472,24 +471,23 @@ namespace _8th_Circle_Server
                         {
                             clientString = "Can't find " + tokens[0];
                             break;
-                        }// if
+                        }
 
                         if (grammarIndex < currentCC.GetGrammar().Length && tokens.Length > 1)
                             subCommand = subCommand.Substring(tokens[0].Length + 1);
                     }// if
-                    // If the predicate is custom, we simply dump the rest of the command
-                    // back and let processing continue
+                    // If the predicate is custom, we simply dump the rest of the command back and let processing continue
                     else if (targetPredicate.HasFlag(PredicateType.CUSTOM))
                     {
                         commandList.Add(subCommand);
                         ret = errorCode.E_OK;
-                    }// else if
+                    }
 
                     if (ret != errorCode.E_OK)
                     {
                         clientString = "You can't " + errorString;
                         break;
-                    }// if
+                    }
                 }// if (currentCommand.grammar[grammarIndex++] == Grammar.PREDICATE)
                 else if (currentCC.GetGrammar()[grammarIndex - 1] == Grammar.PREP)
                 {
@@ -511,17 +509,17 @@ namespace _8th_Circle_Server
                                     subCommand = subCommand.Substring(tokens[0].Length + 1);
                                 else
                                     return errorCode.E_INVALID_COMMAND_USAGE;
-                            }// if
+                            }
 
                             break;
-                        }// if
+                        }// if (prepPair.Value.name.Equals(tokens[0]))
                     }// foreach
 
                     if (ret == errorCode.E_INVALID_SYNTAX)
                     {
                         clientString = "You are not able to " + errorString;
                         break;
-                    }// if
+                    }
                 }// else if
             }// while (grammarIndex < currentCommand.grammar.Length)
 
@@ -563,7 +561,7 @@ namespace _8th_Circle_Server
                         eventData.SetRoom(commandClass.GetPred1().GetCurrentRoom());
                         eventData.validity = commandClass.mValidity;
                         ((CombatMob)mob).GetWorld().GetEventHandler().enQueueEvent(eventData);
-                    }// if       
+                    }      
                 }// if
             }// else if
         }// checkEvent
@@ -584,7 +582,7 @@ namespace _8th_Circle_Server
                 {
                     commandQueue.Add(targetPredicates[0]);
                     ret = errorCode.E_OK;
-                }// if
+                }
                 else if (tokens.Length == 2)
                 {
                     try
@@ -595,14 +593,14 @@ namespace _8th_Circle_Server
                         {
                             commandQueue.Add(targetPredicates[index]);
                             ret = errorCode.E_OK;
-                        }// if
+                        }
                     }// try
 
                     catch
                     {  // silently fail, the return code will correctly error
                     }
                 }// else
-            }// if
+            }// if (ret == errorCode.E_OK)
 
             return ret;
         }// doesPredicateExist
@@ -612,11 +610,11 @@ namespace _8th_Circle_Server
             bool found = false;
             String subString = cmdString;
             int index = 0;
-            char c;
+            char currentChar = '\0';
 
             for(int i = targetPred.Length; i > 0; --i)
             {
-                c = targetPred[targetPred.Length - i];
+                currentChar = targetPred[targetPred.Length - i];
 
                 if(i > subString.Length)
                     return false;
@@ -624,7 +622,7 @@ namespace _8th_Circle_Server
                 while (true)
                 {
                     found = false;
-                    index = subString.IndexOf(c);
+                    index = subString.IndexOf(currentChar);
                     int len = subString.Length;
 
                     if (index >= 0)
@@ -634,8 +632,8 @@ namespace _8th_Circle_Server
                             found = true;
                             subString = subString.Substring(index + 1, len - index - 1);
                             break;
-                        }// if
-                    }// if
+                        }
+                    }// if (index >= 0)
                     else
                         return false;
                 }// while
@@ -660,14 +658,14 @@ namespace _8th_Circle_Server
                         commandClass.SetPred1((Mob)commandQueue[i]);
                     else if (!(commandQueue[i] is String))
                         commandClass.SetPred2((Mob)commandQueue[i]);
-                }// if
+                }
                 else if (grammar[i] == Grammar.PREP)
                 {
                     if (++prepCount == 1)
                         commandClass.SetPrep1((Preposition)commandQueue[i]);
                     else
                         commandClass.SetPrep2((Preposition)commandQueue[i]);
-                }// if
+                }
             }// for
 
             if(commandQueue.Count > 0)

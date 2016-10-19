@@ -225,7 +225,6 @@ namespace _8th_Circle_Server
         PREP_WITH,
         PREP_AT,
         PREP_FROM,
-        PREP_OFF,
         PREP_END
     }// PrepositionType
 
@@ -331,15 +330,6 @@ namespace _8th_Circle_Server
 
         MOB_END
     }// MobList
-
-    public enum MementoType
-    {
-        CONTAINER,
-        MTYPE_START = CONTAINER,
-        DOORWAY,
-        EQUIPMENT,
-        MTYPE_END = EQUIPMENT
-    }// Direction
 
     public enum Direction
     {

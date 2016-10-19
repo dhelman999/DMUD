@@ -25,8 +25,7 @@ namespace _8th_Circle_Server
             {
                 cm.GetWorld().GetCombatHandler().abilityAttack(cm, null, commandExecutioner.GetASList()[(int)AbilitySpell.ABILITY_BASH]);
                 eCode = errorCode.E_OK;
-            }
-                
+            }   
 
             return eCode;
         }// execute

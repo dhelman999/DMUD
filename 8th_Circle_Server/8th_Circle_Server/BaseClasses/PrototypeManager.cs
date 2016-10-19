@@ -54,6 +54,16 @@ namespace _8th_Circle_Server
             parent.GetChildren().Add(child);
             child.SetParent(parent);
 
+            // If the Mob has other mobs in its inventory, we need to rearrange the parent child relationship
+            // so that the inventory items' parents is now the container to which they belong, this will allow them
+            // to respawn and despawn when dropped.
+            foreach (Mob inventoryItem in parent.GetInv())
+            {
+                Mob invItemParent = inventoryItem.GetParent();
+                invItemParent.GetChildren().Remove(inventoryItem);
+                inventoryItem.SetParent(parent);
+            }
+
             Area currentArea = startingRoom.GetCurrentArea();
 
             // Add starting positions for the parent

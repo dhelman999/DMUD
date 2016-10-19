@@ -133,13 +133,14 @@ namespace _8th_Circle_Server
             if (HasFlag(MobFlags.INCOMBAT))
                 clientString = "you can't move while in combat\n";
 
-            Direction dir = DirStrToEnum(direction);
+            int dir = DirStrToInt(direction);
+            List<Mob> doorways = mCurrentRoom.getRes(ResType.DOORWAY);
 
-            if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
-               (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-               (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).HasFlag(MobFlags.OPEN)))
+            if (mCurrentRoom.GetRoomLinks()[dir] != null &&
+               (doorways[dir] == null ||
+               (doorways[dir]).HasFlag(MobFlags.OPEN)))
             { 
-                eCode = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir], ref clientString);
+                eCode = changeRoom(mCurrentRoom.GetRoomLinks()[dir], ref clientString);
             }
             else
                 clientString = "you can't move that way\n";
@@ -153,19 +154,21 @@ namespace _8th_Circle_Server
             {
                 clientString = "you can't do that while in combat\n";
                 return errorCode.E_INVALID_COMMAND_USAGE;
-            }    
+            }
+
+            Area newArea = newRoom.GetCurrentArea();
 
             // Remove old references
             if (mCurrentRoom != null && mCurrentRoom != newRoom)
                 mCurrentRoom.removeRes(this);
 
-            if (mCurrentArea != null && mCurrentArea != newRoom.GetCurrentArea())
+            if (mCurrentArea != null && mCurrentArea != newArea)
                 mCurrentArea.removeRes(this);
 
-            if (mCurrentArea != newRoom.GetCurrentArea())
+            if (mCurrentArea != newArea)
             {
-                newRoom.GetCurrentArea().addRes(this);
-                mCurrentArea = newRoom.GetCurrentArea();
+                newArea.addRes(this);
+                mCurrentArea = newArea;
             }
 
             // Add new references
@@ -217,8 +220,7 @@ namespace _8th_Circle_Server
                 return eCode;
             }       
 
-            if (HasFlag(MobFlags.GETTABLE) &&
-                mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
+            if (HasFlag(MobFlags.GETTABLE) && mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             {
                 if (mob.mInventory.Count < mob.mInventory.Capacity)
                 {
@@ -235,7 +237,7 @@ namespace _8th_Circle_Server
                     {                    
                         if (!HasFlag(MobFlags.HIDDEN))
                         {
-                            mob.mWorld.totallyRemoveRes(this);
+                            mWorld.totallyRemoveRes(this);
                             mCurrentOwner = mob;
                             mob.mInventory.Add(this);
 
@@ -251,12 +253,12 @@ namespace _8th_Circle_Server
                         else
                             clientString = "you can't do that\n";
                     }
-                }// if
+                }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
                 {
                     clientString = "your inventory is full\n";
                 }// else
-            }// if
+            }// if (HasFlag(MobFlags.GETTABLE) && mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
             else
                 clientString = "you can't get that\n";
 
@@ -293,7 +295,7 @@ namespace _8th_Circle_Server
                         {
                             if (container.mInventory.Contains(this))
                             {
-                                mob.mWorld.totallyRemoveRes(this);
+                                mWorld.totallyRemoveRes(this);
                                 container.mInventory.Remove(this);
                                 mCurrentOwner = mob;
                                 mob.mInventory.Add(this);
@@ -306,7 +308,7 @@ namespace _8th_Circle_Server
                                 
                                 clientString += "you get " + exitString(mCurrentRoom) + "\n";
                                 eCode = errorCode.E_OK;
-                            }// if
+                            }// if (container.mInventory.Contains(this))
                             else
                                 clientString = container.mName + " does not contain a " + this.mName + "\n";
                         }// if (prepType == PrepositionType.PREP_FROM)
@@ -333,6 +335,7 @@ namespace _8th_Circle_Server
             if (targetList.Count == 0)
             {
                 clientSString = "you can't do that";
+
                 return eCode;
             }      
 
@@ -526,11 +529,9 @@ namespace _8th_Circle_Server
         {
             mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
-            Mob mob = Clone();
-            mChildren.Add(mob);
-            mob.mCurrentArea.addRes(mob);
-            mob.mCurrentRoom.addRes(mob);
-            mob.mWorld.addRes(mob);
+            Mob clone = Clone();
+            mChildren.Add(clone);
+            mWorld.totallyAddRes(clone);
         }// respawn
 
         public virtual String exitString(Room currentRoom)
@@ -570,7 +571,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode wear(CombatMob mob, ref String clientString)
         {
-            clientString = "you can't wear that\n";
+            clientString += "you can't wear the " + mName + "\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
@@ -636,33 +637,33 @@ namespace _8th_Circle_Server
             return eCode;
         }// search
 
-        public static Direction DirStrToEnum(String dirStr)
+        public static int DirStrToInt(String dirStr)
         {
             switch (dirStr)
             {
                 case "north":
-                    return Direction.NORTH;
+                    return (int)Direction.NORTH;
                 case "south":
-                    return Direction.SOUTH;
+                    return (int)Direction.SOUTH;
                 case "east":
-                    return Direction.EAST;
+                    return (int)Direction.EAST;
                 case "west":
-                    return Direction.WEST;
+                    return (int)Direction.WEST;
                 case "up":
-                    return Direction.UP;
+                    return (int)Direction.UP;
                 case "down":
-                    return Direction.DOWN;
+                    return (int)Direction.DOWN;
                 case "northwest":
-                    return Direction.NORTHWEST;
+                    return (int)Direction.NORTHWEST;
                 case "northeast":
-                    return Direction.NORTHEAST;
+                    return (int)Direction.NORTHEAST;
                 case "southwest":
-                    return Direction.SOUTHWEST;
+                    return (int)Direction.SOUTHWEST;
                 case "southeast":
-                    return Direction.SOUTHEAST;
+                    return (int)Direction.SOUTHEAST;
 
                 default:
-                    return Direction.DIRECTION_END;
+                    return (int)Direction.DIRECTION_END;
             }// switch
         }// DirStrToEnum
 
@@ -678,7 +679,7 @@ namespace _8th_Circle_Server
                 // Max movement
                 if (mMobId == MobList.MAX)
                 {
-                    Utils.broadcast(mCurrentRoom, this, mName + " purrs softly\n");
+                    Utils.Broadcast(mCurrentRoom, this, mName + " purrs softly\n");
 
                     ArrayList commandQueue = new ArrayList();
                     CommandClass com = mCurrentArea.GetCommandExecutor().GetCCDict()[Utils.createTuple(CommandName.COMMAND_TELL, 256)];
@@ -692,7 +693,7 @@ namespace _8th_Circle_Server
                         commandQueue.Clear();
                     }
                 }// if (mMobId == (int)MobList.MAX)
-            }// if
+            }// if (mRand.NextDouble() < .5)
             else
             {
                 ArrayList commandQueue = new ArrayList();
@@ -700,12 +701,12 @@ namespace _8th_Circle_Server
 
                 if (commandQueue.Count > 0)
                 {
-                    Utils.broadcast(mCurrentRoom, this, mName + " scampers off\n");
+                    Utils.Broadcast(mCurrentRoom, this, mName + " scampers off\n");
 
                     int index = (int)(commandQueue.Count * mRand.NextDouble());
                     CommandClass com = (CommandClass)commandQueue[index];
                     mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this, ref clientString);
-                }// if
+                }
                 else
                 { // There must be no exits in the room the CombatMob is trying to leave, so just stay put
                 }
@@ -758,7 +759,6 @@ namespace _8th_Circle_Server
         public World GetWorld() { return mWorld; }
         public void SetWorld(World world) { mWorld = world; }
         public void SetAreaLoc(int index, int val) { mAreaLoc[index] = val; }
-        public Room GetStartingRoom() { return mStartingRoom; }
         public void SetStartingRoom(Room room) { mStartingRoom = room; }
         public Room GetCurrentRoom() { return mCurrentRoom; }
         public void SetCurrentRoom(Room room) { mCurrentRoom = room; }
@@ -771,13 +771,11 @@ namespace _8th_Circle_Server
         public List<Mob> GetChildren() { return mChildren; }
         public Mob GetParent() { return mParent; }
         public void SetParent(Mob parent) { mParent = parent; }
-        public MobList GetMobID() { return mMobId; }
         public void SetMobID(MobList mobID) { mMobId = mobID; }
         public int GetKeyID() { return mKeyId; }
         public void SetKeyID(int keyID) { mKeyId = keyID; }
         public int GetStartingRespawnTime() { return mStartingRespawnTime; }
         public void SetStartingRespawnTime(int time) { mStartingRespawnTime = time; }
-        public int GetCurrentRespawnTime() { return mCurrentRespawnTime; }
         public void SetCurrentRespawnTime(int time) { mCurrentRespawnTime = time; }
         public int DecRespawnTime(int time) { return (mCurrentRespawnTime = mCurrentRespawnTime - time); }
         public bool IsRespawning() { return mIsRespawning; }
@@ -785,11 +783,9 @@ namespace _8th_Circle_Server
         public int GetActionTimer() { return mActionTimer; }
         public void SetActionTimer(int time) { mActionTimer = time; }
         public int ModifyActionTimer(int time) { return (mActionTimer = mActionTimer + time); }
-        public int GetCurrentActionTimer() { return mCurrentActionCounter; }
         public void SetCurrentActionTimer(int time) { mCurrentActionCounter = time; }
         public int DecCurrentActionTimer(int time) { return (mCurrentActionCounter = mCurrentActionCounter - time); }
         public int GetStartingActionTimer() { return mStartingActionCounter; }
-        public MobFlags GetFlags() { return mFlags; }
         public bool HasFlag(Enum flag) { return mFlags.HasFlag(flag); }
         public virtual Dictionary<EQSlot, Mob> GetEQList() { return null; }
         public void CreateMemento() { mMemento = Clone(); }

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace _8th_Circle_Server
 {
@@ -22,12 +21,12 @@ namespace _8th_Circle_Server
         public override Mob Clone()
         {
             return new Container(this);
-        }
+        }// Clone
 
         public override Mob Clone(String name)
         {
             return new Container(name);
-        }
+        }// Clone
 
         public override errorCode viewed(Mob viewer, Preposition prep, ref String clientString)
         {
@@ -48,7 +47,7 @@ namespace _8th_Circle_Server
                     clientString += mName + " is closed\n";
 
                 eCode = errorCode.E_OK;
-            }// if
+            }
             else if (prep.prepType == PrepositionType.PREP_IN && mPrepList.Contains(PrepositionType.PREP_IN))
             {
                 if (HasFlag(MobFlags.OPEN))
@@ -64,10 +63,10 @@ namespace _8th_Circle_Server
                     }// else
 
                     eCode = errorCode.E_OK;
-                }// if
+                }
                 else
                     clientString += mName + " is closed, you cannot look inside\n";
-            }// if
+            }// if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             else
                 clientString += "You can't look like that\n";
 

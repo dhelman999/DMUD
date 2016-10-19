@@ -7,7 +7,7 @@ namespace _8th_Circle_Server
     {
         // There are some dictionaries that have more than one key.  This function creates a combination of objects as a single key.
         // The syntax for doing this in C# is really awkward, this function helps to make it slightly more readable even though it
-        // is still pretty bad.  This is mainly used to get command classes out of and into dictionaries.
+        // is still pretty bad.  This is mainly used to get CommandClasses out of and into dictionaries.
         static public Tuple<CommandName, int> createTuple(CommandName cmdName, int maxTokens)
         {
             return new Tuple<CommandName, int>(cmdName, maxTokens);
@@ -34,19 +34,19 @@ namespace _8th_Circle_Server
         }// UnsetFlag
 
         // Broadcasts a message to the broadcaster and a different message to everyone else
-        public static void broadcast<T>(T location, Mob broadcaster, String receiversMessage, String broadcasterMessage = null) where T : ResourceHandler
+        public static void Broadcast<T>(T location, Mob broadcaster, String receiversMessage, String BroadcasterMessage = null) where T : ResourceHandler
         {
             foreach(CombatMob player in location.getRes(ResType.PLAYER))
             {
                 if (player == broadcaster)
-                    broadcaster.safeWrite(broadcasterMessage);
+                    broadcaster.safeWrite(BroadcasterMessage);
                 else
                     player.safeWrite(receiversMessage);
             }      
-        }// broadcast
+        }// Broadcast
 
         // Returns a String of all resources of a specific type in a location
-        public static String printResources<T>(T location, ResType resType) where T : ResourceHandler
+        public static String PrintResources<T>(T location, ResType resType) where T : ResourceHandler
         {
             String returnString = String.Empty;
 
@@ -69,7 +69,7 @@ namespace _8th_Circle_Server
             }
 
             return returnString;
-        }// printResources
+        }// PrintResources
 
     }// Utils
 

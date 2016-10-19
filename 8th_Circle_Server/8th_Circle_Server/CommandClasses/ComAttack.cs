@@ -24,6 +24,7 @@ namespace _8th_Circle_Server
             if (!target.HasFlag(MobFlags.COMBATABLE) || !(target is CombatMob))
             {
                 clientString = "you can't attack that";
+
                 return eCode;
             }
                 

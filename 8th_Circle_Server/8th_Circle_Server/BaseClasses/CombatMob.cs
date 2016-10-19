@@ -64,12 +64,12 @@ namespace _8th_Circle_Server
         public override Mob Clone()
         {
             return new CombatMob(this);
-        }
+        }// Clone
 
         public override Mob Clone(String name)
         {
             return new CombatMob(name);
-        }
+        }// Clone
 
         public void fillResistances()
         {
@@ -136,13 +136,10 @@ namespace _8th_Circle_Server
             {
                 tmpInvCount = mInventory.Count;
 
-                if (mInventory[i] is Equipment)
-                {
-                    ((Equipment)mInventory[i]).wear(this, ref clientString);
+                (mInventory[i]).wear(this, ref clientString);
 
-                    if (tmpInvCount != mInventory.Count)
-                        --i;
-                }// if
+                if (tmpInvCount != mInventory.Count)
+                    --i;
             }// for
 
             return errorCode.E_OK;
@@ -153,7 +150,7 @@ namespace _8th_Circle_Server
             for(EQSlot slot = EQSlot.EQSLOT_START; slot < EQSlot.EQSLOT_END; ++slot)
             {
                 if (this[slot] != null)
-                    clientString += this[slot].remove(this, ref clientString) + "\n";
+                    this[slot].remove(this, ref clientString);
             }
 
             return errorCode.E_OK;
@@ -205,7 +202,6 @@ namespace _8th_Circle_Server
         public override Dictionary<EQSlot, Mob> GetEQList() { return mEQList; }
         public MobType GetMobType() { return mMobType; }
         public void SetMobType(MobType mobType) { mMobType = mobType; }
-        public ClientHandler GetClientHandler() { return mClientHandler; }
         public void SetClientHandler(ClientHandler clientHandler) { mClientHandler = clientHandler; }
         public String GetQueuedCommand() { return mQueuedCommand; }
         public void SetQueuedCommand(String command) { mQueuedCommand = command; }

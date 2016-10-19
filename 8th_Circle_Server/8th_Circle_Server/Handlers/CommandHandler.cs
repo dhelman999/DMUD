@@ -5,7 +5,7 @@ namespace _8th_Circle_Server
 {
     public class CommandHandler
     {   
-        private Queue<commandData> mCommandQueue;
+        private Queue<CommandData> mCommandQueue;
         private CommandExecuter mCommandExecuter;
         private World mWorld;
         private object mQueueLock;
@@ -13,7 +13,7 @@ namespace _8th_Circle_Server
   
         public CommandHandler(World world)
         {  
-            mCommandQueue = new Queue<commandData>();
+            mCommandQueue = new Queue<CommandData>();
             mCommandExecuter = new CommandExecuter();
             mWorld = world;
             mQueueLock = new object();
@@ -27,7 +27,7 @@ namespace _8th_Circle_Server
 
         public static void spinWork(CommandHandler commandHandler, CommandExecuter commandExecuter)
         {
-            commandData comData;
+            CommandData comData;
 
             while (true)
             {
@@ -47,12 +47,12 @@ namespace _8th_Circle_Server
                              comData.mob.safeWrite("you can't do that while searching");
                         else
                             comData.mob.SetQueuedCommand(comData.command);
-                    }// while
+                    }
                 }// catch
-            }// while
+            }// while (true)
         }// spinWork
 
-        public void enQueueCommand(commandData cd)
+        public void enQueueCommand(CommandData cd)
         {
             lock (mQueueLock)
             {

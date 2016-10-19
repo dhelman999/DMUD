@@ -83,11 +83,11 @@ namespace _8th_Circle_Server
                 cm[mSlot] = this;
                 cm.GetInv().Remove(this);
 
-                clientString = "you equip the " + mName;
+                clientString += "you equip the " + mName + "\n";
                 eCode = errorCode.E_OK;
-            }// if
+            }
             else
-                clientString = "you are already wearing the " + cm[mSlot].GetName();
+                clientString += "you are already wearing the " + cm[mSlot].GetName() + "\n";
 
             return eCode;
         }// wear
@@ -103,7 +103,7 @@ namespace _8th_Circle_Server
                 cm[mSlot] = null;
                 cm.GetInv().Add(this);
 
-                clientString = "you remove the " + mName;
+                clientString += "you remove the " + mName;
                 eCode = errorCode.E_OK;
             }// else
 
@@ -113,13 +113,11 @@ namespace _8th_Circle_Server
         // Accessors
         public void SetType(EQType type) { mType = type; }
         public DamageType GetDamType() { return mDamType; }
-        public EQSlot GetSlot() { return mSlot; }
         public void SetSlot(EQSlot slot) { mSlot = slot; }
         public int GetMinDam() { return mMinDam; }
         public void SetMinDam(int dam) { mMinDam = dam; }
         public int GetMaxDam() { return mMaxDam; }
         public void SetMaxDam(int dam) { mMaxDam = dam; }
-        public int GetHitMod() { return mHitMod; }
         public void SetHitMod(int mod) { mHitMod = mod; }
 
     }// class Equipment

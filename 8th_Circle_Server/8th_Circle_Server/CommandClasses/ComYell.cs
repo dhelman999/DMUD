@@ -16,7 +16,7 @@ namespace _8th_Circle_Server
         {
             String yellerString = "You yell " + "\"" + commandQueue[1] + "\"";
             String receiversString = yeller.GetName() + " yells \"" + commandQueue[1] + "\"";
-            Utils.broadcast(yeller.GetCurrentArea(), yeller, receiversString, yellerString);
+            Utils.Broadcast(yeller.GetCurrentArea(), yeller, receiversString, yellerString);
 
             return errorCode.E_OK;
         }// execute

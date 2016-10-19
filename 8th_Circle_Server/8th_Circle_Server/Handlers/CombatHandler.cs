@@ -47,7 +47,7 @@ namespace _8th_Circle_Server
                         }
                     }
                 }// catch
-            }// while
+            }// while (true)
         }// spinWork
         
         public void enQueueCombat(CombatMob mob)
@@ -341,7 +341,7 @@ namespace _8th_Circle_Server
 
                 String attackerString = "you have slain the " + target.GetName();
                 String receiversString = attacker.GetName() + " has slain " + target.GetName();
-                Utils.broadcast(attacker.GetCurrentRoom(), attacker, receiversString, attackerString);
+                Utils.Broadcast(attacker.GetCurrentRoom(), attacker, receiversString, attackerString);
 
                 target.slain(attacker, ref clientString);
                 target.safeWrite(clientString);
@@ -377,6 +377,7 @@ namespace _8th_Circle_Server
         // Accessors
         public Queue<CombatMob> GetCombatQueue() { return mCombatQueue; }
         public object GetCombatLock() { return mQueueLock; }
+
     }// Class CombatHandler
 
 }// Namespace _8th_Circle_Server

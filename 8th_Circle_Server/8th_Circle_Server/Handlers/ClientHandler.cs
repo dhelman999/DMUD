@@ -94,8 +94,9 @@ namespace _8th_Circle_Server
                                         mPlayer.SetMobType(MobType.NONHEROIC);
                                         break;
                                 }// switch
-                            }
+                            }// else
                         }// while
+
                         mPlayer.SetAreaLoc(0, 1);
                         mPlayer.SetAreaLoc(1, 1);
                         mPlayer.SetAreaLoc(2, 1);
@@ -108,7 +109,7 @@ namespace _8th_Circle_Server
                         String clientString = String.Empty;
                         mPlayer.changeRoom(currentRoom, ref clientString);
 
-                        Utils.broadcast(mWorld, mPlayer, mPlayer.GetName() + " has joined the World", "You enter the 8th Circle...");
+                        Utils.Broadcast(mWorld, mPlayer, mPlayer.GetName() + " has joined the World", "You enter the 8th Circle...");
 
                         do
                         {     
@@ -137,7 +138,7 @@ namespace _8th_Circle_Server
 
         void ClientResponder()
         {
-            commandData cmdData = new commandData();
+            CommandData cmdData = new CommandData();
             cmdData.mob = mPlayer;
             mCmdString = "Please enter your player's name.";
             safeWrite(mCmdString);
@@ -161,8 +162,10 @@ namespace _8th_Circle_Server
                 if (mCmdString.Equals("exit"))
                     return;
 
+                Room currentRoom = mPlayer.GetCurrentRoom();
+
                 if(mPlayer != null && mPlayer.GetCurrentRoom() != null)
-                   safeWrite(mPlayer.GetCurrentRoom().exitString() + mPlayer.playerString());
+                   safeWrite(currentRoom.exitString() + mPlayer.playerString());
             }// catch
             while (true)
             {
@@ -207,8 +210,8 @@ namespace _8th_Circle_Server
         {
             if (mPlayer != null)
             {
-                Utils.broadcast(mWorld, mPlayer, mPlayer.GetName() + " has left the world");
                 mWorld.totallyRemoveRes(mPlayer);
+                Utils.Broadcast(mWorld, mPlayer, mPlayer.GetName() + " has left the world");
             }// if
 
             mStreamReader.Close();
