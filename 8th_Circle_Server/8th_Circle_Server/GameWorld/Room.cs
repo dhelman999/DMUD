@@ -25,39 +25,6 @@ namespace _8th_Circle_Server
             }               
         }// Constructor
 
-        public Room(String desc) : base()
-        {
-            mDescription = desc;
-            mAreaLoc = new int[3];
-            mRoomLinks = new List<Room>();
-
-            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
-            {
-                getRes(ResType.DOORWAY).Add(null);
-                mRoomLinks.Add(null);
-            }      
-
-            mAreaLoc[0] = mAreaLoc[1] = mAreaLoc[2] = -1;
-        }// Constructor
-
-        public Room(String desc, int xCoord, int yCoord, int zCoord, RoomID roomID) : base()
-        {
-            mDescription = desc;
-            mAreaLoc = new int[3];
-            mRoomLinks = new List<Room>();
-
-            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
-            {
-                getRes(ResType.DOORWAY).Add(null);
-                mRoomLinks.Add(null);
-            }      
-
-            mAreaLoc[0] = xCoord;
-            mAreaLoc[1] = yCoord;
-            mAreaLoc[2] = zCoord;
-            mRoomID = roomID;
-        }// Constructor
-
         public Room(String desc, int xCoord, int yCoord, int zCoord, RoomID roomID, Area area) : base()
         {
             mDescription = desc;
@@ -302,7 +269,7 @@ namespace _8th_Circle_Server
         public int[] GetAreaLoc() { return mAreaLoc; }
         public Area GetCurrentArea() { return mCurrentArea;  }
         public List<Room> GetRoomLinks() { return mRoomLinks; }
-
+        
     }// Class Room
 
 }// Namespace _8th_Circle_Server

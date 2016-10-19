@@ -16,7 +16,6 @@ namespace _8th_Circle_Server
         private AreaHandler mAreaHandler;
         private CombatHandler mCombatHandler;
         private List<Area> mAreaList; 
-        private Room[, ,] mWorldGrid;
 
         public World() : base()
         {
@@ -25,7 +24,6 @@ namespace _8th_Circle_Server
             mAreaHandler = new AreaHandler(this);
             mCombatHandler = new CombatHandler(this);
             mAreaList = new List<Area>();
-            mWorldGrid = new Room[MAXXSIZE, MAXYSIZE, MAXZSIZE];
 
             // Add global prototypes and areas
             registerGlobalMobs();
@@ -237,8 +235,6 @@ namespace _8th_Circle_Server
             {
                 Room currentRoom = keyValPair.Value;
                 
-                // TODO
-                // Implement a getRoom with a direction
                 Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
                 Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_PROTOAREA);
@@ -855,17 +851,6 @@ namespace _8th_Circle_Server
 
             return null;
         }// getRoom
-
-        public Area getArea(String areaName)
-        {
-            foreach (Area area in mAreaList)
-            {
-                if(area.GetName().Equals(areaName))
-                    return area;
-            }// foreach
-
-            return null;
-        }// getArea
 
         public void totallyRemoveRes(Mob resource)
         {

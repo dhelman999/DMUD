@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace _8th_Circle_Server
 {
