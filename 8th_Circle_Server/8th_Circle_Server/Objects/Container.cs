@@ -5,8 +5,6 @@ namespace _8th_Circle_Server
 {
     public class Container : Mob
     {
-        // Member Variables
-        private bool mIsOpen;
 
         public Container(String name = "") : base()
         {
@@ -15,12 +13,10 @@ namespace _8th_Circle_Server
 
             mPrepList.Add(PrepositionType.PREP_FROM);
             mPrepList.Add(PrepositionType.PREP_IN);
-            mIsOpen = false;
         }// Constructor
 
         public Container(Container mob) : base(mob)
         {
-            mIsOpen = mob.mIsOpen;
         }// Copy Constructor
 
         public override Mob Clone()
@@ -37,7 +33,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
             {
                 clientString = "you can't do that\n";
 
@@ -46,7 +42,7 @@ namespace _8th_Circle_Server
 
             if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
-                if(mIsOpen)
+                if(HasFlag(MobFlags.OPEN))
                     clientString += mName + " is open\n";
                 else
                     clientString += mName + " is closed\n";
@@ -55,7 +51,7 @@ namespace _8th_Circle_Server
             }// if
             else if (prep.prepType == PrepositionType.PREP_IN && mPrepList.Contains(PrepositionType.PREP_IN))
             {
-                if (mIsOpen)
+                if (HasFlag(MobFlags.OPEN))
                 {
                     clientString += mName + " contains: \n\n";
 
@@ -82,7 +78,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
             {
                 clientString = "you can't do that\n";
 
@@ -91,14 +87,14 @@ namespace _8th_Circle_Server
 
             if(HasFlag(MobFlags.OPENABLE))
             {
-                if(mIsOpen)
+                if(HasFlag(MobFlags.OPEN))
                     clientString = mName + " is already open\n";
                 else if (HasFlag(MobFlags.LOCKED))
                     clientString = mName + " is locked\n";
                 else
                 {
                     clientString = "You open the " + mName + "\n";
-                    mIsOpen = true;
+                    Utils.SetFlag(ref mFlags, MobFlags.OPEN);
 
                     if (mParent != null)
                         mParent.SetIsRespawning(true);
@@ -116,7 +112,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.CLOSEABLE))
             {
-                if (!mIsOpen)
+                if (!HasFlag(MobFlags.OPEN))
                 {
                     clientString = mName + " is already closed\n";
 
@@ -126,7 +122,7 @@ namespace _8th_Circle_Server
                 else
                 {
                     clientString = "You close the " + mName + "\n";
-                    mIsOpen = false;
+                    Utils.UnsetFlag(ref mFlags, MobFlags.OPEN);
 
                     if (mParent != null)
                         mParent.SetIsRespawning(true);
@@ -154,17 +150,16 @@ namespace _8th_Circle_Server
             {
                 if (HasFlag(MobFlags.LOCKABLE))
                 {
-                    if (mIsOpen)
+                    if (HasFlag(MobFlags.OPEN))
                     {
                         clientString = "you cannot lock " + mName + ", it is open!\n";
 
                         return eCode;
                     }   
 
-                    if (HasFlag(MobFlags.UNLOCKED))
+                    if (!HasFlag(MobFlags.LOCKED))
                     {
                         Utils.SetFlag(ref mFlags, MobFlags.LOCKED);
-                        Utils.UnsetFlag(ref mFlags, MobFlags.UNLOCKED);
 
                         if (mParent != null)
                             mParent.SetIsRespawning(true);
@@ -198,7 +193,7 @@ namespace _8th_Circle_Server
 
             if (foundKey)
             {
-                if (mIsOpen)
+                if (HasFlag(MobFlags.OPEN))
                 {
                     clientString = "you cannot unlock " + mName + ", it is open!\n";
 
@@ -209,7 +204,6 @@ namespace _8th_Circle_Server
                 {
                     if (HasFlag(MobFlags.LOCKED))
                     {
-                        Utils.SetFlag(ref mFlags, MobFlags.UNLOCKED);
                         Utils.UnsetFlag(ref mFlags, MobFlags.LOCKED);
 
                         if (mParent != null)
@@ -229,9 +223,6 @@ namespace _8th_Circle_Server
 
             return eCode;
         }// unlock
-
-        // Accessors
-        public bool IsOpen() { return mIsOpen; }
 
     }// Class Container
 

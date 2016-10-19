@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -9,24 +8,20 @@ namespace _8th_Circle_Server
         internal const int MAXROOMS = 10;
 
         // Member Variables
-        private bool mIsOpen;
         private Room [] mRoomList;
 
         public Doorway() : base()
         {
-            mIsOpen = false;
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
         public Doorway(String name, MobFlags flags = MobFlags.NONE) : base(name, flags)
         {
-            mIsOpen = false;
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
         public Doorway(Doorway doorway) : base()
         {
-            mIsOpen = doorway.mIsOpen;
             mRoomList = (Room [])doorway.mRoomList.Clone();
             mFlags = doorway.mFlags;
         }// Copy Constructor
@@ -46,7 +41,6 @@ namespace _8th_Circle_Server
             if(mMemento != null)
             {
                 Doorway memento = (Doorway)mMemento;
-                mIsOpen = memento.mIsOpen;
                 mRoomList = memento.mRoomList;
                 mFlags = memento.mFlags;
             }
@@ -56,16 +50,16 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
-            if (mFlags.HasFlag(MobFlags.LOCKED))
+            if (HasFlag(MobFlags.LOCKED))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
-            if (mIsOpen)
+            if (HasFlag(MobFlags.OPEN))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
 
             else
             {
-                mIsOpen = true;
+                Utils.SetFlag(ref mFlags, MobFlags.OPEN);
 
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
@@ -87,15 +81,15 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
-            if (mFlags.HasFlag(MobFlags.LOCKED))
+            if (HasFlag(MobFlags.LOCKED))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
-            if (!mIsOpen)
+            if (!HasFlag(MobFlags.OPEN))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
             else
             {
-                mIsOpen = false;
+                Utils.UnsetFlag(ref mFlags, MobFlags.OPEN);
 
                 for (int i = 0; i < mRoomList.Length; ++i)
                 {
@@ -180,7 +174,6 @@ namespace _8th_Circle_Server
         }// exitString
 
         // Accessors
-        public bool IsOpen() { return mIsOpen; }
         public Room[] GetRoomList() { return mRoomList; }
 
     }// Class Doorway

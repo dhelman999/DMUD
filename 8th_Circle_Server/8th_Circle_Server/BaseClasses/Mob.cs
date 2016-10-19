@@ -137,7 +137,7 @@ namespace _8th_Circle_Server
 
             if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-               ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).IsOpen()))
+               (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).HasFlag(MobFlags.OPEN)))
             { 
                 eCode = changeRoom(mCurrentRoom.GetRoomLinks()[(int)dir], ref clientString);
             }
@@ -187,7 +187,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
             {
                 clientString = "you can't do that\n";
 
@@ -210,7 +210,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
             {
                 clientString = "you can't do that\n";
 
@@ -267,7 +267,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
             {
                 clientString = "you can't do that\n";
 
@@ -287,7 +287,7 @@ namespace _8th_Circle_Server
                         clientString += "you get " + exitString(mCurrentRoom) + "\n";
                         eCode = errorCode.E_OK;
                     }
-                    else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
+                    else if (container.HasFlag(MobFlags.OPENABLE) && container.HasFlag(MobFlags.OPEN))
                     {
                         if (prepType == PrepositionType.PREP_FROM)
                         {
@@ -376,7 +376,7 @@ namespace _8th_Circle_Server
 
             if (container.HasFlag(MobFlags.HIDDEN))
                 return eCode;
-            if (!container.IsOpen())
+            if (!container.HasFlag(MobFlags.OPEN))
                 clientString = "the " + container.GetName() + " is closed.";
             if (containerInv.Count == 0)
                 clientString = "there is nothing to get.";
@@ -441,7 +441,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode open(Mob mob, ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "You can't open that\n";
@@ -451,7 +451,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode close(Mob mob, ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "You can't close that\n";
@@ -461,7 +461,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode lck(Mob mob, ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "You can't lock that\n";
@@ -471,7 +471,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode unlock(Mob mob, ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "You can't unlock that\n";
@@ -540,7 +540,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode lck(ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "you can't lock that\n";
@@ -550,7 +550,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode unlock(ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "you can't unlock that\n";
@@ -560,7 +560,7 @@ namespace _8th_Circle_Server
 
         public virtual errorCode fullheal(ref String clientString)
         {
-            if (mFlags.HasFlag(MobFlags.HIDDEN))
+            if (HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
 
             clientString = "you can't fullheal that\n";
@@ -731,7 +731,7 @@ namespace _8th_Circle_Server
             {
                 if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
                    (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-                   ((Doorway)mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).IsOpen()))
+                   (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).HasFlag(MobFlags.OPEN)))
                 {
                     commandQueue.Add(directionalCommands[dir]);
                 }// if

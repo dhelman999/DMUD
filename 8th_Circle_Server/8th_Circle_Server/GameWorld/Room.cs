@@ -184,52 +184,52 @@ namespace _8th_Circle_Server
 
             if (mRoomLinks[(int)Direction.NORTH] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTH]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTH]).HasFlag(MobFlags.OPEN)))
                 exitStr += "North ";
 
             if (mRoomLinks[(int)Direction.SOUTH] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTH] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTH]).HasFlag(MobFlags.OPEN)))
                 exitStr += "South ";
 
             if (mRoomLinks[(int)Direction.EAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.EAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.EAST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.EAST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "East ";
 
             if (mRoomLinks[(int)Direction.WEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.WEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.WEST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.WEST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "West ";
 
             if (mRoomLinks[(int)Direction.UP] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.UP] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.UP]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.UP]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Up ";
 
             if (mRoomLinks[(int)Direction.DOWN] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.DOWN] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.DOWN]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.DOWN]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Down ";
 
             if (mRoomLinks[(int)Direction.NORTHWEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHWEST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Northwest ";
 
             if (mRoomLinks[(int)Direction.NORTHEAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.NORTHEAST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Northeast ";
 
             if (mRoomLinks[(int)Direction.SOUTHWEST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHWEST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Southwest ";
 
             if (mRoomLinks[(int)Direction.SOUTHEAST] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST] == null ||
-                ((Doorway)getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).IsOpen()))
+                (getRes(ResType.DOORWAY)[(int)Direction.SOUTHEAST]).HasFlag(MobFlags.OPEN)))
                 exitStr += "Southeast ";
 
             return exitStr;

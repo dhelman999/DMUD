@@ -56,7 +56,7 @@ namespace _8th_Circle_Server
             {
                 Mob currentMob = locResources[index];
 
-                if (currentMob == null || currentMob.mFlags.HasFlag(MobFlags.HIDDEN))
+                if (currentMob == null || currentMob.HasFlag(MobFlags.HIDDEN))
                     continue;
 
                 if(resType == ResType.DOORWAY)
