@@ -67,12 +67,12 @@ namespace _8th_Circle_Server
         public override Mob Clone()
         {
             return new Equipment(this);
-        }
+        }// Clone
 
         public override Mob Clone(String name)
         {
             return new Equipment(this, name);
-        }
+        }// Clone
 
         public override errorCode wear(CombatMob cm, ref String clientString)
         {

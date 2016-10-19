@@ -4,13 +4,7 @@ using System.Collections.Generic;
 namespace _8th_Circle_Server
 {
     public partial class World : ResourceHandler
-    {
-        // Constants
-        const int MAXXSIZE = 3;
-        const int MAXYSIZE = 3;
-        const int MAXZSIZE = 3;
-        
-        // Member Variables
+    {   
         private CommandHandler mCommandHandler;
         private EventHandler mEventHandler;
         private AreaHandler mAreaHandler;

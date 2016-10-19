@@ -10,27 +10,23 @@ namespace _8th_Circle_Server
 
         // Member Variables
         private bool mIsOpen;
-        private bool mIsLocked;
         private Room [] mRoomList;
 
         public Doorway() : base()
         {
             mIsOpen = false;
-            mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
         public Doorway(String name, MobFlags flags = MobFlags.NONE) : base(name, flags)
         {
             mIsOpen = false;
-            mIsLocked = false;
             mRoomList = new Room[MAXROOMS];
         }// Constructor
 
         public Doorway(Doorway doorway) : base()
         {
             mIsOpen = doorway.mIsOpen;
-            mIsLocked = doorway.mIsLocked;
             mRoomList = (Room [])doorway.mRoomList.Clone();
             mFlags = doorway.mFlags;
         }// Copy Constructor
@@ -50,7 +46,6 @@ namespace _8th_Circle_Server
             if(mMemento != null)
             {
                 Doorway memento = (Doorway)mMemento;
-                mIsLocked = memento.mIsLocked;
                 mIsOpen = memento.mIsOpen;
                 mRoomList = memento.mRoomList;
                 mFlags = memento.mFlags;
@@ -63,7 +58,7 @@ namespace _8th_Circle_Server
 
             if (mFlags.HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
-            if (mIsLocked)
+            if (mFlags.HasFlag(MobFlags.LOCKED))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (mIsOpen)
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
@@ -94,7 +89,7 @@ namespace _8th_Circle_Server
 
             if (mFlags.HasFlag(MobFlags.HIDDEN))
                 clientString = "you can't do that\n";
-            if (mIsLocked)
+            if (mFlags.HasFlag(MobFlags.LOCKED))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!mIsOpen)
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
@@ -186,7 +181,6 @@ namespace _8th_Circle_Server
 
         // Accessors
         public bool IsOpen() { return mIsOpen; }
-        public bool IsLocked() { return mIsLocked; }
         public Room[] GetRoomList() { return mRoomList; }
 
     }// Class Doorway
