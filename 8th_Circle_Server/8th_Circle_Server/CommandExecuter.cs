@@ -4,6 +4,11 @@ using System.Collections;
 
 namespace _8th_Circle_Server
 {
+    // Class CommandExecuter
+    // Main parser and logic to execute the clients commands.  Design is that each area has its own command executer to promote resource
+    // independence from other threads.  The parser defines a language that always starts with a verb that is followed by various combinations
+    // of predicates and prepisitions.  Predicates are all objects in the game, from players to containers to doors to NPCs.  Prepisitions
+    // are valid words used to interact with predicates, like 'in', 'on' etc.
     public class CommandExecuter
     {
         private Dictionary<PrepositionType, Preposition> mPrepDict;
@@ -24,9 +29,10 @@ namespace _8th_Circle_Server
             addAbilitySpells();
         }// Constructor
 
+        // Add all valid combinations of grammar to each executers dictionary.  This is possible to have different grammars and allowable
+        // verbs for each area, but currently they are all shared.
         private void addGrammar()
         {
-            // Add Grammars
             Grammar[] gramVerb = new Grammar[1];
             gramVerb[0] = Grammar.VERB;
             mGrammarDict.Add(GrammarType.GRAMMAR_VERB, gramVerb);
@@ -56,9 +62,11 @@ namespace _8th_Circle_Server
             mGrammarDict.Add(GrammarType.GRAMMAR_VERB_PRED_PREP_PRED, gramVerbPredPrepPred);
         }// addGrammar
 
+        // Add all valid commands to this executers dictionary.  Commands are every verb allowed in the area/game, including spells and abilities.
+        // There can be multiple commands of the same name, such as 'look', 'look west', and 'look in chest' would be 3 seperate commands 
+        // each with different grammars.
         private void addCommands()
         {
-            // Add Verbs
             CommandClass commandClass = new ComUp("up", "u", 1, 1, MobType.ALL, mGrammarDict[GrammarType.GRAMMAR_VERB], CommandName.COMMAND_UP,
                 PredicateType.END, PredicateType.END);
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_UP, commandClass.GetMaxTokens()), commandClass);
@@ -240,6 +248,7 @@ namespace _8th_Circle_Server
             mCCDict.Add(Utils.createTuple(CommandName.COMMAND_CAST, commandClass.GetMaxTokens()), commandClass);
         }// addCommands;
 
+        // Add all allowable prepisitions to the area/game's dictionary.
         private void addPrepositions()
         {
             // Add prepositions
@@ -250,6 +259,7 @@ namespace _8th_Circle_Server
             mPrepDict.Add(PrepositionType.PREP_FROM, new Preposition("from", PrepositionType.PREP_FROM));
         }// addPrepositions
 
+        // Add all allowable abilities/spells to the area/game's dictionary.
         private void addAbilitySpells()
         {
             // This order matters, it must align with the order defined in the enums in AbilitySpell.
@@ -298,6 +308,8 @@ namespace _8th_Circle_Server
             mAbilitySpellList.Add(act);
         }// addAbilitySpells
 
+        // Process the command in its string format.  It needs to be resolved to a verb by the parser, and then needs to process and get all
+        // predicates and add to a commandList which holds the combination of the grammar items in it when resolved.  
         public void process(String command, Mob mob)
         {
             String[] tokens = command.Split(' ');

@@ -6,6 +6,8 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
+    // Class MUDServer
+    // Acts as the main server listening for clients to connect to it, then starts a seperate client thread for each player.
     class MUDServer
     {
         internal const int MUD_SERVER_PORT = 8888;
@@ -34,7 +36,7 @@ namespace _8th_Circle_Server
                 //int maxPlayers = int.Parse(Console.ReadLine());
                 int maxPlayers = 8;
 
-                for (int i = 0; i < maxPlayers; ++i)
+                for (int loopCount = 0; i < maxPlayers; ++loopCount)
                 {
                     Thread listenerThread = new Thread(() => ClientListener(sWorld));
                     sListenerThreadList.Add(listenerThread);
