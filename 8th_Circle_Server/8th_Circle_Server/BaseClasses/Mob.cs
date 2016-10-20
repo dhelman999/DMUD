@@ -4,38 +4,61 @@ using System.Collections;
 
 namespace _8th_Circle_Server
 {
+    // Base class for almost everything in the game besides locations.  Mob's generally implement various actions such as move,
+    // lock unlock etc and inheritance is used for other mobs to go into more detail about what should be done for those actions.
+    // Some actions like move are the same for all mobs, so the base class version is used, where as open might be different
+    // between a doorway mob and a container mob.
     public class Mob
     {
+        // MobFlags represent all 'attributes' of a Mob, such as hidden, in combat, open or closed, locked unlocked ect
         public MobFlags mFlags;
 
+        // Standard things like their name, description, how they should appear in the exit strings, their resource type.
         protected String mName;
         protected ResType mResType;
         protected String mExitStr;
         protected String mShortDescription;
         protected String mDescription;
         protected World mWorld;
+
+        // Starting and current variables.  // TODO can these be reworked into memento, should they be?
         protected Room mStartingRoom;
         protected Room mCurrentRoom;
         protected Area mStartingArea;
         protected Area mCurrentArea;
         protected Mob mStartingOwner;
         protected Mob mCurrentOwner;
-        protected List<PrepositionType> mPrepList;
-        protected List<Mob> mInventory;
-        protected List<EventData> mEventList;
-        protected List<Mob> mChildren;
-        protected Mob mParent;
-        protected MobList mMobId;
-        protected int mKeyId;
-        protected int mStartingRespawnTime;
-        protected int mCurrentRespawnTime;
-        protected bool mIsRespawning;
-        protected int mActionTimer;
+        protected int mActionTimer;  // TODO, Not exactly sure what this is, might be a duplicate of currentActionCounter
         protected int mStartingActionCounter;
         protected int mCurrentActionCounter;
+        protected int mStartingRespawnTime;
+        protected int mCurrentRespawnTime;
+
+        protected bool mIsRespawning; // TODO should this be made into a mobFlag?
+        // What prepisitions are applicable to this Mob.
+        protected List<PrepositionType> mPrepList;
+        // Mobs Inventory if any
+        protected List<Mob> mInventory;
+        // Events triggered by this mob
+        protected List<EventData> mEventList;
+
+        // Children and parent relationship goes into the prototype and respawn model, this is discussed in the PrototypeManger
+        protected List<Mob> mChildren;
+        protected Mob mParent;
+
+        // Each mob has a game-wide identifier
+        protected MobList mMobId;
+
+        // Mobs can be opened or affected in special ways with other mobs that share their keyid
+        protected int mKeyId;
+
+        // Mementos help facilitate respawning and resetting a mob without duplicating a ton of starting/current member variables and mobflags
         protected Mob mMemento;
 
+        // Random number generator if the Mob needs random actions
         private Random mRand;
+
+        // Position in their current area
         private int[] mAreaLoc;
 
         public Mob()
@@ -126,6 +149,7 @@ namespace _8th_Circle_Server
             return new Mob(name);
         }
 
+        // // Basic used functionality, moves the mob 1 room in the specified direction.
         public errorCode move(String direction, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -133,7 +157,7 @@ namespace _8th_Circle_Server
             if (HasFlag(MobFlags.INCOMBAT))
                 clientString = "you can't move while in combat\n";
 
-            int dir = DirStrToInt(direction);
+            int dir = Utils.DirStrToInt(direction);
             List<Mob> doorways = mCurrentRoom.getRes(ResType.DOORWAY);
 
             if (mCurrentRoom.GetRoomLinks()[dir] != null &&
@@ -148,6 +172,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// move
 
+        // Changes the mobs room to a new room, basic teleporting, or spawning.
         public errorCode changeRoom(Room newRoom, ref String clientString)
         {
             if (HasFlag(MobFlags.INCOMBAT))
@@ -181,11 +206,13 @@ namespace _8th_Circle_Server
             return errorCode.E_OK;
         }// changeRoom
 
+        // Basic used functionality
         public virtual String used()
         {
             return String.Empty;
         }// used
 
+        // Basic viewed functionality, returns its description
         public virtual errorCode viewed(Mob viewer, Preposition prep, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -209,6 +236,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// viewed
 
+        // Basic get functionality, adds the item to the mobs inventory
         public virtual errorCode get(Mob mob, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -265,6 +293,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// get
 
+        // Get functionality if the mob is contained in another object
         public virtual errorCode get(Mob mob, PrepositionType prepType, Container container, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -327,6 +356,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// get
 
+        // Basic getall functionality, attempts to add all mobs in the room to its inventory
         public virtual errorCode getall(ref String clientSString)
         {
             List<Mob> targetList = mCurrentRoom.getRes(ResType.OBJECT);
@@ -372,6 +402,9 @@ namespace _8th_Circle_Server
             return eCode;
         }// getall
 
+        // TODO
+        // Implement this the same way as the basic getall, by creating a new command so it can trigger events.
+        // Getall functionality if the object is in another object
         public virtual errorCode getall(PrepositionType prepType, Container container, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -399,6 +432,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// getall
 
+        // Basic drop functionality, removes the mob from its inventory and adds it to the rooms inventory
         public virtual errorCode drop(Mob mob, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -425,6 +459,8 @@ namespace _8th_Circle_Server
             return eCode;
         }// drop
 
+        // TODO should be implemented like the basic getall, made into a command so it can trigger events
+        // Basic dropall functionality
         public virtual errorCode dropall(ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -442,6 +478,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// dropall
 
+        // Basic open functionality
         public virtual errorCode open(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -452,6 +489,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// open
 
+        // Basic close functionality
         public virtual errorCode close(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -462,6 +500,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// close
 
+        // Basic lock functionality
         public virtual errorCode lck(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -472,6 +511,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
 
+        // Basic unlock functionality
         public virtual errorCode unlock(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -482,6 +522,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
 
+        // Basic use functionality
         public virtual errorCode use(Mob mob, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -500,6 +541,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// unlock
 
+        // Forcefully destroy a mob
         public virtual errorCode destroy(ref String clientString)
         {
             if(this is CombatMob)
@@ -525,6 +567,8 @@ namespace _8th_Circle_Server
             return errorCode.E_OK;
         }// destroy
 
+        // Basic respawn functionality
+        // Respawn occurs by a parent which will then clone itself and create more children and add them back into the world
         public virtual void respawn()
         {
             mIsRespawning = false;
@@ -539,6 +583,7 @@ namespace _8th_Circle_Server
             return mName;
         }// exitString
 
+        // Basic lock functionality
         public virtual errorCode lck(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -549,6 +594,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
 
+        // Basic unlock functionality
         public virtual errorCode unlock(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -559,6 +605,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
 
+        // Basic fullheal functionality
         public virtual errorCode fullheal(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
@@ -569,6 +616,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// fullheal
 
+        // Basic wear functionality
         public virtual errorCode wear(CombatMob mob, ref String clientString)
         {
             clientString += "you can't wear the " + mName + "\n";
@@ -576,6 +624,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
 
+        // Basic wearall functionality
         public virtual errorCode wearall(ref String clientString)
         {
             clientString = "you can't wear that\n";
@@ -583,6 +632,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
 
+        // Basic remove functionality
         public virtual errorCode remove(CombatMob mob, ref String clientString)
         {
             clientString = "you can't remove that\n";
@@ -590,6 +640,7 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
 
+        // Basic removeall functionality
         public virtual errorCode removeall(ref String clientString)
         {
             clientString = "you can't remove that\n";
@@ -597,76 +648,13 @@ namespace _8th_Circle_Server
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
 
+        // Teleports the mob to the specified room
         public virtual errorCode teleport(Mob target, ref String clientString)
         {
             return changeRoom(target.mCurrentRoom, ref clientString);
         }// teleport
 
-        public virtual errorCode search(ref String clientString)
-        {
-            errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
-
-            List<List<Mob>> targetList = new List<List<Mob>>();
-            targetList.Add(mCurrentRoom.getRes(ResType.OBJECT));
-            targetList.Add(mCurrentRoom.getRes(ResType.PLAYER));
-            targetList.Add(mCurrentRoom.getRes(ResType.NPC));
-            targetList.Add(mCurrentRoom.getRes(ResType.DOORWAY));
-            bool found = false;
-
-            foreach (List<Mob> ar in targetList)
-            {
-                foreach (Mob mob in ar)
-                {
-                    if(mob != null && mob.HasFlag(MobFlags.HIDDEN))
-                    {
-                        clientString += "you discover a " + mob.mName;
-                        Utils.UnsetFlag(ref mob.mFlags, MobFlags.HIDDEN);
-                        found = true;
-                        eCode = errorCode.E_OK;
-                    }// if
-                }// foreach
-            }// foreach
-
-            if (!found)
-                clientString = "you find nothing";
-
-            Utils.UnsetFlag(ref mFlags, MobFlags.SEARCHING);
-
-            clientString += "\n";
-
-            return eCode;
-        }// search
-
-        public static int DirStrToInt(String dirStr)
-        {
-            switch (dirStr)
-            {
-                case "north":
-                    return (int)Direction.NORTH;
-                case "south":
-                    return (int)Direction.SOUTH;
-                case "east":
-                    return (int)Direction.EAST;
-                case "west":
-                    return (int)Direction.WEST;
-                case "up":
-                    return (int)Direction.UP;
-                case "down":
-                    return (int)Direction.DOWN;
-                case "northwest":
-                    return (int)Direction.NORTHWEST;
-                case "northeast":
-                    return (int)Direction.NORTHEAST;
-                case "southwest":
-                    return (int)Direction.SOUTHWEST;
-                case "southeast":
-                    return (int)Direction.SOUTHEAST;
-
-                default:
-                    return (int)Direction.DIRECTION_END;
-            }// switch
-        }// DirStrToEnum
-
+        // Does a random action, currently pretty terrible as it can only move or tell.
         public void randomAction()
         {
             String clientString = String.Empty;
@@ -697,7 +685,7 @@ namespace _8th_Circle_Server
             else
             {
                 ArrayList commandQueue = new ArrayList();
-                addExits(commandQueue);
+                mCurrentRoom.addExits(commandQueue);
 
                 if (commandQueue.Count > 0)
                 {
@@ -713,37 +701,13 @@ namespace _8th_Circle_Server
             }// else
         }// randomAction
 
-        private void addExits(ArrayList commandQueue)
-        {
-            Dictionary<Tuple<CommandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
-            Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
-            directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
-            directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(CommandName.COMMAND_NORTH, 1)]);
-            directionalCommands.Add(Direction.NORTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_NORTHEAST, 1)]);
-            directionalCommands.Add(Direction.EAST, commandDict[Utils.createTuple(CommandName.COMMAND_EAST, 1)]);
-            directionalCommands.Add(Direction.SOUTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHEAST, 1)]);
-            directionalCommands.Add(Direction.DOWN, commandDict[Utils.createTuple(CommandName.COMMAND_DOWN, 1)]);
-            directionalCommands.Add(Direction.SOUTH, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTH, 1)]);
-            directionalCommands.Add(Direction.SOUTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHWEST, 1)]);
-            directionalCommands.Add(Direction.WEST, commandDict[Utils.createTuple(CommandName.COMMAND_WEST, 1)]);
-            directionalCommands.Add(Direction.NORTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
-
-            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
-            {
-                if (mCurrentRoom.GetRoomLinks()[(int)dir] != null &&
-                   (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir] == null ||
-                   (mCurrentRoom.getRes(ResType.DOORWAY)[(int)dir]).HasFlag(MobFlags.OPEN)))
-                {
-                    commandQueue.Add(directionalCommands[dir]);
-                }// if
-            }// for
-        }// addExits
-
+        // Basic playerString
         public virtual String playerString()
         {
             return "";
         }
 
+        // Basic safeWrite
         public virtual void safeWrite(String clientString)
         {
             // not implemented

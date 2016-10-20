@@ -36,7 +36,7 @@ namespace _8th_Circle_Server
                 //int maxPlayers = int.Parse(Console.ReadLine());
                 int maxPlayers = 8;
 
-                for (int loopCount = 0; i < maxPlayers; ++loopCount)
+                for (int loopCount = 0; loopCount < maxPlayers; ++loopCount)
                 {
                     Thread listenerThread = new Thread(() => ClientListener(sWorld));
                     sListenerThreadList.Add(listenerThread);

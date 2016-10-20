@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace _8th_Circle_Server
@@ -56,7 +57,7 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
             Room remoteRoom = null;
             bool validRoom = false;
-            int dir = Mob.DirStrToInt(direction);
+            int dir = Utils.DirStrToInt(direction);
 
             if (mRoomLinks[dir] != null)
             {
@@ -228,6 +229,33 @@ namespace _8th_Circle_Server
 
             return exitStr;
         }
+
+        public void addExits(ArrayList commandQueue)
+        {
+            Dictionary<Tuple<CommandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
+            Dictionary<Direction, CommandClass> directionalCommands = new Dictionary<Direction, CommandClass>();
+            directionalCommands.Add(Direction.UP, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
+            directionalCommands.Add(Direction.NORTH, commandDict[Utils.createTuple(CommandName.COMMAND_NORTH, 1)]);
+            directionalCommands.Add(Direction.NORTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_NORTHEAST, 1)]);
+            directionalCommands.Add(Direction.EAST, commandDict[Utils.createTuple(CommandName.COMMAND_EAST, 1)]);
+            directionalCommands.Add(Direction.SOUTHEAST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHEAST, 1)]);
+            directionalCommands.Add(Direction.DOWN, commandDict[Utils.createTuple(CommandName.COMMAND_DOWN, 1)]);
+            directionalCommands.Add(Direction.SOUTH, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTH, 1)]);
+            directionalCommands.Add(Direction.SOUTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_SOUTHWEST, 1)]);
+            directionalCommands.Add(Direction.WEST, commandDict[Utils.createTuple(CommandName.COMMAND_WEST, 1)]);
+            directionalCommands.Add(Direction.NORTHWEST, commandDict[Utils.createTuple(CommandName.COMMAND_UP, 1)]);
+
+            for (Direction dir = Direction.DIRECTION_START; dir <= Direction.DIRECTION_END; ++dir)
+            {
+                if (GetRoomLinks()[(int)dir] != null &&
+                   (getRes(ResType.DOORWAY)[(int)dir] == null ||
+                   (getRes(ResType.DOORWAY)[(int)dir]).HasFlag(MobFlags.OPEN)))
+                {
+                    commandQueue.Add(directionalCommands[dir]);
+                }// if
+            }// for
+        }// addExits
+
         public void removeDualLinks(Direction dir)
         {
             if(mRoomLinks[(int)dir] != null)

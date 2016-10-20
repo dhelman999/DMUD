@@ -71,6 +71,37 @@ namespace _8th_Circle_Server
             return returnString;
         }// PrintResources
 
+        // Converts the string direction to its int representation
+        public static int DirStrToInt(String dirStr)
+        {
+            switch (dirStr)
+            {
+                case "north":
+                    return (int)Direction.NORTH;
+                case "south":
+                    return (int)Direction.SOUTH;
+                case "east":
+                    return (int)Direction.EAST;
+                case "west":
+                    return (int)Direction.WEST;
+                case "up":
+                    return (int)Direction.UP;
+                case "down":
+                    return (int)Direction.DOWN;
+                case "northwest":
+                    return (int)Direction.NORTHWEST;
+                case "northeast":
+                    return (int)Direction.NORTHEAST;
+                case "southwest":
+                    return (int)Direction.SOUTHWEST;
+                case "southeast":
+                    return (int)Direction.SOUTHEAST;
+
+                default:
+                    return (int)Direction.DIRECTION_END;
+            }// switch
+        }// DirStrToEnum
+
     }// Utils
 
 }// _8th_Circle_Server

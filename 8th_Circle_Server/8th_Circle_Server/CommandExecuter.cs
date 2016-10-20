@@ -352,6 +352,8 @@ namespace _8th_Circle_Server
             mob.safeWrite(clientString);
         }// process
 
+        // First check to see if the shortname matches, if not, then simply find any verb that contains any substring of the command.
+        // Note there could be more than one command that matches.
         private errorCode initialMatching(String[] tokens, ArrayList ccList)
         {
             errorCode foundMatch = errorCode.E_INVALID_COMMAND_USAGE;
@@ -380,6 +382,7 @@ namespace _8th_Circle_Server
             return foundMatch;
         }// initialMatching
 
+        // Resolve which command given multiple verbs, this mainly has to do with the max tokens allowed by the command.
         private CommandClass resolveMultipleVerbs(ArrayList ccList, errorCode eCode, String[] tokens)
         {
             CommandClass currentCC = null;
@@ -434,6 +437,7 @@ namespace _8th_Circle_Server
             return currentCC;
         }// resolveMultipleVerbs
 
+        // Go through the grammar of the command, and find all necessary predicates it needs to execute, processing prepisitions if necessary.
         private errorCode populateCommandList(String command, String[] tokens, CommandClass currentCC, ArrayList commandList, Mob mob, ref String clientString)
         {
             errorCode ret = errorCode.E_INVALID_SYNTAX;
@@ -541,6 +545,7 @@ namespace _8th_Circle_Server
             return ret;
         }// populateCommandList
 
+        // Do the actual execution of the command, each CommandClass has the implementation for the execution of the command.
         public errorCode execute(CommandClass commandClass, ArrayList commandQueue, Mob mob, ref String clientString)
         {
             commandClass.preExecute(commandQueue, mob, this);
@@ -553,6 +558,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// execute
 
+        // Events can be triggered by commands, if the command is successful, we need to check if an event occured.
         private void checkEvent(CommandClass commandClass, ArrayList commandQueue, Mob mob)
         {
             // Populate the event args with the triggers and room in which the event was triggered.
@@ -565,6 +571,7 @@ namespace _8th_Circle_Server
                 {
                     EventData eventData = commandClass.GetPred1().GetEventList()[0];
 
+                    // Currently, only predicate1 triggered events can occur.
                     if(eventData.GetCommand() == commandClass.GetCommandName() &&
                        eventData.GetPrepType() == commandClass.GetPrep1().prepType)
                     {
@@ -578,6 +585,7 @@ namespace _8th_Circle_Server
             }// else if
         }// checkEvent
 
+        // Find if this predicate exists in the applicable place, either the room, the area, the world, or in inventories.
         private errorCode doesPredicateExist(String name, PredicateType predType, ValidityType validity, ArrayList commandQueue, Mob target)
         {
             ArrayList targetPredicates = new ArrayList();
@@ -590,11 +598,14 @@ namespace _8th_Circle_Server
             {
                 ret = errorCode.E_INVALID_SYNTAX;
 
+                // Only 1 token, we are done
                 if (tokens.Length == 1)
                 {
                     commandQueue.Add(targetPredicates[0]);
                     ret = errorCode.E_OK;
                 }
+                // A '.' notation has been added to differentiate between similar predicates.  For example, if there is muliple goblins,
+                // you can attack goblin.1 or goblin.2 or goblin.3 etc.
                 else if (tokens.Length == 2)
                 {
                     try
@@ -617,13 +628,15 @@ namespace _8th_Circle_Server
             return ret;
         }// doesPredicateExist
 
-        private bool validatePredicate(String targetPred, String cmdString)
+        // See if the predicate is parsed correctly, that is, they actually are spelling the predicate correctly.
+        private bool validatePredicate(String targetPred, String actualPred)
         {
             bool found = false;
-            String subString = cmdString;
+            String subString = actualPred;
             int index = 0;
             char currentChar = '\0';
 
+            // Loop through what they are looking for and see if it matches substring by substring of the actual object in question.
             for(int i = targetPred.Length; i > 0; --i)
             {
                 currentChar = targetPred[targetPred.Length - i];
@@ -631,6 +644,8 @@ namespace _8th_Circle_Server
                 if(i > subString.Length)
                     return false;
 
+                // We don't do an exact substring by substring match, we can skip letters, for example, 'look at chst' will still find
+                // a predicate called 'chest' as long as the characters are in the correct order.
                 while (true)
                 {
                     found = false;
@@ -654,6 +669,7 @@ namespace _8th_Circle_Server
             return found;
         }// validatePredicate
 
+        // Fill the commandQueue with the applicable predicates specified by the event.
         private void fillEventArgs(CommandClass commandClass, ArrayList commandQueue, Mob mob)
         {
             Grammar[] grammar = commandClass.GetGrammar();
@@ -695,6 +711,9 @@ namespace _8th_Circle_Server
             Room currentRoom = target.GetCurrentRoom();
             List<Mob> inventory = target.GetInv();
 
+            // First we have to determine if we are looking for objects, players, npcs, or doorways, note that we could be looking
+            // for more than one of these in a command so we find the list we are interested in and add it to a targetList we will
+            // iterate over.
             if (predType.HasFlag(PredicateType.OBJECT))
                 targetResTypes.Add(ResType.OBJECT);
             if (predType.HasFlag(PredicateType.PLAYER))
@@ -704,6 +723,7 @@ namespace _8th_Circle_Server
             if (predType.HasFlag(PredicateType.DOORWAY))
                 targetResTypes.Add(ResType.DOORWAY);
 
+            // Iterate over all the target lists and pick ones where the command specifies we should look.
             foreach (ResType targetResType in targetResTypes)
             {
                 if (validity.HasFlag(ValidityType.GLOBAL))
@@ -716,6 +736,7 @@ namespace _8th_Circle_Server
                     targetList.Add(currentRoom.getRes(ResType.DOORWAY));
             }// foreach (ResType targetResType in targetResTypes)
 
+            // Find the objects in inventories.
             if (validity.HasFlag(ValidityType.INVENTORY) && inventory != null)
             {
                 targetList.Add(inventory);
@@ -727,9 +748,12 @@ namespace _8th_Circle_Server
                 }
             }// if (validity.HasFlag(ValidityType.INVENTORY) && inventory != null)
 
+            // Find spells
             if (predType.HasFlag(PredicateType.SPELL))
                 targetList.Add(((CombatMob)target).GetActionList());
 
+            // Add equipment predicates, it would be nice to not duplicate this for equipment, but since they are in a dictionary
+            // rather than a List<Mob> we have to do this again for all other predicates.
             if (validity.HasFlag(ValidityType.EQUIPMENT))
             {
                 Dictionary<EQSlot, Mob> eqList = target.GetEQList();
@@ -749,6 +773,7 @@ namespace _8th_Circle_Server
                 }
             }// if (validity.HasFlag(ValidityType.EQUIPMENT))
 
+            // Add all other predicates
             foreach (List<Mob> subList in targetList)
             {
                 if (subList.Count > 0)
