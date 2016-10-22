@@ -99,7 +99,7 @@
     <Compile Include="8th_Circle_Server\Handlers\CombatHandler.cs" />
     <Compile Include="8th_Circle_Server\Handlers\CommandHandler.cs" />
     <Compile Include="8th_Circle_Server\Handlers\EventHandler.cs" />
-    <Compile Include="8th_Circle_Server\Handlers\ResourceHandler.cs" />
+    <Compile Include="8th_Circle_Server\BaseClasses\ResourceHandler.cs" />
     <Compile Include="8th_Circle_Server\Headers\Enums.cs" />
     <Compile Include="8th_Circle_Server\Headers\Strucs.cs" />
     <Compile Include="8th_Circle_Server\BaseClasses\Mob.cs" />

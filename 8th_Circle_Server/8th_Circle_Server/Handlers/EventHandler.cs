@@ -1,21 +1,31 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace _8th_Circle_Server
 {
+    // Class for handling events, Events aren't really a seperate class but they should be.  Like all handlers this spawns another thread
+    // to wake up and handle events whenever a new event is queued up, meaning something triggered the event so we will need to process it.
+    // The real design for this should have the events derive from a base class similar to the way CommandClasses are handled and the events
+    // simply do some pre and post checking then call event.execute or something like that, instead the implementation of the events are
+    // hardcoded in the handler which isn't really where they should be.
     public class EventHandler
     {
-        private ArrayList mEventCache;
-        private Queue mEventQueue;
         private World mWorld;
+
+        // Shared queue of events to process
+        private Queue<EventData> mEventQueue;
+        
+        // Main worker thread to process events
+        private Thread mSpinWorkThread;
+
+        // Primitive lock to protect the event queue
         private object mQueueLock;
-        private Thread mSpinWorkThread; 
 
         public EventHandler(World world)
         {
-            mEventCache = new ArrayList();
-            mEventQueue = new Queue();
+            mEventQueue = new Queue<EventData>();
             mQueueLock = new object();
             mWorld = world;
         }// Constructor
@@ -53,20 +63,33 @@ namespace _8th_Circle_Server
 
         private void processEvent()
         {
-            while (mEventQueue.Count > 0)
+            while (true)
             {
-                EventData eventData = (EventData)mEventQueue.Dequeue();
+                EventData eventData;
+
+                // Protect the queue
+                lock (mQueueLock)
+                {
+                    if (mEventQueue.Count > 0)
+                        eventData = mEventQueue.Dequeue();
+                    else
+                        break;
+                }
+                    
                 Area area;
                 CombatMob player;
 
+                // Events are hardcoded, process them here
                 switch (eventData.GetEvent())
                 {
+                    // Send a message to a player
                     case EventFlag.EVENT_TELL_PLAYER:
                         player = (CombatMob)eventData.GetTrigger();
                         String message = (String)eventData.GetData();
                         player.safeWrite(message);
                         break;
                         
+                    // Teleport a player to a room
                     case EventFlag.EVENT_TELEPORT:
                         player = (CombatMob)eventData.GetTrigger();
                         RoomID roomID = (RoomID)eventData.GetData();
@@ -78,6 +101,7 @@ namespace _8th_Circle_Server
                         player.safeWrite(targetRoom.exitString());
                         break;
 
+                    // Remove connections of the area in the GPG
                     case EventFlag.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.GetData());
                         Utils.Broadcast(area, null, "The area shakes and rumbles");
@@ -99,7 +123,8 @@ namespace _8th_Circle_Server
                         area[RoomID.GPG_ROOM_76].addDualLinks(area[RoomID.GPG_ROOM_68], Direction.NORTHWEST);
                         area[RoomID.GPG_ROOM_76].addDualLinks(area[RoomID.GPG_ROOM_75], Direction.WEST);
                         break;
-
+                    
+                    // Add connections to rooms in the GPG
                     case EventFlag.EVENT_GPG_WALL_ADD:
                         area = mWorld.getArea((AreaID)eventData.GetData());
                         Utils.Broadcast(area, null, "The area shakes and rumbles");
@@ -126,7 +151,7 @@ namespace _8th_Circle_Server
                         Console.WriteLine("something went wrong...");
                         break;
                 }// switch
-            }// while (mEventQueue.Count > 0)
+            }// while (true)
         }// processEvent
 
     }// Class EventHandler

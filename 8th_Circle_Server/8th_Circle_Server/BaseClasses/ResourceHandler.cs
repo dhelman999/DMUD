@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // This is the base class for all locations in the world, it holds all of the mobs that are available to the world, are and rooms.
+    // The ResourceHandler is a way to collect mobs in an organized fashion.  Rather than hold all objects, npcs, doorways in a single datastructure
+    // and iterate through it looking for what you want, the ResourceHandler seperates them into seperate lists and indexes into them via an
+    // enum.  So each resource has its own seperate list so you are sure what you are getting via simple indexing.  That way, if you iterate
+    // through the list, it is through many less objects, and the objects are all the same type, so ifs or casting is needed.
     public class ResourceHandler
     {
         protected String mName;

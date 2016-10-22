@@ -6,7 +6,7 @@ namespace _8th_Circle_Server
 {
     // Combat handler, like all other handlers uses a thread to process combats.  Implements the logic to attack, counterattack, use
     // abilities, spells, keep track of targets, who is alive or dead, who is in the combat and who isn't when to end combat, calculating
-    // damage, hit chances, and everything else combat related.
+    // damage, hit chances, and everything else combat related.  Random rolls are based on 1-100.
     public class CombatHandler
     {
         // autoattack rounds are divided into 4 second round times
@@ -224,7 +224,7 @@ namespace _8th_Circle_Server
                 damageString += "your critical " + ability.GetName() + " " + damageToString(maxHp, damage) +
                                 " the " + target.GetName() + " for " + (int)damage + " damage";
 
-            // Show the client how much damage they took
+            // Show the attacker its attack string
             attacker.safeWrite(damageString);
 
             checkDeath(attacker, target);
