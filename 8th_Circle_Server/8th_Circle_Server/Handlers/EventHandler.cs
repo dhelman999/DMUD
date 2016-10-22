@@ -83,14 +83,14 @@ namespace _8th_Circle_Server
                 switch (eventData.GetEvent())
                 {
                     // Send a message to a player
-                    case EventFlag.EVENT_TELL_PLAYER:
+                    case EventID.EVENT_TELL_PLAYER:
                         player = (CombatMob)eventData.GetTrigger();
                         String message = (String)eventData.GetData();
                         player.safeWrite(message);
                         break;
                         
                     // Teleport a player to a room
-                    case EventFlag.EVENT_TELEPORT:
+                    case EventID.EVENT_TELEPORT:
                         player = (CombatMob)eventData.GetTrigger();
                         RoomID roomID = (RoomID)eventData.GetData();
                         Area targetArea = mWorld.GetAreas()[2];
@@ -102,7 +102,7 @@ namespace _8th_Circle_Server
                         break;
 
                     // Remove connections of the area in the GPG
-                    case EventFlag.EVENT_GPG_WALL_REMOVE:
+                    case EventID.EVENT_GPG_WALL_REMOVE:
                         area = mWorld.getArea((AreaID)eventData.GetData());
                         Utils.Broadcast(area, null, "The area shakes and rumbles");
 
@@ -125,7 +125,7 @@ namespace _8th_Circle_Server
                         break;
                     
                     // Add connections to rooms in the GPG
-                    case EventFlag.EVENT_GPG_WALL_ADD:
+                    case EventID.EVENT_GPG_WALL_ADD:
                         area = mWorld.getArea((AreaID)eventData.GetData());
                         Utils.Broadcast(area, null, "The area shakes and rumbles");
 

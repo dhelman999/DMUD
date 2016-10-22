@@ -2,6 +2,7 @@
 
 namespace _8th_Circle_Server
 {
+    // All rooms have a unique room identifier for easy access.
     public enum RoomID
     {
         ROOMID_START,
@@ -142,6 +143,7 @@ namespace _8th_Circle_Server
         ROOMID_END
     }// RoomID
 
+    // MobFlags represent every 'property or attribute' that mobs can have.
     [Flags]
     public enum MobFlags
     {
@@ -171,6 +173,7 @@ namespace _8th_Circle_Server
         END = 4194304
     }// MobFlags
 
+    // The different grammar combinations that is allowed by the parser for commands.
     public enum GrammarType
     {
         GRAMMAR_START,
@@ -182,6 +185,7 @@ namespace _8th_Circle_Server
         GRAMMAR_END
     }// GrammarType
 
+    // A particular grammar type
     public enum Grammar
     {
         GRAMMAR_START,
@@ -191,6 +195,7 @@ namespace _8th_Circle_Server
         GRAMMAR_END
     }// Grammar
 
+    // Types of predicates in the game, generally represent mobs
     [Flags]
     public enum PredicateType
     {
@@ -204,6 +209,7 @@ namespace _8th_Circle_Server
         END = 64
     }// PredicateType
 
+    // Where the parser should look to find a particular predicate
     [Flags]
     public enum ValidityType
     {
@@ -217,6 +223,7 @@ namespace _8th_Circle_Server
         END = 64
     }// ValidityType
 
+    // Valid prepisitions for the parser
     public enum PrepositionType
     {
         PREP_START,
@@ -228,6 +235,7 @@ namespace _8th_Circle_Server
         PREP_END
     }// PrepositionType
 
+    // Enum representation of commands
     public enum CommandName
     {
         COMMAND_START,
@@ -275,6 +283,7 @@ namespace _8th_Circle_Server
         COMMAND_END
     }// CommandName
 
+    // Various error codes returned by commands or the parser
     public enum errorCode
     {
         E_START,
@@ -284,6 +293,7 @@ namespace _8th_Circle_Server
         E_END
     }// errorCode
 
+    // Types of abilities and spells
     public enum AbilitySpell
     {
         ABILITY_SPELL_START,
@@ -299,6 +309,7 @@ namespace _8th_Circle_Server
         ABILITY_SPELL_END
     }// AbilitySpell
 
+    // Each area has a unique area id for easy access.
     public enum AreaID
     {
         AID_PROTOAREA,
@@ -308,6 +319,7 @@ namespace _8th_Circle_Server
         AID_END
     }// AreaID
 
+    // Every mob in the game must have a unique itentifier for easy access
     public enum MobList
     {
         MOB_START = -1,
@@ -331,6 +343,7 @@ namespace _8th_Circle_Server
         MOB_END
     }// MobList
 
+    // Cardinal directions for movement and doorways
     public enum Direction
     {
         UP,
@@ -347,6 +360,7 @@ namespace _8th_Circle_Server
         DIRECTION_END
     }// Direction
 
+    // Resource types for the resource handler
     public enum ResType
     {
         OBJECT,
@@ -357,7 +371,8 @@ namespace _8th_Circle_Server
         RESOURCE_END
     }// ResType
 
-    public enum EventFlag
+    // Each event is mapped to a a unique itentifier for easy access
+    public enum EventID
     {
         EVENT_START,
         EVENT_TELL_PLAYER = EVENT_START,
@@ -365,8 +380,9 @@ namespace _8th_Circle_Server
         EVENT_GPG_WALL_REMOVE,
         EVENT_GPG_WALL_ADD,
         EVENT_END
-    }// EventFlag
+    }// EventID
 
+    // Commands with actions have a type to differentiate them
     public enum ActionType
     {
         ACTIONTYPE_START,
@@ -375,6 +391,7 @@ namespace _8th_Circle_Server
         ACTIONTYPE_END
     }// ActionType
 
+    // Damage can scale with multiple formulas
     public enum DamageScaling
     {
         DAMAGESCALING_START,
@@ -385,6 +402,7 @@ namespace _8th_Circle_Server
         DAMAGESCALING_END
     }// DamageScaling
 
+    // All the gear slots for CombatMobs
     public enum EQSlot
     {
         EQSLOT_START,
@@ -404,13 +422,7 @@ namespace _8th_Circle_Server
         EQSLOT_END
     }// EQSlot
 
-    public enum Useable
-    {
-        ALL,
-        USEABLE_START = ALL,
-        USEABLE_END
-    }// Useable
-
+    // Various types of gear for the different classes
     public enum EQType
     {
         LIGHT_ARMOR,
@@ -423,6 +435,7 @@ namespace _8th_Circle_Server
         EQTYPE_END
     }// EQType
 
+    // Various types of damage, also maps to their resistances
     public enum DamageType
     {
         PHYSICAL,
@@ -433,6 +446,7 @@ namespace _8th_Circle_Server
         DAMAGETYPE_END
     }// DamageType
 
+    // Various types of mobs
     public enum MobType
     {
         NONHEROIC,
@@ -446,6 +460,7 @@ namespace _8th_Circle_Server
         MOBTYPE_END
     }// MobType
 
+    // All combat stats
     public enum STAT
     {
         STAT_START,

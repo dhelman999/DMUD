@@ -2,6 +2,7 @@
 
 namespace _8th_Circle_Server
 {
+    // Doorway subclass, used to connect rooms together.  Overrides relevant base class functions for commands applicable to doorways.
     public class Doorway : Mob
     {
         // Constants

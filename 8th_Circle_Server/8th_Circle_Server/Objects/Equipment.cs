@@ -2,13 +2,14 @@
 
 namespace _8th_Circle_Server
 {
+    // Equipment subclass, used by mobs to wear and add to their combat stats.
+    // Overrides relevant base class functions for commands applicable to equipment.
     public class Equipment : Mob
     {
         private int mLevel;
         private EQType mType;
         private DamageType mDamType;
         private EQSlot mSlot;
-        private Useable mUsedby;
         private int mBaseDamBonus;
         private int mMaxHpMod;
         private int mHitMod;
@@ -42,7 +43,6 @@ namespace _8th_Circle_Server
             mLevel = eq.mLevel;
             mType = eq.mType;
             mSlot = eq.mSlot;
-            mUsedby = eq.mUsedby;
             mHitMod = eq.mHitMod;
             mMinDam = eq.mMinDam;
             mMaxDam = eq.mMaxDam;

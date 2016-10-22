@@ -2,6 +2,7 @@
 
 namespace _8th_Circle_Server
 {
+    // Easy encapsulation for a command and the mob who is trying to execute it
     public struct CommandData
     {
         public String command;
@@ -14,6 +15,7 @@ namespace _8th_Circle_Server
         }// Constructor
     }// CommandData
 
+    // Valid prepisitions and their string representation
     public struct Preposition
     {
         public String name;
@@ -27,10 +29,11 @@ namespace _8th_Circle_Server
 
     }// Preposition
 
+    // All data needed to process events, this should probably be a class.
     public struct EventData
     {
         public ValidityType validity;
-        private EventFlag eventFlag;
+        private EventID EventID;
         private Mob trigger;
         private Mob eventObject;
         private Room eventRoom;
@@ -38,11 +41,11 @@ namespace _8th_Circle_Server
         private PrepositionType prepType;
         private Object data;
 
-        public EventData(EventFlag eventFlag,
+        public EventData(EventID EventID,
                          CommandName CommandName,
                          Object data = null)
         {
-            this.eventFlag = eventFlag;
+            this.EventID = EventID;
             this.trigger = null;
             this.eventObject = null;
             this.eventRoom = null;
@@ -53,8 +56,8 @@ namespace _8th_Circle_Server
         }// Constructor
 
         // Accessors
-        public EventFlag GetEvent() { return eventFlag; }
-        public void SetEvent(EventFlag flag) { eventFlag = flag; }
+        public EventID GetEvent() { return EventID; }
+        public void SetEvent(EventID flag) { EventID = flag; }
         public CommandName GetCommand() { return CommandName; }
         public void SetCommand(CommandName command) { CommandName = command; }
         public void SetPrep(PrepositionType prep) { prepType = prep; }

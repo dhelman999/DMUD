@@ -2,9 +2,9 @@
 
 namespace _8th_Circle_Server
 {
+    // Container subclass to hold other mobs.  Overrides relevant base class functions for commands applicable to containers.
     public class Container : Mob
     {
-
         public Container(String name = "") : base()
         {
             if (name != "")

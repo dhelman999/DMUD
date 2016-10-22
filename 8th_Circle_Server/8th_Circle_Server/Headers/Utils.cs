@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // General utility class to add helper functions that don't necessarily belong in any other class.  These can generally be useful
+    // to many different classes.
     class Utils
     {
         // There are some dictionaries that have more than one key.  This function creates a combination of objects as a single key.
