@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // The game world, it is subdivided into areas and further subdivided into rooms.
+    // The world holds a reference to all resources, which include players, npcs, objects, etc.
+    // The game world also has handlers that take responsibility for events, respawning areas, facilitating
+    // combat and executing commands.
     public partial class World : ResourceHandler
     {   
         private CommandHandler mCommandHandler;
@@ -30,6 +34,7 @@ namespace _8th_Circle_Server
             mCombatHandler.start();
         }// Constructor
 
+        // Registers all mobs in the game wide prototype dictionary.
         private void registerGlobalMobs()
         {
             Mob key = new Mob();
@@ -184,13 +189,15 @@ namespace _8th_Circle_Server
             PrototypeManager.registerFullGameMob(MobList.MAX, max);
         }// addMobs
 
+        // Adds all areas to the world
         private void addAreas()
         {
             addProtoArea();
             addGeraldineArea();
-            addNewbieArea();
+            addGPGArea();
         }// addAreas
 
+        // Adds the prototype testing area
         private void addProtoArea()
         {
             Area protoArea = new Area(this, "Proto Area", AreaID.AID_PROTOAREA);
@@ -296,6 +303,7 @@ namespace _8th_Circle_Server
             mAreaHandler.registerArea(protoArea);
         }// addProtoArea
 
+        // Adds prototype area mobs
         private void addProtoMobs(Area protoArea)
         {
             Mob lump1 = PrototypeManager.getFullGameRegisteredMob(MobList.STRANGE_LUMP).Clone();
@@ -310,8 +318,9 @@ namespace _8th_Circle_Server
             Mob basic_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             basic_key.SetKeyID(3);
             protoArea.cloneMob(MobList.BASIC_KEY, protoArea[RoomID.PROTO_27], "proto key", basic_key);
-        }
+        }// addProtoMobs
 
+        // Adds the Geraldine Estate area
         private void addGeraldineArea()
         {
             Area geraldineArea = new Area(this, "Geraldine Estate", AreaID.AID_GERALDINEMANOR);
@@ -501,21 +510,23 @@ namespace _8th_Circle_Server
             Area protoArea = getArea(AreaID.AID_PROTOAREA);
             getRoom(0,0,0, AreaID.AID_PROTOAREA).GetRoomLinks()[(int)Direction.WEST] = house1stentranceway;
 
-            addGeraldineNpcs(geraldineArea);
+            addGeraldineMobs(geraldineArea);
             mAreaHandler.registerArea(geraldineArea);
         }// geraldineArea
 
-        public void addGeraldineNpcs(Area area)
+        // Add all Geraldine Esate mobs
+        public void addGeraldineMobs(Area area)
         {
             area.cloneMob(MobList.MAX, area[RoomID.GERALD_1ST_LIVINGROOM]);
             area.cloneMob(MobList.FIRST_CIRCLE, area[RoomID.GERALD_BASE_PART4]);
         }// addGeraldineNpcs
 
-        public void addNewbieArea()
+        // Add the Goblin Prooving grounds
+        public void addGPGArea()
         {
-            Area newbieArea = new Area(this, "Goblin Prooving Grounds", AreaID.AID_NEWBIEAREA);
+            Area gpgArea = new Area(this, "Goblin Prooving Grounds", AreaID.AID_gpgArea);
 
-            newbieArea.SetDescription("This area is the leftover pits where unworthy goblins were abandoned " +
+            gpgArea.SetDescription("This area is the leftover pits where unworthy goblins were abandoned " +
                "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
                "and were cast out until they prooved themselves");
 
@@ -539,101 +550,101 @@ namespace _8th_Circle_Server
 
             Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in\n" +
                "every direction, although you see some walls to your west.  You hear grunting.\n" +
-               "It smells like... goblins.\n", 0, 0, 0, RoomID.GPG_PLAYER_START, newbieArea);
+               "It smells like... goblins.\n", 0, 0, 0, RoomID.GPG_PLAYER_START, gpgArea);
 
-            Room gpg_1 = new Room("GPG 1",-1, 3, 0, RoomID.GPG_ROOM_1, newbieArea);
-            Room gpg_2 = new Room(common_gpg_north_field, 0, 3, 0, RoomID.GPG_ROOM_2, newbieArea);
-            Room gpg_3 = new Room(common_gpg_north_field, 1, 3, 0, RoomID.GPG_ROOM_3, newbieArea);
-            Room gpg_4 = new Room(common_gpg_north_field, 2, 3, 0, RoomID.GPG_ROOM_4, newbieArea);
-            Room gpg_5 = new Room(common_gpg_north_field, 3, 3, 0, RoomID.GPG_ROOM_5, newbieArea);
-            Room gpg_6 = new Room(common_gpg_east_field, 4, 3, 0, RoomID.GPG_ROOM_6, newbieArea);
-            Room gpg_7 = new Room("GPG 7",-1, 2, 0, RoomID.GPG_ROOM_7, newbieArea);
-            Room gpg_8 = new Room(common_gpg_open_field, 0, 2, 0, RoomID.GPG_ROOM_8, newbieArea);
-            Room gpg_9 = new Room(common_gpg_open_field, 1, 2, 0, RoomID.GPG_ROOM_9, newbieArea);
-            Room gpg_10 = new Room(common_gpg_open_field, 2, 2, 0, RoomID.GPG_ROOM_10, newbieArea);
-            Room gpg_11 = new Room(common_gpg_open_field, 3, 2, 0, RoomID.GPG_ROOM_11, newbieArea);
-            Room gpg_12 = new Room(common_gpg_east_field, 4, 2, 0, RoomID.GPG_ROOM_12, newbieArea);
-            Room gpg_13 = new Room("GPG 13",-1, 1, 0, RoomID.GPG_ROOM_13, newbieArea);
-            Room gpg_14 = new Room(common_gpg_open_field, 0, 1, 0, RoomID.GPG_ROOM_14, newbieArea);
-            Room gpg_15 = new Room(common_gpg_open_field, 1, 1, 0, RoomID.GPG_ROOM_15, newbieArea);
-            Room gpg_16 = new Room(common_gpg_open_field, 2, 1, 0, RoomID.GPG_ROOM_16, newbieArea);
-            Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, newbieArea);
-            Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, newbieArea);
-            Room gpg_19 = new Room("GPG 19",-1, 0, 0, RoomID.GPG_ROOM_19, newbieArea);
-            Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, newbieArea);
-            Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, newbieArea);
-            Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, newbieArea);
-            Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, newbieArea);
-            Room gpg_25 = new Room("GPG 25",-1,-1, 0, RoomID.GPG_ROOM_25, newbieArea);
-            Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, newbieArea);
-            Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, newbieArea);
-            Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, newbieArea);
+            Room gpg_1 = new Room("GPG 1",-1, 3, 0, RoomID.GPG_ROOM_1, gpgArea);
+            Room gpg_2 = new Room(common_gpg_north_field, 0, 3, 0, RoomID.GPG_ROOM_2, gpgArea);
+            Room gpg_3 = new Room(common_gpg_north_field, 1, 3, 0, RoomID.GPG_ROOM_3, gpgArea);
+            Room gpg_4 = new Room(common_gpg_north_field, 2, 3, 0, RoomID.GPG_ROOM_4, gpgArea);
+            Room gpg_5 = new Room(common_gpg_north_field, 3, 3, 0, RoomID.GPG_ROOM_5, gpgArea);
+            Room gpg_6 = new Room(common_gpg_east_field, 4, 3, 0, RoomID.GPG_ROOM_6, gpgArea);
+            Room gpg_7 = new Room("GPG 7",-1, 2, 0, RoomID.GPG_ROOM_7, gpgArea);
+            Room gpg_8 = new Room(common_gpg_open_field, 0, 2, 0, RoomID.GPG_ROOM_8, gpgArea);
+            Room gpg_9 = new Room(common_gpg_open_field, 1, 2, 0, RoomID.GPG_ROOM_9, gpgArea);
+            Room gpg_10 = new Room(common_gpg_open_field, 2, 2, 0, RoomID.GPG_ROOM_10, gpgArea);
+            Room gpg_11 = new Room(common_gpg_open_field, 3, 2, 0, RoomID.GPG_ROOM_11, gpgArea);
+            Room gpg_12 = new Room(common_gpg_east_field, 4, 2, 0, RoomID.GPG_ROOM_12, gpgArea);
+            Room gpg_13 = new Room("GPG 13",-1, 1, 0, RoomID.GPG_ROOM_13, gpgArea);
+            Room gpg_14 = new Room(common_gpg_open_field, 0, 1, 0, RoomID.GPG_ROOM_14, gpgArea);
+            Room gpg_15 = new Room(common_gpg_open_field, 1, 1, 0, RoomID.GPG_ROOM_15, gpgArea);
+            Room gpg_16 = new Room(common_gpg_open_field, 2, 1, 0, RoomID.GPG_ROOM_16, gpgArea);
+            Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, gpgArea);
+            Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, gpgArea);
+            Room gpg_19 = new Room("GPG 19",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
+            Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, gpgArea);
+            Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, gpgArea);
+            Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, gpgArea);
+            Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, gpgArea);
+            Room gpg_25 = new Room("GPG 25",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
+            Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, gpgArea);
+            Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, gpgArea);
+            Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, gpgArea);
             Room gpg_29 = new Room(common_gpg_open_field + "there is a small switch built into the side of a rock.\n" +
-               "You can't help but wonder what would happen if you used it...\n", 3,-1, 0, RoomID.GPG_ROOM_29, newbieArea);
-            Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, newbieArea);
-            Room gpg_31 = new Room("GPG 31",-1,-2, 0, RoomID.GPG_ROOM_31, newbieArea);
-            Room gpg_32 = new Room(common_gpg_south_field, 0,-2, 0, RoomID.GPG_ROOM_32, newbieArea);
-            Room gpg_33 = new Room(common_gpg_south_field, 1,-2, 0, RoomID.GPG_ROOM_33, newbieArea);
-            Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, newbieArea);
-            Room gpg_35 = new Room(common_gpg_south_field, 3,-2, 0, RoomID.GPG_ROOM_35, newbieArea);
-            Room gpg_36 = new Room(common_gpg_east_field, 4,-2, 0, RoomID.GPG_ROOM_36, newbieArea);
-            Room gpg_37 = new Room("GPG 37",-8, 3, 0, RoomID.GPG_ROOM_37, newbieArea);
-            Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, newbieArea);
-            Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, newbieArea);
-            Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, newbieArea);
-            Room gpg_41 = new Room("GPG 41",-4, 3, 0, RoomID.GPG_ROOM_41, newbieArea);
-            Room gpg_42 = new Room("GPG 42",-3, 3, 0, RoomID.GPG_ROOM_42, newbieArea);
-            Room gpg_43 = new Room("GPG 43",-2, 3, 0, RoomID.GPG_ROOM_43, newbieArea);
-            Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, newbieArea);
-            Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, newbieArea);
-            Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, newbieArea);
-            Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, newbieArea);
-            Room gpg_48 = new Room("GPG 48",-4, 2, 0, RoomID.GPG_ROOM_48, newbieArea);
-            Room gpg_49 = new Room("GPG 49",-3, 2, 0, RoomID.GPG_ROOM_49, newbieArea);
-            Room gpg_50 = new Room("GPG 50",-2, 2, 0, RoomID.GPG_ROOM_50, newbieArea);
-            Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, newbieArea);
-            Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, newbieArea);
-            Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, newbieArea);
-            Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, newbieArea);
-            Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, newbieArea);
-            Room gpg_56 = new Room("GPG 56",-3, 1, 0, RoomID.GPG_ROOM_56, newbieArea);
-            Room gpg_57 = new Room("GPG 57",-2, 1, 0, RoomID.GPG_ROOM_57, newbieArea);
-            Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, newbieArea);
-            Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, newbieArea);
-            Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, newbieArea);
-            Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, newbieArea);
-            Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, newbieArea);
-            Room gpg_63 = new Room("GPG 63",-3, 0, 0, RoomID.GPG_ROOM_63, newbieArea);
-            Room gpg_64 = new Room("GPG 64",-2, 0, 0, RoomID.GPG_ROOM_64, newbieArea);
-            Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, newbieArea);
-            Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, newbieArea);
-            Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, newbieArea);
-            Room gpg_68 = new Room("GPG 68",-5,-1, 0, RoomID.GPG_ROOM_68, newbieArea);
-            Room gpg_69 = new Room("GPG 69",-4,-1, 0, RoomID.GPG_ROOM_69, newbieArea);
-            Room gpg_70 = new Room("GPG 70",-3,-1, 0, RoomID.GPG_ROOM_70, newbieArea);
-            Room gpg_71 = new Room("GPG 71",-2,-1, 0, RoomID.GPG_ROOM_71, newbieArea);
-            Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, newbieArea);
-            Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, newbieArea);
-            Room gpg_74 = new Room("GPG 74",-6,-2, 0, RoomID.GPG_ROOM_74, newbieArea);
-            Room gpg_75 = new Room("GPG 75",-5,-2, 0, RoomID.GPG_ROOM_75, newbieArea);
-            Room gpg_76 = new Room("GPG 76",-4,-2, 0, RoomID.GPG_ROOM_76, newbieArea);
-            Room gpg_77 = new Room("GPG 77",-3,-2, 0, RoomID.GPG_ROOM_77, newbieArea);
-            Room gpg_78 = new Room("GPG 78",-2,-2, 0, RoomID.GPG_ROOM_78, newbieArea);
+               "You can't help but wonder what would happen if you used it...\n", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
+            Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, gpgArea);
+            Room gpg_31 = new Room("GPG 31",-1,-2, 0, RoomID.GPG_ROOM_31, gpgArea);
+            Room gpg_32 = new Room(common_gpg_south_field, 0,-2, 0, RoomID.GPG_ROOM_32, gpgArea);
+            Room gpg_33 = new Room(common_gpg_south_field, 1,-2, 0, RoomID.GPG_ROOM_33, gpgArea);
+            Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, gpgArea);
+            Room gpg_35 = new Room(common_gpg_south_field, 3,-2, 0, RoomID.GPG_ROOM_35, gpgArea);
+            Room gpg_36 = new Room(common_gpg_east_field, 4,-2, 0, RoomID.GPG_ROOM_36, gpgArea);
+            Room gpg_37 = new Room("GPG 37",-8, 3, 0, RoomID.GPG_ROOM_37, gpgArea);
+            Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, gpgArea);
+            Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
+            Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
+            Room gpg_41 = new Room("GPG 41",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
+            Room gpg_42 = new Room("GPG 42",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
+            Room gpg_43 = new Room("GPG 43",-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
+            Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
+            Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
+            Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
+            Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
+            Room gpg_48 = new Room("GPG 48",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
+            Room gpg_49 = new Room("GPG 49",-3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
+            Room gpg_50 = new Room("GPG 50",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
+            Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
+            Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
+            Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
+            Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
+            Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
+            Room gpg_56 = new Room("GPG 56",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
+            Room gpg_57 = new Room("GPG 57",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
+            Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
+            Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
+            Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
+            Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
+            Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, gpgArea);
+            Room gpg_63 = new Room("GPG 63",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
+            Room gpg_64 = new Room("GPG 64",-2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
+            Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
+            Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
+            Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
+            Room gpg_68 = new Room("GPG 68",-5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
+            Room gpg_69 = new Room("GPG 69",-4,-1, 0, RoomID.GPG_ROOM_69, gpgArea);
+            Room gpg_70 = new Room("GPG 70",-3,-1, 0, RoomID.GPG_ROOM_70, gpgArea);
+            Room gpg_71 = new Room("GPG 71",-2,-1, 0, RoomID.GPG_ROOM_71, gpgArea);
+            Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, gpgArea);
+            Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, gpgArea);
+            Room gpg_74 = new Room("GPG 74",-6,-2, 0, RoomID.GPG_ROOM_74, gpgArea);
+            Room gpg_75 = new Room("GPG 75",-5,-2, 0, RoomID.GPG_ROOM_75, gpgArea);
+            Room gpg_76 = new Room("GPG 76",-4,-2, 0, RoomID.GPG_ROOM_76, gpgArea);
+            Room gpg_77 = new Room("GPG 77",-3,-2, 0, RoomID.GPG_ROOM_77, gpgArea);
+            Room gpg_78 = new Room("GPG 78",-2,-2, 0, RoomID.GPG_ROOM_78, gpgArea);
 
-            foreach (KeyValuePair<RoomID, Room> keyValPair in newbieArea.GetRooms())
+            foreach (KeyValuePair<RoomID, Room> keyValPair in gpgArea.GetRooms())
             {
                 Room currentRoom = keyValPair.Value;
 
-                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_NEWBIEAREA);
-                Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_NEWBIEAREA);
-                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] -1, AreaID.AID_NEWBIEAREA);
+                Room nwRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room nRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room neRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] + 1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room wRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room eRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room swRoom = getRoom(currentRoom.GetAreaLoc()[0] -1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room sRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room seRoom = getRoom(currentRoom.GetAreaLoc()[0] + 1, currentRoom.GetAreaLoc()[1] -1, currentRoom.GetAreaLoc()[2], AreaID.AID_gpgArea);
+                Room uRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] + 1, AreaID.AID_gpgArea);
+                Room dRoom = getRoom(currentRoom.GetAreaLoc()[0], currentRoom.GetAreaLoc()[1], currentRoom.GetAreaLoc()[2] -1, AreaID.AID_gpgArea);
 
                 if (nwRoom != null)
                 {
@@ -758,64 +769,65 @@ namespace _8th_Circle_Server
             ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
             newDoor.CreateMemento();
 
-            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_ADD, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
-            newbieArea.GetRevertEvents().Add(ed);
+            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_ADD, CommandName.COMMAND_USE, AreaID.AID_gpgArea);
+            gpgArea.GetRevertEvents().Add(ed);
 
-            addNewbieAreaMobs(newbieArea);
-            mAreaHandler.registerArea(newbieArea);
-        }// addNewbieArea
+            addGPGMobs(gpgArea);
+            mAreaHandler.registerArea(gpgArea);
+        }// addgpgArea
 
-        private void addNewbieAreaMobs(Area newbieArea)
+        private void addGPGMobs(Area gpgArea)
         {
             Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             wooden_chest.SetKeyID(4);
-            newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
+            gpgArea.cloneMob(MobList.BASIC_CHEST, gpgArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
 
             Mob brass_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             brass_key.SetKeyID(4);
-            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_70], "brass key", brass_key);
+            gpgArea.cloneMob(MobList.BASIC_KEY, gpgArea[RoomID.GPG_ROOM_70], "brass key", brass_key);
 
             Mob small_metal_cage = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             small_metal_cage.SetDesc("a small metal cage, I wonder what is inside?");
             small_metal_cage.SetKeyID(5);
             small_metal_cage.GetInv().Add(brass_key);
-            Mob parentCage = newbieArea.cloneMob(MobList.BASIC_CHEST, newbieArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
+            Mob parentCage = gpgArea.cloneMob(MobList.BASIC_CHEST, gpgArea[RoomID.GPG_ROOM_71], "small metal cage", small_metal_cage);
 
             Mob steel_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             Utils.SetFlag(ref steel_key.mFlags, MobFlags.HIDDEN);
             Utils.SetFlag(ref steel_key.mFlags, MobFlags.LOCKED);
             steel_key.SetKeyID(5);
             steel_key.SetDesc("a small steel key, I wonder what it opens?");
-            newbieArea.cloneMob(MobList.BASIC_KEY, newbieArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
+            gpgArea.cloneMob(MobList.BASIC_KEY, gpgArea[RoomID.GPG_ROOM_46], "small steel key", steel_key);
 
             Mob basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
-            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
+            EventData ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_gpgArea);
             basic_switch.GetEventList().Add(ed);
-            newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_29], "", basic_switch);
+            gpgArea.cloneMob(MobList.SWITCH, gpgArea[RoomID.GPG_ROOM_29], "", basic_switch);
 
             basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
-            ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_NEWBIEAREA);
+            ed = new EventData(EventFlag.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_gpgArea);
             basic_switch.GetEventList().Add(ed);
-            newbieArea.cloneMob(MobList.SWITCH, newbieArea[RoomID.GPG_ROOM_37], "", basic_switch);
+            gpgArea.cloneMob(MobList.SWITCH, gpgArea[RoomID.GPG_ROOM_37], "", basic_switch);
 
-            newbieArea.cloneMob(MobList.BASIC_SWORD, newbieArea[RoomID.GPG_PLAYER_START]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_6]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_10]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_17]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_21]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_25]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_29]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_32]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_42]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_47]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_62]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_77]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_60]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_37]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_46]);
-            newbieArea.cloneMob(MobList.GOBLIN_RUNT, newbieArea[RoomID.GPG_ROOM_58]);
+            gpgArea.cloneMob(MobList.BASIC_SWORD, gpgArea[RoomID.GPG_PLAYER_START]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_6]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_10]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_17]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_21]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_25]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_29]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_32]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_42]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_47]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_62]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_77]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_60]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_37]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_46]);
+            gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_58]);
         }
 
+        // Easy access to areas
         public Area getArea(AreaID areaID)
         {
             foreach (Area area in mAreaList)
@@ -827,6 +839,7 @@ namespace _8th_Circle_Server
             return null;
         }// getArea
 
+        // Access for rooms
         public Room getRoom(int x, int y, int z, AreaID areaID)
         {
             Area area = getArea(areaID);
@@ -846,6 +859,7 @@ namespace _8th_Circle_Server
             return null;
         }// getRoom
 
+        // Removes a mob resource from the world, its area, and its room
         public void totallyRemoveRes(Mob resource)
         {
             Room currentRoom = resource.GetCurrentRoom();
@@ -859,6 +873,7 @@ namespace _8th_Circle_Server
             removeRes(resource);
         }// totallyRemoveRes
 
+        // Adds a mob resource to the world, its area, and its room
         public void totallyAddRes(Mob resource)
         {
             Room currentRoom = resource.GetCurrentRoom();

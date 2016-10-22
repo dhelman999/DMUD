@@ -4,14 +4,24 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
+    // Handles the processing of an area which includes modifying timers, respawning things, resetting events etc.
     public class AreaHandler
     {
+        // TICKTIME is a time in seconds in which each process loop will trigger, meaning things are processed once
+        // every ticktime, can be used to speed up or slow down time effectively
         internal const int TICKTIME = 1;
 
-        private List<Area> mAreaList;
         private World mWorld;
-        private object mQueueLock;
+
+        // Each handler is generally implemented as a seperate thread doing various tasks
         private Thread mSpinWorkThread;
+
+        // Area handlers can handle more than one area
+        private List<Area> mAreaList;
+        
+        // Some basic thread safety within the handler, not really used and is a large design flaw that needs to be addressed before
+        // this game actually becomes a real multi-player game.
+        private object mQueueLock; 
 
         public AreaHandler(World world)
         {
@@ -26,6 +36,7 @@ namespace _8th_Circle_Server
             mSpinWorkThread.Start();
         }// start
 
+        // Main working function of the thread
         public static void spinWork(AreaHandler areaHandler)
         {
             bool processed = false;
@@ -53,6 +64,7 @@ namespace _8th_Circle_Server
             }// while
         }// spinWork
 
+        // Registers the area to be processed by this handler
         public void registerArea(Area area)
         {
             lock (mQueueLock)
@@ -60,7 +72,8 @@ namespace _8th_Circle_Server
                 mAreaList.Add(area);
             }// lock
         }// enQueueArea
-
+        
+        // Process the area, modifies timers, respawns mobs, processes npcs.
         private void processAreas()
         {
             List<List<Mob>> targetList = new List<List<Mob>>();
@@ -84,13 +97,14 @@ namespace _8th_Circle_Server
                 }// foreach
             }// foreach
 
-            // Process each area
+            // Check to see if mobs need to respawn
             foreach (Area area in mAreaList)
             {
                 foreach(Mob parent in area.GetPrototypeMobList())
                 {
                     if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
                     {
+                        // Mobs cannot respawn while in combat
                         if (parent.HasFlag(MobFlags.INCOMBAT))
                         {
                             parent.SetIsRespawning(false);
@@ -109,14 +123,13 @@ namespace _8th_Circle_Server
                     }// if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
                 }// foreach(Mob parent in area.GetPrototypeMobList())
 
-
+                // If the area resets, respawn mobs from other areas
                 if (area.DecrementRespawnTimer(TICKTIME) <= 0)
                 {
                     targetList.Clear();
                     targetList.Add(area.getRes(ResType.OBJECT));
                     targetList.Add(area.getRes(ResType.NPC));
 
-                    // Loop through all Mob arrays
                     foreach (List<Mob> ar in targetList)
                     {
                         // Check to despawn mobs from other areas
@@ -158,6 +171,7 @@ namespace _8th_Circle_Server
 
         }// processAreas
 
+        // Process all npcs, currently doesn't do much besides lets them do a random action.
         private void processNpcs()
         {
             foreach (Area area in mAreaList)

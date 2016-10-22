@@ -5,18 +5,31 @@ using System.Threading;
 
 namespace _8th_Circle_Server
 {
+    // The client handler, like all other handlers uses a seperate thread to listen to clients commands and process them.
+    // It contains all the networking elements needed to send data to the client.
     public class ClientHandler
     {
+        private World mWorld;
+        private Thread mResponderThread;
+
+        // Based on TCP, I didn't feel like dealing with lost packets with UDP
+        // Other networking elements needed, like readers, writers, streams ect
         private TcpListener mTcpListener;
         private Socket mSocketForClient;
         private NetworkStream mNetworkStream;
         private StreamReader mStreamReader;
         private StreamWriter mStreamWriter;
-        private Thread mResponderThread;
+        
+        // Doesn't necessarily have to be a player, although it currently only is supported by players
         private CombatMob mPlayer;
+
+        // Holds the last command being processed
         private String mCmdString;
-        private World mWorld;
+        
+        // Has to know how to handle commands
         private CommandHandler mCommandHandler;
+
+        // Primitive thread safety, of course isn't really used.
         private object PlayerLock;  
 
         public ClientHandler(TcpListener tcpListener, World world)
@@ -38,9 +51,12 @@ namespace _8th_Circle_Server
                 {
                     mSocketForClient = mTcpListener.AcceptSocket();
 
+                    // Player first connects to the MUD
                     if(mSocketForClient.Connected)
                     {
                         Console.WriteLine("Client:" + mSocketForClient.RemoteEndPoint + " now connected to server.");
+
+                        // Create networking elements
                         mNetworkStream = new NetworkStream(mSocketForClient);
                         mStreamReader = new StreamReader(mNetworkStream);
                         mStreamWriter = new StreamWriter(mNetworkStream);
@@ -55,6 +71,7 @@ namespace _8th_Circle_Server
                         mCmdString = String.Empty;
                         mResponderThread.Interrupt();
 
+                        // Let them choose a class
                         while (mCmdString != "warrior" &&
                                mCmdString != "rogue"   &&
                                mCmdString != "cleric"  &&
@@ -97,6 +114,7 @@ namespace _8th_Circle_Server
                             }// else
                         }// while
 
+                        // Set their starting properties
                         mPlayer.SetAreaLoc(0, 1);
                         mPlayer.SetAreaLoc(1, 1);
                         mPlayer.SetAreaLoc(2, 1);
@@ -111,6 +129,8 @@ namespace _8th_Circle_Server
 
                         Utils.Broadcast(mWorld, mPlayer, mPlayer.GetName() + " has joined the World", "You enter the 8th Circle...");
 
+                        // Read commands the players send, when they do, wake up the responder thread to process the command and
+                        // actually send back the results to the client.
                         do
                         {     
                             mResponderThread.Interrupt();
@@ -118,11 +138,13 @@ namespace _8th_Circle_Server
                         }
                         while (!mCmdString.Equals("exit"));
 
+                        // They typed 'exit' leave the game
                         playerLeft();
                     }// if mSocketForClient
                 }// try
                 catch
                 {
+                    // Exceptions happen if something bad happens, or they just close the client, need to leave the game
                     Console.WriteLine("Exception caught while listening to " + mSocketForClient.RemoteEndPoint);
 
                     if (mStreamReader != null  &&
@@ -159,6 +181,7 @@ namespace _8th_Circle_Server
             }// try
             catch
             {
+                // Show them the initial room they start in
                 if (mCmdString.Equals("exit"))
                     return;
 
@@ -167,6 +190,8 @@ namespace _8th_Circle_Server
                 if(mPlayer != null && mPlayer.GetCurrentRoom() != null)
                    safeWrite(currentRoom.exitString() + mPlayer.playerString());
             }// catch
+
+            // The main processing of their sent command
             while (true)
             {
                 try
@@ -175,9 +200,11 @@ namespace _8th_Circle_Server
                 }// try
                 catch
                 {
+                    // Wake up and process the clients command
                     if (mCmdString.Equals("exit"))
                         break;
 
+                    // Queue up the command for processing and send them a copy of what they typed back
                     cmdData.command = mCmdString;
                     cmdData.mob = mPlayer;
                     mCommandHandler.enQueueCommand(cmdData);
@@ -186,6 +213,7 @@ namespace _8th_Circle_Server
             }// while
         }// ClientResponder
 
+        // Safely write back to the client, make sure to dispose of resource responsibly if something goes wrong.
         public void safeWrite(String response)
         {
             try
@@ -206,6 +234,7 @@ namespace _8th_Circle_Server
             }// catch
         }// safeWrite
 
+        // Remove the player from the world and close networking elements
         private void playerLeft()
         {
             if (mPlayer != null)

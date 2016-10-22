@@ -527,8 +527,7 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            // The actual processing of the event will be handled by checkEvent at the
-            // end of command processing
+            // The actual processing of the event will be handled by checkEvent at the end of command processing
             if (HasFlag(MobFlags.USEABLE) &&
                 mEventList.Count > 0)
             {
@@ -654,7 +653,7 @@ namespace _8th_Circle_Server
             return changeRoom(target.mCurrentRoom, ref clientString);
         }// teleport
 
-        // Does a random action, currently pretty terrible as it can only move or tell.
+        // Does a random action, currently pretty terrible as it can only move or tell, Also, it shouldn't be in the mob base class.
         public void randomAction()
         {
             String clientString = String.Empty;
@@ -710,7 +709,7 @@ namespace _8th_Circle_Server
         // Basic safeWrite
         public virtual void safeWrite(String clientString)
         {
-            // not implemented
+            // intentionally not implemented
         }// safeWrite
 
         // Accessors

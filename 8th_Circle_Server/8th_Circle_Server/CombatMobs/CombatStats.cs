@@ -2,12 +2,22 @@
 
 namespace _8th_Circle_Server
 {
+    // Base class for all combat stats which will be used by combat mobs and during combat in general.
     public class CombatStats
     {
+        // Holds the active combatants
         private List<CombatMob> mCombatList;
+
+        // Who is this mob currently targetting in combat?  Autoattacks depend on this
         private CombatMob mPrimaryTarget;
+
+        // What actions are available during combat
         private List<Mob> mActionList;
+
+        // What action is queued up at the next opportunity
         private List<Action> mQueuedAction;
+
+        // Actual combat stats used in combat
         private Dictionary<STAT, int> mStats;
 
         public CombatStats()

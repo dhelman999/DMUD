@@ -309,7 +309,7 @@ namespace _8th_Circle_Server
         }// addAbilitySpells
 
         // Process the command in its string format.  It needs to be resolved to a verb by the parser, and then needs to process and get all
-        // predicates and add to a commandList which holds the combination of the grammar items in it when resolved.  
+        // predicates and add to a commandList which holds the combination of the grammar items in it when resolved.
         public void process(String command, Mob mob)
         {
             String[] tokens = command.Split(' ');

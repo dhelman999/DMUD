@@ -304,7 +304,7 @@ namespace _8th_Circle_Server
         AID_PROTOAREA,
         AID_START = AID_PROTOAREA,
         AID_GERALDINEMANOR,
-        AID_NEWBIEAREA,
+        AID_gpgArea,
         AID_END
     }// AreaID
 

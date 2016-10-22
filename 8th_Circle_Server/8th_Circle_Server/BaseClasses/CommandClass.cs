@@ -3,23 +3,46 @@ using System.Collections;
 
 namespace _8th_Circle_Server
 {
-    public class CommandClass
+    // Base class for all commands in the game.  All commands always start with a verb, then have many defining characteristics like
+    // where they are valid, what grammar they expect, short names ect.  Each command is expected to derive from this class and implement
+    // the functionality to execute the command.
+    public abstract class CommandClass
     {
+        // Validity defines where to look for predicates in the game world
         public ValidityType mValidity;
-        public PredicateType mPredicate1;
-        public PredicateType mPredicate2;
 
+        
+        
+
+        // The fully qualified string name
         protected String mCommand;
 
+        // The shortcut name, does not have to be the same letters of the command
         private String mShortName;
+        // How many tokens this command expects, and how many are maximally allowed, this is multiple commands of the same name are
+        // differentiated from each other, such as look, vs look west, vs look in chest.
         private int mMatchNumber;
         private int mMaxTokens;
+
+        // The exact grammar applicable for the command to function
         private Grammar[] mGrammar;
+
+        // Holds the prepisitions used to operate on the predicates
         private Preposition mPrep1Value;
         private Preposition mPrep2Value;
+
+        // The enum representation of the command, probably can be combined with the mCommand
         private CommandName mCommandName;
+
+        // Predicate type and predicates store what objects and their type need to be operated on
+        public PredicateType mPredicate1;
+        public PredicateType mPredicate2;
         private Mob mPredicate1Value;
         private Mob mPredicate2Value;
+
+        // TODO
+        // probably not needed when events have their own class.
+        // Mainly used to understand who is executing the command, only used by events.
         private Mob mCommandOwner;
 
         public CommandClass()
@@ -45,6 +68,11 @@ namespace _8th_Circle_Server
             mPrep2Value = new Preposition();
             mPredicate1Value = mPredicate2Value = null;
         }// Constructor
+
+        // TODO
+        // Need to add pre and post command flags and checks to the command itself so that this can be generically added when the command
+        // is created and then checked generically.
+        // Any pre-execute conditions happen here 
         public virtual String preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
         {
             String clientString = String.Empty;
@@ -59,12 +87,8 @@ namespace _8th_Circle_Server
             return clientString;
         }// preExecute
 
-        public virtual errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
-        {
-            clientString = "huh";
-
-            return errorCode.E_INVALID_COMMAND_USAGE;
-        }// execute
+        // Child classes must implement the execution of the command
+        public abstract errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString);
 
         // Accessors
         public String GetCommand() { return mCommand; }

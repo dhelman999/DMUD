@@ -1,6 +1,7 @@
 ﻿
 namespace _8th_Circle_Server
 {
+    // Base class for warriors
     public class Warrior : CombatMob
     {
         public Warrior() : base()

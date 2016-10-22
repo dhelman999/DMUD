@@ -3,6 +3,7 @@ using System;
 
 namespace _8th_Circle_Server
 {
+    // Base class for clerics
     public class Cleric : CombatMob
     {
         public Cleric() : base()

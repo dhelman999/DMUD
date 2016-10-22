@@ -3,16 +3,29 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // The gameworld has 1 world, and subdivided into areas which are further subdivided into rooms.  Areas hold resources that include 
+    // npcs, doorways objects, and players.  Each area also has prototype managers to manage all the mobs they contain.
     public class Area : ResourceHandler
     {
-        private int mStartingRespawnTimer;
-        private int mCurrentRespawnTimer;
-        private List<EventData> mRevertList;
-        private CommandExecuter mCommandExecuter;
         private World mWorld;
         private AreaID mAreaID;
         private PrototypeManager mProtoManager;
+
+        // Holds all rooms contained in the area.
         private Dictionary<RoomID, Room> mRoomList;
+
+        // Areas can respawn, but do so a little differently than mobs, this was probably a mistake in the original design because 
+        // they need additional logic to understand what to do when an area respawns.
+        private int mStartingRespawnTimer;
+        private int mCurrentRespawnTimer;
+
+        // Areas can hold events to revert when they respawn.
+        private List<EventData> mRevertList;
+
+        // Each area has its own command executor to facilitate parallelism.  This also eases the burdon of race conditions since areas have
+        // different resources and different command executers they won't fight over shared resources as much and will run faster with 
+        // multiple threads.
+        private CommandExecuter mCommandExecuter; 
 
         public Area(World world, String name, AreaID areaID) : base()
         {

@@ -1,6 +1,7 @@
 ﻿
 namespace _8th_Circle_Server
 {
+    // Base class for rogues
     public class Rogue : CombatMob
     {
         public Rogue() : base()

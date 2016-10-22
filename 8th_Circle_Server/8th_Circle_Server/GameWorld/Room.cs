@@ -4,11 +4,20 @@ using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
+    // Rooms are the final location component of the game world.  One of the minority of things that is not a mob.
+    // Like all other Resourcehandlers, rooms hold objects, players, npcs, doorways, etc.
+    // For lack of a better place, they also hold the logic to add things like doors, piece together rooms and room links.
     public class Room : ResourceHandler
     {
-        private RoomID mRoomID;
-        private int []mAreaLoc;
         private Area mCurrentArea;
+
+        // Each room has a unique roomID for easy lookup and identification
+        private RoomID mRoomID;
+
+        // Each room also has a 3 dimentional coordinate system in their area
+        private int []mAreaLoc;
+
+        // Each room can link to other rooms
         private List<Room> mRoomLinks;
 
         public Room() : base()
@@ -43,6 +52,7 @@ namespace _8th_Circle_Server
             area.RegisterRoom(mRoomID, this);
         }// Constructor
 
+        // Basic viewed functionality
         public errorCode viewed(ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -52,6 +62,8 @@ namespace _8th_Circle_Server
             return eCode;
         }// viewed
 
+        // TODO, this should probably be in the look comamand itself, not here.
+        // Basic viewed functionality when looking in a direction
         public errorCode viewed(String direction, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
@@ -76,6 +88,7 @@ namespace _8th_Circle_Server
             return eCode;
         }// viewed
 
+        // This is what is sent to the client that describes the room, its exits, and its resources
         public String exitString()
         {
             String exitStr = String.Empty;
@@ -119,6 +132,7 @@ namespace _8th_Circle_Server
             return exitStr;
         }// exitString
 
+        // Adds a mob resource to the room
         public void addMobResource(Mob newMob)
         {
             // Remove old references
@@ -141,12 +155,14 @@ namespace _8th_Circle_Server
             GetWorld().totallyAddRes(newMob);
         }// addMobResource
 
+        // Add a door to this room
         public void addDoor(Doorway door, Direction dir)
         {
             getRes(ResType.DOORWAY)[(int)dir] = door;
             door.GetRoomList()[(int)dir] = this;
         }// addDoor
 
+        // Respawn doors to their original positions
         public void respawnDoorways()
         {
             List<Mob> doorways = getRes(ResType.DOORWAY);
@@ -160,6 +176,7 @@ namespace _8th_Circle_Server
             }// for
         }// respawnDoorways
 
+        // Get what the doors should be displayed like to the client
         public String getDoorString(Doorway door)
         {
             Direction dir;
@@ -173,6 +190,7 @@ namespace _8th_Circle_Server
             return dir.ToString().ToLower() + " " + door.GetName();
         }// getDoorString
 
+        // Get all applicable exits from this room
         public String AddExitStrings()
         {
             String exitStr = mDescription + "\n" + "Exits: ";
@@ -230,6 +248,7 @@ namespace _8th_Circle_Server
             return exitStr;
         }
 
+        // Get all applicable exits from a command perspective
         public void addExits(ArrayList commandQueue)
         {
             Dictionary<Tuple<CommandName, int>, CommandClass> commandDict = mCurrentArea.GetCommandExecutor().GetCCDict();
@@ -256,6 +275,7 @@ namespace _8th_Circle_Server
             }// for
         }// addExits
 
+        // Removes a link in a direction and its opposite direction from both adjoining rooms
         public void removeDualLinks(Direction dir)
         {
             if(mRoomLinks[(int)dir] != null)
@@ -270,6 +290,7 @@ namespace _8th_Circle_Server
             }// if
         }// removeDualLinks
 
+        // Removes 3 links from two ajoining rooms from a center point passed in based on the cardinal direction system
         public void removeTripleLinks(Direction dir)
         {
             removeDualLinks((Direction)(((int)dir + 9) % 10));
@@ -277,6 +298,7 @@ namespace _8th_Circle_Server
             removeDualLinks((Direction)(((int)dir + 1) % 10));
         }// removeTripleLinks
 
+        // Adds links to 2 adjoining rooms
         public void addDualLinks(Room targetRoom, Direction dir)
         {
             if (targetRoom != null)
