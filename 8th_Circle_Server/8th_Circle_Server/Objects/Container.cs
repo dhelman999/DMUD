@@ -34,7 +34,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
             {
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
                 return eCode;
             }     
@@ -79,7 +79,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
             {
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
                 return eCode;
             }   
@@ -96,7 +96,7 @@ namespace _8th_Circle_Server
                     Utils.SetFlag(ref mFlags, MobFlags.OPEN);
 
                     if (mParent != null)
-                        mParent.SetIsRespawning(true);
+                        Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
 
                     eCode = errorCode.E_OK;
                 }// else
@@ -124,7 +124,7 @@ namespace _8th_Circle_Server
                     Utils.UnsetFlag(ref mFlags, MobFlags.OPEN);
 
                     if (mParent != null)
-                        mParent.SetIsRespawning(true);
+                        Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
 
                     eCode = errorCode.E_OK;
                 }// else
@@ -161,7 +161,7 @@ namespace _8th_Circle_Server
                         Utils.SetFlag(ref mFlags, MobFlags.LOCKED);
 
                         if (mParent != null)
-                            mParent.SetIsRespawning(true);
+                            Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
 
                         clientString = "you lock " + mName + "\n";
                         eCode = errorCode.E_OK;
@@ -206,7 +206,7 @@ namespace _8th_Circle_Server
                         Utils.UnsetFlag(ref mFlags, MobFlags.LOCKED);
 
                         if (mParent != null)
-                            mParent.SetIsRespawning(true);
+                            Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
 
                         clientString = "you unlock " + mName + "\n";
                         eCode = errorCode.E_OK;

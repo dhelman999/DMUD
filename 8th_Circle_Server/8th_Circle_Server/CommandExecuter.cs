@@ -341,9 +341,9 @@ namespace _8th_Circle_Server
                 else if (eCode == errorCode.E_INVALID_COMMAND_USAGE)
                     clientString = "you can't use the " + currentCC.GetCommand() + " command like that";
                 else if (eCode == errorCode.E_INVALID_SYNTAX && clientString != String.Empty)
-                    clientString = "you can't do that\n";
+                    clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
                 else
-                    clientString += "you can't do that\n";
+                    clientString += GLOBALS.RESPONSE_CANT_DO_THAT;
             }// if (eCode == errorCode.E_OK)
             else
                 clientString = tokens[0] + " is not a valid command";

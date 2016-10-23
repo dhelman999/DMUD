@@ -170,7 +170,8 @@ namespace _8th_Circle_Server
         COMBATABLE = 524288,
         INCOMBAT = 1048576,
         RESTING = 2097152,
-        END = 4194304
+        RESPAWNING = 4194304,
+        END = 8388608
     }// MobFlags
 
     // The different grammar combinations that is allowed by the parser for commands.

@@ -52,7 +52,7 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
             if (HasFlag(MobFlags.LOCKED))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (HasFlag(MobFlags.OPEN))
@@ -83,7 +83,7 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
             if (HasFlag(MobFlags.LOCKED))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
             if (!HasFlag(MobFlags.OPEN))

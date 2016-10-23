@@ -102,12 +102,12 @@ namespace _8th_Circle_Server
             {
                 foreach(Mob parent in area.GetPrototypeMobList())
                 {
-                    if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
+                    if (parent.HasFlag(MobFlags.RESPAWNING) && (parent.DecRespawnTime(TICKTIME)) <= 0)
                     {
                         // Mobs cannot respawn while in combat
                         if (parent.HasFlag(MobFlags.INCOMBAT))
                         {
-                            parent.SetIsRespawning(false);
+                            Utils.UnsetFlag(ref parent.mFlags, MobFlags.RESPAWNING);
                             parent.SetStartingRespawnTime(parent.GetStartingRespawnTime());
                         }
                         else

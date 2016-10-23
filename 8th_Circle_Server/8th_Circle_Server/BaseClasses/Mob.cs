@@ -36,7 +36,6 @@ namespace _8th_Circle_Server
         // This is a global cooldown for the mob, if this is set, the mob cannot take any actions until its time expires
         protected int mActionTimer;
 
-        protected bool mIsRespawning; // TODO should this be made into a mobFlag?
         // What prepisitions are applicable to this Mob.
         protected List<PrepositionType> mPrepList;
         // Mobs Inventory if any
@@ -211,7 +210,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
             {
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
                 return eCode;
             }   
@@ -235,7 +234,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
             {
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
                 return eCode;
             }       
@@ -264,14 +263,14 @@ namespace _8th_Circle_Server
                             if (mParent != null)
                             {
                                 mParent.mChildren.Remove(this);
-                                mParent.mIsRespawning = true;
+                                Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
                             }
 
                             clientString += "you get " + exitString(mCurrentRoom) + "\n";
                             eCode = errorCode.E_OK;
                         }
                         else
-                            clientString = "you can't do that\n";
+                            clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
                     }
                 }// if (mob.mInventory.Count < mob.mInventory.Capacity)
                 else
@@ -292,7 +291,7 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
             {
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
                 return eCode;
             }     
@@ -324,7 +323,7 @@ namespace _8th_Circle_Server
                                 if (mParent != null)
                                 {
                                     mParent.mChildren.Remove(this);
-                                    mParent.mIsRespawning = true;
+                                    Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
                                 }
                                 
                                 clientString += "you get " + exitString(mCurrentRoom) + "\n";
@@ -439,7 +438,7 @@ namespace _8th_Circle_Server
                 if (mParent != null)
                 {
                     mParent.mChildren.Add(this);
-                    mParent.mIsRespawning = true;
+                    Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
                 }
 
                 clientString += "you drop " + exitString(mCurrentRoom) + "\n";
@@ -474,7 +473,7 @@ namespace _8th_Circle_Server
         public virtual errorCode open(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "You can't open that\n";
 
@@ -485,7 +484,7 @@ namespace _8th_Circle_Server
         public virtual errorCode close(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "You can't close that\n";
 
@@ -496,7 +495,7 @@ namespace _8th_Circle_Server
         public virtual errorCode lck(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "You can't lock that\n";
 
@@ -507,7 +506,7 @@ namespace _8th_Circle_Server
         public virtual errorCode unlock(Mob mob, ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "You can't unlock that\n";
 
@@ -550,7 +549,7 @@ namespace _8th_Circle_Server
             if (mParent != null)
             {
                 mParent.mChildren.Remove(this);
-                mParent.mIsRespawning = true;
+                Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
             }
             
             clientString = "destroying " + mName + "\n";
@@ -562,7 +561,6 @@ namespace _8th_Circle_Server
         // Respawn occurs by a parent which will then clone itself and create more children and add them back into the world
         public virtual void respawn()
         {
-            mIsRespawning = false;
             mCurrentRespawnTime = mStartingRespawnTime;
             Mob clone = Clone();
             mChildren.Add(clone);
@@ -578,7 +576,7 @@ namespace _8th_Circle_Server
         public virtual errorCode lck(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "you can't lock that\n";
 
@@ -589,7 +587,7 @@ namespace _8th_Circle_Server
         public virtual errorCode unlock(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "you can't unlock that\n";
 
@@ -600,7 +598,7 @@ namespace _8th_Circle_Server
         public virtual errorCode fullheal(ref String clientString)
         {
             if (HasFlag(MobFlags.HIDDEN))
-                clientString = "you can't do that\n";
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
 
             clientString = "you can't fullheal that\n";
 
@@ -733,8 +731,6 @@ namespace _8th_Circle_Server
         public void SetStartingRespawnTime(int time) { mStartingRespawnTime = time; }
         public void SetCurrentRespawnTime(int time) { mCurrentRespawnTime = time; }
         public int DecRespawnTime(int time) { return (mCurrentRespawnTime = mCurrentRespawnTime - time); }
-        public bool IsRespawning() { return mIsRespawning; }
-        public void SetIsRespawning(bool respawning) { mIsRespawning = respawning; }
         public int GetActionTimer() { return mActionTimer; }
         public void SetActionTimer(int time) { mActionTimer = time; }
         public int ModifyActionTimer(int time) { return (mActionTimer = mActionTimer + time); }

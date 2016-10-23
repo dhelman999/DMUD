@@ -33,7 +33,7 @@ namespace _8th_Circle_Server
         {
             mLevel = 1;
             mDamType = DamageType.PHYSICAL;
-        }// constructor
+        }// Constructor
 
         public Equipment(Equipment eq, String name = "") : base(eq)
         {
@@ -62,7 +62,7 @@ namespace _8th_Circle_Server
             mForceRes = eq.mForceRes;
             mMaxForceRes = eq.mMaxForceRes;
             mDamType = DamageType.PHYSICAL;
-        }// copy constructor
+        }// copy Constructor
 
         public override Mob Clone()
         {
