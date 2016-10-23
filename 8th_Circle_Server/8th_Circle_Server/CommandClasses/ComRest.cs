@@ -11,15 +11,14 @@ namespace _8th_Circle_Server
                        PredicateType predicate2, ValidityType validity = ValidityType.LOCAL) :
             base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, validity)
         {
+            mPostCmdOps.Clear();
         }
 
         public override errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (mob.HasFlag(MobFlags.INCOMBAT))
-                clientString = "you can't rest while in combat!\n";
-            else if (!mob.HasFlag(MobFlags.RESTING))
+            if (!mob.HasFlag(MobFlags.RESTING))
             {
                 clientString = "you sit down and rest...\n";
                 Utils.SetFlag(ref mob.mFlags, MobFlags.RESTING);

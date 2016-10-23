@@ -62,8 +62,6 @@ namespace _8th_Circle_Server
             return eCode;
         }// viewed
 
-        // TODO, this should probably be in the look comamand itself, not here.
-        // Basic viewed functionality when looking in a direction
         public errorCode viewed(String direction, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;

@@ -12,23 +12,19 @@ namespace _8th_Circle_Server
                        PredicateType predicate2, ValidityType validity = ValidityType.LOCAL) :
             base(command, shortName, matchNumber, maxTokens, type, grammar, CommandName, predicate1, predicate2, validity)
         {
+            mPreCmdOps.Add(new Tuple<MobFlags, CmdOps>(MobFlags.SEARCHING, CmdOps.SET));
         }
 
         // Kicks off a new thread to search the room
         public override errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
         {
             clientString = "you start searching...\n";
-            mob.SetActionTimer(4);
-            Utils.SetFlag(ref mob.mFlags, MobFlags.SEARCHING);
             Thread searchThread = new Thread(() => searchTask(mob));
             searchThread.Start();
-
+            
             return errorCode.E_OK;
         }// execute
 
-        // TODO
-        // Since this is a seperate thread from the command executor, it does not check events, we might be able to just call check event directly
-        // Uncovers any hidden mobs in the room.
         public static void searchTask(Mob searcher)
         {
             String clientString = String.Empty;
@@ -58,9 +54,9 @@ namespace _8th_Circle_Server
             if (!found)
                 clientString = "you find nothing";
 
-            Utils.UnsetFlag(ref searcher.mFlags, MobFlags.SEARCHING);
-
             clientString += "\n";
+
+            Utils.UnsetFlag(ref searcher.mFlags, MobFlags.SEARCHING);
 
             searcher.safeWrite(clientString);
         }// searchTask

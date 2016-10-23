@@ -21,18 +21,20 @@ namespace _8th_Circle_Server
         protected String mDescription;
         protected World mWorld;
 
-        // Starting and current variables.  // TODO can these be reworked into memento, should they be?
+        // Starting and current variables.
         protected Room mStartingRoom;
         protected Room mCurrentRoom;
         protected Area mStartingArea;
         protected Area mCurrentArea;
         protected Mob mStartingOwner;
         protected Mob mCurrentOwner;
-        protected int mActionTimer;  // TODO, Not exactly sure what this is, might be a duplicate of currentActionCounter
         protected int mStartingActionCounter;
         protected int mCurrentActionCounter;
         protected int mStartingRespawnTime;
         protected int mCurrentRespawnTime;
+
+        // This is a global cooldown for the mob, if this is set, the mob cannot take any actions until its time expires
+        protected int mActionTimer;
 
         protected bool mIsRespawning; // TODO should this be made into a mobFlag?
         // What prepisitions are applicable to this Mob.
@@ -153,10 +155,6 @@ namespace _8th_Circle_Server
         public errorCode move(String direction, ref String clientString)
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
-
-            if (HasFlag(MobFlags.INCOMBAT))
-                clientString = "you can't move while in combat\n";
-
             int dir = Utils.DirStrToInt(direction);
             List<Mob> doorways = mCurrentRoom.getRes(ResType.DOORWAY);
 
@@ -175,12 +173,6 @@ namespace _8th_Circle_Server
         // Changes the mobs room to a new room, basic teleporting, or spawning.
         public errorCode changeRoom(Room newRoom, ref String clientString)
         {
-            if (HasFlag(MobFlags.INCOMBAT))
-            {
-                clientString = "you can't do that while in combat\n";
-                return errorCode.E_INVALID_COMMAND_USAGE;
-            }
-
             Area newArea = newRoom.GetCurrentArea();
 
             // Remove old references

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace _8th_Circle_Server
 {
@@ -11,12 +12,13 @@ namespace _8th_Circle_Server
         // Validity defines where to look for predicates in the game world
         public ValidityType mValidity;
 
-        
-        
 
         // The fully qualified string name
         protected String mCommand;
 
+        // List of pre and post command execution operations to apply to the given MobFlag
+        protected List<Tuple<MobFlags, CmdOps>> mPreCmdOps;
+        protected List<Tuple<MobFlags, CmdOps>> mPostCmdOps;
         // The shortcut name, does not have to be the same letters of the command
         private String mShortName;
         // How many tokens this command expects, and how many are maximally allowed, this is multiple commands of the same name are
@@ -33,7 +35,6 @@ namespace _8th_Circle_Server
 
         // The enum representation of the command, probably can be combined with the mCommand
         private CommandName mCommandName;
-
         // Predicate type and predicates store what objects and their type need to be operated on
         public PredicateType mPredicate1;
         public PredicateType mPredicate2;
@@ -67,28 +68,82 @@ namespace _8th_Circle_Server
             mPrep1Value = new Preposition();
             mPrep2Value = new Preposition();
             mPredicate1Value = mPredicate2Value = null;
+            mPreCmdOps  = new List<Tuple<MobFlags, CmdOps>>();
+            mPostCmdOps = new List<Tuple<MobFlags, CmdOps>>();
+
+            // Default, can't take actions while searching or in combat
+            mPreCmdOps.Add(new Tuple<MobFlags, CmdOps>(MobFlags.SEARCHING, CmdOps.CHECK_TO_FAIL));
+            mPreCmdOps.Add(new Tuple<MobFlags, CmdOps>(MobFlags.INCOMBAT, CmdOps.CHECK_TO_FAIL));
+
+            // Default, any command takes you out of rest
+            mPostCmdOps.Add(new Tuple<MobFlags, CmdOps>(MobFlags.RESTING, CmdOps.UNSET));
         }// Constructor
 
-        // TODO
-        // Need to add pre and post command flags and checks to the command itself so that this can be generically added when the command
-        // is created and then checked generically.
         // Any pre-execute conditions happen here 
-        public virtual String preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner)
+        public virtual errorCode preExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
         {
-            String clientString = String.Empty;
-            CommandClass commandClass = (CommandClass)commandQueue[0];
-
-            if (!(commandClass.GetCommandName() == CommandName.COMMAND_REST ||
-                commandClass.GetCommandName() == CommandName.COMMAND_LOOK))
-            {
-                Utils.UnsetFlag(ref mob.mFlags, MobFlags.RESTING);
-            }
-
-            return clientString;
+            return processCmdOps(mob, ref clientString, true);
         }// preExecute
 
         // Child classes must implement the execution of the command
         public abstract errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString);
+
+        public virtual errorCode postExecute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)
+        {
+            return processCmdOps(mob, ref clientString, false);
+        }// postExecute
+
+        private errorCode processCmdOps(Mob mob, ref String clientString, bool isPreprocess)
+        {
+            errorCode eCode = errorCode.E_OK;
+            List<Tuple<MobFlags, CmdOps>> targetOps;
+
+            if (isPreprocess)
+                targetOps = mPreCmdOps;
+            else
+                targetOps = mPostCmdOps;
+
+            foreach(Tuple<MobFlags, CmdOps> tuple in targetOps)
+            {
+                MobFlags targetFlag = tuple.Item1;
+                CmdOps cmdOp = tuple.Item2;
+
+                switch(cmdOp)
+                {
+                    case CmdOps.CHECK_TO_PASS:
+                        if (!mob.HasFlag(targetFlag))
+                        {
+                            eCode = errorCode.E_INVALID_COMMAND_USAGE;
+                            clientString = "you can't do that right now";
+                        }
+
+                        break;
+
+                    case CmdOps.CHECK_TO_FAIL:
+                        if (mob.HasFlag(targetFlag))
+                        {
+                            eCode = errorCode.E_INVALID_COMMAND_USAGE;
+                            clientString = "you can't do that right now";
+                        }
+                            
+                        break;
+
+                    case CmdOps.SET:
+                        Utils.SetFlag(ref mob.mFlags, targetFlag);
+                        break;
+
+                    case CmdOps.UNSET:
+                        Utils.UnsetFlag(ref mob.mFlags, targetFlag);
+                        break;
+
+                    default:
+                        eCode = errorCode.E_INVALID_COMMAND_USAGE;
+                        break;
+                }
+            }
+
+            return eCode;
+        }// processCmdOps
 
         // Accessors
         public String GetCommand() { return mCommand; }

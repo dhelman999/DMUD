@@ -16,6 +16,9 @@ namespace _8th_Circle_Server
 
             if (maxTokens == 3)
                 Utils.SetFlag(ref mValidity, ValidityType.INVENTORY);
+
+            mPreCmdOps.Clear();
+            mPostCmdOps.Clear();
         }
 
         public override errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)

@@ -12,6 +12,8 @@ namespace _8th_Circle_Server
         {
             Utils.SetFlag(ref mPredicate1, PredicateType.OBJECT);
             Utils.SetFlag(ref mPredicate1, PredicateType.NPC);
+
+            mPreCmdOps.Clear();
         }
 
         public override errorCode execute(ArrayList commandQueue, Mob mob, CommandExecuter commandExecutioner, ref String clientString)

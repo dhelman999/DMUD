@@ -548,8 +548,12 @@ namespace _8th_Circle_Server
         // Do the actual execution of the command, each CommandClass has the implementation for the execution of the command.
         public errorCode execute(CommandClass commandClass, ArrayList commandQueue, Mob mob, ref String clientString)
         {
-            commandClass.preExecute(commandQueue, mob, this);
-            errorCode eCode = commandClass.execute(commandQueue, mob, this, ref clientString);
+            errorCode eCode = commandClass.preExecute(commandQueue, mob, this, ref clientString);
+
+            if(eCode == errorCode.E_OK)
+                eCode = commandClass.execute(commandQueue, mob, this, ref clientString);
+
+            eCode = commandClass.postExecute(commandQueue, mob, this, ref clientString);
 
             // If the command fails we don't want to trigger events off of the command
             if(eCode == errorCode.E_OK)

@@ -145,7 +145,7 @@ namespace _8th_Circle_Server
         }// playerString
 
         // TODO
-        //All these 'all' commands should actually construct the base command
+        // All these 'all' commands should actually construct the base command
         // and do them one by one rather than just calling .wear this way they can trigger events from the base command.
         // Attempts to wear all items in the mobs inventory.  
         public override errorCode wearall(ref String clientString)

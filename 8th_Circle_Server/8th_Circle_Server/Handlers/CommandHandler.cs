@@ -71,8 +71,6 @@ namespace _8th_Circle_Server
                 // Only process the command if we are off cooldown, otherwise queue up the command for next time
                 if (comData.mob.GetActionTimer() <= 0)
                     commandExecuter.process(comData.command, comData.mob);
-                else if (comData.mob.HasFlag(MobFlags.SEARCHING)) // TODO this really shouldn't be handled here
-                    comData.mob.safeWrite("you can't do that while searching");
                 else
                     comData.mob.SetQueuedCommand(comData.command);
             }// While (true)

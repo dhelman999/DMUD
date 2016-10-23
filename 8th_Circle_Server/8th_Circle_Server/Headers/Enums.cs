@@ -490,4 +490,17 @@ namespace _8th_Circle_Server
         STAT_EMD
     }// STAT
 
+    // Used to operate pre and post executes for CommandClasses
+    public enum CmdOps
+    {
+        OPS_START,
+
+        CHECK_TO_PASS,
+        CHECK_TO_FAIL,
+        SET,
+        UNSET,
+
+        OPS_END
+    }// CmdOpsk
+
 }// _8th_Circle_Server
