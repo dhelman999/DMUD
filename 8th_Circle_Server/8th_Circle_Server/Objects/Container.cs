@@ -41,10 +41,7 @@ namespace _8th_Circle_Server
 
             if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
-                if(HasFlag(MobFlags.OPEN))
-                    clientString += mName + " is open\n";
-                else
-                    clientString += mName + " is closed\n";
+                clientString += mDescription;
 
                 eCode = errorCode.E_OK;
             }

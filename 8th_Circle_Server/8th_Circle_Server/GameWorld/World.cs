@@ -552,37 +552,47 @@ namespace _8th_Circle_Server
                "every direction, although you see some walls to your west.  You hear grunting.\n" +
                "It smells like... goblins.\n", 0, 0, 0, RoomID.GPG_PLAYER_START, gpgArea);
 
-            Room gpg_1 = new Room("GPG 1",-1, 3, 0, RoomID.GPG_ROOM_1, gpgArea);
+            Room gpg_1 = new Room("The plains are dieing down here.  Up ahead to the west, you see a path that goes\n" +
+                "up towards a rocky mountain.  Down to the south, you see more plains, but some caves in the distance\n",
+                -1, 3, 0, RoomID.GPG_ROOM_1, gpgArea);
+
             Room gpg_2 = new Room(common_gpg_north_field, 0, 3, 0, RoomID.GPG_ROOM_2, gpgArea);
             Room gpg_3 = new Room(common_gpg_north_field, 1, 3, 0, RoomID.GPG_ROOM_3, gpgArea);
             Room gpg_4 = new Room(common_gpg_north_field, 2, 3, 0, RoomID.GPG_ROOM_4, gpgArea);
             Room gpg_5 = new Room(common_gpg_north_field, 3, 3, 0, RoomID.GPG_ROOM_5, gpgArea);
             Room gpg_6 = new Room(common_gpg_east_field, 4, 3, 0, RoomID.GPG_ROOM_6, gpgArea);
-            Room gpg_7 = new Room("GPG 7",-1, 2, 0, RoomID.GPG_ROOM_7, gpgArea);
+            Room gpg_7 = new Room("Some blood-covered brush litter the plains here.  You see the giant north wall ahead.\n" +
+                "To the west and south, more plains, and some caves.",-1, 2, 0, RoomID.GPG_ROOM_7, gpgArea);
             Room gpg_8 = new Room(common_gpg_open_field, 0, 2, 0, RoomID.GPG_ROOM_8, gpgArea);
             Room gpg_9 = new Room(common_gpg_open_field, 1, 2, 0, RoomID.GPG_ROOM_9, gpgArea);
             Room gpg_10 = new Room(common_gpg_open_field, 2, 2, 0, RoomID.GPG_ROOM_10, gpgArea);
             Room gpg_11 = new Room(common_gpg_open_field, 3, 2, 0, RoomID.GPG_ROOM_11, gpgArea);
             Room gpg_12 = new Room(common_gpg_east_field, 4, 2, 0, RoomID.GPG_ROOM_12, gpgArea);
-            Room gpg_13 = new Room("GPG 13",-1, 1, 0, RoomID.GPG_ROOM_13, gpgArea);
+            Room gpg_13 = new Room("The plains are approaching some caves to the south here.  The cave walls extend up and wrap around\n" +
+                "to the west.  There is a trial following the cave wall. You shutter nervously as you thinkyou are being watched...\n" +
+                "yes, you are definately being watched...\n",-1, 1, 0, RoomID.GPG_ROOM_13, gpgArea);
             Room gpg_14 = new Room(common_gpg_open_field, 0, 1, 0, RoomID.GPG_ROOM_14, gpgArea);
             Room gpg_15 = new Room(common_gpg_open_field, 1, 1, 0, RoomID.GPG_ROOM_15, gpgArea);
             Room gpg_16 = new Room(common_gpg_open_field, 2, 1, 0, RoomID.GPG_ROOM_16, gpgArea);
             Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, gpgArea);
             Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, gpgArea);
-            Room gpg_19 = new Room("GPG 19",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
+            Room gpg_19 = new Room("The mouth of the cave to the west.  Bones and spikes decorate the entrance.  The tips of some spikes have\n" +
+                "dried blood on them.  It seems to get darker the longer you linger at the cave.\n" +
+                "You can't help but wonder, would could be inside?",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
             Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, gpgArea);
             Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, gpgArea);
             Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, gpgArea);
             Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, gpgArea);
-            Room gpg_25 = new Room("GPG 25",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
+            Room gpg_25 = new Room("There is a cave entrance to the north of here. The cave walls extend to the west and to the south-west\n" +
+                "There was some goblin noises nearby... but you can't tell from which direction, maybe everywhere?\n",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
             Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, gpgArea);
             Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, gpgArea);
             Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, gpgArea);
             Room gpg_29 = new Room(common_gpg_open_field + "there is a small switch built into the side of a rock.\n" +
                "You can't help but wonder what would happen if you used it...\n", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
             Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, gpgArea);
-            Room gpg_31 = new Room("GPG 31",-1,-2, 0, RoomID.GPG_ROOM_31, gpgArea);
+            Room gpg_31 = new Room("Cave walls extend all throughout the west.  The high walls from the south die down here and open up\n" +
+                "to an overlook.  There is a steep dropoff down to a river running rapidly through a gorge.\n",-1,-2, 0, RoomID.GPG_ROOM_31, gpgArea);
             Room gpg_32 = new Room(common_gpg_south_field, 0,-2, 0, RoomID.GPG_ROOM_32, gpgArea);
             Room gpg_33 = new Room(common_gpg_south_field, 1,-2, 0, RoomID.GPG_ROOM_33, gpgArea);
             Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, gpgArea);
@@ -594,28 +604,41 @@ namespace _8th_Circle_Server
             Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
             Room gpg_41 = new Room("GPG 41",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
             Room gpg_42 = new Room("GPG 42",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
-            Room gpg_43 = new Room("GPG 43",-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
+            Room gpg_43 = new Room("The path is wide as it starts the trek upwards around the side of a mountain\n" +
+                "There is more room to the south.  To the north, there is a dropoff down the mountain...\n" +
+                "better watch where you are going...\n" ,-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
             Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
             Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
             Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
             Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
             Room gpg_48 = new Room("GPG 48",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
             Room gpg_49 = new Room("GPG 49",-3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
-            Room gpg_50 = new Room("GPG 50",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
+            Room gpg_50 = new Room("The path is wide as it starts a trek upwards around the side of a mountain.\n" + 
+                "There is more room to the north as the mountain gets darker the further you look\n"
+                ,-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
             Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
             Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
             Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
             Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
             Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
-            Room gpg_56 = new Room("GPG 56",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
-            Room gpg_57 = new Room("GPG 57",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
+            Room gpg_56 = new Room("The end of the cave, ah the gleaming you saw earlier was a golden chest!\n" +
+                "You can't help but think what riches could be inside, finally, this forsaken place must have some\n" +
+                "redeeming quality... treasure!\n",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
+            Room gpg_57 = new Room("The walls end here.  To the north you see the start of a path going upwards.\n" +
+                "There is something dead here, at first you thought it was some rocks but it looks like\n" +
+                "it is some sort of stone golem.\n",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
             Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
             Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
             Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
             Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
             Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, gpgArea);
-            Room gpg_63 = new Room("GPG 63",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
-            Room gpg_64 = new Room("GPG 64",-2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
+            Room gpg_63 = new Room("The tunnel narrows further and winds up to the north.  You see a faint light. There is\n" +
+                "definately something to the north, maybe even... gleaming?  The roughness of the cave seems to smooth out a bit\n" +
+                "from the start, maybe this is some sort of dwelling...",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
+            Room gpg_64 = new Room("You shudder as soon as you enter the cave, there is something wrong here, very wrong.\n" +
+                "You look back, you thought you saw something, maybe it was just nerves.  The cave narrows into a tunnel\n" +
+                "that continues to the west.  It is hard to see, but you can make out stalagtites and stlagmites around\n" +
+                "the tunnel.  If you weren't so nervous, you would think this place is rather majestic\n",-2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
             Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
             Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
             Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
@@ -780,7 +803,8 @@ namespace _8th_Circle_Server
         {
             Mob wooden_chest = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_CHEST).Clone();
             wooden_chest.SetKeyID(4);
-            gpgArea.cloneMob(MobList.BASIC_CHEST, gpgArea[RoomID.GPG_ROOM_56], "wooden chest", wooden_chest);
+            wooden_chest.SetDesc("A shiny golden chest, there must be treasure inside!");
+            gpgArea.cloneMob(MobList.BASIC_CHEST, gpgArea[RoomID.GPG_ROOM_56], "golden chest", wooden_chest);
 
             Mob brass_key = PrototypeManager.getFullGameRegisteredMob(MobList.BASIC_KEY).Clone();
             brass_key.SetKeyID(4);
