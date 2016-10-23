@@ -12,15 +12,16 @@ namespace _8th_Circle_Server
         // Validity defines where to look for predicates in the game world
         public ValidityType mValidity;
 
-
         // The fully qualified string name
         protected String mCommand;
 
         // List of pre and post command execution operations to apply to the given MobFlag
         protected List<Tuple<MobFlags, CmdOps>> mPreCmdOps;
         protected List<Tuple<MobFlags, CmdOps>> mPostCmdOps;
+
         // The shortcut name, does not have to be the same letters of the command
         private String mShortName;
+
         // How many tokens this command expects, and how many are maximally allowed, this is multiple commands of the same name are
         // differentiated from each other, such as look, vs look west, vs look in chest.
         private int mMatchNumber;
@@ -35,6 +36,7 @@ namespace _8th_Circle_Server
 
         // The enum representation of the command, probably can be combined with the mCommand
         private CommandName mCommandName;
+
         // Predicate type and predicates store what objects and their type need to be operated on
         public PredicateType mPredicate1;
         public PredicateType mPredicate2;

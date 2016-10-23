@@ -38,8 +38,10 @@ namespace _8th_Circle_Server
 
         // What prepisitions are applicable to this Mob.
         protected List<PrepositionType> mPrepList;
+
         // Mobs Inventory if any
         protected List<Mob> mInventory;
+
         // Events triggered by this mob
         protected List<EventData> mEventList;
 
