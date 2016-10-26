@@ -148,30 +148,30 @@ namespace _8th_Circle_Server
     public enum MobFlags
     {
         NONE = 0,
-        OPENABLE = 1,
-        OPEN = 2,
-        CLOSEABLE = 4,
-        LOCKED = 8,
-        LOCKABLE = 16,
-        UNLOCKABLE = 32,
-        HIDDEN = 64,
-        INVISIBLE = 128,
-        GETTABLE = 256,
-        DROPPABLE = 512,
-        PUSHABLE = 1024,
-        STORABLE = 2048,
-        USEABLE = 4096,
-        INSPECTABLE = 8192,
-        WEARABLE = 16384,
-        IDENTIFYABLE = 32768,
-        STEALABLE = 65536,
-        DUPLICATABLE = 131072,
-        SEARCHING = 262144,
-        COMBATABLE = 524288,
-        INCOMBAT = 1048576,
-        RESTING = 2097152,
-        RESPAWNING = 4194304,
-        END = 8388608
+        OPENABLE = (1 << 1),
+        OPEN = (1 << 2),
+        CLOSEABLE = (1 << 3),
+        LOCKED = (1 << 4),
+        LOCKABLE = (1 << 5),
+        UNLOCKABLE = (1 << 6),
+        HIDDEN = (1 << 7),
+        INVISIBLE = (1 << 8),
+        GETTABLE = (1 << 9),
+        DROPPABLE = (1 << 10),
+        PUSHABLE = (1 << 11),
+        STORABLE = (1 << 12),
+        USEABLE = (1 << 13),
+        INSPECTABLE = (1 << 14),
+        WEARABLE = (1 << 15),
+        IDENTIFYABLE = (1 << 16),
+        STEALABLE = (1 << 17),
+        DUPLICATABLE = (1 << 18),
+        SEARCHING = (1 << 19),
+        COMBATABLE = (1 << 20),
+        INCOMBAT = (1 << 21),
+        RESTING = (1 << 22),
+        RESPAWNING = (1 << 23),
+        END = (1 << 24)
     }// MobFlags
 
     // The different grammar combinations that is allowed by the parser for commands.
@@ -201,13 +201,13 @@ namespace _8th_Circle_Server
     public enum PredicateType
     {
         NONE = 0,
-        OBJECT = 1,
-        PLAYER = 2,
-        NPC = 4,
-        DOORWAY = 8,
-        CUSTOM = 16,
-        SPELL = 32,
-        END = 64
+        OBJECT = (1 << 1),
+        PLAYER = (1 << 2),
+        NPC = (1 << 3),
+        DOORWAY = (1 << 4),
+        CUSTOM = (1 << 5),
+        SPELL = (1 << 6),
+        END = (1 << 7)
     }// PredicateType
 
     // Where the parser should look to find a particular predicate
@@ -215,13 +215,13 @@ namespace _8th_Circle_Server
     public enum ValidityType
     {
         NONE = 0,
-        INVENTORY = 1,
-        LOCAL = 2,
-        DOORWAY = 4,
-        EQUIPMENT = 8,
-        AREA = 16,
-        GLOBAL = 32,
-        END = 64
+        INVENTORY = (1 << 1),
+        LOCAL = (1 << 2),
+        DOORWAY = (1 << 3),
+        EQUIPMENT = (1 << 4),
+        AREA = (1 << 5),
+        GLOBAL = (1 << 6),
+        END = (1 << 7)
     }// ValidityType
 
     // Valid prepisitions for the parser

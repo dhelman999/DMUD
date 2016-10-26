@@ -553,7 +553,8 @@ namespace _8th_Circle_Server
             if(eCode == errorCode.E_OK)
                 eCode = commandClass.execute(commandQueue, mob, this, ref clientString);
 
-            eCode = commandClass.postExecute(commandQueue, mob, this, ref clientString);
+            if (eCode == errorCode.E_OK)
+                eCode = commandClass.postExecute(commandQueue, mob, this, ref clientString);
 
             // If the command fails we don't want to trigger events off of the command
             if(eCode == errorCode.E_OK)
