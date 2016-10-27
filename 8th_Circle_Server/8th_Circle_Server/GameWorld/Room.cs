@@ -191,7 +191,7 @@ namespace _8th_Circle_Server
         // Get all applicable exits from this room
         public String AddExitStrings()
         {
-            String exitStr = mDescription + "\n" + "Exits: ";
+            String exitStr = mDescription + "\n\n" + "Exits: ";
 
             if (mRoomLinks[(int)Direction.NORTH] != null &&
                 (getRes(ResType.DOORWAY)[(int)Direction.NORTH] == null ||

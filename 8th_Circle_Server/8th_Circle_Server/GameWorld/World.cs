@@ -527,72 +527,88 @@ namespace _8th_Circle_Server
             Area gpgArea = new Area(this, "Goblin Prooving Grounds", AreaID.AID_gpgArea);
 
             gpgArea.SetDescription("This area is the leftover pits where unworthy goblins were abandoned " +
-               "and forgotten.  The runts here were unworthy to serve any useful purpose in goblin society " +
-               "and were cast out until they prooved themselves");
+                                   "and forgotten. The runts here were unworthy to serve any useful\n" +
+                                   "purpose in society and were cast out until they prooved themselves");
 
-            String common_gpg_north_field = "The plains end to the north along a rock wall.  There is some light\n" +
-               "a little further, the walls to the north rise as high as you can see.\n" +
-               "The plains still span in other directions.  All around, you can hear\n" +
-               "goblins lurking about and you can see dark mud splattered about.\n";
+            String common_gpg_north_field = "The plains end to the north along a rock wall. There is some light\n" +
+                                            "a little further, the walls to the north rise as high as you can see.\n" +
+                                            "The plains still span in other directions.  All around, you can hear\n" +
+                                            "goblins lurking about and you can see dark mud splattered about.";
 
-            String common_gpg_south_field = "The plains end to the south along a rock wall.  There is some light\n" +
-               "a little further, the walls to the south rise as high as you can see.\n" +
-               "The plains still span in other directions.  All around, you can hear\n" +
-               "goblins lurking about and you can see dark mud splattered about.\n";
+            String common_gpg_south_field = "The plains end to the south along a rock wall. There is some light\n" +
+                                            "a little further, the walls to the south rise as high as you can see.\n" +
+                                            "The plains still span in other directions. All around, you can hear\n" +
+                                            "goblins lurking about and you can see dark mud splattered about.";
 
-            String common_gpg_east_field = "The plains end to the east along a rock wall.  There is some light\n" +
-               "a little further, the walls to the east rise as high as you can see.\n" +
-               "The plains still span in other directions.  All around, you can hear\n" +
-               "goblins lurking about and you can see dark mud splattered about.\n";
+            String common_gpg_east_field = "The plains end to the east along a rock wall. There is some light\n" +
+                                           "a little further, the walls to the east rise as high as you can see.\n" +
+                                           "The plains still span in other directions. All around, you can hear\n" +
+                                           "goblins lurking about and you can see dark mud splattered about.";
 
-            String common_gpg_open_field = "The plains continue on in every direction.  All around, you\n" +
-               "can hear goblins lurking about and you can see dark mud splattered about.\n";
+            String common_gpg_open_field = "The plains continue on in every direction.  All around, you can hear\n" +
+                                           "goblins lurking about and you can see dark mud splattered about.";
 
-            Room gpg_playerStart = new Room("You find yourself in some sort of dark plains.  It spans in\n" +
-               "every direction, although you see some walls to your west.  You hear grunting.\n" +
-               "It smells like... goblins.\n", 0, 0, 0, RoomID.GPG_PLAYER_START, gpgArea);
+            Room gpg_playerStart = new Room("You find yourself in some sort of dark plains. It spans in every\n" +
+                                            "direction, although you see some walls to your west. You hear\n" +
+                                            "grunting. It smells like... goblins.", 0, 0, 0, RoomID.GPG_PLAYER_START, gpgArea);
 
-            Room gpg_1 = new Room("The plains are dieing down here.  Up ahead to the west, you see a path that goes\n" +
-                "up towards a rocky mountain.  Down to the south, you see more plains, but some caves in the distance\n",
-                -1, 3, 0, RoomID.GPG_ROOM_1, gpgArea);
+            Room gpg_1 = new Room("The plains are dieing down here. Up ahead to the west, you see a path that goes\n" +
+                                  "up towards a rocky mountain.  Down to the south, you see more plains, but some\n" +
+                                  "caves in the distance", -1, 3, 0, RoomID.GPG_ROOM_1, gpgArea);
 
             Room gpg_2 = new Room(common_gpg_north_field, 0, 3, 0, RoomID.GPG_ROOM_2, gpgArea);
             Room gpg_3 = new Room(common_gpg_north_field, 1, 3, 0, RoomID.GPG_ROOM_3, gpgArea);
             Room gpg_4 = new Room(common_gpg_north_field, 2, 3, 0, RoomID.GPG_ROOM_4, gpgArea);
             Room gpg_5 = new Room(common_gpg_north_field, 3, 3, 0, RoomID.GPG_ROOM_5, gpgArea);
             Room gpg_6 = new Room(common_gpg_east_field, 4, 3, 0, RoomID.GPG_ROOM_6, gpgArea);
-            Room gpg_7 = new Room("Some blood-covered brush litter the plains here.  You see the giant north wall ahead.\n" +
-                "To the west and south, more plains, and some caves.",-1, 2, 0, RoomID.GPG_ROOM_7, gpgArea);
+
+            Room gpg_7 = new Room("Some blood-covered brush litter the plains here.  You see the giant north wall\n" +
+                                  "To the west and south, more plains, and some caves.",-1, 2, 0, RoomID.GPG_ROOM_7, gpgArea);
+
             Room gpg_8 = new Room(common_gpg_open_field, 0, 2, 0, RoomID.GPG_ROOM_8, gpgArea);
             Room gpg_9 = new Room(common_gpg_open_field, 1, 2, 0, RoomID.GPG_ROOM_9, gpgArea);
             Room gpg_10 = new Room(common_gpg_open_field, 2, 2, 0, RoomID.GPG_ROOM_10, gpgArea);
             Room gpg_11 = new Room(common_gpg_open_field, 3, 2, 0, RoomID.GPG_ROOM_11, gpgArea);
             Room gpg_12 = new Room(common_gpg_east_field, 4, 2, 0, RoomID.GPG_ROOM_12, gpgArea);
-            Room gpg_13 = new Room("The plains are approaching some caves to the south here.  The cave walls extend up and wrap around\n" +
-                "to the west.  There is a trial following the cave wall. You shutter nervously as you thinkyou are being watched...\n" +
-                "yes, you are definately being watched...\n",-1, 1, 0, RoomID.GPG_ROOM_13, gpgArea);
+
+            Room gpg_13 = new Room("The plains are approaching some caves to the south here.  The cave walls extend\n" +
+                                   "up and wrap around to the west. There is a trial following the cave wall.\n" +
+                                   "You shutter nervously as you think you are being watched...\n" +
+                                   "yes, you are definately being watched...",-1, 1, 0, RoomID.GPG_ROOM_13, gpgArea);
+
             Room gpg_14 = new Room(common_gpg_open_field, 0, 1, 0, RoomID.GPG_ROOM_14, gpgArea);
             Room gpg_15 = new Room(common_gpg_open_field, 1, 1, 0, RoomID.GPG_ROOM_15, gpgArea);
             Room gpg_16 = new Room(common_gpg_open_field, 2, 1, 0, RoomID.GPG_ROOM_16, gpgArea);
             Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, gpgArea);
             Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, gpgArea);
-            Room gpg_19 = new Room("The mouth of the cave to the west.  Bones and spikes decorate the entrance.  The tips of some spikes have\n" +
-                "dried blood on them.  It seems to get darker the longer you linger at the cave.\n" +
-                "You can't help but wonder, would could be inside?",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
+
+            Room gpg_19 = new Room("The mouth of the cave to the west.  Bones and spikes decorate the entrance.\n" +
+                                   "The tips of some spikes have dried blood on them.  It seems to get darker\n" +
+                                   "the longer you linger at the cave. You can't help but wonder, would could\n" +
+                                   "be inside?",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
+
             Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, gpgArea);
             Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, gpgArea);
             Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, gpgArea);
             Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, gpgArea);
-            Room gpg_25 = new Room("There is a cave entrance to the north of here. The cave walls extend to the west and to the south-west\n" +
-                "There was some goblin noises nearby... but you can't tell from which direction, maybe everywhere?\n",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
+
+            Room gpg_25 = new Room("There is a cave entrance to the north of here. The cave walls extend to the\n" +
+                                   "west and to the south-west. There was some goblin noises nearby... but you\n" +
+                                   "can't tell from which direction, maybe everywhere?",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
+
             Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, gpgArea);
             Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, gpgArea);
             Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, gpgArea);
-            Room gpg_29 = new Room(common_gpg_open_field + "there is a small switch built into the side of a rock.\n" +
-               "You can't help but wonder what would happen if you used it...\n", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
+
+            Room gpg_29 = new Room(common_gpg_open_field + 
+                                   "there is a small switch built into the side of a rock.\n" +
+                                   "You can't help but wonder what would happen if you used it...", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
             Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, gpgArea);
-            Room gpg_31 = new Room("Cave walls extend all throughout the west.  The high walls from the south die down here and open up\n" +
-                "to an overlook.  There is a steep dropoff down to a river running rapidly through a gorge.\n",-1,-2, 0, RoomID.GPG_ROOM_31, gpgArea);
+
+            Room gpg_31 = new Room("Cave walls extend all throughout the west.  The high walls from the south die\n" +
+                                   "down here and open up to an overlook.  There is a steep dropoff down to a river\n" + 
+                                   "running rapidly through a gorge.",-1,-2, 0, RoomID.GPG_ROOM_31, gpgArea);
+
             Room gpg_32 = new Room(common_gpg_south_field, 0,-2, 0, RoomID.GPG_ROOM_32, gpgArea);
             Room gpg_33 = new Room(common_gpg_south_field, 1,-2, 0, RoomID.GPG_ROOM_33, gpgArea);
             Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, gpgArea);
@@ -602,43 +618,72 @@ namespace _8th_Circle_Server
             Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, gpgArea);
             Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
             Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
-            Room gpg_41 = new Room("GPG 41",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
-            Room gpg_42 = new Room("GPG 42",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
+
+            Room gpg_41 = new Room("The path comes to an end here.  To the north, the dropoff is as steep as\n" +
+                                   "ever, and to the west, giant mountain walls extend upwards.  There is a\n" +
+                                   "large gate that you can see in the distance to the south.",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
+
+            Room gpg_42 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
+                                   "surroundings become more and more mountainous. There is still room to\n" +
+                                   "the south of the path, but it is becoming narrower. Ahead to the west\n" +
+                                   "you can make out some larger cliffs.",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
+
             Room gpg_43 = new Room("The path is wide as it starts the trek upwards around the side of a mountain\n" +
-                "There is more room to the south.  To the north, there is a dropoff down the mountain...\n" +
-                "better watch where you are going...\n" ,-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
+                                   "There is more room to the south. To the north, there is a dropoff down the\n" +
+                                   "mountain. You better watch where you are going..." ,-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
+
             Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
             Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
             Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
             Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
-            Room gpg_48 = new Room("GPG 48",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
-            Room gpg_49 = new Room("GPG 49",-3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
+            Room gpg_48 = new Room("The path comes to an end here.  To the north, you see the start of the\n" +
+                                   "dropoff and directly to the south, a large cracked and broken iron gate.\n" +
+                                   "You would normally think this is the entrance of some great fortress but\n" +
+                                   "the broken pieces of metal and glass suggest it was seiged long ago.\n" +
+                                   "After encountering so many goblins, you wonder if they did the seiging,\n" +
+                                   "or if they simply took up residence afterwards.  In either case, you still\n" +
+                                   "smell their stench everywhere.",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
+
+            Room gpg_49 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
+                                   "surroundings become more and more mountainous. There is still room to\n" +
+                                   "the south of the path, but it is becoming narrower. Ahead to the west\n" +
+                                   "you can make out some larger cliffs.", -3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
+
             Room gpg_50 = new Room("The path is wide as it starts a trek upwards around the side of a mountain.\n" + 
-                "There is more room to the north as the mountain gets darker the further you look\n"
-                ,-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
+                                   "There is more room to the north as the mountain gets darker.",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
+
             Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
             Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
             Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
             Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
             Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
+
             Room gpg_56 = new Room("The end of the cave, ah the gleaming you saw earlier was a golden chest!\n" +
-                "You can't help but think what riches could be inside, finally, this forsaken place must have some\n" +
-                "redeeming quality... treasure!\n",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
+                                   "You can't help but think what riches could be inside, finally, this forsaken\n" +
+                                   "place must have some redeeming quality... treasure!",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
+
             Room gpg_57 = new Room("The walls end here.  To the north you see the start of a path going upwards.\n" +
-                "There is something dead here, at first you thought it was some rocks but it looks like\n" +
-                "it is some sort of stone golem.\n",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
+                                   "There is something dead here, at first you thought it was some rocks but it\n" +
+                                   "looks like it is some sort of stone golem.",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
+
             Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
             Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
             Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
             Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
             Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, gpgArea);
-            Room gpg_63 = new Room("The tunnel narrows further and winds up to the north.  You see a faint light. There is\n" +
-                "definately something to the north, maybe even... gleaming?  The roughness of the cave seems to smooth out a bit\n" +
-                "from the start, maybe this is some sort of dwelling...",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
-            Room gpg_64 = new Room("You shudder as soon as you enter the cave, there is something wrong here, very wrong.\n" +
-                "You look back, you thought you saw something, maybe it was just nerves.  The cave narrows into a tunnel\n" +
-                "that continues to the west.  It is hard to see, but you can make out stalagtites and stlagmites around\n" +
-                "the tunnel.  If you weren't so nervous, you would think this place is rather majestic\n",-2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
+
+            Room gpg_63 = new Room("The tunnel narrows further and winds up to the north.  You see a faint light.\n" +
+                                   "There is definately something to the north, maybe even... gleaming?  The\n" +
+                                   "roughness of the cave seems to smooth out a bit from the start, maybe this is\n" +
+                                   "some sort of dwelling...",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
+
+            Room gpg_64 = new Room("You shudder as soon as you enter the cave, there is something wrong here,\n" +
+                                   "very wrong. You look back, you thought you saw something, maybe it was just\n" +
+                                   "nerves. The cave narrows into a tunnel that continues to the west. It is hard\n" +
+                                   "to see, but you can make out stalagtites and stlagmites around the tunnel.\n" +
+                                   "If you weren't so nervous, you would think this place is rather majestic",
+                                   -2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
+
             Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
             Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
             Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
@@ -736,6 +781,7 @@ namespace _8th_Circle_Server
             gpg_46.removeDualLinks(Direction.SOUTHEAST);
             gpg_47.removeDualLinks(Direction.WEST);
             gpg_49.removeDualLinks(Direction.SOUTH);
+            gpg_49.removeDualLinks(Direction.SOUTHEAST);
             gpg_52.removeDualLinks(Direction.NORTHEAST);
             gpg_53.removeDualLinks(Direction.NORTH);
             gpg_53.removeDualLinks(Direction.NORTHWEST);
