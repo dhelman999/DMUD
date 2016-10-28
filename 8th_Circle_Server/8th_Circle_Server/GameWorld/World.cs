@@ -582,27 +582,27 @@ namespace _8th_Circle_Server
             Room gpg_17 = new Room(common_gpg_open_field, 3, 1, 0, RoomID.GPG_ROOM_17, gpgArea);
             Room gpg_18 = new Room(common_gpg_east_field, 4, 1, 0, RoomID.GPG_ROOM_18, gpgArea);
 
-            Room gpg_19 = new Room("The mouth of the cave to the west.  Bones and spikes decorate the entrance.\n" +
-                                   "The tips of some spikes have dried blood on them.  It seems to get darker\n" +
-                                   "the longer you linger at the cave. You can't help but wonder, would could\n" +
-                                   "be inside?",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
+            Room infront_of_cave_ent = new Room("The mouth of the cave to the west.  Bones and spikes decorate the entrance.\n" +
+                                               "The tips of some spikes have dried blood on them.  It seems to get darker\n" +
+                                               "the longer you linger at the cave. You can't help but wonder, would could\n" +
+                                               "be inside?",-1, 0, 0, RoomID.GPG_ROOM_19, gpgArea);
 
             Room gpg_21 = new Room(common_gpg_open_field, 1, 0, 0, RoomID.GPG_ROOM_21, gpgArea);
             Room gpg_22 = new Room(common_gpg_open_field, 2, 0, 0, RoomID.GPG_ROOM_22, gpgArea);
             Room gpg_23 = new Room(common_gpg_open_field, 3, 0, 0, RoomID.GPG_ROOM_23, gpgArea);
             Room gpg_24 = new Room(common_gpg_east_field, 4, 0, 0, RoomID.GPG_ROOM_24, gpgArea);
 
-            Room gpg_25 = new Room("There is a cave entrance to the north of here. The cave walls extend to the\n" +
-                                   "west and to the south-west. There was some goblin noises nearby... but you\n" +
-                                   "can't tell from which direction, maybe everywhere?",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
+            Room below_cave_ent = new Room("There is a cave entrance to the north of here. The cave walls extend to the\n" +
+                                           "west and to the south-west. There was some goblin noises nearby... but you\n" +
+                                           "can't tell from which direction, maybe everywhere?",-1,-1, 0, RoomID.GPG_ROOM_25, gpgArea);
 
             Room gpg_26 = new Room(common_gpg_open_field, 0,-1, 0, RoomID.GPG_ROOM_26, gpgArea);
             Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, gpgArea);
             Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, gpgArea);
 
-            Room gpg_29 = new Room(common_gpg_open_field + 
-                                   "there is a small switch built into the side of a rock.\n" +
-                                   "You can't help but wonder what would happen if you used it...", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
+            Room main_switch_room = new Room(common_gpg_open_field + 
+                                             "there is a small switch built into the side of a rock.\n" +
+                                             "You can't help but wonder what would happen if you used it...", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
             Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, gpgArea);
 
             Room gpg_31 = new Room("Cave walls extend all throughout the west.  The high walls from the south die\n" +
@@ -619,38 +619,39 @@ namespace _8th_Circle_Server
             Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
             Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
 
-            Room gpg_41 = new Room("The path comes to an end here.  To the north, the dropoff is as steep as\n" +
-                                   "ever, and to the west, giant mountain walls extend upwards.  There is a\n" +
-                                   "large gate that you can see in the distance to the south.",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
+            Room end_of_north_path1 = new Room("The path comes to an end here.  To the north, the dropoff is as steep as\n" +
+                                               "ever, and to the west, giant mountain walls extend upwards.  There is a\n" +
+                                               "large gate that you can see in the distance to the south.",-4, 3, 0, RoomID.GPG_ROOM_41, gpgArea);
 
-            Room gpg_42 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
-                                   "surroundings become more and more mountainous. There is still room to\n" +
-                                   "the south of the path, but it is becoming narrower. Ahead to the west\n" +
-                                   "you can make out some larger cliffs.",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
+            Room middle_of_north_path1 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
+                                                  "surroundings become more and more mountainous. There is still room to\n" +
+                                                  "the south of the path, but it is becoming narrower. Ahead to the west\n" +
+                                                  "you can make out some larger cliffs.",-3, 3, 0, RoomID.GPG_ROOM_42, gpgArea);
 
-            Room gpg_43 = new Room("The path is wide as it starts the trek upwards around the side of a mountain\n" +
-                                   "There is more room to the south. To the north, there is a dropoff down the\n" +
-                                   "mountain. You better watch where you are going..." ,-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
+            Room start_of_north_path1 = new Room("The path is wide as it starts the trek upwards around the side of a mountain\n" +
+                                                 "There is more room to the south. To the north, there is a dropoff down the\n" +
+                                                 "mountain. You better watch where you are going...",-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
 
             Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
             Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
             Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
             Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
-            Room gpg_48 = new Room("The path comes to an end here.  To the north, you see the start of the\n" +
-                                   "dropoff and directly to the south, a large cracked and broken iron gate.\n" +
-                                   "You would normally think this is the entrance of some great fortress but\n" +
-                                   "the broken pieces of metal and glass suggest it was seiged long ago.\n" +
-                                   "After encountering so many goblins, you wonder if they did the seiging,\n" +
-                                   "or if they simply took up residence afterwards.  In either case, you still\n" +
-                                   "smell their stench everywhere.",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
 
-            Room gpg_49 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
-                                   "surroundings become more and more mountainous. There is still room to\n" +
-                                   "the south of the path, but it is becoming narrower. Ahead to the west\n" +
-                                   "you can make out some larger cliffs.", -3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
+            Room end_of_north_path2 = new Room("The path comes to an end here.  To the north, you see the start of the\n" +
+                                               "dropoff and directly to the south, a large cracked and broken iron gate.\n" +
+                                               "You would normally think this is the entrance of some great fortress but\n" +
+                                               "the broken pieces of metal and glass suggest it was seiged long ago.\n" +
+                                               "After encountering so many goblins, you wonder if they did the seiging,\n" +
+                                               "or if they simply took up residence afterwards.  In either case, you still\n" +
+                                               "smell their stench everywhere.",-4, 2, 0, RoomID.GPG_ROOM_48, gpgArea);
 
-            Room gpg_50 = new Room("The path is wide as it starts a trek upwards around the side of a mountain.\n" + 
-                                   "There is more room to the north as the mountain gets darker.",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
+            Room middle_of_north_path2 = new Room("The path continues on to the west. Shrubs are turning into rocks as the\n" +
+                                                  "surroundings become more and more mountainous. There is still room to\n" +
+                                                  "the south of the path, but it is becoming narrower. Ahead to the west\n" +
+                                                  "you can make out some larger cliffs.", -3, 2, 0, RoomID.GPG_ROOM_49, gpgArea);
+
+            Room start_of_north_path2 = new Room("The path is wide as it starts a trek upwards around the side of a mountain.\n" + 
+                                                 "There is more room to the north as the mountain gets darker.",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
 
             Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
             Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
@@ -658,13 +659,13 @@ namespace _8th_Circle_Server
             Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
             Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
 
-            Room gpg_56 = new Room("The end of the cave, ah the gleaming you saw earlier was a golden chest!\n" +
-                                   "You can't help but think what riches could be inside, finally, this forsaken\n" +
-                                   "place must have some redeeming quality... treasure!",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
+            Room cave_treasure = new Room("The end of the cave, ah the gleaming you saw earlier was a golden chest!\n" +
+                                          "You can't help but think what riches could be inside, finally, this forsaken\n" +
+                                          "place must have some redeeming quality... treasure!",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
 
-            Room gpg_57 = new Room("The walls end here.  To the north you see the start of a path going upwards.\n" +
-                                   "There is something dead here, at first you thought it was some rocks but it\n" +
-                                   "looks like it is some sort of stone golem.",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
+            Room stone_golem = new Room("The walls end here.  To the north you see the start of a path going upwards.\n" +
+                                        "There is something dead here, at first you thought it was some rocks but it\n" +
+                                        "looks like it is some sort of stone golem.",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
 
             Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
             Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
@@ -672,17 +673,16 @@ namespace _8th_Circle_Server
             Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
             Room gpg_62 = new Room("GPG 62",-4, 0, 0, RoomID.GPG_ROOM_62, gpgArea);
 
-            Room gpg_63 = new Room("The tunnel narrows further and winds up to the north.  You see a faint light.\n" +
-                                   "There is definately something to the north, maybe even... gleaming?  The\n" +
-                                   "roughness of the cave seems to smooth out a bit from the start, maybe this is\n" +
-                                   "some sort of dwelling...",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
+            Room cave_west = new Room("The tunnel narrows further and winds up to the north.  You see a faint light.\n" +
+                                      "There is definately something to the north, maybe even... gleaming?  The\n" +
+                                      "roughness of the cave seems to smooth out a bit from the start, maybe this is\n" +
+                                      "some sort of dwelling...",-3, 0, 0, RoomID.GPG_ROOM_63, gpgArea);
 
-            Room gpg_64 = new Room("You shudder as soon as you enter the cave, there is something wrong here,\n" +
-                                   "very wrong. You look back, you thought you saw something, maybe it was just\n" +
-                                   "nerves. The cave narrows into a tunnel that continues to the west. It is hard\n" +
-                                   "to see, but you can make out stalagtites and stlagmites around the tunnel.\n" +
-                                   "If you weren't so nervous, you would think this place is rather majestic",
-                                   -2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
+            Room cave_east = new Room("You shudder as soon as you enter the cave, there is something wrong here,\n" +
+                                      "very wrong. You look back, you thought you saw something, maybe it was just\n" +
+                                      "nerves. The cave narrows into a tunnel that continues to the west. It is hard\n" +
+                                      "to see, but you can make out stalagtites and stlagmites around the tunnel.\n" +
+                                      "If you weren't so nervous, you would think this place is rather majestic", -2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
 
             Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
             Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
@@ -767,8 +767,8 @@ namespace _8th_Circle_Server
             }// foreach
 
             // links have been added, now remove targetted links
-            gpg_19.removeDualLinks(Direction.NORTHWEST);
-            gpg_19.removeDualLinks(Direction.SOUTHWEST);
+            infront_of_cave_ent.removeDualLinks(Direction.NORTHWEST);
+            infront_of_cave_ent.removeDualLinks(Direction.SOUTHWEST);
             gpg_31.removeDualLinks(Direction.NORTHWEST);
             gpg_37.removeDualLinks(Direction.SOUTH);
             gpg_37.removeDualLinks(Direction.SOUTHEAST);
@@ -780,8 +780,8 @@ namespace _8th_Circle_Server
             gpg_40.removeDualLinks(Direction.SOUTHWEST);
             gpg_46.removeDualLinks(Direction.SOUTHEAST);
             gpg_47.removeDualLinks(Direction.WEST);
-            gpg_49.removeDualLinks(Direction.SOUTH);
-            gpg_49.removeDualLinks(Direction.SOUTHEAST);
+            middle_of_north_path2.removeDualLinks(Direction.SOUTH);
+            middle_of_north_path2.removeDualLinks(Direction.SOUTHEAST);
             gpg_52.removeDualLinks(Direction.NORTHEAST);
             gpg_53.removeDualLinks(Direction.NORTH);
             gpg_53.removeDualLinks(Direction.NORTHWEST);
@@ -790,31 +790,28 @@ namespace _8th_Circle_Server
             gpg_55.removeDualLinks(Direction.EAST);
             gpg_55.removeDualLinks(Direction.SOUTHEAST);
             gpg_55.removeDualLinks(Direction.NORTHEAST);
-            gpg_56.removeDualLinks(Direction.NORTHWEST);
-            gpg_56.removeDualLinks(Direction.NORTHEAST);
-            gpg_57.removeDualLinks(Direction.WEST);
-            gpg_57.removeDualLinks(Direction.SOUTHWEST);
-            gpg_57.removeDualLinks(Direction.SOUTH);
+            cave_treasure.removeDualLinks(Direction.NORTHWEST);
+            cave_treasure.removeDualLinks(Direction.NORTHEAST);
+            stone_golem.removeDualLinks(Direction.WEST);
+            stone_golem.removeDualLinks(Direction.SOUTHWEST);
+            stone_golem.removeDualLinks(Direction.SOUTH);
             gpg_60.removeDualLinks(Direction.NORTHWEST);
             gpg_60.removeDualLinks(Direction.WEST);
             gpg_60.removeDualLinks(Direction.SOUTHWEST);
             gpg_60.removeDualLinks(Direction.SOUTH);
             gpg_61.removeDualLinks(Direction.SOUTHWEST);
-            gpg_62.removeDualLinks(Direction.EAST);
-            gpg_62.removeDualLinks(Direction.NORTHEAST);
-            gpg_62.removeDualLinks(Direction.SOUTHEAST);
-            gpg_63.removeDualLinks(Direction.SOUTHEAST);
-            gpg_63.removeDualLinks(Direction.SOUTH);
-            gpg_64.removeDualLinks(Direction.SOUTH);
-            gpg_64.removeDualLinks(Direction.SOUTHWEST);
-            gpg_64.removeDualLinks(Direction.SOUTHEAST);
-            gpg_64.removeDualLinks(Direction.NORTHWEST);
-            gpg_64.removeDualLinks(Direction.NORTHEAST);
+            gpg_69.removeTripleLinks(Direction.EAST);
+            cave_west.removeDualLinks(Direction.SOUTHEAST);
+            cave_west.removeDualLinks(Direction.SOUTH);
+            cave_east.removeDualLinks(Direction.SOUTH);
+            cave_east.removeDualLinks(Direction.SOUTHWEST);
+            cave_east.removeDualLinks(Direction.SOUTHEAST);
+            cave_east.removeDualLinks(Direction.NORTHWEST);
+            cave_east.removeDualLinks(Direction.NORTHEAST);
             gpg_67.removeDualLinks(Direction.NORTHWEST);
             gpg_68.removeDualLinks(Direction.WEST);
             gpg_68.removeDualLinks(Direction.SOUTHWEST);
-            gpg_69.removeDualLinks(Direction.EAST);
-            gpg_69.removeDualLinks(Direction.NORTHEAST);
+            gpg_69.removeTripleLinks(Direction.EAST);
             gpg_77.removeDualLinks(Direction.NORTH);
             gpg_71.removeDualLinks(Direction.WEST);
             gpg_71.removeDualLinks(Direction.EAST);
@@ -825,8 +822,8 @@ namespace _8th_Circle_Server
             gpg_78.removeDualLinks(Direction.NORTHWEST);
             gpg_78.removeDualLinks(Direction.NORTHEAST);
             gpg_78.removeDualLinks(Direction.EAST);
-            gpg_41.removeTripleLinks(Direction.WEST);
-            gpg_48.removeTripleLinks(Direction.WEST);
+            end_of_north_path1.removeTripleLinks(Direction.WEST);
+            end_of_north_path2.removeTripleLinks(Direction.WEST);
             gpg_55.removeTripleLinks(Direction.WEST);
             gpg_62.removeTripleLinks(Direction.WEST);
             gpg_69.removeTripleLinks(Direction.WEST);
