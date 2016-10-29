@@ -600,7 +600,7 @@ namespace _8th_Circle_Server
             Room gpg_27 = new Room(common_gpg_open_field, 1,-1, 0, RoomID.GPG_ROOM_27, gpgArea);
             Room gpg_28 = new Room(common_gpg_open_field, 2,-1, 0, RoomID.GPG_ROOM_28, gpgArea);
 
-            Room main_switch_room = new Room(common_gpg_open_field + 
+            Room main_switch_room = new Room(common_gpg_open_field + "\n" +
                                              "there is a small switch built into the side of a rock.\n" +
                                              "You can't help but wonder what would happen if you used it...", 3,-1, 0, RoomID.GPG_ROOM_29, gpgArea);
             Room gpg_30 = new Room(common_gpg_east_field, 4,-1, 0, RoomID.GPG_ROOM_30, gpgArea);
@@ -657,7 +657,13 @@ namespace _8th_Circle_Server
             Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
             Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
             Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
-            Room gpg_55 = new Room("GPG 55",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
+
+            Room gate_entrance = new Room("You step inside the great iron gate. There is a large walkway here.\n" +
+                                          "Remanants of broken pike's, shields, swords and other debris litter\n" +
+                                          "the area. You can still see gashes in the rock wall and imprints in\n" +
+                                          "the ground. This area was intentionally designed to be a narrow\n" +
+                                          "stranglehold to try to be a defensible position. There must have\n" +
+                                          "been a great battle here.",-4, 1, 0, RoomID.GPG_ROOM_55, gpgArea);
 
             Room cave_treasure = new Room("The end of the cave, ah the gleaming you saw earlier was a golden chest!\n" +
                                           "You can't help but think what riches could be inside, finally, this forsaken\n" +
@@ -689,7 +695,7 @@ namespace _8th_Circle_Server
             Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
             Room gpg_68 = new Room("GPG 68",-5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
             Room gpg_69 = new Room("GPG 69",-4,-1, 0, RoomID.GPG_ROOM_69, gpgArea);
-            Room gpg_70 = new Room("GPG 70",-3,-1, 0, RoomID.GPG_ROOM_70, gpgArea);
+            Room gpg_70 = new Room("The room that you aren't supposed to get to...",-3,-1, 0, RoomID.GPG_ROOM_70, gpgArea);
             Room gpg_71 = new Room("GPG 71",-2,-1, 0, RoomID.GPG_ROOM_71, gpgArea);
             Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, gpgArea);
             Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, gpgArea);
@@ -787,11 +793,12 @@ namespace _8th_Circle_Server
             gpg_53.removeDualLinks(Direction.NORTHWEST);
             gpg_53.removeDualLinks(Direction.WEST);
             gpg_53.removeDualLinks(Direction.SOUTHWEST);
-            gpg_55.removeDualLinks(Direction.EAST);
-            gpg_55.removeDualLinks(Direction.SOUTHEAST);
-            gpg_55.removeDualLinks(Direction.NORTHEAST);
+            gate_entrance.removeDualLinks(Direction.EAST);
+            gate_entrance.removeDualLinks(Direction.SOUTHEAST);
+            gate_entrance.removeDualLinks(Direction.NORTHEAST);
             cave_treasure.removeDualLinks(Direction.NORTHWEST);
             cave_treasure.removeDualLinks(Direction.NORTHEAST);
+            cave_treasure.removeDualLinks(Direction.SOUTHWEST);
             stone_golem.removeDualLinks(Direction.WEST);
             stone_golem.removeDualLinks(Direction.SOUTHWEST);
             stone_golem.removeDualLinks(Direction.SOUTH);
@@ -801,7 +808,9 @@ namespace _8th_Circle_Server
             gpg_60.removeDualLinks(Direction.SOUTH);
             gpg_61.removeDualLinks(Direction.SOUTHWEST);
             gpg_69.removeTripleLinks(Direction.EAST);
-            cave_west.removeDualLinks(Direction.SOUTHEAST);
+            gpg_62.removeDualLinks(Direction.SOUTHEAST);
+            gpg_62.removeDualLinks(Direction.SOUTHWEST);
+            cave_west.removeTripleLinks(Direction.WEST);
             cave_west.removeDualLinks(Direction.SOUTH);
             cave_east.removeDualLinks(Direction.SOUTH);
             cave_east.removeDualLinks(Direction.SOUTHWEST);
@@ -813,6 +822,7 @@ namespace _8th_Circle_Server
             gpg_68.removeDualLinks(Direction.SOUTHWEST);
             gpg_69.removeTripleLinks(Direction.EAST);
             gpg_77.removeDualLinks(Direction.NORTH);
+            gpg_71.removeDualLinks(Direction.NORTHWEST);
             gpg_71.removeDualLinks(Direction.WEST);
             gpg_71.removeDualLinks(Direction.EAST);
             gpg_71.removeDualLinks(Direction.SOUTHWEST);
@@ -824,7 +834,7 @@ namespace _8th_Circle_Server
             gpg_78.removeDualLinks(Direction.EAST);
             end_of_north_path1.removeTripleLinks(Direction.WEST);
             end_of_north_path2.removeTripleLinks(Direction.WEST);
-            gpg_55.removeTripleLinks(Direction.WEST);
+            gate_entrance.removeTripleLinks(Direction.WEST);
             gpg_62.removeTripleLinks(Direction.WEST);
             gpg_69.removeTripleLinks(Direction.WEST);
             gpg_76.removeTripleLinks(Direction.WEST);

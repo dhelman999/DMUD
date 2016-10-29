@@ -53,11 +53,10 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-            if (HasFlag(MobFlags.LOCKED))
+           else if (HasFlag(MobFlags.LOCKED))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is locked\n";
-            if (HasFlag(MobFlags.OPEN))
+            else if (HasFlag(MobFlags.OPEN))
                 clientString = opener.GetCurrentRoom().getDoorString(this) + " is already open\n";
-
             else
             {
                 Utils.SetFlag(ref mFlags, MobFlags.OPEN);
@@ -84,9 +83,9 @@ namespace _8th_Circle_Server
 
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-            if (HasFlag(MobFlags.LOCKED))
+            else if (HasFlag(MobFlags.LOCKED))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is locked\n";
-            if (!HasFlag(MobFlags.OPEN))
+            else if (!HasFlag(MobFlags.OPEN))
                 clientString = closer.GetCurrentRoom().getDoorString(this) + " is already closed\n";
             else
             {
@@ -113,11 +112,11 @@ namespace _8th_Circle_Server
             String ret = String.Empty;
             Direction direction = Direction.DIRECTION_END;
 
-            for (int i = 0; i < currentRoom.getRes(ResType.DOORWAY).Count; ++i)
+            for (int dir = 0; dir < currentRoom.getRes(ResType.DOORWAY).Count; ++dir)
             {
-                if (currentRoom.getRes(ResType.DOORWAY)[i] != null && currentRoom.getRes(ResType.DOORWAY)[i].Equals(this))
+                if (currentRoom.getRes(ResType.DOORWAY)[dir] != null && currentRoom.getRes(ResType.DOORWAY)[dir].Equals(this))
                 {
-                    direction = (Direction)(i);
+                    direction = (Direction)(dir);
                     break;
                 }
             }// for

@@ -24,3 +24,8 @@ Larger Enhancements/Fixes:
 	
 7.  Add a way to customize what the client string is when pre-post execute commands fail.  For example, if an object is hidden and you try to get it, I hardcode 'you can't find that' or something like that.  I would like
 	To use the hidden check pre command check with passed targets for the above situation.  Maybe the simple solution is to just expand the error codes a ton, and then based on the error code just make the client string the same thing.
+	
+8.  There is a flaw in the design of hidden objects.  The entire idea of always checking if the object is hidden and then displaying a generic display string is a little off.  For example, if you drop an item
+	in a room with a hidden object, then you do the getall command, it will display the generic string for you can't get that on the hidden item, and then it will display the get string for the item you are
+	picking up.  This defeats the purpose of hidden objects because you know one exists with little loopholes like this.  There are more examples but it doesn't seem like a good idea to just keep finding all
+	the places where the logic breaks down and put special code to cover it up.

@@ -211,14 +211,8 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.HIDDEN))
-            {
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-                return eCode;
-            }   
-
-            if (prep.prepType == PrepositionType.PREP_AT &&
-                mPrepList.Contains(PrepositionType.PREP_AT))
+            else if (prep.prepType == PrepositionType.PREP_AT && mPrepList.Contains(PrepositionType.PREP_AT))
             {
                 clientString = mDescription;
                 eCode = errorCode.E_OK;
@@ -235,53 +229,35 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.HIDDEN))
-            {
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-                return eCode;
-            }       
-
-            if (HasFlag(MobFlags.GETTABLE) && mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
-            {
-                if (mob.mInventory.Count < mob.mInventory.Capacity)
-                {
-                    if (HasFlag(MobFlags.DUPLICATABLE))
-                    {
-                        Mob dup = new Mob(this);
-                        mCurrentOwner = mob;
-                        mob.mInventory.Add(this);
-
-                        clientString += "you get " + exitString(mCurrentRoom) + "\n";
-                        eCode = errorCode.E_OK;
-                    }
-                    else
-                    {                    
-                        if (!HasFlag(MobFlags.HIDDEN))
-                        {
-                            mWorld.totallyRemoveRes(this);
-                            mCurrentOwner = mob;
-                            mob.mInventory.Add(this);
-
-                            if (mParent != null)
-                            {
-                                mParent.mChildren.Remove(this);
-                                Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
-                            }
-
-                            clientString += "you get " + exitString(mCurrentRoom) + "\n";
-                            eCode = errorCode.E_OK;
-                        }
-                        else
-                            clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-                    }
-                }// if (mob.mInventory.Count < mob.mInventory.Capacity)
-                else
-                {
-                    clientString = "your inventory is full\n";
-                }// else
-            }// if (HasFlag(MobFlags.GETTABLE) && mCurrentRoom.getRes(ResType.OBJECT).Contains(this))
-            else
+            else if (!HasFlag(MobFlags.GETTABLE))
                 clientString = "you can't get that\n";
+            else if (mob.mInventory.Count >= mob.mInventory.Capacity)
+                clientString = "your inventory is full\n";
+            else if (HasFlag(MobFlags.DUPLICATABLE))
+            {
+                Mob dup = new Mob(this);
+                mCurrentOwner = mob;
+                mob.mInventory.Add(this);
+
+                clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                eCode = errorCode.E_OK;
+            }
+            else
+            {
+                mWorld.totallyRemoveRes(this);
+                mCurrentOwner = mob;
+                mob.mInventory.Add(this);
+
+                if (mParent != null)
+                {
+                    mParent.mChildren.Remove(this);
+                    Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
+                }
+
+                clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                eCode = errorCode.E_OK;
+            }
 
             return eCode;
         }// get
@@ -292,59 +268,42 @@ namespace _8th_Circle_Server
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
             if (HasFlag(MobFlags.HIDDEN))
-            {
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-                return eCode;
-            }     
-
-            if (HasFlag(MobFlags.GETTABLE))
-            {
-                if (mob.mInventory.Count < mob.mInventory.Capacity)
-                {
-                    if (HasFlag(MobFlags.DUPLICATABLE))
-                    {
-                        Mob dup = new Mob(this);
-                        mCurrentOwner = mob;
-                        mob.mInventory.Add(this);
-
-                        clientString += "you get " + exitString(mCurrentRoom) + "\n";
-                        eCode = errorCode.E_OK;
-                    }
-                    else if (container.HasFlag(MobFlags.OPENABLE) && container.HasFlag(MobFlags.OPEN))
-                    {
-                        if (prepType == PrepositionType.PREP_FROM)
-                        {
-                            if (container.mInventory.Contains(this))
-                            {
-                                mWorld.totallyRemoveRes(this);
-                                container.mInventory.Remove(this);
-                                mCurrentOwner = mob;
-                                mob.mInventory.Add(this);
-
-                                if (mParent != null)
-                                {
-                                    mParent.mChildren.Remove(this);
-                                    Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
-                                }
-                                
-                                clientString += "you get " + exitString(mCurrentRoom) + "\n";
-                                eCode = errorCode.E_OK;
-                            }// if (container.mInventory.Contains(this))
-                            else
-                                clientString = container.mName + " does not contain a " + this.mName + "\n";
-                        }// if (prepType == PrepositionType.PREP_FROM)
-                        else
-                            clientString = "you can't get like that\n";
-                    }// else if (container.HasFlag(MobFlags.OPENABLE) && container.IsOpen())
-                    else
-                        clientString = container.mName + " is closed\n";
-                }// if (mob.mInventory.Count < mob.mInventory.Capacity)
-                else
-                    clientString = "your inventory is full\n";
-            }// if (HasFlag(MobFlags.GETTABLE))
-            else
+            else if (!HasFlag(MobFlags.GETTABLE))
                 clientString = "you can't get that\n";
+            else if (mob.mInventory.Count >= mob.mInventory.Capacity)
+                clientString = "your inventory is full\n";
+            else if (!container.HasFlag(MobFlags.OPENABLE))
+                clientString = "you cannot open " + container.GetName();
+            else if (container.HasFlag(MobFlags.OPEN))
+                clientString = container.GetName() + " is not open";
+            else if (prepType != PrepositionType.PREP_FROM)
+                clientString = "you can't get like that";
+            else if (HasFlag(MobFlags.DUPLICATABLE))
+            {
+                Mob dup = new Mob(this);
+                mCurrentOwner = mob;
+                mob.mInventory.Add(this);
+
+                clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                eCode = errorCode.E_OK;
+            }   
+            else
+            {
+                mWorld.totallyRemoveRes(this);
+                container.mInventory.Remove(this);
+                mCurrentOwner = mob;
+                mob.mInventory.Add(this);
+
+                if (mParent != null)
+                {
+                    mParent.mChildren.Remove(this);
+                    Utils.SetFlag(ref mParent.mFlags, MobFlags.RESPAWNING);
+                }
+
+                clientString += "you get " + exitString(mCurrentRoom) + "\n";
+                eCode = errorCode.E_OK;
+            }
 
             return eCode;
         }// get
@@ -404,10 +363,14 @@ namespace _8th_Circle_Server
             List<Mob> containerInv = container.mInventory;
 
             if (container.HasFlag(MobFlags.HIDDEN))
-                return eCode;
-            if (!container.HasFlag(MobFlags.OPEN))
+                clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
+            else if (!container.HasFlag(MobFlags.OPENABLE))
+                clientString = "you can't open " + container.GetName();
+            else if (!container.HasFlag(MobFlags.OPEN))
                 clientString = "the " + container.GetName() + " is closed.";
-            if (containerInv.Count == 0)
+            else if (!container.mPrepList.Contains(PrepositionType.PREP_FROM) || prepType != PrepositionType.PREP_FROM)
+                clientString = "you can't getall like that";
+            else if (containerInv.Count == 0)
                 clientString = "there is nothing to get.";
 
             while (containerInv.Count > 0)
@@ -430,7 +393,9 @@ namespace _8th_Circle_Server
         {
             errorCode eCode = errorCode.E_INVALID_COMMAND_USAGE;
 
-            if (HasFlag(MobFlags.DROPPABLE))
+            if (!HasFlag(MobFlags.DROPPABLE))
+                clientString += "you can't drop " + exitString(mCurrentRoom);
+            else
             {  
                 mob.mInventory.Remove(this);
                 mCurrentRoom = mob.mCurrentRoom;
@@ -445,9 +410,7 @@ namespace _8th_Circle_Server
 
                 clientString += "you drop " + exitString(mCurrentRoom) + "\n";
                 eCode = errorCode.E_OK;
-            }// if
-            else
-                clientString += "you can't drop that\n";
+            }   
 
             return eCode;
         }// drop
@@ -476,8 +439,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "You can't open that\n";
+            else
+                clientString = "You can't open that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// open
@@ -487,8 +450,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "You can't close that\n";
+            else
+                clientString = "You can't close that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// close
@@ -498,8 +461,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "You can't lock that\n";
+            else
+                clientString = "You can't lock that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
@@ -509,8 +472,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "You can't unlock that\n";
+            else
+                clientString = "You can't unlock that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
@@ -579,8 +542,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "you can't lock that\n";
+            else
+                clientString = "you can't lock that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// lck
@@ -590,8 +553,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "you can't unlock that\n";
+            else
+                clientString = "you can't unlock that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// unlock
@@ -601,8 +564,8 @@ namespace _8th_Circle_Server
         {
             if (HasFlag(MobFlags.HIDDEN))
                 clientString = GLOBALS.RESPONSE_CANT_DO_THAT;
-
-            clientString = "you can't fullheal that\n";
+            else
+                clientString = "you can't fullheal that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// fullheal
@@ -618,7 +581,7 @@ namespace _8th_Circle_Server
         // Basic wearall functionality
         public virtual errorCode wearall(ref String clientString)
         {
-            clientString = "you can't wear that\n";
+            clientString += "you can't wear the " + mName + "\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
@@ -626,7 +589,7 @@ namespace _8th_Circle_Server
         // Basic remove functionality
         public virtual errorCode remove(CombatMob mob, ref String clientString)
         {
-            clientString = "you can't remove that\n";
+            clientString += "you can't remove that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wear
@@ -634,7 +597,7 @@ namespace _8th_Circle_Server
         // Basic removeall functionality
         public virtual errorCode removeall(ref String clientString)
         {
-            clientString = "you can't remove that\n";
+            clientString += "you can't remove that\n";
 
             return errorCode.E_INVALID_COMMAND_USAGE;
         }// wearall
