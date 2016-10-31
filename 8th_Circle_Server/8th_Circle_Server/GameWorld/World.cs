@@ -617,7 +617,8 @@ namespace _8th_Circle_Server
             Room gpg_37 = new Room("GPG 37",-8, 3, 0, RoomID.GPG_ROOM_37, gpgArea);
             Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, gpgArea);
             Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
-            Room gpg_40 = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
+
+            Room switch_tunnel_ne = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
 
             Room end_of_north_path1 = new Room("The path comes to an end here.  To the north, the dropoff is as steep as\n" +
                                                "ever, and to the west, giant mountain walls extend upwards.  There is a\n" +
@@ -635,7 +636,10 @@ namespace _8th_Circle_Server
             Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
             Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
             Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
-            Room gpg_47 = new Room("GPG 47",-5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
+
+            Room switch_tunnel_ent = new Room("The opening leads to a narrow tunnel leading north. Dim torchlight is the\n" +
+                                              "only thing noticeable as there are no decorations on the plain stone walls.",
+                                              -5, 2, 0, RoomID.GPG_ROOM_47, gpgArea);
 
             Room end_of_north_path2 = new Room("The path comes to an end here.  To the north, you see the start of the\n" +
                                                "dropoff and directly to the south, a large cracked and broken iron gate.\n" +
@@ -655,8 +659,13 @@ namespace _8th_Circle_Server
 
             Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
             Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
-            Room gpg_53 = new Room("GPG 53",-6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
-            Room gpg_54 = new Room("GPG 54",-5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
+
+            Room barracks_nw = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
+                                        "and beds lining it in neat rows.", -6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
+
+            Room barracks_ne = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
+                                        "and beds lining it in neat rows. There is a small wall opening to the north here.",
+                                        -5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
 
             Room gate_entrance = new Room("You step inside the great iron gate. There is a large walkway here.\n" +
                                           "Remanants of broken pike's, shields, swords and other debris litter\n" +
@@ -675,8 +684,15 @@ namespace _8th_Circle_Server
 
             Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
             Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
-            Room gpg_60 = new Room("GPG 60",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
-            Room gpg_61 = new Room("GPG 61",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
+
+            Room barracks_sw = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
+                                        "and beds lining it in neat rows.",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
+
+            Room barracks_ent = new Room("It looks like this is the barracks. Probably close to the entrance so soldiers\n" +
+                                         "can quickly mobilize to defend the hideout. It is a large room that spans to\n" +
+                                         "the north and west. Torches and beds line the room in nice rows. Other than\n" +
+                                         "the essentials, there is not much else in this room.",-5, 0, 0, RoomID.GPG_ROOM_61, gpgArea);
+
             Room gate_middle = new Room("The middle of the chokepoint from the gate entrance.  There are some destroyed\n" +
                                         "stairs and several crossbow stations that are also half broken off.  The stairs\n" +
                                         "can almost be climbed, but it doesn't look like there is a great viewpoint in\n" +
@@ -697,7 +713,13 @@ namespace _8th_Circle_Server
             Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
             Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
             Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
-            Room gpg_68 = new Room("GPG 68",-5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
+
+            Room hideout_ent = new Room("The entrance to the goblin hideout. There are guard stations on both sides\n" +
+                                        "as you enter. There are a few broken off arrows stuck in the wall. This is\n" +
+                                        "an eloborately made cave inside of the mountain. The walls are higher than\n" +
+                                        "the first glances imply. It has been well maintained, sortof. It still has\n" +
+                                        "some clutter from the goblins but the overall the walls are in good condition."
+                                        ,-5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
 
             Room gate_back = new Room("The back of the tunnel shows more signs of battle, some of the fiercest\n" +
                                       "fighting must have occured here as there are suits of armor, pikes and\n" +
@@ -707,7 +729,12 @@ namespace _8th_Circle_Server
 
             Room gpg_70 = new Room("The room that you aren't supposed to get to...",-3,-1, 0, RoomID.GPG_ROOM_70, gpgArea);
 
-            Room gpg_71 = new Room("GPG 71",-2,-1, 0, RoomID.GPG_ROOM_71, gpgArea);
+            Room secret_cage_room = new Room("This room was well hidden, the entrance blends in with the\n" +
+                                             "rock face. The room was carefully carved into an oval shape.\n" +
+                                             "In the center of the room, there is a small stone pedastal.\n" +
+                                             "Highlighted on the pedastal is a small metal cage with\n" +
+                                             "something gleaming inside...",-2,-1, 0, RoomID.GPG_ROOM_71, gpgArea);
+
             Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, gpgArea);
             Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, gpgArea);
             Room gpg_74 = new Room("GPG 74",-6,-2, 0, RoomID.GPG_ROOM_74, gpgArea);
@@ -807,16 +834,16 @@ namespace _8th_Circle_Server
             gpg_38.removeDualLinks(Direction.SOUTHEAST);
             gpg_39.removeDualLinks(Direction.SOUTH);
             gpg_39.removeDualLinks(Direction.SOUTHWEST);
-            gpg_40.removeDualLinks(Direction.SOUTHWEST);
+            switch_tunnel_ne.removeDualLinks(Direction.SOUTHWEST);
             gpg_46.removeDualLinks(Direction.SOUTHEAST);
-            gpg_47.removeDualLinks(Direction.WEST);
+            switch_tunnel_ent.removeDualLinks(Direction.WEST);
             middle_of_north_path2.removeDualLinks(Direction.SOUTH);
             middle_of_north_path2.removeDualLinks(Direction.SOUTHEAST);
             gpg_52.removeDualLinks(Direction.NORTHEAST);
-            gpg_53.removeDualLinks(Direction.NORTH);
-            gpg_53.removeDualLinks(Direction.NORTHWEST);
-            gpg_53.removeDualLinks(Direction.WEST);
-            gpg_53.removeDualLinks(Direction.SOUTHWEST);
+            barracks_nw.removeDualLinks(Direction.NORTH);
+            barracks_nw.removeDualLinks(Direction.NORTHWEST);
+            barracks_nw.removeDualLinks(Direction.WEST);
+            barracks_nw.removeDualLinks(Direction.SOUTHWEST);
             gate_entrance.removeDualLinks(Direction.EAST);
             gate_entrance.removeDualLinks(Direction.SOUTHEAST);
             gate_entrance.removeDualLinks(Direction.NORTHEAST);
@@ -826,11 +853,11 @@ namespace _8th_Circle_Server
             stone_golem.removeDualLinks(Direction.WEST);
             stone_golem.removeDualLinks(Direction.SOUTHWEST);
             stone_golem.removeDualLinks(Direction.SOUTH);
-            gpg_60.removeDualLinks(Direction.NORTHWEST);
-            gpg_60.removeDualLinks(Direction.WEST);
-            gpg_60.removeDualLinks(Direction.SOUTHWEST);
-            gpg_60.removeDualLinks(Direction.SOUTH);
-            gpg_61.removeDualLinks(Direction.SOUTHWEST);
+            barracks_sw.removeDualLinks(Direction.NORTHWEST);
+            barracks_sw.removeDualLinks(Direction.WEST);
+            barracks_sw.removeDualLinks(Direction.SOUTHWEST);
+            barracks_sw.removeDualLinks(Direction.SOUTH);
+            barracks_ent.removeDualLinks(Direction.SOUTHWEST);
             gate_back.removeTripleLinks(Direction.EAST);
             gate_middle.removeDualLinks(Direction.SOUTHEAST);
             gate_middle.removeDualLinks(Direction.SOUTHWEST);
@@ -842,14 +869,15 @@ namespace _8th_Circle_Server
             cave_east.removeDualLinks(Direction.NORTHWEST);
             cave_east.removeDualLinks(Direction.NORTHEAST);
             gpg_67.removeDualLinks(Direction.NORTHWEST);
-            gpg_68.removeDualLinks(Direction.WEST);
-            gpg_68.removeDualLinks(Direction.SOUTHWEST);
+            hideout_ent.removeDualLinks(Direction.WEST);
+            hideout_ent.removeDualLinks(Direction.SOUTHWEST);
+            hideout_ent.removeDualLinks(Direction.NORTHWEST);
             gate_back.removeTripleLinks(Direction.EAST);
             cliff_middle.removeDualLinks(Direction.NORTH);
-            gpg_71.removeDualLinks(Direction.NORTHWEST);
-            gpg_71.removeDualLinks(Direction.WEST);
-            gpg_71.removeDualLinks(Direction.EAST);
-            gpg_71.removeDualLinks(Direction.SOUTHWEST);
+            secret_cage_room.removeDualLinks(Direction.NORTHWEST);
+            secret_cage_room.removeDualLinks(Direction.WEST);
+            secret_cage_room.removeDualLinks(Direction.EAST);
+            secret_cage_room.removeDualLinks(Direction.SOUTHWEST);
             gpg_75.removeDualLinks(Direction.NORTHWEST);
             cliff_ent.removeDualLinks(Direction.NORTHEAST);
             cliff_ent.removeDualLinks(Direction.NORTHWEST);
@@ -862,11 +890,13 @@ namespace _8th_Circle_Server
             gate_middle.removeTripleLinks(Direction.WEST);
             gate_back.removeTripleLinks(Direction.WEST);
             cliff_ent.removeTripleLinks(Direction.WEST);
+            switch_tunnel_ent.removeDualLinks(Direction.NORTHWEST);
+            switch_tunnel_ent.removeDualLinks(Direction.SOUTHWEST);
 
             MobFlags flags = MobFlags.HIDDEN;
             Doorway newDoor = new Doorway("door", flags);
-            gpg_71.addDoor(newDoor, Direction.SOUTH);
-            ((gpg_71.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
+            secret_cage_room.addDoor(newDoor, Direction.SOUTH);
+            ((secret_cage_room.GetRoomLinks()[(int)Direction.SOUTH])).addDoor(newDoor, Direction.NORTH);
             newDoor.CreateMemento();
 
             EventData ed = new EventData(EventID.EVENT_GPG_WALL_ADD, CommandName.COMMAND_USE, AreaID.AID_gpgArea);
