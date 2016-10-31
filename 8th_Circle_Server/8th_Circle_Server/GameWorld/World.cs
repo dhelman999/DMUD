@@ -692,8 +692,12 @@ namespace _8th_Circle_Server
                                         "There is something dead here, at first you thought it was some rocks but it\n" +
                                         "looks like it is some sort of stone golem.",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
 
-            Room gpg_58 = new Room("GPG 58",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
-            Room gpg_59 = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
+            Room meetingroom_sw = new Room("This part of the room has the lower level chairs in front of the table.\n" +
+                                           "There are some suits of armor up on the wall as decorations that look\n" +
+                                           "banged up... At least the golbins are trying to look like they deserve\n" +
+                                           "some respect...",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
+
+            Room meetingroom_se = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
 
             Room barracks_sw = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
                                         "and beds lining it in neat rows.",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
@@ -720,17 +724,32 @@ namespace _8th_Circle_Server
                                       "If you weren't so nervous, you would think this place is rather majestic", 
                                       -2, 0, 0, RoomID.GPG_ROOM_64, gpgArea);
 
-            Room gpg_65 = new Room("GPG 65",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
-            Room gpg_66 = new Room("GPG 66",-7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
-            Room gpg_67 = new Room("GPG 67",-6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
+            Room meetingroom_ent = new Room("A large meeting or planning room of some sorts starts here.\n" +
+                                            "The guard station ends and opens up into this square shaped\n" +
+                                            "area that has rows of chairs around a stone table with one\n" +
+                                            "large ornate chair on the opposite side of all the others.\n" +
+                                            "That chair is probably for the chieftain or whoever is in\n" +
+                                            "charge.",-8,-1, 0, RoomID.GPG_ROOM_65, gpgArea);
+
+            Room messhall_nw = new Room("A primitive line system runs west to east along the north side of the\n" +
+                                        "area where the food is distributed. There are some packages of leftovers\n" +
+                                        "that smell so bad it decreases you desire to ever eat again. You don't\n" +
+                                        "to think about what it is these creatures consume for 'sustainance'.",
+                                        -7,-1, 0, RoomID.GPG_ROOM_66, gpgArea);
+
+            Room messhall_ne = new Room("A primitive line system runs west to east along the north side of the\n" +
+                                        "area where the food is distributed. There are some packages of leftovers\n" +
+                                        "that smell so bad it decreases you desire to ever eat again. You don't\n" +
+                                        "to think about what it is these creatures consume for 'sustainance'.",
+                                        -6,-1, 0, RoomID.GPG_ROOM_67, gpgArea);
 
             Room hideout_ent = new Room("The entrance to the goblin hideout. There are guard stations on both sides\n" +
                                         "as you enter. There are a few broken off arrows stuck in the wall. This is\n" +
                                         "an eloborately made cave inside of the mountain. The walls are higher than\n" +
                                         "the first glances imply. It has been well maintained, sortof. It still has\n" +
-                                        "some clutter from the goblins but the overall the walls are in good condition." +
-                                        "There is an large insignia carved into the center of the west wall.",
-                                        -5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
+                                        "some clutter from the goblins but the overall the walls are in good\n" +
+                                        "condition. There is an large insignia carved into the center of the\n" + 
+                                        "west wall.", -5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
 
             Room gate_back = new Room("The back of the tunnel shows more signs of battle, some of the fiercest\n" +
                                       "fighting must have occured here as there are suits of armor, pikes and\n" +
@@ -746,10 +765,30 @@ namespace _8th_Circle_Server
                                              "Highlighted on the pedastal is a small metal cage with\n" +
                                              "something gleaming inside...",-2,-1, 0, RoomID.GPG_ROOM_71, gpgArea);
 
-            Room gpg_72 = new Room("GPG 72",-8,-2, 0, RoomID.GPG_ROOM_72, gpgArea);
-            Room gpg_73 = new Room("GPG 73",-7,-2, 0, RoomID.GPG_ROOM_73, gpgArea);
-            Room gpg_74 = new Room("GPG 74",-6,-2, 0, RoomID.GPG_ROOM_74, gpgArea);
-            Room gpg_75 = new Room("GPG 75",-5,-2, 0, RoomID.GPG_ROOM_75, gpgArea);
+            Room tunnel_meeting_room = new Room("Another guard station stands before the tunnel to another\n" +
+                                                "larger area that you can see up ahead. This stations is a\n" +
+                                                "little nicer than the one before it. The stone is polished\n" +
+                                                "and the insignia's are brighter and carved more carefully\n" +
+                                                "than in other rooms.",-8,-2, 0, RoomID.GPG_ROOM_72, gpgArea);
+
+            Room messhall_w = new Room("The messhall continues here. Crude benches line the walls and\n" +
+                                       "floors here. There is an exit to the west that looks like it\n" +
+                                       "connects to another guard station.",-7,-2, 0, RoomID.GPG_ROOM_73, gpgArea);
+
+            Room messhall_ent = new Room("The entrance to the messhall opens up to a large circular cavern.\n" +
+                                         "There are crude seating areas littered throughout the area. Many\n" +
+                                         "plates, stews, pots, also are laying around, the goblins are not\n" +
+                                         "very tidey, go figure. This place has more light than the other\n" +
+                                         "rooms in the hideout thus far. There is a large chandellier\n" +
+                                         "with crude candles in the center of the room and other various\n" +
+                                         "torches along all of the walls.",-6,-2, 0, RoomID.GPG_ROOM_74, gpgArea);
+
+            Room messhall_tunnel = new Room("A guard station is here. There are two rows of knee-high walls\n" +
+                                            "in which guards can screen people before letting pass the\n" +
+                                            "narrow walkway to the next room. The insignia you saw at\n" +
+                                            "the entrance to the hideout is engraved along both sides\n" +
+                                            "of the walls here. Torches also start to brighten up the\n" +
+                                            "room a bit more.",-5,-2, 0, RoomID.GPG_ROOM_75, gpgArea);
 
             Room cliff_ent = new Room("Outside the enclosed pathway that showed most of the fighting, out here\n" +
                                       "is much more peaceful. There is a cliff to the south overlooking a ravine\n" +
@@ -879,7 +918,7 @@ namespace _8th_Circle_Server
             cave_east.removeDualLinks(Direction.SOUTHEAST);
             cave_east.removeDualLinks(Direction.NORTHWEST);
             cave_east.removeDualLinks(Direction.NORTHEAST);
-            gpg_67.removeDualLinks(Direction.NORTHWEST);
+            messhall_ne.removeDualLinks(Direction.NORTHWEST);
             hideout_ent.removeDualLinks(Direction.WEST);
             hideout_ent.removeDualLinks(Direction.SOUTHWEST);
             hideout_ent.removeDualLinks(Direction.NORTHWEST);
@@ -889,7 +928,7 @@ namespace _8th_Circle_Server
             secret_cage_room.removeDualLinks(Direction.WEST);
             secret_cage_room.removeDualLinks(Direction.EAST);
             secret_cage_room.removeDualLinks(Direction.SOUTHWEST);
-            gpg_75.removeDualLinks(Direction.NORTHWEST);
+            messhall_tunnel.removeDualLinks(Direction.NORTHWEST);
             cliff_ent.removeDualLinks(Direction.NORTHEAST);
             cliff_ent.removeDualLinks(Direction.NORTHWEST);
             cliff_back.removeDualLinks(Direction.NORTHWEST);
@@ -905,9 +944,9 @@ namespace _8th_Circle_Server
             switch_tunnel_ent.removeDualLinks(Direction.SOUTHWEST);
             gpg_51.removeDualLinks(Direction.NORTHEAST);
             gpg_52.removeTripleLinks(Direction.NORTH);
-            gpg_66.removeTripleLinks(Direction.NORTHWEST);
-            gpg_72.removeDualLinks(Direction.NORTHEAST);
-            gpg_73.removeDualLinks(Direction.NORTHWEST);           
+            messhall_nw.removeTripleLinks(Direction.NORTHWEST);
+            tunnel_meeting_room.removeDualLinks(Direction.NORTHEAST);
+            messhall_w.removeDualLinks(Direction.NORTHWEST);           
 
             MobFlags flags = MobFlags.HIDDEN;
             Doorway newDoor = new Doorway("door", flags);
