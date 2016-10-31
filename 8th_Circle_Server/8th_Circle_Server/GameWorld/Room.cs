@@ -291,9 +291,23 @@ namespace _8th_Circle_Server
         // Removes 3 links from two ajoining rooms from a center point passed in based on the cardinal direction system
         public void removeTripleLinks(Direction dir)
         {
-            removeDualLinks((Direction)(((int)dir + 9) % 10));
+            // Removing triple links from a cardinal direction standpoint of up or down doesn't make sense.
+            if (dir == Direction.UP || dir == Direction.DOWN)
+                return;
+
+            // Account for up being before NORTH
+            if (dir == Direction.NORTH)
+                removeDualLinks(Direction.NORTHWEST);
+            else
+                removeDualLinks((Direction)(((int)dir + 9) % 10));
+
             removeDualLinks(dir);
-            removeDualLinks((Direction)(((int)dir + 1) % 10));
+
+            // Account for UP being after NORTHWEST instead of NORTH
+            if (dir == Direction.NORTHWEST)
+                removeDualLinks(Direction.NORTH);
+            else
+                removeDualLinks((Direction)(((int)dir + 1) % 10));
         }// removeTripleLinks
 
         // Adds links to 2 adjoining rooms

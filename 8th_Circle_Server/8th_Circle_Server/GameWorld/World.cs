@@ -614,11 +614,20 @@ namespace _8th_Circle_Server
             Room gpg_34 = new Room(common_gpg_south_field, 2,-2, 0, RoomID.GPG_ROOM_34, gpgArea);
             Room gpg_35 = new Room(common_gpg_south_field, 3,-2, 0, RoomID.GPG_ROOM_35, gpgArea);
             Room gpg_36 = new Room(common_gpg_east_field, 4,-2, 0, RoomID.GPG_ROOM_36, gpgArea);
-            Room gpg_37 = new Room("GPG 37",-8, 3, 0, RoomID.GPG_ROOM_37, gpgArea);
-            Room gpg_38 = new Room("GPG 38",-7, 3, 0, RoomID.GPG_ROOM_38, gpgArea);
-            Room gpg_39 = new Room("GPG 39",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
 
-            Room switch_tunnel_ne = new Room("GPG 40",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
+            Room switch_tunnel_switchroom = new Room("Finally, the tunnel ends. There is a large metal lever at the end of this\n" +
+                                                     "tunnel. There is a small insignia engraved on either side of the back wall\n" +
+                                                     "next to the lever. You have seen this symbol at the entrance of the hideout.",
+                                                     -8, 3, 0, RoomID.GPG_ROOM_37, gpgArea);
+
+            Room switch_tunnel_nw = new Room("You can see ahead the tunnel is starting to come to an end, ahead there is\n" +
+                                             "something in the next room on the ground.", -7, 3, 0, RoomID.GPG_ROOM_38, gpgArea);
+
+            Room switch_tunnel_n = new Room("The plain stone tunnel continues to the west, you begin to wonder what is the\n" +
+                                            "purpose of this tunnel, an escape route maybe?",-6, 3, 0, RoomID.GPG_ROOM_39, gpgArea);
+
+            Room switch_tunnel_ne = new Room("The flickering lights wrap around to the west as the tunnel stops and twists\n" +
+                                             "and it is still as narrow as before.",-5, 3, 0, RoomID.GPG_ROOM_40, gpgArea);
 
             Room end_of_north_path1 = new Room("The path comes to an end here.  To the north, the dropoff is as steep as\n" +
                                                "ever, and to the west, giant mountain walls extend upwards.  There is a\n" +
@@ -664,7 +673,8 @@ namespace _8th_Circle_Server
                                         "and beds lining it in neat rows.", -6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
 
             Room barracks_ne = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
-                                        "and beds lining it in neat rows. There is a small wall opening to the north here.",
+                                        "and beds lining it in neat rows. There is a small opening in the cave wall\n" +
+                                        "to the north.",
                                         -5, 1, 0, RoomID.GPG_ROOM_54, gpgArea);
 
             Room gate_entrance = new Room("You step inside the great iron gate. There is a large walkway here.\n" +
@@ -718,8 +728,9 @@ namespace _8th_Circle_Server
                                         "as you enter. There are a few broken off arrows stuck in the wall. This is\n" +
                                         "an eloborately made cave inside of the mountain. The walls are higher than\n" +
                                         "the first glances imply. It has been well maintained, sortof. It still has\n" +
-                                        "some clutter from the goblins but the overall the walls are in good condition."
-                                        ,-5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
+                                        "some clutter from the goblins but the overall the walls are in good condition." +
+                                        "There is an large insignia carved into the center of the west wall.",
+                                        -5,-1, 0, RoomID.GPG_ROOM_68, gpgArea);
 
             Room gate_back = new Room("The back of the tunnel shows more signs of battle, some of the fiercest\n" +
                                       "fighting must have occured here as there are suits of armor, pikes and\n" +
@@ -827,13 +838,13 @@ namespace _8th_Circle_Server
             infront_of_cave_ent.removeDualLinks(Direction.NORTHWEST);
             infront_of_cave_ent.removeDualLinks(Direction.SOUTHWEST);
             gpg_31.removeDualLinks(Direction.NORTHWEST);
-            gpg_37.removeDualLinks(Direction.SOUTH);
-            gpg_37.removeDualLinks(Direction.SOUTHEAST);
-            gpg_38.removeDualLinks(Direction.SOUTH);
-            gpg_38.removeDualLinks(Direction.SOUTHWEST);
-            gpg_38.removeDualLinks(Direction.SOUTHEAST);
-            gpg_39.removeDualLinks(Direction.SOUTH);
-            gpg_39.removeDualLinks(Direction.SOUTHWEST);
+            switch_tunnel_switchroom.removeDualLinks(Direction.SOUTH);
+            switch_tunnel_switchroom.removeDualLinks(Direction.SOUTHEAST);
+            switch_tunnel_nw.removeDualLinks(Direction.SOUTH);
+            switch_tunnel_nw.removeDualLinks(Direction.SOUTHWEST);
+            switch_tunnel_nw.removeDualLinks(Direction.SOUTHEAST);
+            switch_tunnel_n.removeDualLinks(Direction.SOUTH);
+            switch_tunnel_n.removeDualLinks(Direction.SOUTHWEST);
             switch_tunnel_ne.removeDualLinks(Direction.SOUTHWEST);
             gpg_46.removeDualLinks(Direction.SOUTHEAST);
             switch_tunnel_ent.removeDualLinks(Direction.WEST);
@@ -892,6 +903,11 @@ namespace _8th_Circle_Server
             cliff_ent.removeTripleLinks(Direction.WEST);
             switch_tunnel_ent.removeDualLinks(Direction.NORTHWEST);
             switch_tunnel_ent.removeDualLinks(Direction.SOUTHWEST);
+            gpg_51.removeDualLinks(Direction.NORTHEAST);
+            gpg_52.removeTripleLinks(Direction.NORTH);
+            gpg_66.removeTripleLinks(Direction.NORTHWEST);
+            gpg_72.removeDualLinks(Direction.NORTHEAST);
+            gpg_73.removeDualLinks(Direction.NORTHWEST);           
 
             MobFlags flags = MobFlags.HIDDEN;
             Doorway newDoor = new Doorway("door", flags);
@@ -938,7 +954,7 @@ namespace _8th_Circle_Server
             basic_switch = PrototypeManager.getFullGameRegisteredMob(MobList.SWITCH).Clone();
             ed = new EventData(EventID.EVENT_GPG_WALL_REMOVE, CommandName.COMMAND_USE, AreaID.AID_gpgArea);
             basic_switch.GetEventList().Add(ed);
-            gpgArea.cloneMob(MobList.SWITCH, gpgArea[RoomID.GPG_ROOM_37], "", basic_switch);
+            gpgArea.cloneMob(MobList.SWITCH, gpgArea[RoomID.GPG_ROOM_37], "lever", basic_switch);
 
             gpgArea.cloneMob(MobList.BASIC_SWORD, gpgArea[RoomID.GPG_PLAYER_START]);
             gpgArea.cloneMob(MobList.GOBLIN_RUNT, gpgArea[RoomID.GPG_ROOM_6]);

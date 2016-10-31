@@ -358,7 +358,7 @@ namespace _8th_Circle_Server
         SOUTHWEST,
         WEST,
         NORTHWEST,
-        DIRECTION_END
+        DIRECTION_END = NORTHWEST
     }// Direction
 
     // Resource types for the resource handler
