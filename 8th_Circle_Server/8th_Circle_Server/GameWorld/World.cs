@@ -642,9 +642,24 @@ namespace _8th_Circle_Server
                                                  "There is more room to the south. To the north, there is a dropoff down the\n" +
                                                  "mountain. You better watch where you are going...",-2, 3, 0, RoomID.GPG_ROOM_43, gpgArea);
 
-            Room gpg_44 = new Room("GPG 44",-8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
-            Room gpg_45 = new Room("GPG 45",-7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
-            Room gpg_46 = new Room("GPG 46",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
+            Room sleeping_quarters_w = new Room("Behind the meeting room are some higher scale sleeping quarters.\n" +
+                                                "There are actually some beds here and some decent pillows. It is\n" +
+                                                "fairly messey as the goblins don't appear to make their bed, go\n" +
+                                                "figure. There are some drapes seperating the east room from here.",
+                                                -8, 2, 0, RoomID.GPG_ROOM_44, gpgArea);
+
+            Room sleeping_quarters_middle = new Room("More sleeping quarters similar to the last. There are a few empty\n" +
+                                                     "pots and pots that stink with leftovers that you can only imagine.\n" +
+                                                     "The next chamber is sepearated by actual silk drapings and on\n" +
+                                                     "either side of the east chamber is the hideout insignia.",
+                                                     -7, 2, 0, RoomID.GPG_ROOM_45, gpgArea);
+
+            Room gpg_46 = new Room("The chieftains room is large and elegant. Silk sheets are tattered and the bed is worn.\n" +
+                                   "Even in its current state, you can imagine how impressive this must have been in its\n" +
+                                   "full glory. There are elaborate decorations made of iron, stone, and copper. There are\n" +
+                                   "mantles and swords and shields on the walls with actual vases in the corners. Intricate\n" +
+                                   "tables with pots fill the room. Whoever was or is here, even a goblin is at least trying\n" +
+                                   "to take care of this place.",-6, 2, 0, RoomID.GPG_ROOM_46, gpgArea);
 
             Room switch_tunnel_ent = new Room("The opening leads to a narrow tunnel leading north. Dim torchlight is the\n" +
                                               "only thing noticeable as there are no decorations on the plain stone walls.",
@@ -666,8 +681,18 @@ namespace _8th_Circle_Server
             Room start_of_north_path2 = new Room("The path is wide as it starts a trek upwards around the side of a mountain.\n" + 
                                                  "There is more room to the north as the mountain gets darker.",-2, 2, 0, RoomID.GPG_ROOM_50, gpgArea);
 
-            Room gpg_51 = new Room("GPG 51",-8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
-            Room gpg_52 = new Room("GPG 52",-7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
+            Room meetingplace_nw = new Room("This is probably where the chieftan sits. A large chair made of bones sits at\n" +
+                                            "head of the table. There are relatively ornate decorations, probably not goblin\n" +
+                                            "made. The more that you think about it, the ore a lot of this hideout probably\n" +
+                                            "belonged to some other kingdom or race and was somehow forgotton after some\n" +
+                                            "conflict and the goblins likely took over afterwards. You don't think they\n" +
+                                            "have the brains or resources to take over a place like this.",
+                                            -8, 1, 0, RoomID.GPG_ROOM_51, gpgArea);
+
+            Room meetingplace_ne = new Room("This side of the room has some pots and tattered tapestries. It looks like\n" +
+                                            "of them could be draped over to form some kind of makeshift tent over the\n" +
+                                            "stone table and chairs to simulate a kind of cloth war room.",
+                                            -7, 1, 0, RoomID.GPG_ROOM_52, gpgArea);
 
             Room barracks_nw = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
                                         "and beds lining it in neat rows.", -6, 1, 0, RoomID.GPG_ROOM_53, gpgArea);
@@ -688,7 +713,7 @@ namespace _8th_Circle_Server
                                           "You can't help but think what riches could be inside, finally, this forsaken\n" +
                                           "place must have some redeeming quality... treasure!",-3, 1, 0, RoomID.GPG_ROOM_56, gpgArea);
 
-            Room stone_golem = new Room("The walls end here.  To the north you see the start of a path going upwards.\n" +
+            Room stone_golem = new Room("The walls end here. To the north you see the start of a path going upwards.\n" +
                                         "There is something dead here, at first you thought it was some rocks but it\n" +
                                         "looks like it is some sort of stone golem.",-2, 1, 0, RoomID.GPG_ROOM_57, gpgArea);
 
@@ -697,7 +722,10 @@ namespace _8th_Circle_Server
                                            "banged up... At least the golbins are trying to look like they deserve\n" +
                                            "some respect...",-8, 0, 0, RoomID.GPG_ROOM_58, gpgArea);
 
-            Room meetingroom_se = new Room("GPG 59",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
+            Room meetingroom_se = new Room("More chairs round the stone table. There are some half-symmetrical\n" +
+                                           "suits of armor like the other side that are fairly banged up. The\n" +
+                                           "room has some decorative bones of some animal, probably as a trophy\n" +
+                                           "to indimidate.",-7, 0, 0, RoomID.GPG_ROOM_59, gpgArea);
 
             Room barracks_sw = new Room("The barracks continue here, every part of the room looks the same with torches\n" +
                                         "and beds lining it in neat rows.",-6, 0, 0, RoomID.GPG_ROOM_60, gpgArea);
@@ -889,7 +917,7 @@ namespace _8th_Circle_Server
             switch_tunnel_ent.removeDualLinks(Direction.WEST);
             middle_of_north_path2.removeDualLinks(Direction.SOUTH);
             middle_of_north_path2.removeDualLinks(Direction.SOUTHEAST);
-            gpg_52.removeDualLinks(Direction.NORTHEAST);
+            meetingplace_ne.removeDualLinks(Direction.NORTHEAST);
             barracks_nw.removeDualLinks(Direction.NORTH);
             barracks_nw.removeDualLinks(Direction.NORTHWEST);
             barracks_nw.removeDualLinks(Direction.WEST);
@@ -942,8 +970,8 @@ namespace _8th_Circle_Server
             cliff_ent.removeTripleLinks(Direction.WEST);
             switch_tunnel_ent.removeDualLinks(Direction.NORTHWEST);
             switch_tunnel_ent.removeDualLinks(Direction.SOUTHWEST);
-            gpg_51.removeDualLinks(Direction.NORTHEAST);
-            gpg_52.removeTripleLinks(Direction.NORTH);
+            meetingplace_nw.removeDualLinks(Direction.NORTHEAST);
+            meetingplace_ne.removeTripleLinks(Direction.NORTH);
             messhall_nw.removeTripleLinks(Direction.NORTHWEST);
             tunnel_meeting_room.removeDualLinks(Direction.NORTHEAST);
             messhall_w.removeDualLinks(Direction.NORTHWEST);           

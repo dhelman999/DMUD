@@ -275,7 +275,7 @@ namespace _8th_Circle_Server
                 clientString = "your inventory is full\n";
             else if (!container.HasFlag(MobFlags.OPENABLE))
                 clientString = "you cannot open " + container.GetName();
-            else if (container.HasFlag(MobFlags.OPEN))
+            else if (!container.HasFlag(MobFlags.OPEN))
                 clientString = container.GetName() + " is not open";
             else if (prepType != PrepositionType.PREP_FROM)
                 clientString = "you can't get like that";
