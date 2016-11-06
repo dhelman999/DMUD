@@ -119,6 +119,7 @@ namespace _8th_Circle_Server
 
                             Console.WriteLine("respawning " + parent.GetName());
                             parent.respawn();
+                            Utils.UnsetFlag(ref parent.mFlags, MobFlags.RESPAWNING);
                         }
                     }// if (parent.IsRespawning() && (parent.DecRespawnTime(TICKTIME)) <= 0)
                 }// foreach(Mob parent in area.GetPrototypeMobList())
