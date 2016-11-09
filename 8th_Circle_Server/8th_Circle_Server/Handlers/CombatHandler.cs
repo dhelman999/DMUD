@@ -273,7 +273,6 @@ namespace _8th_Circle_Server
             bool isCrit = false;
             bool isHit = false;
             double attackRoll = mRand.NextDouble();
-            Console.WriteLine("attack roll " + attackRoll);
 
             if (attackRoll >= .95)
             {

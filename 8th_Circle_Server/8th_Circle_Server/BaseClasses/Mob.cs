@@ -58,8 +58,10 @@ namespace _8th_Circle_Server
         // Mementos help facilitate respawning and resetting a mob without duplicating a ton of starting/current member variables and mobflags
         protected Mob mMemento;
 
-        // Random number generator if the Mob needs random actions
-        private Random mRand;
+        // Random number generator if the Mob needs random actions, this is static so there is one master generator to prevent near temporal 
+        // seeds from generating the same random numbers for the mobs, and since we are sharing one, we need to have a lock.
+        static private Random sRand;
+        static object sRandomLock;
 
         // Position in their current area
         private int[] mAreaLoc;
@@ -81,9 +83,14 @@ namespace _8th_Circle_Server
             mMobId = MobList.MOB_START;
             mKeyId = (int)MobList.MOB_START;
             mActionTimer = 0;
-            mStartingActionCounter = mCurrentActionCounter = 30;
-            mRand = new Random();
+            mStartingActionCounter = mCurrentActionCounter = 30;      
             mFlags = MobFlags.NONE;
+            sRand = new Random();
+
+            if(sRandomLock == null)
+                sRandomLock = new object();
+            if (sRand == null)
+                sRand = new Random();
         }// Constructor
 
         public Mob(String name, MobFlags flags = MobFlags.NONE)
@@ -105,8 +112,12 @@ namespace _8th_Circle_Server
             mKeyId = (int)MobList.MOB_START;
             mActionTimer = 0;
             mStartingActionCounter = mCurrentActionCounter = 30;
-            mRand = new Random();
             mFlags = flags;
+
+            if (sRandomLock == null)
+                sRandomLock = new object();
+            if (sRand == null)
+                sRand = new Random();
         }// Constructor
 
         public Mob(Mob mob)
@@ -138,8 +149,12 @@ namespace _8th_Circle_Server
             mResType = mob.mResType;
             mStartingActionCounter = mob.mStartingActionCounter;
             mCurrentActionCounter = mob.mCurrentActionCounter;
-            mRand = new Random();
             mFlags = mob.mFlags;
+
+            if (sRandomLock == null)
+                sRandomLock = new object();
+            if (sRand == null)
+                sRand = new Random();
         }// Copy Constructor
 
         public virtual Mob Clone()
@@ -612,11 +627,15 @@ namespace _8th_Circle_Server
         public void randomAction()
         {
             String clientString = String.Empty;
+            int randomValue = 0;
 
             if (HasFlag(MobFlags.INCOMBAT))
                 return;
 
-            if (mRand.NextDouble() < .5)
+            lock(sRandomLock)
+                randomValue = sRand.Next(0, 100);
+
+            if (randomValue < 50)
             {
                 // Max movement
                 if (mMobId == MobList.MAX)
@@ -635,7 +654,7 @@ namespace _8th_Circle_Server
                         commandQueue.Clear();
                     }
                 }// if (mMobId == (int)MobList.MAX)
-            }// if (mRand.NextDouble() < .5)
+            }// if (sRand.NextDouble() < .5)
             else
             {
                 ArrayList commandQueue = new ArrayList();
@@ -643,9 +662,12 @@ namespace _8th_Circle_Server
 
                 if (commandQueue.Count > 0)
                 {
+                    int index = 0;
                     Utils.Broadcast(mCurrentRoom, this, mName + " scampers off\n");
 
-                    int index = (int)(commandQueue.Count * mRand.NextDouble());
+                    lock(sRandomLock)
+                        index = sRand.Next(0, commandQueue.Count - 1);
+
                     CommandClass com = (CommandClass)commandQueue[index];
                     mCurrentArea.GetCommandExecutor().execute(com, commandQueue, this, ref clientString);
                 }
