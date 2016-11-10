@@ -1,3 +1,16 @@
+Latest version information:
+------------------------------------------
+Build Version - 1.0
+Build Date    - 11/9/2016
+
+Microsoft Visual Studio Community 2015
+Version 14.0.23107.0 D14REL
+Microsoft .NET Framework
+Version 4.6.01586
+Installed Version: Community
+Visual C# 2015   00322-20000-00000-AA351
+------------------------------------------
+
 General Intro and Description to will come.
 
 Minor bug fixes are littered throughout the code with TODO Statements
