@@ -1,2 +1,4 @@
 # DMUD
-8th Circle Text Based Adventure
+Welcome,
+
+This text based adventure MUD was meant to be a playground for me to learn and test out different concepts from what I remember as a kid playing MUDs based off of GMUD. There are many things in this project that I specifically implemented from the ground-up knowing this was not the best way to do things. (Parsing/grammar and the networking/client/server code for example). I wanted to see how the project would evolve over time as I learned C# and various programming concepts.  I used this to test out concepts like server/client code, parsing and grammar with abilities, spells, combat threads, environment threads and more. At the time I was mainly using C++ in my job and I wanted to learn C# and this seemed like a fun way to do it. This also has been ported over to Unity to learn how to integrate all of this with a modern game engine.
